@@ -1,11 +1,16 @@
+import { ISliderModel } from "./interface";
 import { ITrackPresenter } from "../track/interface";
 
 export default class SliderView {
-  constructor(trackPresenter: ITrackPresenter) {}
+  private model: ISliderModel;
+
+  constructor(model: ISliderModel) {
+    this.model = model;
+  } //trackPresenter: ITrackPresenter
 
   render(): string {
-    return `<div class="slider">
-        ${trackPresenter.render()}
+    //${trackPresenter.render()}
+    return `<div class="slider">  
     </div>`;
   }
 }
