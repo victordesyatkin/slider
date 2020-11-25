@@ -1,20 +1,21 @@
 export interface IHandleProps {
-  prefixCls?: string;
-  className?: string;
-  vertical?: boolean;
-  reverse?: boolean;
-  offset?: number;
-  style?: { [key: string]: string };
-  disabled?: boolean;
-  min?: number;
-  max?: number;
-  value?: number;
-  tabIndex?: number;
+  prefixCls: string;
+  className: string;
+  vertical: boolean;
+  reverse: boolean;
+  offset: number;
+  style: { [key: string]: string };
+  disabled: boolean;
+  min: number;
+  max: number;
+  value: number;
+  tabIndex: number;
   ariaLabel?: string;
   ariaLabelledBy?: string;
   ariaValueTextFormatter?: (val: number) => string;
   onMouseEnter?: () => void;
   onMouseLeave?: () => void;
+  index: number;
 }
 
 export interface IHandlePropsModel extends IHandleProps {

@@ -9,14 +9,11 @@ import {
 } from "./interface";
 import SliderModel from "./model";
 import SliderView from "./view";
-import TrackModel from "../track/model";
 import TrackPresenter from "../track/presenter";
-import {
-  ITrackProps,
-  ITrackView,
-  ITrackModel,
-  ITrackPresenter,
-} from "../track/interface";
+import { ITrackProps, ITrackPresenter } from "../track/interface";
+import HandlePresenter from "../handle/presenter";
+import { IHandleProps } from "../handle/interface";
+
 export default class SliderPresenter implements ISliderPresenter {
   static defaultProps = {
     prefixCls: "slider",
@@ -34,7 +31,7 @@ export default class SliderPresenter implements ISliderPresenter {
     vertical: false,
     reverse: false,
     trackStyle: {},
-    handleStyle: [{}],
+    handleStyle: {},
     railStyle: {},
     dotStyle: {},
     activeDotStyle: {},
@@ -46,20 +43,22 @@ export default class SliderPresenter implements ISliderPresenter {
 
   private trackPresenter: ITrackPresenter;
 
+  private handlePresenter; //TODO
+
   constructor(props: ISliderProps) {
     const _props = { ...SliderPresenter.defaultProps, ...props };
     this.sliderModel = new SliderModel(this.preparePropsForSliderModel(_props));
     this.trackPresenter = new TrackPresenter(this.preparePropsForTrackModel());
+    this.handlePresenter = new HandlePresenter(
+      this.preparePropsForHandleModel()
+    );
     this.sliderView = new SliderView(this.sliderModel, this.trackPresenter);
   }
 
   calcOffset(value: number): number {
     const { min, max } = this.sliderModel.getProps();
     const ratio = (value - min) / (max - min);
-    //return Math.max(0, ratio * 100);
-    const r = Math.max(0, ratio * 100);
-    console.log("r :", r);
-    return r;
+    return Math.max(0, ratio * 100);
   }
 
   preparePropsForSliderModel(props: ISliderDefaultProps): ISliderModelProps {
@@ -83,8 +82,6 @@ export default class SliderPresenter implements ISliderPresenter {
     const trackOffset =
       startPoint !== undefined ? this.calcOffset(startPoint) : 0;
     const offset = this.calcOffset(value);
-    console.log("trackOffset :"), trackOffset;
-    console.log("offset :"), offset;
     return {
       className: `${prefixCls}__track`,
       vertical,
@@ -93,6 +90,36 @@ export default class SliderPresenter implements ISliderPresenter {
       offset: trackOffset,
       length: offset - trackOffset,
       style: trackStyle,
+    };
+  }
+
+  preparePropsForHandleModel(): IHandleProps {
+    const props = this.sliderModel.getProps();
+    const {
+      prefixCls,
+      vertical,
+      value,
+      disabled,
+      min,
+      max,
+      reverse,
+      tabIndex,
+      handleStyle,
+    } = props;
+
+    return {
+      className: `${prefixCls}__handle`,
+      prefixCls,
+      vertical,
+      offset: this.calcOffset(value),
+      value,
+      disabled,
+      min,
+      max,
+      reverse,
+      index: 0,
+      tabIndex: tabIndex || 0,
+      style: handleStyle,
     };
   }
 

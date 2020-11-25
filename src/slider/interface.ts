@@ -17,7 +17,7 @@ export interface ISliderProps {
   onAfterChange?: (value: number) => void;
 
   trackStyle?: { [key: string]: string };
-  handleStyle?: { [key: string]: string }[];
+  handleStyle?: { [key: string]: string };
   tabIndex?: number;
   ariaLabelForHandle?: string;
   ariaLabelledByForHandle?: string;
@@ -34,7 +34,7 @@ export interface ISliderDefaultProps extends ISliderProps {
   vertical: boolean;
   reverse: boolean;
   trackStyle: { [key: string]: string };
-  handleStyle: { [key: string]: string }[];
+  handleStyle: { [key: string]: string };
   disabled: boolean;
   included: boolean;
   min: number;
