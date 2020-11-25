@@ -1,16 +1,62 @@
+import $ from "jquery";
 import { ISliderModel } from "./interface";
-import { ITrackPresenter } from "../track/interface";
+import { objectToString } from "../utils";
+import {
+  ITrackPresenter,
+  ITrackModel,
+  ITrackProps,
+  ITrackView,
+} from "../track/interface";
 
 export default class SliderView {
-  private model: ISliderModel;
+  private slideModel: ISliderModel;
 
-  constructor(model: ISliderModel) {
-    this.model = model;
-  } //trackPresenter: ITrackPresenter
+  private trackPresenter: ITrackPresenter;
+
+  private slideView: JQuery<HTMLElement>;
+
+  private trackView: ITrackView;
+
+  constructor(slideModel: ISliderModel, trackPresenter: ITrackPresenter) {
+    this.slideModel = slideModel;
+    this.trackPresenter = trackPresenter;
+    this.trackView = this.createTrackView();
+    this.slideView = this.createSlideView();
+  }
+
+  createSlideView() {
+    const props = this.slideModel.getProps();
+    return $("<div/>", {
+      class: this.slideModel.getSliderClassName(),
+    }).append(
+      $("<div/>", {
+        class: `${props.prefixCls}__rail`,
+        style: objectToString(props.railStyle),
+      }).append(this.trackView.getView())
+    );
+  }
+
+  createTrackView() {
+    return this.trackPresenter.getView();
+  }
+
+  setSlideModel(slideModel: ISliderModel): void {
+    this.slideModel = slideModel;
+  }
+
+  getSlideModel(): ISliderModel {
+    return this.slideModel;
+  }
+
+  setTrackPresenter(presenter: ITrackPresenter): void {
+    this.trackPresenter = presenter;
+  }
+
+  getITrackPresenter(): ITrackPresenter {
+    return this.trackPresenter;
+  }
 
   render(): string {
-    //${trackPresenter.render()}
-    return `<div class="slider">  
-    </div>`;
+    return $("<div/>").append(this.slideView).html();
   }
 }

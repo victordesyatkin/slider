@@ -2,10 +2,10 @@ import $ from "jquery";
 import SliderPresenter from "./slider/presenter";
 import "./index.scss";
 
-const track = new SliderPresenter({
+const slider = new SliderPresenter({
   prefixCls: "slider",
 });
 
 $(() => {
-  $(".slider__wrapper").append(track.render());
+  $(".slider__wrapper").append(slider.render());
 });

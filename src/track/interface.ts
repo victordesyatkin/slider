@@ -21,6 +21,7 @@ export interface ITrackView {
   setModel(model: ITrackModel): void;
   getModel(): ITrackModel;
   render(): string;
+  getView(): JQuery<HTMLElement>;
 }
 
 export interface ITrackPresenter {

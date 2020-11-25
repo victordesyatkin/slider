@@ -11,28 +11,53 @@ export interface ISliderProps {
   className?: string;
   marks?: object;
 
-  step?: number | null;
+  step?: number;
   onChange?: (value: number) => void;
   onBeforeChange?: (value: number) => void;
   onAfterChange?: (value: number) => void;
 
-  trackStyle?: { [key: string]: string }[];
+  trackStyle?: { [key: string]: string };
   handleStyle?: { [key: string]: string }[];
   tabIndex?: number;
   ariaLabelForHandle?: string;
   ariaLabelledByForHandle?: string;
   ariaValueTextFormatterForHandle?: string;
   startPoint?: number;
+  dots?: boolean;
+  railStyle?: { [key: string]: string };
+  dotStyle?: { [key: string]: string };
+  activeDotStyle?: { [key: string]: string };
 }
-
-export interface ISliderModelProps extends ISliderProps {
+export interface ISliderDefaultProps extends ISliderProps {
+  prefixCls: string;
   className: string;
+  vertical: boolean;
+  reverse: boolean;
+  trackStyle: { [key: string]: string };
+  handleStyle: { [key: string]: string }[];
+  disabled: boolean;
+  included: boolean;
+  min: number;
+  max: number;
+  step: number;
   marks: object;
+  onChange: (value: number) => void;
+  onBeforeChange: (value: number) => void;
+  onAfterChange: (value: number) => void;
+  dots: boolean;
+  railStyle: { [key: string]: string };
+  dotStyle: { [key: string]: string };
+  activeDotStyle: { [key: string]: string };
+}
+export interface ISliderModelProps extends ISliderDefaultProps {
+  value: number;
+  defaultValue: number;
 }
 
 export interface ISliderModel {
-  getProps(): ISliderProps;
-  setProps(_props: ISliderProps): void;
+  getProps(): ISliderModelProps;
+  setProps(_props: ISliderModelProps): void;
+  getSliderClassName(): string;
 }
 
 export interface ISliderView {
