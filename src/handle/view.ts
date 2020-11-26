@@ -1,7 +1,7 @@
 import $ from "jquery";
 import { objectToString } from "../utils";
-import { IHandleModel, IHandleProps } from "./interface";
-export default class HandleView {
+import { IHandleModel, IHandleProps, IHandleView } from "./interface";
+export default class HandleView implements IHandleView {
   private model: IHandleModel;
   private view: JQuery<HTMLElement>;
 
@@ -28,7 +28,11 @@ export default class HandleView {
       .on("mouseDown", handleMouseDown);
   }
 
-  render() {
+  get$View(): JQuery<HTMLElement> {
+    return this.view;
+  }
+
+  html() {
     return $("<div/>").append(this.view).html();
   }
 }

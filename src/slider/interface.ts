@@ -61,10 +61,12 @@ export interface ISliderModel {
 }
 
 export interface ISliderView {
-  render(): string;
+  get$SliderView(): JQuery<HTMLElement>;
+  html(): string;
 }
 
 export interface ISliderPresenter {
-  render(): string;
+  html(): string;
+  get$SliderView(): JQuery<HTMLElement>;
   preparePropsForSliderModel(props: ISliderModelProps): ISliderModelProps;
 }

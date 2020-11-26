@@ -20,8 +20,8 @@ export interface ITrackModel {
 export interface ITrackView {
   setModel(model: ITrackModel): void;
   getModel(): ITrackModel;
-  render(): string;
-  getView(): JQuery<HTMLElement>;
+  html(): string;
+  get$View(): JQuery<HTMLElement>;
 }
 
 export interface ITrackPresenter {
@@ -29,6 +29,7 @@ export interface ITrackPresenter {
   setModel(model: ITrackModel): void;
   getView(): ITrackView;
   setView(view: ITrackView): void;
+  get$View(): JQuery<HTMLElement>;
   prepareElStyle(props: ITrackProps): { [key: string]: string };
-  render(): string;
+  html(): string;
 }

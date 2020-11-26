@@ -34,5 +34,17 @@ export interface IHandleModel {
 
 export interface IHandleView {
   createView(): JQuery<HTMLElement>;
-  render(): string;
+  get$View(): JQuery<HTMLElement>;
+  html(): string;
+}
+
+export interface IHandlePresenter {
+  preparePropsForHandleModel(props: IHandleProps): IHandlePropsModel;
+  prepareElStyle(props: IHandleProps): { [key: string]: string };
+  getModel(): IHandleModel;
+  setModel(model: IHandleModel): void;
+  getView(): IHandleView;
+  setView(view: IHandleView): void;
+  get$View(): JQuery<HTMLElement>;
+  html(): string;
 }

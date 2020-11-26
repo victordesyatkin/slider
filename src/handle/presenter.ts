@@ -48,15 +48,27 @@ export default class HandlePresenter {
     return elStyle;
   }
 
-  getModel() {
+  getModel(): IHandleModel {
     return this.model;
   }
 
-  setModel(model: IHandleModel) {
-    return (this.model = model);
+  setModel(model: IHandleModel): void {
+    this.model = model;
   }
 
-  render(): string {
-    return this.view.render();
+  public getView(): IHandleView {
+    return this.view;
+  }
+
+  public setView(view: IHandleView): void {
+    this.view = view;
+  }
+
+  public get$View(): JQuery<HTMLElement> {
+    return this.view.get$View();
+  }
+
+  html(): string {
+    return this.view.html();
   }
 }

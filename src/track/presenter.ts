@@ -12,7 +12,16 @@ export default class TrackPresenter implements ITrackPresenter {
 
   private view: ITrackView;
 
-  prepareElStyle(props: ITrackProps): { [key: string]: string } {
+  constructor(props: ITrackProps) {
+    const elStyle = this.prepareElStyle(props);
+    this.model = new TrackModel({
+      ...props,
+      style: elStyle,
+    });
+    this.view = new TrackView(this.model);
+  }
+
+  public prepareElStyle(props: ITrackProps): { [key: string]: string } {
     const { vertical, style } = props;
     let { length, offset, reverse } = props;
 
@@ -54,20 +63,15 @@ export default class TrackPresenter implements ITrackPresenter {
     return this.view;
   }
 
-  public setView(view: TrackView): void {
+  public setView(view: ITrackView): void {
     this.view = view;
   }
 
-  constructor(props: ITrackProps) {
-    const elStyle = this.prepareElStyle(props);
-    this.model = new TrackModel({
-      ...props,
-      style: elStyle,
-    });
-    this.view = new TrackView(this.model);
+  public get$View(): JQuery<HTMLElement> {
+    return this.view.get$View();
   }
 
-  render(): string {
-    return this.view.render();
+  public html(): string {
+    return this.view.html();
   }
 }

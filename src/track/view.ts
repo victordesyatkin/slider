@@ -13,7 +13,7 @@ export default class TrackView implements ITrackView {
     return this.model;
   }
 
-  getView() {
+  get$View(): JQuery<HTMLElement> {
     return this.view;
   }
 
@@ -29,7 +29,7 @@ export default class TrackView implements ITrackView {
     });
   }
 
-  public render(): string {
+  public html(): string {
     return this.model.getIncluded() ? $("<div/>").append(this.view).html() : "";
   }
 }

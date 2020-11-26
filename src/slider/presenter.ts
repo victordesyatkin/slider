@@ -1,3 +1,4 @@
+import $ from "jquery";
 import noop from "lodash/noop";
 import {
   ISliderProps,
@@ -12,7 +13,11 @@ import SliderView from "./view";
 import TrackPresenter from "../track/presenter";
 import { ITrackProps, ITrackPresenter } from "../track/interface";
 import HandlePresenter from "../handle/presenter";
-import { IHandleProps } from "../handle/interface";
+import {
+  IHandlePresenter,
+  IHandleProps,
+  IHandleView,
+} from "../handle/interface";
 
 export default class SliderPresenter implements ISliderPresenter {
   static defaultProps = {
@@ -43,7 +48,11 @@ export default class SliderPresenter implements ISliderPresenter {
 
   private trackPresenter: ITrackPresenter;
 
-  private handlePresenter; //TODO
+  private handlePresenter: IHandlePresenter;
+
+  private active: boolean = false;
+
+  public currentHandleView: IHandleView | undefined;
 
   constructor(props: ISliderProps) {
     const _props = { ...SliderPresenter.defaultProps, ...props };
@@ -52,23 +61,109 @@ export default class SliderPresenter implements ISliderPresenter {
     this.handlePresenter = new HandlePresenter(
       this.preparePropsForHandleModel()
     );
-    this.sliderView = new SliderView(this.sliderModel, this.trackPresenter);
+    this.sliderView = new SliderView(
+      this.sliderModel,
+      this.trackPresenter,
+      this.handlePresenter
+    );
+    $(this.initHandlers.bind(this));
   }
 
-  calcOffset(value: number): number {
+  public get$SliderView(): JQuery<HTMLElement> {
+    return this.sliderView.get$SliderView();
+  }
+
+  public initHandlers(): void {
+    $(this.sliderView.get$SliderView()).on({
+      mouseover: this.onMouseover.bind(this),
+      mouseout: this.onMouseout,
+      mousemove: this.onMousemove,
+      click: this.onClick,
+      mousedown: this.onMouseDown,
+      mouseup: this.onMouseUp,
+    });
+  }
+
+  public onMouseUp = (e: any) => {
+    // TODO
+    // const { target } = e;
+    console.log("onKeyUp : ", e.type); //TODO
+    if (this.currentHandleView) {
+      this.currentHandleView = undefined;
+    }
+  };
+
+  public onMouseDown = (e: any) => {
+    //TODO interface
+    // const { target } = e;
+    console.log("onKeyDown : ", e.type); //TODO
+    const $handle = this.handlePresenter.get$View();
+    if ($(e.target).closest($handle).length) {
+      this.currentHandleView = this.handlePresenter.getView();
+    }
+  };
+
+  public onClick = (e: any) => {
+    //TODO interface
+    // const { target } = e;
+    console.log("onClick : ", e.type); //TODO
+  };
+
+  public onMousemove = (e: any): void => {
+    if (!this.active || !this.currentHandleView) {
+      return;
+    }
+    console.log("onMousemove : ", e); //TODO;
+  };
+
+  public onMouseover(e: any): void {
+    //TODO interface
+    if (this.active) {
+      return;
+    }
+    const { target, relatedTarget } = e;
+    const $sliderView = this.sliderView.get$SliderView();
+    if (
+      !$(relatedTarget).closest($sliderView).length &&
+      $(target).closest($sliderView).length
+    ) {
+      this.active = true;
+      //console.log("onMouseover : "); TODO
+    }
+  }
+
+  public onMouseout = (e: any): void => {
+    //TODO interface
+    if (!this.active) {
+      return;
+    }
+    const { target, relatedTarget } = e;
+    const $sliderView = this.sliderView.get$SliderView();
+    if (
+      !$(relatedTarget).closest($sliderView).length &&
+      $(target).closest($sliderView).length
+    ) {
+      //console.log("onMouseout : "); TODO
+      this.active = false;
+    }
+  };
+
+  public calcOffset(value: number): number {
     const { min, max } = this.sliderModel.getProps();
     const ratio = (value - min) / (max - min);
     return Math.max(0, ratio * 100);
   }
 
-  preparePropsForSliderModel(props: ISliderDefaultProps): ISliderModelProps {
+  public preparePropsForSliderModel(
+    props: ISliderDefaultProps
+  ): ISliderModelProps {
     const defaultValue =
       props.defaultValue !== undefined ? props.defaultValue : props.min;
     const value = props.value !== undefined ? props.value : defaultValue;
     return { ...props, value, defaultValue };
   }
 
-  preparePropsForTrackModel(): ITrackProps {
+  public preparePropsForTrackModel(): ITrackProps {
     const props = this.sliderModel.getProps();
     const {
       prefixCls,
@@ -93,7 +188,7 @@ export default class SliderPresenter implements ISliderPresenter {
     };
   }
 
-  preparePropsForHandleModel(): IHandleProps {
+  public preparePropsForHandleModel(): IHandleProps {
     const props = this.sliderModel.getProps();
     const {
       prefixCls,
@@ -123,7 +218,7 @@ export default class SliderPresenter implements ISliderPresenter {
     };
   }
 
-  render() {
-    return this.sliderView.render();
+  public html() {
+    return this.sliderView.html();
   }
 }

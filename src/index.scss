@@ -6,11 +6,42 @@
   @return mix(white, $color, $percentage);
 }
 
+@mixin linear-gradient($degrees, $top-color, $bottom-color, $opacity) {
+  background: -moz-linear-gradient(
+    $degrees,
+    rgba($top-color, $opacity) 0%,
+    rgba($bottom-color, $opacity) 100%
+  ); /* FF3.6-15 */
+  background: -webkit-linear-gradient(
+    $degrees,
+    rgba($top-color, $opacity) 0%,
+    rgba($bottom-color, $opacity) 100%
+  ); /* Chrome10-25,Safari5.1-6 */
+  background: linear-gradient(
+    $degrees,
+    rgba($top-color, $opacity) 0%,
+    rgba($bottom-color, $opacity) 100%
+  ); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#{rgba($top-color, $opacity)}', endColorstr='#{rgba($bottom-color, $opacity)}',GradientType=0 ); /* IE6-9 */
+}
+
+$dark: rgba(31, 32, 65, 1);
+$dark25: rgba(31, 32, 65, 0.25);
+$green-light: #6fcf97;
+$blue-light: #66d2ea;
+
 $prefixClass: "slider";
 
 $disabledColor: #ccc;
 $border-radius-base: 6px;
-$primary-color: #2db7f5;
+
+$primary-gradient: linear-gradient(180deg, $green-light 0%, $blue-light 100%);
+
+$primary-color: $green-light;
+$second-color: $blue-light;
+$third-color: $dark;
+$fourth-color: $dark25;
+
 $tooltip-color: #fff;
 $tooltip-bg: tint(#666, 4%);
 $tooltip-arrow-width: 4px;
@@ -49,10 +80,20 @@ $ease-in-quint: cubic-bezier(0.755, 0.05, 0.855, 0.06);
   @include borderBox();
 
   &__rail {
+    // TODO
+
+    // position: absolute;
+    // width: 100%;
+    // background-color: #e9e9e9;
+    // height: 4px;
+    // border-radius: $border-radius-base;
+
     position: absolute;
     width: 100%;
+    height: 6px;
     background-color: #e9e9e9;
-    height: 4px;
+    border: 1px solid $dark25;
+    box-sizing: border-box;
     border-radius: $border-radius-base;
   }
 
@@ -61,6 +102,21 @@ $ease-in-quint: cubic-bezier(0.755, 0.05, 0.855, 0.06);
     left: 0;
     height: 4px;
     border-radius: $border-radius-base;
-    background-color: tint($primary-color, 60%);
+    @include linear-gradient(180, $primary-color, $second-color, 60);
+  }
+
+  &__handle {
+    position: absolute;
+    width: 14px;
+    height: 14px;
+    // cursor: pointer;
+    // cursor: -webkit-grab;
+    // cursor: grab;
+    margin-top: -5px;
+    border-radius: 50%;
+    background: $primary-gradient;
+    border: 2px solid #ffffff;
+    border-radius: 10px;
+    touch-action: pan-x;
   }
 }
