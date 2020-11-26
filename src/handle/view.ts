@@ -10,29 +10,57 @@ export default class HandleView implements IHandleView {
     this.view = this.createView();
   }
 
-  createView() {
-    const props = this.model.getProps();
-    const {
-      className,
-      elStyle,
-      handleBlur,
-      handleKeyDown,
-      handleMouseDown,
-    } = props;
+  public createView() {
+    const { className, elStyle } = this.model.getProps();
     return $("<div/>", {
       class: className,
       style: objectToString(elStyle),
-    })
-      .on("blur", handleBlur)
-      .on("keyDown", handleKeyDown)
-      .on("mouseDown", handleMouseDown);
+    });
   }
 
-  get$View(): JQuery<HTMLElement> {
+  public get$View(): JQuery<HTMLElement> {
     return this.view;
   }
 
-  html() {
+  public onViewHandler(): void {
+    const {
+      handleBlur,
+      handleKeyDown,
+      handleMouseDown,
+    } = this.model.getProps();
+    this.view.on({
+      blur: handleBlur,
+      keyDown: handleKeyDown,
+      mouseDown: handleMouseDown,
+    });
+  }
+
+  public offViewHandler(): void {
+    const props = this.model.getProps();
+    const { handleBlur, handleKeyDown, handleMouseDown } = props;
+    this.view.off({
+      blur: handleBlur,
+      keyDown: handleKeyDown,
+      mouseDown: handleMouseDown,
+    });
+  }
+
+  public updateModel(model: IHandleModel): void {
+    this.offViewHandler();
+    this.model = model;
+    this.updateView();
+  }
+
+  private updateView(): void {
+    const { className, elStyle } = this.model.getProps();
+    this.view.attr({
+      class: className,
+      style: objectToString(elStyle),
+    });
+    this.onViewHandler();
+  }
+
+  public html() {
     return $("<div/>").append(this.view).html();
   }
 }

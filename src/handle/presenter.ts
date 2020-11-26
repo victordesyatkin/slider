@@ -56,6 +56,12 @@ export default class HandlePresenter {
     this.model = model;
   }
 
+  updateModel(props: IHandleProps): void {
+    const _props = this.preparePropsForHandleModel(props);
+    this.model.setProps(_props);
+    this.view.updateModel(this.model);
+  }
+
   public getView(): IHandleView {
     return this.view;
   }

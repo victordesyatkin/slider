@@ -7,5 +7,5 @@ const slider = new SliderPresenter({
 });
 
 $(() => {
-  $(".slider__wrapper").append(slider.get$SliderView());
+  slider.render($(".slider__wrapper"));
 });

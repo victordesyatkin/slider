@@ -36,6 +36,7 @@ export interface IHandleView {
   createView(): JQuery<HTMLElement>;
   get$View(): JQuery<HTMLElement>;
   html(): string;
+  updateModel(model: IHandleModel): void;
 }
 
 export interface IHandlePresenter {
@@ -43,6 +44,7 @@ export interface IHandlePresenter {
   prepareElStyle(props: IHandleProps): { [key: string]: string };
   getModel(): IHandleModel;
   setModel(model: IHandleModel): void;
+  updateModel(props: IHandleProps): void;
   getView(): IHandleView;
   setView(view: IHandleView): void;
   get$View(): JQuery<HTMLElement>;

@@ -1,5 +1,16 @@
 .slider__wrapper {
   outline: 1px solid red;
+  margin-top: 1000px;
+  margin-bottom: 200px;
+  margin-left: 1000px;
+  margin-right: 100px;
+  padding: 50px;
+  width: 500px;
+}
+
+.block {
+  width: 100%;
+  height: 100%;
 }
 
 @function tint($color, $percentage) {
@@ -77,6 +88,13 @@ $ease-in-quint: cubic-bezier(0.755, 0.05, 0.855, 0.06);
   width: 100%;
   border-radius: $border-radius-base;
   touch-action: none;
+
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -o-user-select: none;
+  user-select: none;
+
   @include borderBox();
 
   &__rail {
@@ -102,7 +120,7 @@ $ease-in-quint: cubic-bezier(0.755, 0.05, 0.855, 0.06);
     left: 0;
     height: 4px;
     border-radius: $border-radius-base;
-    @include linear-gradient(180, $primary-color, $second-color, 60);
+    @include linear-gradient(180deg, $primary-color, $second-color, 60);
   }
 
   &__handle {
