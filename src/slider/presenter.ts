@@ -165,7 +165,7 @@ export default class SliderPresenter implements ISliderPresenter {
   getSliderLength() {
     const slider = this.sliderView.get$SliderView().get(0);
     if (!slider) {
-      //TODO
+      //TODO?
       return 0;
     }
     const { vertical } = this.sliderModel.getProps();

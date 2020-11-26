@@ -69,4 +69,5 @@ export interface ISliderPresenter {
   html(): string;
   get$SliderView(): JQuery<HTMLElement>;
   preparePropsForSliderModel(props: ISliderModelProps): ISliderModelProps;
+  updateModel(props: ISliderModelProps): void;
 }
