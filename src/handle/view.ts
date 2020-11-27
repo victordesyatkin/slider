@@ -10,6 +10,10 @@ export default class HandleView implements IHandleView {
     this.view = this.createView();
   }
 
+  public getModel(): IHandleModel {
+    return this.model;
+  }
+
   public createView() {
     const { className, elStyle } = this.model.getProps();
     return $("<div/>", {

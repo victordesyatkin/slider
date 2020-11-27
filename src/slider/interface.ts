@@ -4,8 +4,9 @@ export interface ISliderProps {
   reverse?: boolean;
   disabled?: boolean;
   included?: boolean;
-  value?: number;
-  defaultValue?: number;
+  value?: number[];
+  defaultValue?: number[];
+  count?: number;
   min?: number;
   max?: number;
   className?: string;
@@ -50,8 +51,34 @@ export interface ISliderDefaultProps extends ISliderProps {
   activeDotStyle: { [key: string]: string };
 }
 export interface ISliderModelProps extends ISliderDefaultProps {
+  value: number[];
+  defaultValue: number[];
+}
+
+export interface ISliderSingleProps {
+  prefixCls: string;
+  className: string;
+  vertical: boolean;
+  reverse: boolean;
+  disabled: boolean;
+  included: boolean;
+  min: number;
+  max: number;
+  step: number;
+  marks: object;
+  onChange: (value: number) => void;
+  onBeforeChange: (value: number) => void;
+  onAfterChange: (value: number) => void;
+  dots: boolean;
+  railStyle: { [key: string]: string };
+  dotStyle: { [key: string]: string };
+  activeDotStyle: { [key: string]: string };
+
   value: number;
   defaultValue: number;
+
+  trackStyle: { [key: string]: string };
+  handleStyle: { [key: string]: string };
 }
 
 export interface ISliderModel {

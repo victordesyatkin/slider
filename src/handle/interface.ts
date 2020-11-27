@@ -34,6 +34,7 @@ export interface IHandleModel {
 
 export interface IHandleView {
   createView(): JQuery<HTMLElement>;
+  getModel():;
   get$View(): JQuery<HTMLElement>;
   html(): string;
   updateModel(model: IHandleModel): void;

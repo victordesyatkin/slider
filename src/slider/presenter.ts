@@ -11,7 +11,11 @@ import {
 import SliderModel from "./model";
 import SliderView from "./view";
 import TrackPresenter from "../track/presenter";
-import { ITrackProps, ITrackPresenter } from "../track/interface";
+import {
+  ITrackProps,
+  ITrackPresenter,
+  ISliderSingleProps,
+} from "../track/interface";
 import HandlePresenter from "../handle/presenter";
 import {
   IHandlePresenter,
@@ -48,7 +52,7 @@ export default class SliderPresenter implements ISliderPresenter {
 
   private trackPresenter: ITrackPresenter;
 
-  private handlePresenter: IHandlePresenter;
+  private handlePresenters: IHandlePresenter[];
 
   public parent: JQuery<HTMLElement> | undefined;
 
@@ -58,16 +62,31 @@ export default class SliderPresenter implements ISliderPresenter {
     const _props = { ...SliderPresenter.defaultProps, ...props };
     this.sliderModel = new SliderModel(this.preparePropsForSliderModel(_props));
     this.trackPresenter = new TrackPresenter(this.preparePropsForTrackModel());
-    this.handlePresenter = new HandlePresenter(
-      this.preparePropsForHandleModel()
-    );
+    this.handlePresenters = this.factoryHandlePresenters();
     this.sliderView = new SliderView(
       this.sliderModel,
       this.trackPresenter,
-      this.handlePresenter
+      this.handlePresenters
     );
     $(this.initHandlers.bind(this));
   }
+
+  factoryHandlePresenters = (): IHandlePresenter[] => {
+    const props = this.sliderModel.getProps();
+    const { value, defaultValue } = props;
+    return value.map(
+      (v, i): IHandlePresenter => {
+        return new HandlePresenter(
+          this.preparePropsForHandleModel({
+            ...props,
+            value: v,
+            defaultValue: defaultValue[i],
+            index: i,
+          })
+        );
+      }
+    );
+  };
 
   public get$SliderView(): JQuery<HTMLElement> {
     return this.sliderView.get$SliderView();
@@ -86,7 +105,7 @@ export default class SliderPresenter implements ISliderPresenter {
   }
 
   getMousePosition(vertical: boolean, e: any) {
-    // TODO
+    // TODO e interface
     return vertical ? e.clientY : e.pageX;
   }
 
@@ -98,7 +117,7 @@ export default class SliderPresenter implements ISliderPresenter {
   };
 
   public onClick = (e: any) => {
-    // TODO interface
+    // TODO e interface
     // const { target } = e;
     console.log("onClick : ", e.type); // TODO
   };
@@ -106,24 +125,37 @@ export default class SliderPresenter implements ISliderPresenter {
   public updateModel = (props: ISliderModelProps): void => {
     const _props = { ...SliderPresenter.defaultProps, ...props };
     this.sliderModel.setProps(_props);
-    //this.trackPresenter.updateModel(_props);
-    this.handlePresenter.updateModel(this.preparePropsForHandleModel());
+    if (this.currentHandleView !== undefined) {
+      const { index } = this.currentHandleView.getModel().getProps();
+      this.handlePresenters[index].updateModel(
+        this.preparePropsForHandleModel({
+          ..._props,
+          value: _props.value[index],
+          defaultValue: _props.defaultValue[index],
+        })
+      );
+    }
   };
 
   public onMousemove = (e: any): void => {
+    // TODO e interface;
     if (!this.currentHandleView) {
       return;
     }
     // console.log("active : ", );
     // console.log("currentHandleView : ",);
     // console.log("onMousemove : ", e); // TODO;
-    const props = this.sliderModel.getProps();
-    const { vertical, value: prevValue } = props;
+    const modelProps = this.sliderModel.getProps();
+    const { vertical } = modelProps;
+    const handlePresenterProps = this.currentHandleView.getModel().getProps();
+    const { value: prevValue, index } = handlePresenterProps;
+
     const position = this.getMousePosition(vertical, e);
     const nextValue = this.calcValueByPos(position);
     if (prevValue !== nextValue) {
       //console.log("newValue : ", nextValue); // TODO
-      this.updateModel({ ...props, value: nextValue });
+      modelProps.value[index] = nextValue;
+      this.updateModel({ ...modelProps });
     }
   };
 
@@ -135,13 +167,15 @@ export default class SliderPresenter implements ISliderPresenter {
   };
 
   public onMouseDown = (e: any) => {
-    // TODO interface
+    // TODO e interface
     // const { target } = e;
     // console.log("onMouseDown : ", e.type); //TODO
-    const $handle = this.handlePresenter.get$View();
-    if ($(e.target).closest($handle).length) {
-      //console.log("onMouseDown : ", e); //TODO
-      this.currentHandleView = this.handlePresenter.getView();
+    for (const handlePresenter of this.handlePresenters) {
+      const $handle = handlePresenter.get$View();
+      if ($(e.target).closest($handle).length) {
+        //console.log("onMouseDown : ", e); // TODO
+        this.currentHandleView = handlePresenter.getView();
+      }
     }
   };
 
@@ -212,9 +246,27 @@ export default class SliderPresenter implements ISliderPresenter {
   public preparePropsForSliderModel(
     props: ISliderDefaultProps
   ): ISliderModelProps {
-    const defaultValue =
-      props.defaultValue !== undefined ? props.defaultValue : props.min;
-    const value = props.value !== undefined ? props.value : defaultValue;
+    let { defaultValue, value, count } = props;
+    if (defaultValue === undefined) {
+      defaultValue = [];
+    }
+    if (value === undefined) {
+      value = [];
+    }
+    const length = value.length || defaultValue.length || count || 1;
+    for (let i = 0; i < length; i += 1) {
+      if (defaultValue[i] !== undefined) {
+        continue;
+      }
+      defaultValue[i] = props.min;
+    }
+    for (let i = 0; i < length; i += 1) {
+      if (value[i] !== undefined) {
+        continue;
+      }
+      value[i] = defaultValue[i];
+    }
+    props.value !== undefined ? props.value : defaultValue;
     return { ...props, value, defaultValue };
   }
 
@@ -243,8 +295,7 @@ export default class SliderPresenter implements ISliderPresenter {
     };
   }
 
-  public preparePropsForHandleModel(): IHandleProps {
-    const props = this.sliderModel.getProps();
+  public preparePropsForHandleModel(props: ISliderSingleProps): IHandleProps {
     const {
       prefixCls,
       vertical,
@@ -256,7 +307,6 @@ export default class SliderPresenter implements ISliderPresenter {
       tabIndex,
       handleStyle,
     } = props;
-
     return {
       className: `${prefixCls}__handle`,
       prefixCls,
