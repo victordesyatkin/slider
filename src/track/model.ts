@@ -1,18 +1,29 @@
 import { objectToString } from "../utils";
-import { ITrackModel, ITrackProps } from "./interface";
+import { ITrackModel, ITrackModelProps } from "./interface";
 
 export default class TrackModel implements ITrackModel {
   private className: string;
 
   private style: { [key: string]: string };
 
+  private props: ITrackModelProps;
+
   private included: boolean;
 
-  constructor(props: ITrackProps) {
+  constructor(props: ITrackModelProps) {
     const { className, style, included } = props;
     this.className = className;
     this.style = style;
     this.included = included;
+    this.props = props;
+  }
+
+  getProps(): ITrackModelProps {
+    return this.props;
+  }
+
+  setProps(props: ITrackModelProps): void {
+    this.props = props;
   }
 
   getClassName(): string {

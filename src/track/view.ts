@@ -29,6 +29,18 @@ export default class TrackView implements ITrackView {
     });
   }
 
+  updateModel(model: ITrackModel) {
+    this.model = model;
+    this.updateView();
+  }
+
+  updateView(): void {
+    this.view.attr({
+      class: this.model.getClassName(),
+      style: this.model.getStyle(),
+    });
+  }
+
   public html(): string {
     return this.model.getIncluded() ? $("<div/>").append(this.view).html() : "";
   }

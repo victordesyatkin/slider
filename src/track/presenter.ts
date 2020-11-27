@@ -59,6 +59,14 @@ export default class TrackPresenter implements ITrackPresenter {
     this.model = model;
   }
 
+  public updateModel(props: ITrackProps): void {
+    this.model.setProps({
+      ...props,
+      style: this.prepareElStyle(props),
+    });
+    this.view.updateModel(this.model);
+  }
+
   public getView(): ITrackView {
     return this.view;
   }

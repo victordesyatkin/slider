@@ -16,24 +16,24 @@ export default class SliderView {
 
   private sliderView: JQuery<HTMLElement>;
 
-  private trackPresenter: ITrackPresenter;
+  private trackPresenters: ITrackPresenter[];
 
-  private trackView: ITrackView;
+  private trackViews: ITrackView[];
 
-  private handlePresenter: IHandlePresenter;
+  private handlePresenters: IHandlePresenter[];
 
-  private handleView: IHandleView;
+  private handleViews: IHandleView[];
 
   constructor(
     slideModel: ISliderModel,
-    trackPresenter: ITrackPresenter,
-    handlePresenter: IHandlePresenter
+    trackPresenters: ITrackPresenter[],
+    handlePresenters: IHandlePresenter[]
   ) {
     this.sliderModel = slideModel;
-    this.trackPresenter = trackPresenter;
-    this.handlePresenter = handlePresenter;
-    this.trackView = this.createTrackView();
-    this.handleView = this.createHandleView();
+    this.trackPresenters = trackPresenters;
+    this.handlePresenters = handlePresenters;
+    this.trackViews = this.createTrackViews();
+    this.handleViews = this.createHandleViews();
     this.sliderView = this.createSliderView();
   }
 
@@ -46,17 +46,21 @@ export default class SliderView {
         class: `${props.prefixCls}__rail`,
         style: objectToString(props.railStyle),
       })
-        .append(this.trackView.get$View())
-        .append(this.handleView.get$View())
+        .append(this.trackViews.map((v) => v.get$View()))
+        .append(this.handleViews.map((v) => v.get$View()))
     );
   }
 
-  createHandleView(): IHandleView {
-    return this.handlePresenter.getView();
+  createHandleViews(): IHandleView[] {
+    return this.handlePresenters.map((handlePresenter) => {
+      return handlePresenter.getView();
+    });
   }
 
-  createTrackView(): ITrackView {
-    return this.trackPresenter.getView();
+  createTrackViews(): ITrackView[] {
+    return this.trackPresenters.map((trackPresenter) =>
+      trackPresenter.getView()
+    );
   }
 
   setSliderModel(slideModel: ISliderModel): void {
@@ -65,14 +69,6 @@ export default class SliderView {
 
   getSliderModel(): ISliderModel {
     return this.sliderModel;
-  }
-
-  setTrackPresenter(presenter: ITrackPresenter): void {
-    this.trackPresenter = presenter;
-  }
-
-  getITrackPresenter(): ITrackPresenter {
-    return this.trackPresenter;
   }
 
   get$SliderView(): JQuery<HTMLElement> {

@@ -4,8 +4,12 @@ export interface ITrackProps {
   reverse: boolean;
   vertical: boolean;
   length: number;
-  style: { [key: string]: string };
+  style: { [key: string]: string } | undefined;
   included: boolean;
+}
+
+export interface ITrackModelProps extends ITrackProps {
+  style: { [key: string]: string };
 }
 
 export interface ITrackModel {
@@ -15,6 +19,8 @@ export interface ITrackModel {
   setStyle(style: { [key: string]: string }): void;
   getIncluded(): boolean;
   setIncluded(included: boolean): void;
+  getProps(): ITrackModelProps;
+  setProps(props: ITrackModelProps): void;
 }
 
 export interface ITrackView {
@@ -22,6 +28,7 @@ export interface ITrackView {
   getModel(): ITrackModel;
   html(): string;
   get$View(): JQuery<HTMLElement>;
+  updateModel(model: ITrackModel): void;
 }
 
 export interface ITrackPresenter {
@@ -32,4 +39,5 @@ export interface ITrackPresenter {
   get$View(): JQuery<HTMLElement>;
   prepareElStyle(props: ITrackProps): { [key: string]: string };
   html(): string;
+  updateModel(props: ITrackProps): void;
 }

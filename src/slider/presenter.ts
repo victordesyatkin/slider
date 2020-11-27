@@ -1,5 +1,6 @@
 import $ from "jquery";
 import noop from "lodash/noop";
+import classnames from "classnames";
 import {
   ISliderProps,
   ISliderModel,
@@ -7,15 +8,12 @@ import {
   ISliderPresenter,
   ISliderModelProps,
   ISliderDefaultProps,
+  ISliderSingleProps,
 } from "./interface";
 import SliderModel from "./model";
 import SliderView from "./view";
 import TrackPresenter from "../track/presenter";
-import {
-  ITrackProps,
-  ITrackPresenter,
-  ISliderSingleProps,
-} from "../track/interface";
+import { ITrackProps, ITrackPresenter } from "../track/interface";
 import HandlePresenter from "../handle/presenter";
 import {
   IHandlePresenter,
@@ -39,8 +37,8 @@ export default class SliderPresenter implements ISliderPresenter {
     dots: false,
     vertical: false,
     reverse: false,
-    trackStyle: {},
-    handleStyle: {},
+    trackStyle: [],
+    handleStyle: [],
     railStyle: {},
     dotStyle: {},
     activeDotStyle: {},
@@ -50,9 +48,11 @@ export default class SliderPresenter implements ISliderPresenter {
 
   private sliderView: ISliderView;
 
-  private trackPresenter: ITrackPresenter;
+  private trackPresenters: ITrackPresenter[];
 
   private handlePresenters: IHandlePresenter[];
+
+  private offsets: number[] = [];
 
   public parent: JQuery<HTMLElement> | undefined;
 
@@ -61,19 +61,36 @@ export default class SliderPresenter implements ISliderPresenter {
   constructor(props: ISliderProps) {
     const _props = { ...SliderPresenter.defaultProps, ...props };
     this.sliderModel = new SliderModel(this.preparePropsForSliderModel(_props));
-    this.trackPresenter = new TrackPresenter(this.preparePropsForTrackModel());
     this.handlePresenters = this.factoryHandlePresenters();
+    this.trackPresenters = this.factoryTrackPresenters();
     this.sliderView = new SliderView(
       this.sliderModel,
-      this.trackPresenter,
+      this.trackPresenters,
       this.handlePresenters
     );
     $(this.initHandlers.bind(this));
   }
 
+  factoryTrackPresenters = (): ITrackPresenter[] => {
+    const props = this.sliderModel.getProps();
+    const { value, trackStyle, defaultValue, handleStyle } = props;
+    return value.map((v, i) => {
+      return new TrackPresenter(
+        this.preparePropsForTrackModel({
+          ...props,
+          value: v,
+          defaultValue: defaultValue[i],
+          trackStyle: trackStyle[i],
+          handleStyle: handleStyle[i],
+          index: i,
+        })
+      );
+    });
+  };
+
   factoryHandlePresenters = (): IHandlePresenter[] => {
     const props = this.sliderModel.getProps();
-    const { value, defaultValue } = props;
+    const { value, defaultValue, handleStyle, trackStyle } = props;
     return value.map(
       (v, i): IHandlePresenter => {
         return new HandlePresenter(
@@ -82,6 +99,8 @@ export default class SliderPresenter implements ISliderPresenter {
             value: v,
             defaultValue: defaultValue[i],
             index: i,
+            handleStyle: handleStyle[i],
+            trackStyle: trackStyle[i],
           })
         );
       }
@@ -127,11 +146,23 @@ export default class SliderPresenter implements ISliderPresenter {
     this.sliderModel.setProps(_props);
     if (this.currentHandleView !== undefined) {
       const { index } = this.currentHandleView.getModel().getProps();
+      const currentProps = {
+        value: _props.value[index],
+        defaultValue: _props.defaultValue[index],
+        index,
+        handleStyle: _props.handleStyle[index],
+        trackStyle: _props.trackStyle[index],
+      };
       this.handlePresenters[index].updateModel(
         this.preparePropsForHandleModel({
           ..._props,
-          value: _props.value[index],
-          defaultValue: _props.defaultValue[index],
+          ...currentProps,
+        })
+      );
+      this.trackPresenters[index].updateModel(
+        this.preparePropsForTrackModel({
+          ..._props,
+          ...currentProps,
         })
       );
     }
@@ -173,7 +204,8 @@ export default class SliderPresenter implements ISliderPresenter {
     for (const handlePresenter of this.handlePresenters) {
       const $handle = handlePresenter.get$View();
       if ($(e.target).closest($handle).length) {
-        //console.log("onMouseDown : ", e); // TODO
+        // console.log("onMouseDown : ", e); // TODO
+        // console.log("onMouseDown : ", handlePresenter.getModel()); // TODO
         this.currentHandleView = handlePresenter.getView();
       }
     }
@@ -266,31 +298,47 @@ export default class SliderPresenter implements ISliderPresenter {
       }
       value[i] = defaultValue[i];
     }
-    props.value !== undefined ? props.value : defaultValue;
-    return { ...props, value, defaultValue };
+    if (count == undefined) {
+      count = length;
+    }
+    return { ...props, value, defaultValue, count };
   }
 
-  public preparePropsForTrackModel(): ITrackProps {
-    const props = this.sliderModel.getProps();
+  public preparePropsForTrackModel(props: ISliderSingleProps): ITrackProps {
     const {
       prefixCls,
       reverse,
       vertical,
       startPoint,
       included,
-      value,
       trackStyle,
+      index,
+      count,
     } = props;
-    const trackOffset =
-      startPoint !== undefined ? this.calcOffset(startPoint) : 0;
-    const offset = this.calcOffset(value);
+    let length;
+    let offset;
+    const classNames = [`${prefixCls}__track`, `${prefixCls}__track-${index}`];
+    if (count > 1) {
+      offset = this.offsets[index];
+      length = this.offsets[index + 1] - this.offsets[index] || 0;
+      // console.log("index : ", index);
+      // console.log("count : ", count);
+      console.log("this.offsets[index] : ", this.offsets[index]);
+      console.log("this.offsets[index+1] : ", this.offsets[index + 1]);
+      console.log("length : ", length);
+    } else {
+      const trackOffset =
+        startPoint !== undefined ? this.calcOffset(startPoint) : 0;
+      offset = this.offsets[index];
+      length = offset - trackOffset;
+    }
     return {
-      className: `${prefixCls}__track`,
+      className: classnames([classNames]),
       vertical,
       included,
       reverse,
-      offset: trackOffset,
-      length: offset - trackOffset,
+      offset,
+      length,
       style: trackStyle,
     };
   }
@@ -306,19 +354,21 @@ export default class SliderPresenter implements ISliderPresenter {
       reverse,
       tabIndex,
       handleStyle,
+      index,
     } = props;
+    this.offsets[index] = this.calcOffset(value);
     return {
-      className: `${prefixCls}__handle`,
       prefixCls,
       vertical,
-      offset: this.calcOffset(value),
       value,
       disabled,
       min,
       max,
       reverse,
-      index: 0,
+      index,
       tabIndex: tabIndex || 0,
+      className: `${prefixCls}__handle`,
+      offset: this.offsets[index],
       style: handleStyle,
     };
   }

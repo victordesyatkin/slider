@@ -4,6 +4,7 @@ import "./index.scss";
 
 const slider = new SliderPresenter({
   prefixCls: "slider",
+  value: [0, 10],
 });
 
 $(() => {

@@ -13,12 +13,12 @@ export interface ISliderProps {
   marks?: object;
 
   step?: number;
-  onChange?: (value: number) => void;
-  onBeforeChange?: (value: number) => void;
-  onAfterChange?: (value: number) => void;
+  onChange?: (value: number[]) => void;
+  onBeforeChange?: (value: number[]) => void;
+  onAfterChange?: (value: number[]) => void;
 
-  trackStyle?: { [key: string]: string };
-  handleStyle?: { [key: string]: string };
+  trackStyle?: ({ [key: string]: string } | undefined)[];
+  handleStyle?: ({ [key: string]: string } | undefined)[];
   tabIndex?: number;
   ariaLabelForHandle?: string;
   ariaLabelledByForHandle?: string;
@@ -34,17 +34,17 @@ export interface ISliderDefaultProps extends ISliderProps {
   className: string;
   vertical: boolean;
   reverse: boolean;
-  trackStyle: { [key: string]: string };
-  handleStyle: { [key: string]: string };
+  trackStyle: ({ [key: string]: string } | undefined)[];
+  handleStyle: ({ [key: string]: string } | undefined)[];
   disabled: boolean;
   included: boolean;
   min: number;
   max: number;
   step: number;
   marks: object;
-  onChange: (value: number) => void;
-  onBeforeChange: (value: number) => void;
-  onAfterChange: (value: number) => void;
+  onChange?: (value: number[]) => void;
+  onBeforeChange?: (value: number[]) => void;
+  onAfterChange?: (value: number[]) => void;
   dots: boolean;
   railStyle: { [key: string]: string };
   dotStyle: { [key: string]: string };
@@ -53,6 +53,7 @@ export interface ISliderDefaultProps extends ISliderProps {
 export interface ISliderModelProps extends ISliderDefaultProps {
   value: number[];
   defaultValue: number[];
+  count: number;
 }
 
 export interface ISliderSingleProps {
@@ -66,9 +67,9 @@ export interface ISliderSingleProps {
   max: number;
   step: number;
   marks: object;
-  onChange: (value: number) => void;
-  onBeforeChange: (value: number) => void;
-  onAfterChange: (value: number) => void;
+  onChange?: (value: number[]) => void;
+  onBeforeChange?: (value: number[]) => void;
+  onAfterChange?: (value: number[]) => void;
   dots: boolean;
   railStyle: { [key: string]: string };
   dotStyle: { [key: string]: string };
@@ -76,9 +77,12 @@ export interface ISliderSingleProps {
 
   value: number;
   defaultValue: number;
-
-  trackStyle: { [key: string]: string };
-  handleStyle: { [key: string]: string };
+  index: number;
+  trackStyle: { [key: string]: string } | undefined;
+  handleStyle: { [key: string]: string } | undefined;
+  startPoint?: number;
+  tabIndex?: number;
+  count: number;
 }
 
 export interface ISliderModel {

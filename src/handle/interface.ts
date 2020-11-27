@@ -4,7 +4,7 @@ export interface IHandleProps {
   vertical: boolean;
   reverse: boolean;
   offset: number;
-  style: { [key: string]: string };
+  style: { [key: string]: string } | undefined;
   disabled: boolean;
   min: number;
   max: number;
@@ -34,8 +34,8 @@ export interface IHandleModel {
 
 export interface IHandleView {
   createView(): JQuery<HTMLElement>;
-  getModel():;
   get$View(): JQuery<HTMLElement>;
+  getModel(): IHandleModel;
   html(): string;
   updateModel(model: IHandleModel): void;
 }
