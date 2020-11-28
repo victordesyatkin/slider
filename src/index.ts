@@ -7,6 +7,7 @@ const slider = new SliderPresenter({
   //value: [0, 10, 40, 70],
   value: [-10, 10],
   step: 20,
+  dots: true,
   //disabled: true,
 });
 

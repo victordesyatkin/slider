@@ -21,6 +21,10 @@ import {
   IHandleView,
 } from "../handle/interface";
 
+import DotsPresenter from "../dots/presenter";
+import { IDotsPresenter } from "../dots/interface";
+import { calcOffset } from "../utils";
+
 export default class SliderPresenter implements ISliderPresenter {
   static defaultProps = {
     prefixCls: "slider",
@@ -53,6 +57,8 @@ export default class SliderPresenter implements ISliderPresenter {
 
   private handlePresenters: IHandlePresenter[];
 
+  private dotsPresenter: IDotsPresenter;
+
   private offsets: number[] = [];
 
   public parent: JQuery<HTMLElement> | undefined;
@@ -64,10 +70,22 @@ export default class SliderPresenter implements ISliderPresenter {
     this.sliderModel = new SliderModel(this.preparePropsForSliderModel(_props));
     this.handlePresenters = this.factoryHandlePresenters();
     this.trackPresenters = this.factoryTrackPresenters();
+    this.dotsPresenter = new DotsPresenter({
+      prefixCls: _props.prefixCls,
+      dots: _props.dots,
+      dotStyle: _props.dotStyle,
+      activeDotStyle: _props.activeDotStyle,
+      min: _props.min,
+      max: _props.max,
+      vertical: _props.vertical,
+      reverse: _props.reverse,
+      step: _props.step,
+    });
     this.sliderView = new SliderView(
       this.sliderModel,
       this.trackPresenters,
-      this.handlePresenters
+      this.handlePresenters,
+      this.dotsPresenter
     );
     const { disabled } = this.sliderModel.getProps();
     !disabled && $(this.initHandlers.bind(this));
@@ -315,12 +333,6 @@ export default class SliderPresenter implements ISliderPresenter {
     return value;
   }
 
-  public calcOffset(value: number): number {
-    const { min, max } = this.sliderModel.getProps();
-    const ratio = (value - min) / (max - min);
-    return Math.max(0, ratio * 100);
-  }
-
   ensureValueInRange(val: number, { max, min }: { max: number; min: number }) {
     if (val <= min) {
       return min;
@@ -383,6 +395,8 @@ export default class SliderPresenter implements ISliderPresenter {
       trackStyle,
       index,
       count,
+      min,
+      max,
     } = props;
     let length;
     let offset;
@@ -391,7 +405,7 @@ export default class SliderPresenter implements ISliderPresenter {
       length = this.offsets[index + 1] - this.offsets[index];
     } else {
       const trackOffset =
-        startPoint !== undefined ? this.calcOffset(startPoint) : 0;
+        startPoint !== undefined ? calcOffset(startPoint, min, max) : 0;
       offset = this.offsets[index];
       length = offset - trackOffset;
     }
@@ -421,7 +435,7 @@ export default class SliderPresenter implements ISliderPresenter {
       handleStyle,
       index,
     } = props;
-    this.offsets[index] = this.calcOffset(value);
+    this.offsets[index] = calcOffset(value, min, max);
     return {
       prefixCls,
       vertical,

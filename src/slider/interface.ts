@@ -25,9 +25,9 @@ export interface ISliderProps {
   ariaValueTextFormatterForHandle?: string;
   startPoint?: number;
   dots?: boolean;
-  railStyle?: { [key: string]: string };
   dotStyle?: { [key: string]: string };
-  activeDotStyle?: { [key: string]: string };
+  activeDotStyle?: { [key: string]: string }; // TODO
+  railStyle?: { [key: string]: string };
   allowCross?: boolean;
 }
 export interface ISliderDefaultProps extends ISliderProps {
@@ -74,7 +74,7 @@ export interface ISliderSingleProps {
   dots: boolean;
   railStyle: { [key: string]: string };
   dotStyle: { [key: string]: string };
-  activeDotStyle: { [key: string]: string };
+  activeDotStyle: { [key: string]: string }; // TODO
 
   value: number;
   defaultValue: number;

@@ -18,7 +18,7 @@ export default class HandlePresenter {
     this.view = new HandleView(this.model);
   }
 
-  preparePropsForHandleModel(props: IHandleProps): IHandlePropsModel {
+  private preparePropsForHandleModel(props: IHandleProps): IHandlePropsModel {
     return {
       ...props,
       elStyle: this.prepareElStyle(props),
@@ -31,12 +31,12 @@ export default class HandlePresenter {
     };
   }
 
-  handleMouseDown = () => {
+  private handleMouseDown = () => {
     // console.log("handleMouseDown : "); // TODO
     this.view.get$View().get(0).focus();
   };
 
-  handleMouseUp = (): void => {
+  private handleMouseUp = (): void => {
     if (
       document.activeElement &&
       document.activeElement === this.view.get$View().get(0)
@@ -50,12 +50,12 @@ export default class HandlePresenter {
     }
   };
 
-  handleFocus = (): void => {
+  private handleFocus = (): void => {
     // console.log("handleFocus : "); // TODO
     this.updateModel({ ...this.model.getProps(), focus: true, focused: false });
   };
 
-  handleBlur = (): void => {
+  private handleBlur = (): void => {
     // console.log("handleBlur : "); // TODO
     this.updateModel({
       ...this.model.getProps(),
@@ -64,7 +64,7 @@ export default class HandlePresenter {
     });
   };
 
-  prepareElStyle(props: IHandleProps): { [key: string]: string } {
+  private prepareElStyle(props: IHandleProps): { [key: string]: string } {
     const { vertical, reverse, offset, style } = props;
     const positionStyle = vertical
       ? {
@@ -84,15 +84,15 @@ export default class HandlePresenter {
     return elStyle;
   }
 
-  getModel(): IHandleModel {
+  public getModel(): IHandleModel {
     return this.model;
   }
 
-  setModel(model: IHandleModel): void {
+  public setModel(model: IHandleModel): void {
     this.model = model;
   }
 
-  updateModel(props: IHandleProps): void {
+  public updateModel(props: IHandleProps): void {
     const _props = this.preparePropsForHandleModel(props);
     this.model.setProps(_props);
     this.view.updateModel(this.model);
@@ -110,7 +110,7 @@ export default class HandlePresenter {
     return this.view.get$View();
   }
 
-  html(): string {
+  public html(): string {
     return this.view.html();
   }
 }

@@ -45,8 +45,6 @@ export interface IHandleView {
 }
 
 export interface IHandlePresenter {
-  preparePropsForHandleModel(props: IHandleProps): IHandlePropsModel;
-  prepareElStyle(props: IHandleProps): { [key: string]: string };
   getModel(): IHandleModel;
   setModel(model: IHandleModel): void;
   updateModel(props: IHandleProps): void;

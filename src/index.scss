@@ -52,6 +52,7 @@ $primary-color: $green-light;
 $second-color: $blue-light;
 $third-color: $dark;
 $fourth-color: $dark25;
+$fifth-color: #6ad0c4;
 
 $tooltip-color: #fff;
 $tooltip-bg: tint(#666, 4%);
@@ -130,11 +131,45 @@ $ease-in-quint: cubic-bezier(0.755, 0.05, 0.855, 0.06);
     background: $primary-gradient;
     border: 2px solid #ffffff;
     touch-action: pan-x;
+    z-index: 1;
   }
 
   &__handle_focus,
   &__handle_focused {
-    z-index: 1;
+    z-index: 2;
+  }
+
+  &__dots {
+    position: absolute;
+    width: 100%;
+    height: 4px;
+    background: transparent;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  &__dot {
+    position: absolute;
+    bottom: -2px;
+    //margin-left: -4px;
+    width: 8px;
+    height: 8px;
+    background-color: #fff;
+    border: 2px solid $fifth-color;
+    cursor: pointer;
+    border-radius: 50%;
+    vertical-align: middle;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  &__dot_active {
+    //border-image-source: $primary-gradient;
+  }
+
+  &__dot_reverse {
+    margin-right: -4px;
   }
 
   &_disabled {

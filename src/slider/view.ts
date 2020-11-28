@@ -1,15 +1,12 @@
 import $ from "jquery";
 import { ISliderModel } from "./interface";
 import { objectToString } from "../utils";
-import {
-  ITrackPresenter,
-  ITrackModel,
-  ITrackProps,
-  ITrackView,
-} from "../track/interface";
+import { ITrackPresenter, ITrackView } from "../track/interface";
 
-import HandlePresenter from "../handle/presenter";
 import { IHandlePresenter, IHandleView } from "../handle/interface";
+
+import DotsPresenter from "../dots/presenter";
+import { IDotsView, IDotsPresenter } from "../dots/interface";
 
 export default class SliderView {
   private sliderModel: ISliderModel;
@@ -24,17 +21,28 @@ export default class SliderView {
 
   private handleViews: IHandleView[];
 
+  private dotsPresenter: IDotsPresenter;
+
+  private dotsView: IDotsView;
+
   constructor(
     slideModel: ISliderModel,
     trackPresenters: ITrackPresenter[],
-    handlePresenters: IHandlePresenter[]
+    handlePresenters: IHandlePresenter[],
+    dotsPresenter: IDotsPresenter
   ) {
     this.sliderModel = slideModel;
     this.trackPresenters = trackPresenters;
     this.handlePresenters = handlePresenters;
+    this.dotsPresenter = dotsPresenter;
     this.trackViews = this.createTrackViews();
     this.handleViews = this.createHandleViews();
+    this.dotsView = this.createDotsView();
     this.sliderView = this.createSliderView();
+  }
+
+  private createDotsView(): IDotsView {
+    return this.dotsPresenter.getView();
   }
 
   createSliderView() {
@@ -48,6 +56,7 @@ export default class SliderView {
       })
         .append(this.trackViews.map((v) => v.get$View()))
         .append(this.handleViews.map((v) => v.get$View()))
+        .append(this.dotsView.get$View())
     );
   }
 
