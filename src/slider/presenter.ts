@@ -69,7 +69,8 @@ export default class SliderPresenter implements ISliderPresenter {
       this.trackPresenters,
       this.handlePresenters
     );
-    $(this.initHandlers.bind(this));
+    const { disabled } = this.sliderModel.getProps();
+    !disabled && $(this.initHandlers.bind(this));
   }
 
   factoryTrackPresenters = (): ITrackPresenter[] => {
@@ -139,7 +140,16 @@ export default class SliderPresenter implements ISliderPresenter {
   public onClick = (e: any) => {
     // TODO e interface
     // const { target } = e;
-    console.log("onClick : ", e.type); // TODO
+    // console.log("onClick : ", e.type); // TODO
+    const { value } = this.sliderModel.getProps();
+    if (value.length === 1) {
+      this.currentHandleView = this.handlePresenters[0].getView();
+      if (!$(e.taget).closest(this.currentHandleView.get$View()).length) {
+        this.onBeforeChange();
+        this.onChange(e);
+        this.clearCurrentHandle();
+      }
+    }
   };
 
   public updateModel = (props: ISliderModelProps): void => {
@@ -180,34 +190,38 @@ export default class SliderPresenter implements ISliderPresenter {
 
   public onMousemove = (e: any): void => {
     // TODO e interface;
-    if (!this.currentHandleView) {
-      return;
-    }
     // console.log("active : ", );
     // console.log("currentHandleView : ",);
     // console.log("onMousemove : ", e); // TODO;
+    this.onChange(e);
+  };
+
+  private onChange(e: any): void {
+    // TODO e interface;
+    if (!this.currentHandleView) {
+      return;
+    }
     const modelProps = this.sliderModel.getProps();
     const { vertical, onChange } = modelProps;
     const handlePresenterProps = this.currentHandleView.getModel().getProps();
     const { value: prevValue, index } = handlePresenterProps;
-
     const position = this.getMousePosition(vertical, e);
     const nextValue = this.calcValueByPos(position);
     if (prevValue !== nextValue) {
       //console.log("newValue : ", nextValue); // TODO
       const _modelProps = {
         ...modelProps,
-        value: { ...modelProps.value, [index]: nextValue },
       };
+      _modelProps.value[index] = nextValue;
       this.updateModel({ ..._modelProps });
       onChange(_modelProps.value);
     }
-  };
+  }
 
   public onMouseUp = (e: any) => {
     // TODO
     // const { target } = e;
-    // console.log("onKeyUp : ", e.type); //TODO
+    // console.log("onMouseUp : ", e.type); //TODO
     if (this.currentHandleView) {
       this.clearCurrentHandle();
       const { onAfterChange, value } = this.sliderModel.getProps();
@@ -225,11 +239,15 @@ export default class SliderPresenter implements ISliderPresenter {
         // console.log("onMouseDown : ", e); // TODO
         // console.log("onMouseDown : ", handlePresenter.getModel()); // TODO
         this.currentHandleView = handlePresenter.getView();
-        const { onBeforeChange, value } = this.sliderModel.getProps();
-        onBeforeChange(value);
+        this.onBeforeChange();
       }
     }
   };
+
+  private onBeforeChange(): void {
+    const { onBeforeChange, value } = this.sliderModel.getProps();
+    onBeforeChange(value);
+  }
 
   getHandleCenterPosition(vertical: boolean, handle: HTMLElement) {
     const coords = handle.getBoundingClientRect();
@@ -260,12 +278,12 @@ export default class SliderPresenter implements ISliderPresenter {
   }
 
   calcValue(offset: number) {
-    const { vertical, min, max } = this.sliderModel.getProps();
+    const { vertical, min, max, step } = this.sliderModel.getProps();
     const ratio = Math.abs(Math.max(offset, 0) / this.getSliderLength());
     const value = vertical
       ? (1 - ratio) * (max - min) + min
       : ratio * (max - min) + min;
-    return value;
+    return Math.round(value / step) * step;
   }
 
   calcValueByPos(position: number) {
@@ -413,7 +431,7 @@ export default class SliderPresenter implements ISliderPresenter {
       max,
       reverse,
       index,
-      tabIndex: tabIndex || 0,
+      tabIndex: tabIndex || -1,
       className: `${prefixCls}__handle`,
       offset: this.offsets[index],
       style: handleStyle,

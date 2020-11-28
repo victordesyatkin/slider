@@ -24,7 +24,7 @@ export default class HandleView implements IHandleView {
     const { className, elStyle, focused } = this.model.getProps();
     let { tabIndex, focus } = this.model.getProps();
     if (tabIndex === undefined) {
-      tabIndex = 0;
+      tabIndex = -1;
     }
     if (!focus && this.view) {
       focus = this.view.is(":focus");
@@ -39,10 +39,8 @@ export default class HandleView implements IHandleView {
         { [`${className}_focused`]: focused }
       ),
       style: objectToString(elStyle),
+      tabindex: tabIndex,
     };
-    if (!(tabIndex < 0)) {
-      attr.tabindex = tabIndex;
-    }
     return attr;
   };
 

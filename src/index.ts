@@ -4,7 +4,10 @@ import "./index.scss";
 
 const slider = new SliderPresenter({
   prefixCls: "slider",
-  value: [0, 10, 40, 70],
+  //value: [0, 10, 40, 70],
+  value: [-10, 10],
+  step: 20,
+  //disabled: true,
 });
 
 $(() => {

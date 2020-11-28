@@ -32,7 +32,7 @@ export default class HandlePresenter {
   }
 
   handleMouseDown = () => {
-    console.log("handleMouseDown : ");
+    // console.log("handleMouseDown : "); // TODO
     this.view.get$View().get(0).focus();
   };
 
@@ -41,7 +41,7 @@ export default class HandlePresenter {
       document.activeElement &&
       document.activeElement === this.view.get$View().get(0)
     ) {
-      console.log("handleMouseUp : ");
+      // console.log("handleMouseUp : "); // TODO
       this.updateModel({
         ...this.model.getProps(),
         focus: false,
@@ -51,12 +51,12 @@ export default class HandlePresenter {
   };
 
   handleFocus = (): void => {
-    console.log("handleFocus : ");
+    // console.log("handleFocus : "); // TODO
     this.updateModel({ ...this.model.getProps(), focus: true, focused: false });
   };
 
   handleBlur = (): void => {
-    console.log("handleBlur : ");
+    // console.log("handleBlur : "); // TODO
     this.updateModel({
       ...this.model.getProps(),
       focus: false,
