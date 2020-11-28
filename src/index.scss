@@ -164,9 +164,9 @@ $ease-in-quint: cubic-bezier(0.755, 0.05, 0.855, 0.06);
     align-items: center;
   }
 
-  &__dot_active {
-    //border-image-source: $primary-gradient;
-  }
+  // &__dot_active {
+  //   //border-image-source: $primary-gradient;
+  // }
 
   &__dot_reverse {
     margin-right: -4px;
