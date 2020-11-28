@@ -9,13 +9,15 @@ export interface IHandleProps {
   min: number;
   max: number;
   value: number;
-  tabIndex: number;
+  tabIndex?: number;
   ariaLabel?: string;
   ariaLabelledBy?: string;
   ariaValueTextFormatter?: (val: number) => string;
   onMouseEnter?: () => void;
   onMouseLeave?: () => void;
   index: number;
+  focus?: boolean;
+  focused?: boolean;
 }
 
 export interface IHandlePropsModel extends IHandleProps {
@@ -23,7 +25,10 @@ export interface IHandlePropsModel extends IHandleProps {
   className: string;
   elStyle: { [key: string]: string };
   handleBlur: () => void;
+  handleFocus: () => void;
+  handleKeyUp: () => void;
   handleKeyDown: () => void;
+  handleMouseUp: () => void;
   handleMouseDown: () => void;
 }
 
@@ -33,7 +38,6 @@ export interface IHandleModel {
 }
 
 export interface IHandleView {
-  createView(): JQuery<HTMLElement>;
   get$View(): JQuery<HTMLElement>;
   getModel(): IHandleModel;
   html(): string;

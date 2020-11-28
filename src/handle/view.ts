@@ -1,4 +1,5 @@
 import $ from "jquery";
+import classnames from "classnames";
 import { objectToString } from "../utils";
 import { IHandleModel, IHandleProps, IHandleView } from "./interface";
 export default class HandleView implements IHandleView {
@@ -8,60 +9,100 @@ export default class HandleView implements IHandleView {
   constructor(model: IHandleModel) {
     this.model = model;
     this.view = this.createView();
+    this.onViewHandler();
   }
 
-  public getModel(): IHandleModel {
-    return this.model;
+  private createView() {
+    return $("<div/>", this.prepareAttr());
   }
 
-  public createView() {
-    const { className, elStyle } = this.model.getProps();
-    return $("<div/>", {
-      class: className,
+  private prepareAttr = (): {
+    class: string;
+    style: string;
+    tabindex?: number;
+  } => {
+    const { className, elStyle, focused } = this.model.getProps();
+    let { tabIndex, focus } = this.model.getProps();
+    if (tabIndex === undefined) {
+      tabIndex = 0;
+    }
+    if (!focus && this.view) {
+      focus = this.view.is(":focus");
+    }
+    const attr: { class: string; style: string; tabindex?: number } = {
+      class: classnames(
+        className,
+        {
+          [`${className}_focus`]:
+            focus || (this.view && this.view.is(":focus")),
+        },
+        { [`${className}_focused`]: focused }
+      ),
       style: objectToString(elStyle),
+    };
+    if (!(tabIndex < 0)) {
+      attr.tabindex = tabIndex;
+    }
+    return attr;
+  };
+
+  private onViewHandler(): void {
+    const props = this.model.getProps();
+    const {
+      handleBlur,
+      handleFocus,
+      handleKeyUp,
+      handleKeyDown,
+      handleMouseUp,
+      handleMouseDown,
+    } = props;
+    this.view.on({
+      focus: handleFocus,
+      blur: handleBlur,
+      keyup: handleKeyUp,
+      keydown: handleKeyDown,
+      mouseup: handleMouseUp,
+      mousedown: handleMouseDown,
     });
+  }
+
+  private offViewHandler(): void {
+    const props = this.model.getProps();
+    const {
+      handleBlur,
+      handleFocus,
+      handleKeyUp,
+      handleKeyDown,
+      handleMouseUp,
+      handleMouseDown,
+    } = props;
+    this.view.off({
+      focus: handleFocus,
+      blur: handleBlur,
+      keyup: handleKeyUp,
+      keydown: handleKeyDown,
+      mouseup: handleMouseUp,
+      mousedown: handleMouseDown,
+    });
+  }
+
+  private updateView(): void {
+    this.view.attr(this.prepareAttr());
+    //this.onViewHandler();
+  }
+
+  public updateModel(model: IHandleModel): void {
+    //this.offViewHandler();
+    this.model = model;
+    this.updateView();
   }
 
   public get$View(): JQuery<HTMLElement> {
     return this.view;
   }
 
-  public onViewHandler(): void {
-    const {
-      handleBlur,
-      handleKeyDown,
-      handleMouseDown,
-    } = this.model.getProps();
-    this.view.on({
-      blur: handleBlur,
-      keyDown: handleKeyDown,
-      mouseDown: handleMouseDown,
-    });
-  }
-
-  public offViewHandler(): void {
-    const props = this.model.getProps();
-    const { handleBlur, handleKeyDown, handleMouseDown } = props;
-    this.view.off({
-      blur: handleBlur,
-      keyDown: handleKeyDown,
-      mouseDown: handleMouseDown,
-    });
-  }
-
-  public updateModel(model: IHandleModel): void {
-    this.offViewHandler();
-    this.model = model;
-    this.updateView();
-  }
-
-  private updateView(): void {
-    const { className, elStyle } = this.model.getProps();
-    this.view.attr({
-      class: className,
-      style: objectToString(elStyle),
-    });
-    this.onViewHandler();
+  public getModel(): IHandleModel {
+    return this.model;
   }
 
   public html() {

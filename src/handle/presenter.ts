@@ -22,11 +22,47 @@ export default class HandlePresenter {
     return {
       ...props,
       elStyle: this.prepareElStyle(props),
-      handleBlur: noop,
+      handleFocus: this.handleFocus,
+      handleBlur: this.handleBlur,
+      handleKeyUp: noop,
       handleKeyDown: noop,
-      handleMouseDown: noop,
+      handleMouseUp: this.handleMouseUp,
+      handleMouseDown: this.handleMouseDown,
     };
   }
+
+  handleMouseDown = () => {
+    console.log("handleMouseDown : ");
+    this.view.get$View().get(0).focus();
+  };
+
+  handleMouseUp = (): void => {
+    if (
+      document.activeElement &&
+      document.activeElement === this.view.get$View().get(0)
+    ) {
+      console.log("handleMouseUp : ");
+      this.updateModel({
+        ...this.model.getProps(),
+        focus: false,
+        focused: true,
+      });
+    }
+  };
+
+  handleFocus = (): void => {
+    console.log("handleFocus : ");
+    this.updateModel({ ...this.model.getProps(), focus: true, focused: false });
+  };
+
+  handleBlur = (): void => {
+    console.log("handleBlur : ");
+    this.updateModel({
+      ...this.model.getProps(),
+      focus: false,
+      focused: false,
+    });
+  };
 
   prepareElStyle(props: IHandleProps): { [key: string]: string } {
     const { vertical, reverse, offset, style } = props;

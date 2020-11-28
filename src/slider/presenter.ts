@@ -42,6 +42,7 @@ export default class SliderPresenter implements ISliderPresenter {
     railStyle: {},
     dotStyle: {},
     activeDotStyle: {},
+    allowCross: false,
   };
 
   private sliderModel: ISliderModel;
@@ -73,8 +74,8 @@ export default class SliderPresenter implements ISliderPresenter {
 
   factoryTrackPresenters = (): ITrackPresenter[] => {
     const props = this.sliderModel.getProps();
-    const { value, trackStyle, defaultValue, handleStyle } = props;
-    return value.map((v, i) => {
+    const { value, trackStyle, defaultValue, handleStyle, tabIndex } = props;
+    return value.slice(0, -1).map((v, i) => {
       return new TrackPresenter(
         this.preparePropsForTrackModel({
           ...props,
@@ -83,6 +84,7 @@ export default class SliderPresenter implements ISliderPresenter {
           trackStyle: trackStyle[i],
           handleStyle: handleStyle[i],
           index: i,
+          tabIndex: tabIndex ? tabIndex[i] : 0,
         })
       );
     });
@@ -90,7 +92,7 @@ export default class SliderPresenter implements ISliderPresenter {
 
   factoryHandlePresenters = (): IHandlePresenter[] => {
     const props = this.sliderModel.getProps();
-    const { value, defaultValue, handleStyle, trackStyle } = props;
+    const { value, defaultValue, handleStyle, trackStyle, tabIndex } = props;
     return value.map(
       (v, i): IHandlePresenter => {
         return new HandlePresenter(
@@ -101,6 +103,7 @@ export default class SliderPresenter implements ISliderPresenter {
             index: i,
             handleStyle: handleStyle[i],
             trackStyle: trackStyle[i],
+            tabIndex: tabIndex ? tabIndex[i] : 0,
           })
         );
       }
@@ -130,9 +133,7 @@ export default class SliderPresenter implements ISliderPresenter {
 
   public clearCurrentHandle = () => {
     // console.log("clearCurrentHandleView : "); // TODO
-    if (this.currentHandleView) {
-      this.currentHandleView = undefined;
-    }
+    this.currentHandleView = undefined;
   };
 
   public onClick = (e: any) => {
@@ -152,6 +153,7 @@ export default class SliderPresenter implements ISliderPresenter {
         index,
         handleStyle: _props.handleStyle[index],
         trackStyle: _props.trackStyle[index],
+        tabIndex: _props.tabIndex ? _props.tabIndex[index] : 0,
       };
       this.handlePresenters[index].updateModel(
         this.preparePropsForHandleModel({
@@ -159,12 +161,20 @@ export default class SliderPresenter implements ISliderPresenter {
           ...currentProps,
         })
       );
-      this.trackPresenters[index].updateModel(
-        this.preparePropsForTrackModel({
-          ..._props,
-          ...currentProps,
-        })
-      );
+      for (let i = index - 1; i < index + 1; i += 1) {
+        this.trackPresenters[i] &&
+          this.trackPresenters[i].updateModel(
+            this.preparePropsForTrackModel({
+              ..._props,
+              value: _props.value[i],
+              defaultValue: _props.defaultValue[i],
+              index: i,
+              handleStyle: _props.handleStyle[i],
+              trackStyle: _props.trackStyle[i],
+              tabIndex: _props.tabIndex ? _props.tabIndex[i] : 0,
+            })
+          );
+      }
     }
   };
 
@@ -177,7 +187,7 @@ export default class SliderPresenter implements ISliderPresenter {
     // console.log("currentHandleView : ",);
     // console.log("onMousemove : ", e); // TODO;
     const modelProps = this.sliderModel.getProps();
-    const { vertical } = modelProps;
+    const { vertical, onChange } = modelProps;
     const handlePresenterProps = this.currentHandleView.getModel().getProps();
     const { value: prevValue, index } = handlePresenterProps;
 
@@ -185,8 +195,12 @@ export default class SliderPresenter implements ISliderPresenter {
     const nextValue = this.calcValueByPos(position);
     if (prevValue !== nextValue) {
       //console.log("newValue : ", nextValue); // TODO
-      modelProps.value[index] = nextValue;
-      this.updateModel({ ...modelProps });
+      const _modelProps = {
+        ...modelProps,
+        value: { ...modelProps.value, [index]: nextValue },
+      };
+      this.updateModel({ ..._modelProps });
+      onChange(_modelProps.value);
     }
   };
 
@@ -194,7 +208,11 @@ export default class SliderPresenter implements ISliderPresenter {
     // TODO
     // const { target } = e;
     // console.log("onKeyUp : ", e.type); //TODO
-    this.clearCurrentHandle();
+    if (this.currentHandleView) {
+      this.clearCurrentHandle();
+      const { onAfterChange, value } = this.sliderModel.getProps();
+      onAfterChange(value);
+    }
   };
 
   public onMouseDown = (e: any) => {
@@ -207,6 +225,8 @@ export default class SliderPresenter implements ISliderPresenter {
         // console.log("onMouseDown : ", e); // TODO
         // console.log("onMouseDown : ", handlePresenter.getModel()); // TODO
         this.currentHandleView = handlePresenter.getView();
+        const { onBeforeChange, value } = this.sliderModel.getProps();
+        onBeforeChange(value);
       }
     }
   };
@@ -249,13 +269,31 @@ export default class SliderPresenter implements ISliderPresenter {
   }
 
   calcValueByPos(position: number) {
-    const { reverse, min, max } = this.sliderModel.getProps();
+    const { reverse, min, max, allowCross } = this.sliderModel.getProps();
     const sign = reverse ? -1 : +1;
     const pixelOffset = sign * (position - this.getSliderStart());
-    const value = this.ensureValueInRange(this.calcValue(pixelOffset), {
+    let value = this.ensureValueInRange(this.calcValue(pixelOffset), {
       min,
       max,
     });
+    if (this.currentHandleView && !allowCross) {
+      const _props = this.currentHandleView.getModel().getProps();
+      const { index } = _props;
+      const prevHandle = this.handlePresenters[index - 1];
+      const nextHandle = this.handlePresenters[index + 1];
+      let prevValue = min;
+      let nextValue = max;
+      if (prevHandle) {
+        prevValue = prevHandle.getModel().getProps().value;
+      }
+      if (nextHandle) {
+        nextValue = nextHandle.getModel().getProps().value;
+      }
+      value = this.ensureValueNotConflict(value, {
+        min: prevValue,
+        max: nextValue,
+      });
+    }
     return value;
   }
 
@@ -266,6 +304,19 @@ export default class SliderPresenter implements ISliderPresenter {
   }
 
   ensureValueInRange(val: number, { max, min }: { max: number; min: number }) {
+    if (val <= min) {
+      return min;
+    }
+    if (val >= max) {
+      return max;
+    }
+    return val;
+  }
+
+  ensureValueNotConflict(
+    val: number,
+    { max, min }: { max: number; min: number }
+  ) {
     if (val <= min) {
       return min;
     }
@@ -317,15 +368,9 @@ export default class SliderPresenter implements ISliderPresenter {
     } = props;
     let length;
     let offset;
-    const classNames = [`${prefixCls}__track`, `${prefixCls}__track-${index}`];
     if (count > 1) {
       offset = this.offsets[index];
-      length = this.offsets[index + 1] - this.offsets[index] || 0;
-      // console.log("index : ", index);
-      // console.log("count : ", count);
-      console.log("this.offsets[index] : ", this.offsets[index]);
-      console.log("this.offsets[index+1] : ", this.offsets[index + 1]);
-      console.log("length : ", length);
+      length = this.offsets[index + 1] - this.offsets[index];
     } else {
       const trackOffset =
         startPoint !== undefined ? this.calcOffset(startPoint) : 0;
@@ -333,7 +378,9 @@ export default class SliderPresenter implements ISliderPresenter {
       length = offset - trackOffset;
     }
     return {
-      className: classnames([classNames]),
+      className: classnames(`${prefixCls}__track`, {
+        [`${prefixCls}__track-${index}`]: true,
+      }),
       vertical,
       included,
       reverse,

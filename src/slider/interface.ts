@@ -19,7 +19,7 @@ export interface ISliderProps {
 
   trackStyle?: ({ [key: string]: string } | undefined)[];
   handleStyle?: ({ [key: string]: string } | undefined)[];
-  tabIndex?: number;
+  tabIndex?: number[];
   ariaLabelForHandle?: string;
   ariaLabelledByForHandle?: string;
   ariaValueTextFormatterForHandle?: string;
@@ -28,6 +28,7 @@ export interface ISliderProps {
   railStyle?: { [key: string]: string };
   dotStyle?: { [key: string]: string };
   activeDotStyle?: { [key: string]: string };
+  allowCross?: boolean;
 }
 export interface ISliderDefaultProps extends ISliderProps {
   prefixCls: string;
@@ -42,9 +43,9 @@ export interface ISliderDefaultProps extends ISliderProps {
   max: number;
   step: number;
   marks: object;
-  onChange?: (value: number[]) => void;
-  onBeforeChange?: (value: number[]) => void;
-  onAfterChange?: (value: number[]) => void;
+  onChange: (value: number[]) => void;
+  onBeforeChange: (value: number[]) => void;
+  onAfterChange: (value: number[]) => void;
   dots: boolean;
   railStyle: { [key: string]: string };
   dotStyle: { [key: string]: string };

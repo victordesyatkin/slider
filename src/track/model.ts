@@ -2,19 +2,9 @@ import { objectToString } from "../utils";
 import { ITrackModel, ITrackModelProps } from "./interface";
 
 export default class TrackModel implements ITrackModel {
-  private className: string;
-
-  private style: { [key: string]: string };
-
   private props: ITrackModelProps;
 
-  private included: boolean;
-
   constructor(props: ITrackModelProps) {
-    const { className, style, included } = props;
-    this.className = className;
-    this.style = style;
-    this.included = included;
     this.props = props;
   }
 
@@ -27,26 +17,26 @@ export default class TrackModel implements ITrackModel {
   }
 
   getClassName(): string {
-    return this.className;
+    return this.props.className;
   }
 
   setClassName(_className: string): void {
-    this.className = _className;
+    this.props.className = _className;
   }
 
   getStyle(): string {
-    return objectToString(this.style);
+    return objectToString(this.props.style);
   }
 
   setStyle(_style: { [key: string]: string }): void {
-    this.style = _style;
+    this.props.style = _style;
   }
 
   getIncluded(): boolean {
-    return this.included;
+    return this.props.included;
   }
 
   setIncluded(_included: boolean): void {
-    this.included = _included;
+    this.props.included = _included;
   }
 }
