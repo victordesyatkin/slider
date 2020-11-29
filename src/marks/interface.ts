@@ -5,7 +5,7 @@ export interface IMarksProps {
   step?: number;
   min: number;
   max: number;
-  onClick: (e: any) => void;
+  onClick: (e: any, value: number) => void;
   className?: string;
   render?: (value: number) => string;
   style?: { [key: string]: string };

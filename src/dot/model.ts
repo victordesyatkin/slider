@@ -14,20 +14,4 @@ export default class DotModel implements IDotModel {
   setProps(props: IDotPropsModel) {
     return (this.props = props);
   }
-
-  get clasName(): string {
-    return this.props.className;
-  }
-
-  set clasName(clasName: string) {
-    this.props.className = clasName;
-  }
-
-  get style() {
-    return this.props.style;
-  }
-
-  set Style(style: { [key: string]: string }) {
-    this.props.style = style;
-  }
 }

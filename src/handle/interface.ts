@@ -1,3 +1,5 @@
+import { ITooltipPresenter } from "../tooltip/interface";
+
 export interface IHandleProps {
   prefixCls: string;
   className: string;
@@ -18,12 +20,20 @@ export interface IHandleProps {
   index: number;
   focus?: boolean;
   focused?: boolean;
+  tooltip?: {
+    render?: (value: number) => string;
+    classNames?: string[];
+    active?: boolean;
+    precision?: number;
+    show?: boolean;
+  };
 }
 
 export interface IHandlePropsModel extends IHandleProps {
   prefixCls: string;
   className: string;
   elStyle: { [key: string]: string };
+  tooltipPresenter?: ITooltipPresenter;
   handleBlur: () => void;
   handleFocus: () => void;
   handleKeyUp: () => void;

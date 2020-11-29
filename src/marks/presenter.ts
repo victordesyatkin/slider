@@ -78,6 +78,7 @@ export default class MarksPresenter {
           offset,
           style,
           onClick,
+          value,
         })
       );
     }

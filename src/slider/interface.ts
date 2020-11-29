@@ -1,3 +1,10 @@
+type tooltip = {
+  render?: (value: number) => string;
+  classNames?: string[];
+  active?: boolean;
+  precision?: number;
+  show?: boolean;
+};
 export interface ISliderProps {
   prefixCls?: string;
   vertical?: boolean;
@@ -29,6 +36,7 @@ export interface ISliderProps {
   activeDotStyle?: { [key: string]: string }; // TODO
   railStyle?: { [key: string]: string };
   allowCross?: boolean;
+  tooltip?: tooltip;
 }
 export interface ISliderDefaultProps extends ISliderProps {
   prefixCls: string;
@@ -84,6 +92,7 @@ export interface ISliderSingleProps {
   startPoint?: number;
   tabIndex?: number;
   count: number;
+  tooltip?: tooltip;
 }
 
 export interface ISliderModel {

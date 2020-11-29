@@ -1,3 +1,4 @@
+import { noop } from "lodash";
 import HandleModel from "./model";
 import HandleView from "./view";
 import {
@@ -6,7 +7,7 @@ import {
   IHandleView,
   IHandlePropsModel,
 } from "./interface";
-import { noop } from "lodash";
+import TooltipPresenter from "../tooltip/presenter";
 
 export default class HandlePresenter {
   private model: IHandleModel;
@@ -28,7 +29,19 @@ export default class HandlePresenter {
       handleKeyDown: noop,
       handleMouseUp: this.handleMouseUp,
       handleMouseDown: this.handleMouseDown,
+      tooltipPresenter: this.createTooltipPresenter(props),
     };
+  }
+
+  private createTooltipPresenter(
+    props: IHandleProps
+  ): TooltipPresenter | undefined {
+    const { prefixCls, tooltip, value } = props;
+    return new TooltipPresenter({
+      prefixCls,
+      value,
+      ...tooltip,
+    });
   }
 
   private handleMouseDown = () => {

@@ -29,7 +29,7 @@ export default class TrackView implements ITrackView {
     });
   }
 
-  updateModel(model: ITrackModel) {
+  updateModel(model: ITrackModel): void {
     this.model = model;
     this.updateView();
   }

@@ -95,7 +95,7 @@ export default class SliderPresenter implements ISliderPresenter {
       max,
       step,
       prefixCls,
-      onClick: this.onClick,
+      onClick: this.onClickWithValue,
     });
   };
 
@@ -220,6 +220,27 @@ export default class SliderPresenter implements ISliderPresenter {
   public clearCurrentHandle = () => {
     // console.log("clearCurrentHandleView : "); // TODO
     this.currentHandleView = undefined;
+  };
+
+  private onClickWithValue = (event: any, nextValue: number): boolean => {
+    event.preventDefault();
+    event.stopPropagation();
+    const props = this.sliderModel.getProps();
+    const { value, onAfterChange } = props;
+    if (value.length === 1) {
+      this.currentHandleView = this.handlePresenters[0].getView();
+      const handlePresenterProps = this.currentHandleView.getModel().getProps();
+      const { value: prevValue, index } = handlePresenterProps;
+      if (nextValue !== prevValue) {
+        const _props = { ...props };
+        _props.value[index] = nextValue;
+        this.onBeforeChange();
+        this.updateModel(_props);
+        onAfterChange(_props.value);
+      }
+      this.clearCurrentHandle();
+    }
+    return false;
   };
 
   public onClick = (e: any) => {
@@ -502,6 +523,7 @@ export default class SliderPresenter implements ISliderPresenter {
       tabIndex,
       handleStyle,
       index,
+      tooltip,
     } = props;
     this.offsets[index] = calcOffset(value, min, max);
     return {
@@ -517,6 +539,7 @@ export default class SliderPresenter implements ISliderPresenter {
       className: `${prefixCls}__handle`,
       offset: this.offsets[index],
       style: handleStyle,
+      tooltip,
     };
   }
 

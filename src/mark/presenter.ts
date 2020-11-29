@@ -18,6 +18,11 @@ export default class MarkPresenter {
     this.view = new MarkView(this.model);
   }
 
+  private _onClick = (e: any): void => {
+    const { value, onClick } = this.model.getProps();
+    onClick(e, value);
+  };
+
   private preparePropsForModel(props: IMarkProps): IMarkPropsModal {
     return {
       ...props,
@@ -27,6 +32,7 @@ export default class MarkPresenter {
       onFocus: this.onFocus,
       onBlur: this.onBlur,
       style: this.prepareStyle(props),
+      _onClick: this._onClick,
     };
   }
 

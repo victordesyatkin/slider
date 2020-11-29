@@ -13,8 +13,17 @@ export default class HandleView implements IHandleView {
   }
 
   private createView() {
-    return $("<div/>", this.prepareAttr());
+    const view = this.prepareView($("<div/>"));
+    return view;
   }
+
+  private prepareView = (view: JQuery<HTMLElement>): JQuery<HTMLElement> => {
+    const { tooltipPresenter } = this.model.getProps();
+    if (tooltipPresenter) {
+      view.append(tooltipPresenter.get$View());
+    }
+    return view.attr(this.prepareAttr());
+  };
 
   private prepareAttr = (): {
     class: string;
@@ -64,28 +73,28 @@ export default class HandleView implements IHandleView {
     });
   }
 
-  private offViewHandler(): void {
-    const props = this.model.getProps();
-    const {
-      handleBlur,
-      handleFocus,
-      handleKeyUp,
-      handleKeyDown,
-      handleMouseUp,
-      handleMouseDown,
-    } = props;
-    this.view.off({
-      focus: handleFocus,
-      blur: handleBlur,
-      keyup: handleKeyUp,
-      keydown: handleKeyDown,
-      mouseup: handleMouseUp,
-      mousedown: handleMouseDown,
-    });
-  }
+  // private offViewHandler(): void {
+  //   const props = this.model.getProps();
+  //   const {
+  //     handleBlur,
+  //     handleFocus,
+  //     handleKeyUp,
+  //     handleKeyDown,
+  //     handleMouseUp,
+  //     handleMouseDown,
+  //   } = props;
+  //   this.view.off({
+  //     focus: handleFocus,
+  //     blur: handleBlur,
+  //     keyup: handleKeyUp,
+  //     keydown: handleKeyDown,
+  //     mouseup: handleMouseUp,
+  //     mousedown: handleMouseDown,
+  //   });
+  // }
 
   private updateView(): void {
-    this.view.attr(this.prepareAttr());
+    this.prepareView(this.view.empty());
     //this.onViewHandler();
   }
 

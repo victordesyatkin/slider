@@ -3,12 +3,14 @@ export interface IMarkProps {
   offset: number;
   style?: { [key: string]: string };
   label: string;
-  onClick: (e: any) => void;
+  onClick: (e: any, value: number) => void;
+  _onClick?: (e: any) => void;
   onFocus?: () => void;
   onBlur?: () => void;
   vertical?: boolean;
   reverse?: boolean;
   focus?: boolean;
+  value: number;
 }
 
 export interface IMarkPropsModal extends IMarkProps {

@@ -136,9 +136,37 @@ $ease-in-quint: cubic-bezier(0.755, 0.05, 0.855, 0.06);
     z-index: 1;
   }
 
+  &__handle:hover {
+    .#{$prefixClass}__tooltip {
+      display: block;
+    }
+  }
+
   &__handle_focus,
   &__handle_focused {
     z-index: 2;
+  }
+
+  &__tooltip {
+    pointer-events: none;
+    transform: translateX(-50%);
+    bottom: 150%;
+    left: 50%;
+    position: absolute;
+    padding: 5px;
+    background-color: #e4e4e4;
+    border-radius: 4px;
+    color: #4c4c4c;
+    display: none;
+
+    span {
+      vertical-align: middle;
+      white-space: nowrap;
+    }
+
+    &_active {
+      display: block;
+    }
   }
 
   &__marks {

@@ -12,7 +12,14 @@ export default class MarkView implements IMarkView {
 
   private createView() {
     const { className } = this.model.getProps();
-    return $("<div/>", this.prepareAttr());
+    return this.prepareView($("<div/>", this.prepareAttr()));
+  }
+
+  private prepareView(view: JQuery<HTMLElement>): JQuery<HTMLElement> {
+    const { _onClick } = this.model.getProps();
+    return view.on({
+      click: _onClick,
+    });
   }
 
   private prepareAttr = (): {
