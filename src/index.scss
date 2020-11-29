@@ -93,6 +93,8 @@ $ease-in-quint: cubic-bezier(0.755, 0.05, 0.855, 0.06);
     outline: none;
   }
 
+  font-family: Helvetica, Arial, sans-serif;
+
   -webkit-user-select: none;
   -khtml-user-select: none;
   -moz-user-select: none;
@@ -139,6 +141,25 @@ $ease-in-quint: cubic-bezier(0.755, 0.05, 0.855, 0.06);
     z-index: 2;
   }
 
+  &__marks {
+    position: absolute;
+    background: transparent;
+    z-index: 1;
+
+    width: 100%;
+    top: 10px;
+  }
+
+  &__mark {
+    position: absolute;
+    background: transparent;
+    cursor: pointer;
+    vertical-align: middle;
+    font-size: 13px;
+    color: #6b6b6b;
+    white-space: nowrap;
+  }
+
   &__dots {
     position: absolute;
     width: 100%;
@@ -159,9 +180,6 @@ $ease-in-quint: cubic-bezier(0.755, 0.05, 0.855, 0.06);
     cursor: pointer;
     border-radius: 50%;
     vertical-align: middle;
-    display: flex;
-    justify-content: center;
-    align-items: center;
   }
 
   // &__dot_active {

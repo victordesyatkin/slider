@@ -1,20 +1,18 @@
+import uniq from "lodash/uniq";
 import DotsModel from "./model";
 import DotsView from "./view";
 import DotPresenter from "../dot/presenter";
-import {
-  IDotModel,
-  IDotProps,
-  IDotView,
-  IDotPresenter,
-} from "../dot/interface";
+import { IDotPresenter } from "../dot/interface";
 import { IDotsModel, IDotsProps, IDotsView, IDotsPresenter } from "./interface";
 import { calcOffset } from "../utils";
 
 export default class DotsPresenter implements IDotsPresenter {
   private model: IDotsModel;
   private view: IDotsView;
+  private values: number[] | undefined;
 
   constructor(props: IDotsProps) {
+    this.values = this.calcValues(props);
     this.model = new DotsModel(this.preparePropsForDotsModel(props));
     this.view = new DotsView(this.model);
   }
@@ -23,20 +21,37 @@ export default class DotsPresenter implements IDotsPresenter {
     return {
       ...props,
       className: `${props.prefixCls}__dots`,
+      values: this.calcValues(props),
       dotPresenters: this.factoryDots(props),
     };
   }
 
+  private calcValues(props: IDotsProps): number[] | undefined {
+    const { min, max, step, marks } = props;
+    let values = new Array();
+    if (marks !== undefined) {
+      const _dots = marks.dots;
+      if (_dots && Array.isArray(marks.values)) {
+        values = [...marks.values];
+      }
+    }
+    if (step !== undefined) {
+      for (let i = min; i <= max; i += step) {
+        values.push(i);
+      }
+    }
+    return uniq(values);
+  }
+
   private factoryDots(props: IDotsProps): IDotPresenter[] | undefined {
-    const { min, max, step, dots } = props;
-    const dotPresenters = new Array();
-    if (!dots) {
+    const { min, max, dots } = props;
+    //TODO common check?
+    if (!dots || !this.values) {
       return undefined;
     }
-    const count = Math.floor((max - min) / step) + 1;
-    for (let i = 0; i < count; i += 1) {
-      const value = i * step;
-      const offset = calcOffset(value, min, max);
+    const dotPresenters = new Array();
+    for (let v of this.values) {
+      const offset = calcOffset(v, min, max);
       dotPresenters.push(
         new DotPresenter({
           ...props,
@@ -44,7 +59,12 @@ export default class DotsPresenter implements IDotsPresenter {
         })
       );
     }
+
     return dotPresenters;
+  }
+
+  public getDotsValues() {
+    return this.model.getProps().values;
   }
 
   getModel(): IDotsModel {

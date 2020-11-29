@@ -1,15 +1,19 @@
 export interface IMarkProps {
   className: string;
-  offset?: number;
+  offset: number;
   style?: { [key: string]: string };
-  label?: string;
-  onClick?: () => void;
+  label: string;
+  onClick: (e: any) => void;
   onFocus?: () => void;
   onBlur?: () => void;
-  render?: (value: number) => string;
+  vertical?: boolean;
+  reverse?: boolean;
   focus?: boolean;
 }
 
+export interface IMarkPropsModal extends IMarkProps {
+  style: { [key: string]: string };
+}
 export interface IMarkModel {
   getProps(): IMarkProps;
   setProps(props: IMarkProps): void;

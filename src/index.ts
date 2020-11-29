@@ -5,9 +5,18 @@ import "./index.scss";
 const slider = new SliderPresenter({
   prefixCls: "slider",
   //value: [0, 10, 40, 70],
-  value: [-10, 10],
-  step: 20,
+  value: [10],
+  min: -20,
+  //step: 30,
   dots: true,
+  marks: {
+    show: true,
+    render: (v: number): string => {
+      return `${v} $`;
+    },
+    values: [0],
+    dots: true,
+  },
   //disabled: true,
 });
 

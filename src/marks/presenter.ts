@@ -1,4 +1,5 @@
 import classnames from "classnames";
+import uniq from "lodash/uniq";
 import MarkModel from "./model";
 import MarkView from "./view";
 import { IMarkPresenter } from "../mark/interface";
@@ -21,6 +22,10 @@ export default class MarksPresenter {
     this.view = new MarkView(this.model);
   }
 
+  public getAdditionValues(): number[] | undefined {
+    return this.model.getProps().values;
+  }
+
   private preparePropsForModel(props: IMarksProps): IMarksPropsModel {
     return {
       ...props,
@@ -31,19 +36,47 @@ export default class MarksPresenter {
   }
 
   private factoryItems = (props: IMarksProps): IMarkPresenter[] | undefined => {
-    const { max, min, step, prefixCls, style, render, onClick } = props;
-    const count = Math.floor((max - min) / step) + 1;
+    const {
+      max,
+      min,
+      step,
+      prefixCls,
+      style,
+      render,
+      onClick,
+      values,
+      show,
+    } = props;
+    if (!show) {
+      return;
+    }
+    let _values = new Array();
     const items = new Array();
-    for (let i = 0; i < count; i += 1) {
-      const value = i * step;
+    if (values !== undefined) {
+      _values = values;
+    }
+    if (step !== undefined) {
+      for (let i = min; i <= max; i += step) {
+        _values.push(i);
+      }
+    }
+    _values = uniq(_values.concat(values));
+    if (!_values.length) {
+      return undefined;
+    }
+    const className = `${prefixCls}__mark`;
+    for (let value of _values) {
       const offset = calcOffset(value, min, max);
+      let label = `${value}`;
+      if (render !== undefined) {
+        label = render(value);
+      }
       items.push(
         new MarkPresenter({
-          className: `${prefixCls}__mark`,
-          label: `${value}`,
+          className,
+          label,
           offset,
           style,
-          render,
           onClick,
         })
       );

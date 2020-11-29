@@ -1,14 +1,17 @@
 import { IMarkPresenter } from "../mark/interface";
 
 export interface IMarksProps {
-  prefixCls?: string;
-  className?: string;
-  step: number;
+  prefixCls: string;
+  step?: number;
   min: number;
   max: number;
-  onClick?: () => void;
+  onClick: (e: any) => void;
+  className?: string;
   render?: (value: number) => string;
   style?: { [key: string]: string };
+  values?: number[];
+  show?: boolean;
+  dots?: boolean;
 }
 
 export interface IMarksPropsModel extends IMarksProps {
@@ -27,12 +30,13 @@ export interface IMarksView {
   updateModel(model: IMarksModel): void;
 }
 
-export interface IDotPresenter {
+export interface IMarksPresenter {
   getModel(): IMarksModel;
   setModel(model: IMarksModel): void;
   updateModel(props: IMarksProps): void;
   getView(): IMarksView;
   setView(view: IMarksView): void;
   get$View(): JQuery<HTMLElement>;
+  getAdditionValues(): number[] | undefined;
   html(): string;
 }

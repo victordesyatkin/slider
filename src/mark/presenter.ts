@@ -1,7 +1,12 @@
 import classnames from "classnames";
 import MarkModel from "./model";
 import MarkView from "./view";
-import { IMarkModel, IMarkProps, IMarkView } from "./interface";
+import {
+  IMarkModel,
+  IMarkProps,
+  IMarkView,
+  IMarkPropsModal,
+} from "./interface";
 
 export default class MarkPresenter {
   private model: IMarkModel;
@@ -13,7 +18,7 @@ export default class MarkPresenter {
     this.view = new MarkView(this.model);
   }
 
-  private preparePropsForModel(props: IMarkProps): IMarkProps {
+  private preparePropsForModel(props: IMarkProps): IMarkPropsModal {
     return {
       ...props,
       className: classnames(props.className, {
@@ -33,8 +38,7 @@ export default class MarkPresenter {
     this.updateModel({ ...this.model.getProps(), focus: false });
   };
 
-  private prepareStyle(props: any): { [key: string]: string } {
-    // IDotProps
+  private prepareStyle(props: IMarkProps): { [key: string]: string } {
     const { vertical, style, offset, reverse } = props;
     const positionStyle = vertical
       ? {

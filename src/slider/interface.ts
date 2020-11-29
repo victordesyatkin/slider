@@ -41,8 +41,8 @@ export interface ISliderDefaultProps extends ISliderProps {
   included: boolean;
   min: number;
   max: number;
-  step: number;
-  marks: object;
+  step?: number;
+  marks?: object;
   onChange: (value: number[]) => void;
   onBeforeChange: (value: number[]) => void;
   onAfterChange: (value: number[]) => void;
@@ -66,8 +66,8 @@ export interface ISliderSingleProps {
   included: boolean;
   min: number;
   max: number;
-  step: number;
-  marks: object;
+  step?: number;
+  marks?: object;
   onChange?: (value: number[]) => void;
   onBeforeChange?: (value: number[]) => void;
   onAfterChange?: (value: number[]) => void;

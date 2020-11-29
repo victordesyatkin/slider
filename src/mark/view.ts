@@ -1,11 +1,11 @@
 import $ from "jquery";
 import { objectToString } from "../utils";
-import { IDotModel, IDotView } from "./interface";
-export default class DotView implements IDotView {
-  private model: IDotModel;
+import { IMarkModel, IMarkView } from "./interface";
+export default class MarkView implements IMarkView {
+  private model: IMarkModel;
   private view: JQuery<HTMLElement>;
 
-  constructor(model: IDotModel) {
+  constructor(model: IMarkModel) {
     this.model = model;
     this.view = this.createView();
   }
@@ -19,10 +19,11 @@ export default class DotView implements IDotView {
     class: string;
     style: string;
   } => {
-    const { className, style } = this.model.getProps();
-    const attr: { class: string; style: string } = {
+    const { className, style = {}, label } = this.model.getProps();
+    const attr: { class: string; style: string; text: string } = {
       class: className,
       style: objectToString(style),
+      text: label,
     };
     return attr;
   };
@@ -31,7 +32,7 @@ export default class DotView implements IDotView {
     this.view.attr(this.prepareAttr());
   }
 
-  public updateModel(model: IDotModel): void {
+  public updateModel(model: IMarkModel): void {
     this.model = model;
     this.updateView();
   }
@@ -40,7 +41,7 @@ export default class DotView implements IDotView {
     return this.view;
   }
 
-  public getModel(): IDotModel {
+  public getModel(): IMarkModel {
     return this.model;
   }
 

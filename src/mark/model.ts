@@ -1,17 +1,17 @@
-import { IMarkModel, IMarkProps } from "./interface";
+import { IMarkModel, IMarkPropsModal } from "./interface";
 
 export default class MarkModel implements IMarkModel {
-  private props: IMarkProps;
+  private props: IMarkPropsModal;
 
-  constructor(props: IMarkProps) {
+  constructor(props: IMarkPropsModal) {
     this.props = props;
   }
 
-  getProps(): IMarkProps {
+  getProps(): IMarkPropsModal {
     return this.props;
   }
 
-  setProps(props: IMarkProps) {
+  setProps(props: IMarkPropsModal) {
     return (this.props = props);
   }
 
@@ -23,11 +23,11 @@ export default class MarkModel implements IMarkModel {
     this.props.className = clasName;
   }
 
-  get style(): { [key: string]: string } | undefined {
+  get style(): { [key: string]: string } {
     return this.props.style;
   }
 
-  set style(style: { [key: string]: string } | undefined) {
+  set style(style: { [key: string]: string }) {
     this.props.style = style;
   }
 }

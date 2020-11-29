@@ -8,7 +8,8 @@ export interface IDotsProps {
   activeDotStyle: { [key: string]: string };
   min: number;
   max: number;
-  step: number;
+  step?: number;
+  marks?: { dots?: boolean; values?: number[] };
 }
 
 export interface IDotsModelProps extends IDotsProps {
@@ -20,9 +21,11 @@ export interface IDotsModelProps extends IDotsProps {
   activeDotStyle: { [key: string]: string };
   min: number;
   max: number;
-  step: number;
+  step?: number;
   className: string;
   dotPresenters: IDotPresenter[] | undefined;
+  marks?: { dots?: boolean; values?: number[] };
+  values?: number[];
 }
 
 export interface IDotsModel {

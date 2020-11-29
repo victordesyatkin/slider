@@ -7,7 +7,7 @@ export default class SliderModel {
 
   constructor(_props: ISliderModelProps) {
     this.props = _props;
-    const { prefixCls, marks, disabled, vertical, className } = _props;
+    const { prefixCls, marks = {}, disabled, vertical, className } = _props;
     this.sliderClassName = classNames(prefixCls, {
       [`${prefixCls}_with-marks`]: Object.keys(marks).length,
       [`${prefixCls}_disabled`]: disabled,
