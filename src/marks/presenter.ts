@@ -60,14 +60,14 @@ export default class MarksPresenter {
         _values.push(i);
       }
     }
-    _values = uniq(_values.concat(values));
+    _values = uniq(_values);
     if (!_values.length) {
       return undefined;
     }
     const className = `${prefixCls}__mark`;
     for (let value of _values) {
-      const offset = calcOffset(value, min, max);
       let label = `${value}`;
+      const offset = calcOffset(value, min, max);
       if (render !== undefined) {
         label = render(value);
       }

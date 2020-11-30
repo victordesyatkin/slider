@@ -41,6 +41,10 @@ export default class TrackView implements ITrackView {
     });
   }
 
+  public destroy(): void {
+    this.view.remove();
+  }
+
   public html(): string {
     return this.model.getIncluded() ? $("<div/>").append(this.view).html() : "";
   }

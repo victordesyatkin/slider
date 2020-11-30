@@ -1,3 +1,8 @@
+import { ITrackPresenter } from "../track/interface";
+import { IHandlePresenter } from "../handle/interface";
+import { IDotsPresenter } from "../dots/interface";
+import { IMarksPresenter } from "../marks/interface";
+
 type tooltip = {
   render?: (value: number) => string;
   classNames?: string[];
@@ -27,9 +32,6 @@ export interface ISliderProps {
   trackStyle?: ({ [key: string]: string } | undefined)[];
   handleStyle?: ({ [key: string]: string } | undefined)[];
   tabIndex?: number[];
-  ariaLabelForHandle?: string;
-  ariaLabelledByForHandle?: string;
-  ariaValueTextFormatterForHandle?: string;
   startPoint?: number;
   dots?: boolean;
   dotStyle?: { [key: string]: string };
@@ -37,6 +39,13 @@ export interface ISliderProps {
   railStyle?: { [key: string]: string };
   allowCross?: boolean;
   tooltip?: tooltip;
+  pushable?: number;
+  precision?: number;
+
+  //TODO
+  ariaLabelForHandle?: string;
+  ariaLabelledByForHandle?: string;
+  ariaValueTextFormatterForHandle?: string;
 }
 export interface ISliderDefaultProps extends ISliderProps {
   prefixCls: string;
@@ -58,11 +67,20 @@ export interface ISliderDefaultProps extends ISliderProps {
   railStyle: { [key: string]: string };
   dotStyle: { [key: string]: string };
   activeDotStyle: { [key: string]: string };
+  pushable?: number;
+  precision?: number;
 }
 export interface ISliderModelProps extends ISliderDefaultProps {
   value: number[];
   defaultValue: number[];
   count: number;
+  sliderClassName: string;
+  children?: (
+    | ITrackPresenter
+    | IHandlePresenter
+    | IDotsPresenter
+    | IMarksPresenter
+  )[];
 }
 
 export interface ISliderSingleProps {
@@ -93,22 +111,27 @@ export interface ISliderSingleProps {
   tabIndex?: number;
   count: number;
   tooltip?: tooltip;
+  pushable?: number;
+  precision?: number;
 }
 
 export interface ISliderModel {
   getProps(): ISliderModelProps;
   setProps(_props: ISliderModelProps): void;
   getSliderClassName(): string;
+  getChildren():
+    | (ITrackPresenter | IHandlePresenter | IDotsPresenter | IMarksPresenter)[]
+    | undefined;
 }
 
 export interface ISliderView {
+  updateSliderView(): void;
   get$SliderView(): JQuery<HTMLElement>;
   html(): string;
 }
 
 export interface ISliderPresenter {
   html(): string;
-  get$SliderView(): JQuery<HTMLElement>;
-  preparePropsForSliderModel(props: ISliderModelProps): ISliderModelProps;
-  updateModel(props: ISliderModelProps): void;
+  render(parent: JQuery<HTMLElement>): void;
+  update(props: ISliderProps | undefined): void;
 }

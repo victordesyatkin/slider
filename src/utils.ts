@@ -1,6 +1,11 @@
-export function calcOffset(value: number, min: number, max: number): number {
+export function calcOffset(
+  value: number,
+  min: number,
+  max: number,
+  precision: number = 0
+): number {
   const ratio = (value - min) / (max - min);
-  return Math.max(0, ratio * 100);
+  return Number(Math.max(0, ratio * 100).toFixed(precision));
 }
 
 export function objectToString(style: { [key: string]: string }): string {

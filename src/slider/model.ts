@@ -1,19 +1,14 @@
-import classNames from "classnames";
 import { ISliderModelProps } from "./interface";
+import { ITrackPresenter } from "../track/interface";
+import { IHandlePresenter } from "../handle/interface";
+import { IDotsPresenter } from "../dots/interface";
+import { IMarksPresenter } from "../marks/interface";
 
 export default class SliderModel {
   private props: ISliderModelProps;
-  private sliderClassName: string;
 
   constructor(_props: ISliderModelProps) {
     this.props = _props;
-    const { prefixCls, marks = {}, disabled, vertical, className } = _props;
-    this.sliderClassName = classNames(prefixCls, {
-      [`${prefixCls}_with-marks`]: Object.keys(marks).length,
-      [`${prefixCls}_disabled`]: disabled,
-      [`${prefixCls}_vertical`]: vertical,
-      [className]: className,
-    });
   }
 
   getProps(): ISliderModelProps {
@@ -25,6 +20,12 @@ export default class SliderModel {
   }
 
   getSliderClassName(): string {
-    return this.sliderClassName;
+    return this.props.sliderClassName;
+  }
+
+  getChildren():
+    | (ITrackPresenter | IHandlePresenter | IDotsPresenter | IMarksPresenter)[]
+    | undefined {
+    return this.props.children;
   }
 }

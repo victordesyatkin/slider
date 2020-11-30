@@ -12,16 +12,16 @@ export default class DotsPresenter implements IDotsPresenter {
   private values: number[] | undefined;
 
   constructor(props: IDotsProps) {
-    this.values = this.calcValues(props);
     this.model = new DotsModel(this.preparePropsForDotsModel(props));
     this.view = new DotsView(this.model);
   }
 
   private preparePropsForDotsModel(props: IDotsProps) {
+    this.values = this.calcValues(props);
     return {
       ...props,
       className: `${props.prefixCls}__dots`,
-      values: this.calcValues(props),
+      values: this.values,
       dotPresenters: this.factoryDots(props),
     };
   }

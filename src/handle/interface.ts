@@ -52,6 +52,7 @@ export interface IHandleView {
   getModel(): IHandleModel;
   html(): string;
   updateModel(model: IHandleModel): void;
+  destroy(): void;
 }
 
 export interface IHandlePresenter {
@@ -62,4 +63,5 @@ export interface IHandlePresenter {
   setView(view: IHandleView): void;
   get$View(): JQuery<HTMLElement>;
   html(): string;
+  destroy(): void;
 }

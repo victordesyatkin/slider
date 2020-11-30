@@ -112,6 +112,10 @@ export default class HandleView implements IHandleView {
     return this.model;
   }
 
+  public destroy(): void {
+    this.view.remove();
+  }
+
   public html() {
     return $("<div/>").append(this.view).html();
   }

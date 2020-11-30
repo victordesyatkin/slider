@@ -123,6 +123,10 @@ export default class HandlePresenter {
     return this.view.get$View();
   }
 
+  public destroy(): void {
+    this.getView().destroy();
+  }
+
   public html(): string {
     return this.view.html();
   }
