@@ -7,16 +7,16 @@ import { IMarksPresenter } from "../marks/interface";
 export default class SliderModel {
   private props: ISliderModelProps;
 
-  constructor(_props: ISliderModelProps) {
-    this.props = _props;
+  constructor(tprops: ISliderModelProps) {
+    this.props = tprops;
   }
 
   getProps(): ISliderModelProps {
     return this.props;
   }
 
-  setProps(_props: ISliderModelProps): void {
-    this.props = _props;
+  setProps(tprops: ISliderModelProps): void {
+    this.props = tprops;
   }
 
   getSliderClassName(): string {

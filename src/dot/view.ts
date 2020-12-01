@@ -11,7 +11,6 @@ export default class DotView implements IDotView {
   }
 
   private createView() {
-    const { className } = this.model.getProps();
     return $("<div/>", this.prepareAttr());
   }
 
@@ -44,7 +43,7 @@ export default class DotView implements IDotView {
     return this.model;
   }
 
-  public html() {
+  public html(): string {
     return $("<div/>").append(this.view).html();
   }
 }

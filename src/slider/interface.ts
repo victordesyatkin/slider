@@ -10,6 +10,19 @@ type tooltip = {
   precision?: number;
   show?: boolean;
 };
+
+type marks = {
+  className?: string;
+  render?: (value: number) => string;
+  style?: { [key: string]: string };
+  values?: number[];
+  show?: boolean;
+  dots?: boolean;
+  min?: number;
+  max?: number;
+  step?: number;
+  prefixCls?: string;
+};
 export interface ISliderProps {
   prefixCls?: string;
   vertical?: boolean;
@@ -22,7 +35,7 @@ export interface ISliderProps {
   min?: number;
   max?: number;
   className?: string;
-  marks?: object;
+  marks?: marks;
 
   step?: number;
   onChange?: (value: number[]) => void;
@@ -59,7 +72,7 @@ export interface ISliderDefaultProps extends ISliderProps {
   min: number;
   max: number;
   step?: number;
-  marks?: object;
+  marks?: marks;
   onChange: (value: number[]) => void;
   onBeforeChange: (value: number[]) => void;
   onAfterChange: (value: number[]) => void;
@@ -93,7 +106,7 @@ export interface ISliderSingleProps {
   min: number;
   max: number;
   step?: number;
-  marks?: object;
+  marks?: marks;
   onChange?: (value: number[]) => void;
   onBeforeChange?: (value: number[]) => void;
   onAfterChange?: (value: number[]) => void;
@@ -117,7 +130,7 @@ export interface ISliderSingleProps {
 
 export interface ISliderModel {
   getProps(): ISliderModelProps;
-  setProps(_props: ISliderModelProps): void;
+  setProps(tprops: ISliderModelProps): void;
   getSliderClassName(): string;
   getChildren():
     | (ITrackPresenter | IHandlePresenter | IDotsPresenter | IMarksPresenter)[]

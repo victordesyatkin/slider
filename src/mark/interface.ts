@@ -3,8 +3,8 @@ export interface IMarkProps {
   offset: number;
   style?: { [key: string]: string };
   label: string;
-  onClick: (e: any, value: number) => void;
-  _onClick?: (e: any) => void;
+  onClick: (e: JQuery.ClickEvent, value: number) => void;
+  onClickPresenter?: (e: JQuery.ClickEvent) => void;
   onFocus?: () => void;
   onBlur?: () => void;
   vertical?: boolean;

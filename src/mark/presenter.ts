@@ -13,12 +13,12 @@ export default class MarkPresenter {
   private view: IMarkView;
 
   constructor(props: IMarkProps) {
-    const _props = this.preparePropsForModel(props);
-    this.model = new MarkModel(_props);
+    const tprops = this.preparePropsForModel(props);
+    this.model = new MarkModel(tprops);
     this.view = new MarkView(this.model);
   }
 
-  private _onClick = (e: any): void => {
+  private onClickPresenter = (e: JQuery.ClickEvent): void => {
     const { value, onClick } = this.model.getProps();
     onClick(e, value);
   };
@@ -32,7 +32,7 @@ export default class MarkPresenter {
       onFocus: this.onFocus,
       onBlur: this.onBlur,
       style: this.prepareStyle(props),
-      _onClick: this._onClick,
+      onClickPresenter: this.onClickPresenter,
     };
   }
 
@@ -73,8 +73,8 @@ export default class MarkPresenter {
   }
 
   updateModel(props: IMarkProps): void {
-    const _props = this.preparePropsForModel(props);
-    this.model.setProps(_props);
+    const tprops = this.preparePropsForModel(props);
+    this.model.setProps(tprops);
     this.view.updateModel(this.model);
   }
 

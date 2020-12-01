@@ -7,8 +7,8 @@ export default class DotPresenter {
   private view: IDotView;
 
   constructor(props: IDotProps) {
-    const _props = this.preparePropsForDotModel(props);
-    this.model = new DotModel(_props);
+    const tprops = this.preparePropsForDotModel(props);
+    this.model = new DotModel(tprops);
     this.view = new DotView(this.model);
   }
 
@@ -48,8 +48,8 @@ export default class DotPresenter {
   }
 
   updateModel(props: IDotProps): void {
-    const _props = this.preparePropsForDotModel(props);
-    this.model.setProps(_props);
+    const tprops = this.preparePropsForDotModel(props);
+    this.model.setProps(tprops);
     this.view.updateModel(this.model);
   }
 

@@ -1,4 +1,4 @@
-import { IDotsModel, IDotsProps, IDotsModelProps } from "./interface";
+import { IDotsModel, IDotsModelProps } from "./interface";
 
 export default class DotModel implements IDotsModel {
   private props: IDotsModelProps;

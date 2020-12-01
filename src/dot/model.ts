@@ -11,7 +11,7 @@ export default class DotModel implements IDotModel {
     return this.props;
   }
 
-  setProps(props: IDotPropsModel) {
-    return (this.props = props);
+  setProps(props: IDotPropsModel): void {
+    this.props = props;
   }
 }

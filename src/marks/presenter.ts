@@ -17,8 +17,8 @@ export default class MarksPresenter {
   private view: IMarksView;
 
   constructor(props: IMarksProps) {
-    const _props = this.preparePropsForModel(props);
-    this.model = new MarkModel(_props);
+    const tprops = this.preparePropsForModel(props);
+    this.model = new MarkModel(tprops);
     this.view = new MarkView(this.model);
   }
 
@@ -50,7 +50,7 @@ export default class MarksPresenter {
     if (!show) {
       return;
     }
-    let avalues = [];
+    let avalues: number[] = [];
     const items = [];
     if (values !== undefined) {
       avalues = values.sort((a, b) => a - b);
@@ -65,7 +65,7 @@ export default class MarksPresenter {
       return undefined;
     }
     const className = `${prefixCls}__mark`;
-    for (let value of _values) {
+    for (const value of avalues) {
       let label = `${value}`;
       const offset = calcOffset(value, min, max);
       if (render !== undefined) {
@@ -86,8 +86,8 @@ export default class MarksPresenter {
   };
 
   private prepareStyle(props: any): { [key: string]: string } | undefined {
-    const { vertical } = props;
-    return;
+    // const { vertical } = props; // TODO
+    return undefined;
   }
 
   getModel(): IMarksModel {
@@ -99,8 +99,8 @@ export default class MarksPresenter {
   }
 
   updateModel(props: IMarksProps): void {
-    const _props = this.preparePropsForModel(props);
-    this.model.setProps(_props);
+    const aprops = this.preparePropsForModel(props);
+    this.model.setProps(aprops);
     this.view.updateModel(this.model);
   }
 

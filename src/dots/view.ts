@@ -39,7 +39,7 @@ export default class DotsView implements IDotsView {
     return this.model;
   }
 
-  public html() {
+  public html(): string {
     return $("<div/>").append(this.view).html();
   }
 }

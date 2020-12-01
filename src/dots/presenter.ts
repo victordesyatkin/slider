@@ -28,10 +28,10 @@ export default class DotsPresenter implements IDotsPresenter {
 
   private calcValues(props: IDotsProps): number[] | undefined {
     const { min, max, step, marks } = props;
-    let values = new Array();
+    let values: number[] = [];
     if (marks !== undefined) {
-      const _dots = marks.dots;
-      if (_dots && Array.isArray(marks.values)) {
+      const tdots = marks.dots;
+      if (tdots && Array.isArray(marks.values)) {
         values = [...marks.values];
       }
     }
@@ -49,8 +49,8 @@ export default class DotsPresenter implements IDotsPresenter {
     if (!dots || !this.values) {
       return undefined;
     }
-    const dotPresenters = new Array();
-    for (let v of this.values) {
+    const dotPresenters: DotPresenter[] = [];
+    for (const v of this.values) {
       const offset = calcOffset(v, min, max);
       dotPresenters.push(
         new DotPresenter({
@@ -63,7 +63,7 @@ export default class DotsPresenter implements IDotsPresenter {
     return dotPresenters;
   }
 
-  public getDotsValues() {
+  public getDotsValues(): number[] | undefined {
     return this.model.getProps().values;
   }
 
@@ -76,8 +76,8 @@ export default class DotsPresenter implements IDotsPresenter {
   }
 
   updateModel(props: IDotsProps): void {
-    const _props = this.preparePropsForDotsModel(props);
-    this.model.setProps(_props);
+    const tprops = this.preparePropsForDotsModel(props);
+    this.model.setProps(tprops);
     this.view.updateModel(this.model);
   }
 

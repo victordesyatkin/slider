@@ -11,8 +11,8 @@ export default class MarkModel implements IMarkModel {
     return this.props;
   }
 
-  setProps(props: IMarkPropsModal) {
-    return (this.props = props);
+  setProps(props: IMarkPropsModal): void {
+    this.props = props;
   }
 
   get clasName(): string {

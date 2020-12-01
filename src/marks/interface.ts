@@ -5,7 +5,7 @@ export interface IMarksProps {
   step?: number;
   min: number;
   max: number;
-  onClick: (e: any, value: number) => void;
+  onClick: (e: JQuery.ClickEvent, value: number) => void;
   className?: string;
   render?: (value: number) => string;
   style?: { [key: string]: string };
