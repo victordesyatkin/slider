@@ -1,5 +1,6 @@
 import $ from "jquery";
 import noop from "lodash/noop";
+import sortBy from "lodash/sortBy";
 import classnames from "classnames";
 import {
   ISliderProps,
@@ -221,7 +222,7 @@ export default class SliderPresenter implements ISliderPresenter {
     if (!points) {
       points = new Array();
     }
-    if (step !== undefined) {
+    if (step) {
       const baseNum = 10 ** this.getPrecision(step);
       const maxSteps = Math.floor(
         (max * baseNum - min * baseNum) / (step * baseNum)
@@ -257,15 +258,15 @@ export default class SliderPresenter implements ISliderPresenter {
 
   public clearCurrentHandle = () => {
     this.currentHandleView = undefined;
-    console.log("clearCurrentHandleView : ", !!this.currentHandleView); // TODO
+    //console.log("clearCurrentHandleView : ", !!this.currentHandleView); // TODO
   };
 
   private onClickWithValue = (event: any, nextValue: number): boolean => {
-    event.preventDefault();
-    event.stopPropagation();
     const props = this.sliderModel.getProps();
-    const { value, onAfterChange } = props;
-    if (value.length === 1) {
+    const { value } = props;
+    if (value.length === 1 && !this.currentHandleView) {
+      event.preventDefault();
+      event.stopPropagation();
       this.currentHandleView = this.handlePresenters[0].getView();
       const handlePresenterProps = this.currentHandleView.getModel().getProps();
       const { value: prevValue, index } = handlePresenterProps;
@@ -284,32 +285,24 @@ export default class SliderPresenter implements ISliderPresenter {
   private onClick = (e: any): void => {
     // TODO e interface
     // const { target } = e;
-    // console.log("onClick : ", e.target); // TODO
     // e.preventDefault();
     // e.stopPropagation();
     const { value, vertical } = this.sliderModel.getProps();
-    if (value.length === 1) {
-      console.log(
-        "this.handlePresenters[0].get$View() : ",
-        this.handlePresenters[0].get$View()
-      );
-      console.log(
-        !$(e.target).closest(this.handlePresenters[0].get$View()).length
-      );
-      if (!$(e.target).closest(this.handlePresenters[0].get$View()).length) {
-        this.currentHandleView = this.handlePresenters[0].getView();
-        const {
-          value: prevValue,
-        } = this.currentHandleView.getModel().getProps();
-        const position = this.getMousePosition(vertical, e);
-        const nextValue = this.calcValueByPos(position);
-        if (nextValue !== prevValue) {
-          this.onBeforeChange();
-          this.onChange(e);
-          this.onAfterChange();
-          this.clearCurrentHandle();
-        }
+    if (
+      value.length === 1 &&
+      !$(e.target).closest(this.handlePresenters[0].get$View()).length
+    ) {
+      // console.log("onClick : ", e.target); // TODO
+      this.currentHandleView = this.handlePresenters[0].getView();
+      const { value: prevValue } = this.currentHandleView.getModel().getProps();
+      const position = this.getMousePosition(vertical, e);
+      const nextValue = this.calcValueByPos(position);
+      if (nextValue !== prevValue) {
+        this.onBeforeChange();
+        this.onChange(e);
+        this.onAfterChange();
       }
+      this.clearCurrentHandle();
     }
   };
 
@@ -334,6 +327,8 @@ export default class SliderPresenter implements ISliderPresenter {
       ...this.trackPresenters,
       this.dotsPresenter,
     ];
+    console.log("this.trackPresenters : ", this.trackPresenters);
+    console.log("this.handlePresenters : ", this.handlePresenters);
     this.sliderModel.setProps(propsModel);
     this.sliderView.updateSliderView();
   };
@@ -374,6 +369,7 @@ export default class SliderPresenter implements ISliderPresenter {
 
   private updateTraks(props: ISliderModelProps): void {
     const { value, trackStyle, defaultValue, handleStyle, tabIndex } = props;
+    console.log("props : ", props);
     let _value = value;
     if (value.length > 1) {
       _value = value.slice(0, -1);
@@ -472,10 +468,11 @@ export default class SliderPresenter implements ISliderPresenter {
   private onMouseUp = (e: any) => {
     // TODO
     // const { target } = e;
-    //console.log("onMouseUp : ", e.type); //TODO
+    console.log("onMouseUp : ", e.type); //TODO
     if (this.currentHandleView) {
+      e.preventDefault();
+      e.stopPropagation();
       this.clearCurrentHandle();
-      console.log("onMouseUp : ", this.currentHandleView);
       this.onAfterChange();
     }
   };
@@ -639,9 +636,9 @@ export default class SliderPresenter implements ISliderPresenter {
       }
       value[i] = defaultValue[i];
     }
-    if (count == undefined) {
-      count = length;
-    }
+    count = length;
+    value = value.sort((a, b) => a - b);
+    defaultValue = sortBy(defaultValue);
     return {
       ...props,
       value,
@@ -738,6 +735,9 @@ export default class SliderPresenter implements ISliderPresenter {
       return undefined;
     }
     const _props = this.sliderModel.getProps();
+    props.marks = { ..._props.marks, ...props.marks };
+    props.tooltip = { ..._props.tooltip, ...props.tooltip };
+
     this.updateModel(this.preparePropsForSliderModel({ ..._props, ...props }));
   }
 }

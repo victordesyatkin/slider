@@ -21,7 +21,7 @@ export default class TrackPresenter implements ITrackPresenter {
     this.view = new TrackView(this.model);
   }
 
-  private prepareElStyle(props: ITrackProps): { [key: string]: string } {
+  private prepareElStyle = (props: ITrackProps): { [key: string]: string } => {
     const { vertical, style } = props;
     let { length, offset, reverse } = props;
 
@@ -49,7 +49,7 @@ export default class TrackPresenter implements ITrackPresenter {
     };
 
     return elStyle;
-  }
+  };
 
   public getModel(): ITrackModel {
     return this.model;

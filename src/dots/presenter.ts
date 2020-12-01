@@ -35,7 +35,7 @@ export default class DotsPresenter implements IDotsPresenter {
         values = [...marks.values];
       }
     }
-    if (step !== undefined) {
+    if (step) {
       for (let i = min; i <= max; i += step) {
         values.push(i);
       }

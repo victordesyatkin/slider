@@ -53,15 +53,76 @@ const update = () => {
     //   console.log("onAfterChange : ", v);
     // },
     value: [60],
-    // marks: {
-    //   show: true,
-    // },
-    // tooltip: {
-    //   show: true,
-    //   active: true,
-    // },
+    marks: {
+      show: true,
+    },
+    tooltip: {
+      show: true,
+      active: true,
+    },
     //disabled: true,
   });
 };
 
-setTimeout(update, 5000);
+setTimeout(update, 5 * 1000);
+
+const update1 = () => {
+  slider.update({
+    min: -30,
+    max: 300,
+    // onBeforeChange: (v) => {
+    //   console.log("onBeforeChange : ", v);
+    // },
+    // onChange: (v) => {
+    //   console.log("onChange : ", v);
+    // },
+    step: 30,
+    // onAfterChange: (v) => {
+    //   console.log("onAfterChange : ", v);
+    // },
+    value: [90, 60, 30],
+    marks: {
+      show: true,
+      dots: true,
+      values: [60, 90, 30],
+      render: (v: number): string => `=${v}=`,
+    },
+    tooltip: {
+      show: true,
+      active: true,
+      render: (v: number): string => `${v}$`,
+    },
+    //disabled: true,
+  });
+};
+
+setTimeout(update1, 10 * 1000);
+
+const update2 = () => {
+  slider.update({
+    min: -30,
+    max: 300,
+    // onBeforeChange: (v) => {
+    //   console.log("onBeforeChange : ", v);
+    // },
+    // onChange: (v) => {
+    //   console.log("onChange : ", v);
+    // },
+    step: 30,
+    // onAfterChange: (v) => {
+    //   console.log("onAfterChange : ", v);
+    // },
+    value: [44],
+    marks: {
+      show: true,
+      dots: true,
+      values: [60, 90, 30],
+    },
+    tooltip: {
+      show: true,
+    },
+    //disabled: true,
+  });
+};
+
+setTimeout(update2, 15 * 1000);

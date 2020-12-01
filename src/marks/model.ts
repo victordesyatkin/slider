@@ -12,7 +12,7 @@ export default class MarkModel implements IMarksModel {
   }
 
   setProps(props: IMarksPropsModel) {
-    return (this.props = props);
+    this.props = props;
   }
 
   get clasName(): string | undefined {

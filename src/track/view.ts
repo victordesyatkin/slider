@@ -1,9 +1,10 @@
 import $ from "jquery";
 import { ITrackView, ITrackModel } from "./interface";
+
 export default class TrackView implements ITrackView {
   private model: ITrackModel;
 
-  private view; //TODO JQuery<HTMLElement>
+  private view; // TODO JQuery<HTMLElement>
 
   setModel(model: ITrackModel): void {
     this.model = model;

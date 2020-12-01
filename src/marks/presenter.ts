@@ -53,9 +53,9 @@ export default class MarksPresenter {
     let _values = new Array();
     const items = new Array();
     if (values !== undefined) {
-      _values = values;
+      _values = values.sort((a, b) => a - b);
     }
-    if (step !== undefined) {
+    if (step) {
       for (let i = min; i <= max; i += step) {
         _values.push(i);
       }
