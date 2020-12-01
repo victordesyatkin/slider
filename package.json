@@ -7,7 +7,9 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "webpack --mode=development --env mode=development serve",
     "build": "webpack --mode=production",
-    "build:dev": "webpack --env mode=development --mode=development"
+    "build:dev": "webpack --env mode=development --mode=development",
+    "eslint": "eslint --cache --ext .js,.jsx,.ts,.tsx src",
+    "eslint:dump": "eslint --print-config ./.eslintrc.json"
   },
   "author": "",
   "license": "ISC",

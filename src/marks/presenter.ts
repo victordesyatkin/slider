@@ -50,18 +50,18 @@ export default class MarksPresenter {
     if (!show) {
       return;
     }
-    let _values = new Array();
-    const items = new Array();
+    let avalues = [];
+    const items = [];
     if (values !== undefined) {
-      _values = values.sort((a, b) => a - b);
+      avalues = values.sort((a, b) => a - b);
     }
     if (step) {
       for (let i = min; i <= max; i += step) {
-        _values.push(i);
+        avalues.push(i);
       }
     }
-    _values = uniq(_values);
-    if (!_values.length) {
+    avalues = uniq(avalues);
+    if (!avalues.length) {
       return undefined;
     }
     const className = `${prefixCls}__mark`;
