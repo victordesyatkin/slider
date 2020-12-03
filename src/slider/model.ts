@@ -1,31 +1,53 @@
-import { ISliderModelProps } from "./interface";
-import { ITrackPresenter } from "../track/interface";
-import { IHandlePresenter } from "../handle/interface";
-import { IDotsPresenter } from "../dots/interface";
-import { IMarksPresenter } from "../marks/interface";
+import noop from "lodash/noop";
+import get from "lodash/get";
+import classnames from "classnames";
+import { tDefaultProps, tProps } from "../types";
+import { IModel } from './interface';
 
-export default class SliderModel {
-  private props: ISliderModelProps;
+export default class Model: IModel {
+  private props: tDefaultProps;
 
-  constructor(tprops: ISliderModelProps) {
-    this.props = tprops;
+  private defaultProps: tDefaultProps = {
+    prefixCls: "slider",
+    className: "",
+    value: [0],
+    defaultValue: [0],
+    tabIndex: [-1],
+    min: 0,
+    max: 100,
+    onBeforeChange: noop,
+    onChange: noop,
+    onAfterChange: noop,
+    disabled: false,
+    dots: false,
+    vertical: false,
+    reverse: false,
+    allowCross: false,
+    precision: 0,
+    pushable: false,
+  };
+
+  constructor(p: tProps) {
+    this.props = { ...this.defaultProps, ...p };
   }
 
-  getProps(): ISliderModelProps {
+  getProps(): tDefaultProps {
     return this.props;
   }
 
-  setProps(tprops: ISliderModelProps): void {
-    this.props = tprops;
+  setProps(p: tProps): void {
+    p.mark = { ...this.props.mark, ...p.mark };
+    p.tooltip = { ...this.props.tooltip, ...p.tooltip };
+    this.props = { ...this.props, ...p };
   }
 
-  getSliderClassName(): string {
-    return this.props.sliderClassName;
-  }
-
-  getChildren():
-    | (ITrackPresenter | IHandlePresenter | IDotsPresenter | IMarksPresenter)[]
-    | undefined {
-    return this.props.children;
+  get className(): string {
+    const { prefixCls, mark, disabled, vertical, classNames } = this.props;
+    return classnames(prefixCls, {
+      [`${prefixCls}_with-marks`]: get(mark, ["show"]),
+      [`${prefixCls}_disabled`]: disabled,
+      [`${prefixCls}_vertical`]: vertical,
+      classNames,
+    });
   }
 }

@@ -507,13 +507,6 @@ export default class SliderPresenter implements ISliderPresenter {
   private preparePropsForSliderModel(
     props: ISliderDefaultProps
   ): ISliderModelProps {
-    const { prefixCls, marks = {}, disabled, vertical, className } = props;
-    const sliderClassName = classnames(prefixCls, {
-      [`${prefixCls}_with-marks`]: Object.keys(marks).length,
-      [`${prefixCls}_disabled`]: disabled,
-      [`${prefixCls}_vertical`]: vertical,
-      [className]: className,
-    });
     let { defaultValue, value, count } = props;
     if (defaultValue === undefined) {
       defaultValue = [];

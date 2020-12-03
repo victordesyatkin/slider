@@ -3,14 +3,15 @@
     "browser": true,
     "es6": true,
     "es2021": true
+    // "esnext": true
   },
   "parser": "@typescript-eslint/parser",
   "extends": [
     "eslint:recommended",
     "plugin:@typescript-eslint/eslint-recommended",
     "plugin:@typescript-eslint/recommended",
-    "plugin:@typescript-eslint/recommended-requiring-type-checking",
-    "plugin:fsd/all"
+    "plugin:@typescript-eslint/recommended-requiring-type-checking"
+    //"plugin:fsd/all"
   ],
   /*
   "parserOptions": {
@@ -24,11 +25,11 @@
   },
   "plugins": ["@typescript-eslint", "fsd"],
   "rules": {
-    "fsd/hof-name-prefix": "error",
-    "fsd/no-heavy-constructor": "error",
-    "fsd/jq-cache-dom-elements": "error",
-    "fsd/jq-use-js-prefix-in-selector": "error",
-    "fsd/no-function-declaration-in-event-listener": "error",
-    "fsd/split-conditionals": "error"
+    // "fsd/hof-name-prefix": "error",
+    // "fsd/no-heavy-constructor": "error",
+    // "fsd/jq-cache-dom-elements": "error",
+    // "fsd/jq-use-js-prefix-in-selector": "error",
+    // "fsd/no-function-declaration-in-event-listener": "error",
+    // "fsd/split-conditionals": "error"
   }
 }

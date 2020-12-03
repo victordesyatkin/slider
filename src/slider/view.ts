@@ -1,84 +1,47 @@
 import $ from "jquery";
-import { ISliderModel } from "./interface";
-import { ITrackPresenter } from "../track/interface";
-import { IHandlePresenter } from "../handle/interface";
-// import { IDotsPresenter, IDotsProps } from "../dots/interface";
-// import { IMarksPresenter } from "../marks/interface";
-import { objectToString } from "../utils";
+import { IModel } from "./interface";
 
-export default class SliderView {
-  private sliderModel: ISliderModel;
+export default class View {
+  private model: IModel;
+  private view: JQuery<HTMLElement> | undefined;
+  private children: JQuery<HTMLElement>[] | undefined;
 
-  private sliderView: JQuery<HTMLElement>;
-
-  constructor(slideModel: ISliderModel) {
-    this.sliderModel = slideModel;
-    this.sliderView = this.createSliderView();
+  constructor(model: IModel) {
+    this.model = model;
   }
 
-  createSliderView(): JQuery<HTMLElement> {
-    const view = this.append($("<div/>", this.prepareAttr()));
+  private createView(): JQuery<HTMLElement> {
+    const view = $("<div/>", this.prepare());
     return view;
   }
 
-  private map(v: ITrackPresenter | IHandlePresenter): JQuery<HTMLElement> {
-    return v.get$View();
-  }
-
-  private prepareChildren(): JQuery<HTMLElement>[] | undefined {
-    let children = this.sliderModel.getChildren();
-    if (Array.isArray(children)) {
-      return children.reduce((acc: JQuery<HTMLElement>[], child: any) => {
-        if (Array.isArray(child)) {
-          const _acc = child.map(this.map);
-          acc = [...acc, ..._acc];
-        } else {
-          child.get$View && acc.push(child.get$View());
-        }
-        return acc;
-      }, new Array());
+  private updateView = (): JQuery<HTMLElement> => {
+    if (!this.view) {
+      this.view = this.createView();
     }
-    return undefined;
-  }
+    return this.view.attr(this.prepare()).empty().append();
+  };
 
-  private append(view: JQuery<HTMLElement>): JQuery<HTMLElement> {
-    const props = this.sliderModel.getProps();
-    view.empty().append(
-      $("<div/>", {
-        class: `${props.prefixCls}__rail`,
-        style: objectToString(props.railStyle),
-      })
-    );
-    const children = this.prepareChildren();
-    if (Array.isArray(children)) {
-      view.append(children);
-    }
-    return view;
-  }
-
-  private prepareAttr = (): { class: string } => {
+  private prepare = (): { class: string } => {
     return {
-      class: this.sliderModel.getSliderClassName(),
+      class: this.model.className,
     };
   };
 
-  public updateSliderView = (): void => {
-    this.append(this.sliderView.attr(this.prepareAttr()));
-  };
-
-  setSliderModel(slideModel: ISliderModel): void {
-    this.sliderModel = slideModel;
+  public setChildred(children: JQuery<HTMLElement>[]): void {
+    this.children = children;
+    this.updateView();
   }
 
-  getSliderModel(): ISliderModel {
-    return this.sliderModel;
+  public setModel(model: IModel): void {
+    this.model = model;
+    this.updateView();
   }
 
-  get$SliderView(): JQuery<HTMLElement> {
-    return this.sliderView;
-  }
-
-  html(): string {
-    return $("<div/>").append(this.sliderView).html();
+  public render(el: JQuery<HTMLElement>): void {
+    if (!this.view) {
+      this.view = this.createView();
+    }
+    el.append(this.view);
   }
 }

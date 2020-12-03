@@ -3,26 +3,6 @@ import { IHandlePresenter } from "../handle/interface";
 import { IDotsPresenter } from "../dots/interface";
 import { IMarksPresenter } from "../marks/interface";
 
-type tooltip = {
-  render?: (value: number) => string;
-  classNames?: string[];
-  active?: boolean;
-  precision?: number;
-  show?: boolean;
-};
-
-type marks = {
-  className?: string;
-  render?: (value: number) => string;
-  style?: { [key: string]: string };
-  values?: number[];
-  show?: boolean;
-  dots?: boolean;
-  min?: number;
-  max?: number;
-  step?: number;
-  prefixCls?: string;
-};
 export interface ISliderProps {
   prefixCls?: string;
   vertical?: boolean;
@@ -88,12 +68,6 @@ export interface ISliderModelProps extends ISliderDefaultProps {
   defaultValue: number[];
   count: number;
   sliderClassName: string;
-  children?: (
-    | ITrackPresenter
-    | IHandlePresenter
-    | IDotsPresenter
-    | IMarksPresenter
-  )[];
 }
 
 export interface ISliderSingleProps {
