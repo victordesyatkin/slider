@@ -1,15 +1,35 @@
 import JQuery from "jquery";
-import { tProps } from "../types";
+import merge from "lodash/merge";
+import noop from "lodash/noop";
+import { tProps, tDefaultProps } from "../types";
 import Model from "./model";
 import View from "./view";
 import Presenter from "./presenter";
 
+export const defaultProps: tDefaultProps = {
+  prefixCls: "slider",
+  values: [0],
+  min: 0,
+  max: 100,
+  onBeforeChange: noop,
+  onChange: noop,
+  onAfterChange: noop,
+  disabled: false,
+  track: { on: true },
+  rail: { on: true },
+  vertical: false,
+  reverse: false,
+  allowCross: false,
+  precision: 0,
+  type: "slider",
+};
+
 (function ($) {
   $.fn.slider = function (props: tProps): JQuery {
-    const model = new Model(props);
-    const presenter = new Presenter(model);
-    const view = new View(model, presenter);
-    this.append(view.render());
+    const mergeProps: tDefaultProps = merge(defaultProps, props);
+    const model = new Model(mergeProps);
+    const view = new View(this, mergeProps);
+    //sconst presenter = new Presenter(model, view);
     return this;
   };
 })(JQuery);

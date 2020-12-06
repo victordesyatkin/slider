@@ -9,24 +9,23 @@ import {
   getMousePosition,
   ensureValueInRange,
 } from "../utils";
-import RailView from "../rail/view";
-import HandleView from "../handle/view";
+import RailView from "../components/rail/view";
+import HandleView from "../components/handle/view";
 
 export default class View implements IView {
-  private model: IModel;
   private view: JQuery<HTMLElement>;
-  private presenter: IPresenter;
   private tracks: IView[] = [];
   private handles: ISubView[] = [];
   private dots: IView[] = [];
   private marks: IView[] = [];
   private rails: IView[] = [];
   private currentHandleView?: ISubView;
+  private props: tDefaultProps;
+  private el: JQuery<HTMLElement>;
 
-  constructor(model: IModel, presenter: IPresenter) {
-    this.model = model;
-    this.presenter = presenter;
-    const props = this.model.getProps();
+  constructor(el: JQuery<HTMLElement>, props: tDefaultProps) {
+    this.props = props;
+    this.el = el;
     this.view = this.createView(props);
     this.createOrUpdateSubViews(props);
     this.appendSubViews(this.view);
@@ -340,13 +339,13 @@ export default class View implements IView {
     return Number(value.toFixed(precision));
   }
 
-  public setModel = (model: IModel): void => {
-    this.model = model;
+  public setModel = (props: tDefaultProps): void => {
+    this.props = props;
     this.updateView(this.model.getProps());
   };
 
   public render = (): JQuery<HTMLElement> => {
-    return this.view;
+    return this.el.append(this.view);
   };
 
   public remove(): void {}

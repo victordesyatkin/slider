@@ -7,24 +7,6 @@ export default class Model implements IModel {
   private props: tDefaultProps;
   private callbacks: ((props: tDefaultProps) => void)[] = [];
 
-  private defaultProps: tDefaultProps = {
-    prefixCls: "slider",
-    values: [0],
-    min: 0,
-    max: 100,
-    onBeforeChange: noop,
-    onChange: noop,
-    onAfterChange: noop,
-    disabled: false,
-    track: { on: true },
-    rail: { on: true },
-    vertical: false,
-    reverse: false,
-    allowCross: false,
-    precision: 0,
-    type: "slider",
-  };
-
   constructor(p: tProps) {
     this.props = { ...this.defaultProps, ...p };
     this.prepareValues(this.props);

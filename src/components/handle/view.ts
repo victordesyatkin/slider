@@ -1,8 +1,8 @@
 import $ from "jquery";
 import get from "lodash/get";
-import { calcOffset, objectToString } from "../utils";
-import { IModel, ISubView, IPresenter } from "../slider/interface";
-import { tDefaultProps, tAddition } from "../types";
+import { calcOffset, objectToString } from "../../utils";
+import { IModel, ISubView, IPresenter } from "../../slider/interface";
+import { tDefaultProps, tAddition } from "../../types";
 import classnames from "classnames";
 
 export default class HandleView implements ISubView {
