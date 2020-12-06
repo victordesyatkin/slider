@@ -1,124 +1,19 @@
-import { ITrackPresenter } from "../track/interface";
-import { IHandlePresenter } from "../handle/interface";
-import { IDotsPresenter } from "../dots/interface";
-import { IMarksPresenter } from "../marks/interface";
+import { tAddition, tDefaultProps, tProps } from "../types";
 
-export interface ISliderProps {
-  prefixCls?: string;
-  vertical?: boolean;
-  reverse?: boolean;
-  disabled?: boolean;
-  included?: boolean;
-  value?: number[];
-  defaultValue?: number[];
-  count?: number;
-  min?: number;
-  max?: number;
-  className?: string;
-  marks?: marks;
-
-  step?: number;
-  onChange?: (value: number[]) => void;
-  onBeforeChange?: (value: number[]) => void;
-  onAfterChange?: (value: number[]) => void;
-
-  trackStyle?: ({ [key: string]: string } | undefined)[];
-  handleStyle?: ({ [key: string]: string } | undefined)[];
-  tabIndex?: number[];
-  startPoint?: number;
-  dots?: boolean;
-  dotStyle?: { [key: string]: string };
-  activeDotStyle?: { [key: string]: string }; // TODO
-  railStyle?: { [key: string]: string };
-  allowCross?: boolean;
-  tooltip?: tooltip;
-  pushable?: number;
-  precision?: number;
-
-  //TODO
-  ariaLabelForHandle?: string;
-  ariaLabelledByForHandle?: string;
-  ariaValueTextFormatterForHandle?: string;
-}
-export interface ISliderDefaultProps extends ISliderProps {
-  prefixCls: string;
-  className: string;
-  vertical: boolean;
-  reverse: boolean;
-  trackStyle: ({ [key: string]: string } | undefined)[];
-  handleStyle: ({ [key: string]: string } | undefined)[];
-  disabled: boolean;
-  included: boolean;
-  min: number;
-  max: number;
-  step?: number;
-  marks?: marks;
-  onChange: (value: number[]) => void;
-  onBeforeChange: (value: number[]) => void;
-  onAfterChange: (value: number[]) => void;
-  dots: boolean;
-  railStyle: { [key: string]: string };
-  dotStyle: { [key: string]: string };
-  activeDotStyle: { [key: string]: string };
-  pushable?: number;
-  precision?: number;
-}
-export interface ISliderModelProps extends ISliderDefaultProps {
-  value: number[];
-  defaultValue: number[];
-  count: number;
-  sliderClassName: string;
+export interface IModel {
+  getProps(): tDefaultProps;
+  setProps(p: tProps): void;
 }
 
-export interface ISliderSingleProps {
-  prefixCls: string;
-  className: string;
-  vertical: boolean;
-  reverse: boolean;
-  disabled: boolean;
-  included: boolean;
-  min: number;
-  max: number;
-  step?: number;
-  marks?: marks;
-  onChange?: (value: number[]) => void;
-  onBeforeChange?: (value: number[]) => void;
-  onAfterChange?: (value: number[]) => void;
-  dots: boolean;
-  railStyle: { [key: string]: string };
-  dotStyle: { [key: string]: string };
-  activeDotStyle: { [key: string]: string }; // TODO
-
-  value: number;
-  defaultValue: number;
-  index: number;
-  trackStyle: { [key: string]: string } | undefined;
-  handleStyle: { [key: string]: string } | undefined;
-  startPoint?: number;
-  tabIndex?: number;
-  count: number;
-  tooltip?: tooltip;
-  pushable?: number;
-  precision?: number;
+export interface IView {
+  setModel(model: IModel): void;
+  render(): JQuery<HTMLElement>;
+  remove(): void;
+}
+export interface ISubView extends IView {
+  getAddition(): tAddition;
 }
 
-export interface ISliderModel {
-  getProps(): ISliderModelProps;
-  setProps(tprops: ISliderModelProps): void;
-  getSliderClassName(): string;
-  getChildren():
-    | (ITrackPresenter | IHandlePresenter | IDotsPresenter | IMarksPresenter)[]
-    | undefined;
-}
-
-export interface ISliderView {
-  updateSliderView(): void;
-  get$SliderView(): JQuery<HTMLElement>;
-  html(): string;
-}
-
-export interface ISliderPresenter {
-  html(): string;
-  render(parent: JQuery<HTMLElement>): void;
-  update(props: ISliderProps | undefined): void;
+export interface IPresenter {
+  onChange(values: number[]): void;
 }

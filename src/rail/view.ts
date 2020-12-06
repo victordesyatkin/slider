@@ -1,13 +1,13 @@
 import $ from "jquery";
 import get from "lodash/get";
 import { calcOffset, objectToString } from "../utils";
-import { IModel, ISubView, IPresenter } from "../slider/interface";
+import { IModel, IView, IPresenter } from "../slider/interface";
 import { tDefaultProps, tAddition } from "../types";
 import classnames from "classnames";
 
-export default class HandleView implements ISubView {
+export default class RailView implements IView {
   private model: IModel;
-  private view?: JQuery<HTMLElement>;
+  private view: JQuery<HTMLElement>;
   private presenter?: IPresenter;
   private addition?: tAddition;
 
@@ -22,54 +22,31 @@ export default class HandleView implements ISubView {
     return $("<div/>", this.prepareAttr(props));
   }
 
-  private prepareAttr = (props: tDefaultProps) => {
-    const attr: {
-      class: string | undefined;
-      style: string | undefined;
-      tabindex: number;
-    } = {
+  private prepareAttr = (
+    props: tDefaultProps
+  ): {
+    class: string | undefined;
+    style: string | undefined;
+  } => {
+    const attr: { class: string | undefined; style: string | undefined } = {
       class: this.prepareClassName(props),
       style: this.prepareStyle(props),
-      tabindex: -1,
     };
     return attr;
   };
 
   private prepareClassName = (props: tDefaultProps): string => {
-    const { prefixCls, handle } = props;
+    const { prefixCls, classNames } = props;
     const index = get(this.addition, ["index"], 0);
-    return classnames(
-      `${prefixCls}__handle`,
-      get(handle, ["classNames", index])
-    );
+    return classnames(`${prefixCls}__rail`, get(classNames, [index]));
   };
 
   private prepareStyle = (props: tDefaultProps): string | undefined => {
-    const index = get(this.addition, ["index"], 0);
-    const style = get(props, ["handle", "styles", index]);
-    const { values, min, max, vertical, reverse } = props;
-    const value = values[index];
-    const offset = calcOffset(value, min, max);
-    const positionStyle = vertical
-      ? {
-          [reverse ? "top" : "bottom"]: `${offset}%`,
-          [reverse ? "bottom" : "top"]: "auto",
-          transform: reverse ? "none" : `translateY(+50%)`,
-        }
-      : {
-          [reverse ? "right" : "left"]: `${offset}%`,
-          [reverse ? "left" : "right"]: "auto",
-          transform: `translateX(${reverse ? "+" : "-"}50%)`,
-        };
+    const style = get(props, ["rail", "style"]);
     return objectToString({
       ...style,
-      ...positionStyle,
     });
   };
-
-  public getAddition(): tAddition {
-    return this.addition;
-  }
 
   public setModel = (model: IModel): void => {
     this.model = model;

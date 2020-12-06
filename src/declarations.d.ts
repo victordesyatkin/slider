@@ -1,5 +1,8 @@
-declare module "*.scss";
 import { tProps } from "./types";
-interface JQuery {
-  slider: (props: tProps) => JQuery;
+declare global {
+  interface JQuery {
+    slider(props: tProps): JQuery;
+  }
 }
+
+declare module "*.scss";

@@ -3,27 +3,27 @@ export type tProps = {
   vertical?: boolean;
   reverse?: boolean;
   disabled?: boolean;
-  value?: number[];
-  defaultValue?: number[];
+  values?: number[];
   min?: number;
   max?: number;
   classNames?: string[];
+  style?: { [key: string]: string };
   mark?: tMark;
   step?: number;
   onChange?: (value: number[]) => void;
   onBeforeChange?: (value: number[]) => void;
   onAfterChange?: (value: number[]) => void;
-  trackStyle?: ({ [key: string]: string } | undefined)[];
-  handleStyle?: ({ [key: string]: string } | undefined)[];
-  tabIndex?: number[];
+  track?: tTrack;
+  handle?: tHandle;
   startPoint?: number;
-  dots?: boolean;
-  dotStyle?: { [key: string]: string };
-  railStyle?: { [key: string]: string };
+  dots?: tDot;
+  rail?: tRail;
   allowCross?: boolean;
   tooltip?: tTooltip;
-  pushable?: number | boolean;
+  pushable?: number;
   precision?: number;
+  index?: number;
+  type?: string;
 };
 
 export type tDefaultProps = {
@@ -31,44 +31,70 @@ export type tDefaultProps = {
   vertical: boolean;
   reverse: boolean;
   disabled: boolean;
-  value?: number[];
-  defaultValue: number[];
+  values: number[];
   min: number;
   max: number;
-  classNames: string[];
+  classNames?: string[];
+  style?: { [key: string]: string };
   mark?: tMark;
   step?: number;
   onChange: (value: number[]) => void;
   onBeforeChange: (value: number[]) => void;
   onAfterChange: (value: number[]) => void;
-  trackStyle?: ({ [key: string]: string } | undefined)[];
-  handleStyle?: ({ [key: string]: string } | undefined)[];
-  tabIndex: number[];
+  track?: tTrack;
+  handle?: tHandle;
   startPoint?: number;
-  dots: boolean;
-  dotStyle?: { [key: string]: string };
-  railStyle?: { [key: string]: string };
+  dot?: tDot;
+  rail?: tRail;
   allowCross: boolean;
   tooltip?: tTooltip;
-  pushable: number | boolean;
+  pushable?: number;
   precision: number;
+  type: string;
+};
+
+export type tAddition = {
+  index: number;
+};
+
+export type tHandle = {
+  classNames?: string[];
+  styles: { [key: string]: string }[];
+};
+
+export type tTrack = {
+  classNames?: string[];
+  styles?: { [key: string]: string }[];
+  on?: boolean;
+};
+
+export type tRail = {
+  classNames?: string[];
+  styles?: { [key: string]: string }[];
+  on?: boolean;
+};
+
+export type tDot = {
+  classNames?: string[];
+  styles?: { [key: string]: string }[];
+  on?: boolean;
 };
 
 export type tTooltip = {
   classNames?: string[];
-  style?: { [key: string]: string };
+  styles?: { [key: string]: string }[];
   render?: (value: number) => string;
-  active?: boolean;
+  on?: boolean;
   precision?: number;
-  show?: boolean;
+  allways?: boolean;
 };
 
 export type tMark = {
   classNames?: string[];
-  style?: { [key: string]: string };
+  styles?: { [key: string]: string }[];
   render?: (value: number) => string;
   values?: number[];
-  show?: boolean;
+  on?: boolean;
   dots?: boolean;
   step?: number;
 };

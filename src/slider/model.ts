@@ -1,53 +1,61 @@
 import noop from "lodash/noop";
-import get from "lodash/get";
-import classnames from "classnames";
+import sortBy from "lodash/sortBy";
 import { tDefaultProps, tProps } from "../types";
-import { IModel } from './interface';
+import { IModel } from "./interface";
 
-export default class Model: IModel {
+export default class Model implements IModel {
   private props: tDefaultProps;
+  private callbacks: ((props: tDefaultProps) => void)[] = [];
 
   private defaultProps: tDefaultProps = {
     prefixCls: "slider",
-    className: "",
-    value: [0],
-    defaultValue: [0],
-    tabIndex: [-1],
+    values: [0],
     min: 0,
     max: 100,
     onBeforeChange: noop,
     onChange: noop,
     onAfterChange: noop,
     disabled: false,
-    dots: false,
+    track: { on: true },
+    rail: { on: true },
     vertical: false,
     reverse: false,
     allowCross: false,
     precision: 0,
-    pushable: false,
+    type: "slider",
   };
 
   constructor(p: tProps) {
     this.props = { ...this.defaultProps, ...p };
+    this.prepareValues(this.props);
   }
 
-  getProps(): tDefaultProps {
+  public getProps = (): tDefaultProps => {
     return this.props;
-  }
+  };
 
-  setProps(p: tProps): void {
+  public setProps = (p: tProps): void => {
     p.mark = { ...this.props.mark, ...p.mark };
     p.tooltip = { ...this.props.tooltip, ...p.tooltip };
     this.props = { ...this.props, ...p };
-  }
+    this.prepareValues(this.props);
+    this.callbacks.forEach((callback) => callback(this.props));
+  };
 
-  get className(): string {
-    const { prefixCls, mark, disabled, vertical, classNames } = this.props;
-    return classnames(prefixCls, {
-      [`${prefixCls}_with-marks`]: get(mark, ["show"]),
-      [`${prefixCls}_disabled`]: disabled,
-      [`${prefixCls}_vertical`]: vertical,
-      classNames,
-    });
-  }
+  public prepareValues = (props: tDefaultProps): void => {
+    const { values, min, max } = props;
+    const v = [...values];
+    for (const i in v) {
+      if (!(v[i] >= min && v[i] <= max)) {
+        v[i] = min;
+      }
+    }
+    props.values = sortBy(v);
+  };
+
+  public subscribe = (callback: () => tDefaultProps): (() => void) => {
+    this.callbacks.push(callback);
+    return () =>
+      (this.callbacks = this.callbacks.filter((cb) => cb !== callback));
+  };
 }

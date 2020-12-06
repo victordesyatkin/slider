@@ -1,4 +1,7 @@
-export function objectToString(style: { [key: string]: string }): string {
+export function objectToString(style?: { [key: string]: string }): string {
+  if (!style) {
+    return "";
+  }
   const lines = Object.keys(style).map((property: string): string => {
     return `${property}: ${style[property]};`;
   });
@@ -36,4 +39,11 @@ export function ensureValueInRange(
     return max;
   }
   return val;
+}
+
+export function getMousePosition(
+  vertical: boolean,
+  e: JQuery.ClickEvent
+): number {
+  return vertical ? e.clientY || 0 : e.pageX || 0;
 }
