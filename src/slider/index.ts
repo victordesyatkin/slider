@@ -5,6 +5,7 @@ import { tProps, tDefaultProps } from "../types";
 import Model from "./model";
 import View from "./view";
 import Presenter from "./presenter";
+import PubSub from "../helpers/pubsub";
 
 export const defaultProps: tDefaultProps = {
   prefixCls: "slider",
@@ -27,9 +28,10 @@ export const defaultProps: tDefaultProps = {
 (function ($) {
   $.fn.slider = function (props: tProps): JQuery {
     const mergeProps: tDefaultProps = merge(defaultProps, props);
+    const pubsub = new PubSub();
     const model = new Model(mergeProps);
-    const view = new View(this, mergeProps);
-    //sconst presenter = new Presenter(model, view);
+    const view = new View(this);
+    const presenter = new Presenter(model, view, pubsub);
     return this;
   };
 })(JQuery);

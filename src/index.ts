@@ -1,7 +1,7 @@
 import $ from "jquery";
 //import SliderPresenter from "./slider/presenter";
 import "./slider/index";
-import "./index.scss";
+import "./styles/index.scss";
 
 const props = {
   prefixCls: "slider",

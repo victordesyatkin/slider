@@ -1,18 +1,14 @@
-import { IPresenter, IModel } from "./interface";
+import { IPubSub } from "../helpers/interface";
+import { tDefaultProps } from "../types";
 
-export default class Presenter implements IPresenter {
-  private model: IModel;
+export default class Presenter {
+  private model: any;
+  private view: any;
+  private pubsub: IPubSub;
 
-  constructor(model: IModel) {
+  constructor(model: any, view: any, pubsub: IPubSub) {
     this.model = model;
-  }
-
-  private setModel = () => {};
-
-  public onChange(values: number[]) {
-    let props = this.model.getProps();
-    props = { ...props, values };
-    this.model.setProps(props);
-    this.model.subscribe();
+    this.view = view;
+    this.pubsub = pubsub;
   }
 }

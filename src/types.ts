@@ -98,3 +98,5 @@ export type tMark = {
   dots?: boolean;
   step?: number;
 };
+
+export type tpbcallback = (data: any) => void;
