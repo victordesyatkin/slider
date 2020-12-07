@@ -6,8 +6,8 @@ export interface IModel {
 }
 
 export interface IView {
-  setModel(model: IModel): void;
-  render(): JQuery<HTMLElement>;
+  setProps(props: tDefaultProps): void;
+  render(parent: JQuery<HTMLElement>): void;
   remove(): void;
 }
 export interface ISubView extends IView {
@@ -16,4 +16,5 @@ export interface ISubView extends IView {
 
 export interface IPresenter {
   onChange(values: number[]): void;
+  render(parent: JQuery<HTMLElement>): void;
 }
