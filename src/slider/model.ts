@@ -7,13 +7,19 @@ export default class Model extends PubSub {
   constructor(props: tDefaultProps) {
     super();
     this.props = props;
+    this.onHandle();
   }
 
-  getProps = (): tDefaultProps => {
+  private onHandle = (): void => {
+    this.subscribe("setProps", this.setProps);
+  };
+
+  public getProps = (): tDefaultProps => {
     return this.props;
   };
 
-  setProps = (props: tDefaultProps): void => {
+  public setProps = (props: tDefaultProps): void => {
     this.props = props;
+    this.publish("setProps", props);
   };
 }

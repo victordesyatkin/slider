@@ -1,5 +1,6 @@
 import $ from "jquery";
 import get from "lodash/get";
+import isUndefined from "lodash/isUndefined";
 import { calcOffset, objectToString } from "../../helpers/utils";
 import { ISubView } from "../../slider/interface";
 import { tDefaultProps, tAddition } from "../../types";
@@ -17,8 +18,17 @@ export default class HandleView implements ISubView {
   private createView(): void {
     if (this.props) {
       this.view = $("<div/>", this.prepareAttr());
+      this.view.on("mousedown", this.onMousedown);
     }
   }
+
+  private onMousedown = (e: JQuery.Event): void => {
+    const mousedown = get(this.addition, ["handlers", "mousedown"]);
+    const index = get(this.addition, ["index"]);
+    if (!isUndefined(index) && mousedown) {
+      mousedown(index, e);
+    }
+  };
 
   private prepareAttr = () => {
     const attr: {

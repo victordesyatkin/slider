@@ -15,6 +15,5 @@ export interface ISubView extends IView {
 }
 
 export interface IPresenter {
-  onChange(values: number[]): void;
   render(parent: JQuery<HTMLElement>): void;
 }

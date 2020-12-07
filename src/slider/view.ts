@@ -57,6 +57,11 @@ export default class View extends PubSub {
     return objectToString({ ...get(this.props, ["style"]) });
   }
 
+  private handleMouseDown = (index: number, e: JQuery.Event): void => {
+    console.log("handleMouseDown index : ", index);
+    console.log("handleMouseDown e : ", e);
+  };
+
   private createOrUpdateSubViews(): void {
     this.createOrUpdateSubView<RailView>(this.rails, 1, RailView);
     this.createOrUpdateSubView<HandleView>(
@@ -79,12 +84,14 @@ export default class View extends PubSub {
     c: { new (addition: tAddition): T }
   ): void {
     if (this.props) {
-      const { values } = this.props;
+      const handlers = {
+        mousedown: this.handleMouseDown,
+      };
       for (let index = 0; index < count; index += 1) {
         if (views[index]) {
           views[index].setProps(this.props);
         } else {
-          views[index] = new c({ index });
+          views[index] = new c({ index, handlers });
           views[index].setProps(this.props);
         }
       }
@@ -150,4 +157,6 @@ export default class View extends PubSub {
   public render = () => {
     this.parent && this.view && this.parent.append(this.view);
   };
+
+  public remove = (): void => {};
 }

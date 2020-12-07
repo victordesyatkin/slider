@@ -55,7 +55,10 @@ export type tDefaultProps = {
 
 export type tAddition = {
   index: number;
+  handlers?: { [key: string]: tHandler };
 };
+
+export type tHandler = (i: number, e: any) => void;
 
 export type tHandle = {
   classNames?: string[];
