@@ -275,7 +275,6 @@ export default class View extends PubSub {
 
   private appendSubViews(): void {
     if (this.view) {
-      //this.view.empty();
       this.appendSubView(this.tracks);
       this.appendSubView(this.handles);
       this.appendSubView(this.dots);
