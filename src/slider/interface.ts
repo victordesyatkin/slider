@@ -12,6 +12,7 @@ export interface IView {
 }
 export interface ISubView extends IView {
   getAddition(): tAddition;
+  setAddition(addition: tAddition): void;
 }
 
 export interface IPresenter {

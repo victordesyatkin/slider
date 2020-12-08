@@ -12,6 +12,9 @@ import { tDefaultProps, tAddition } from "../types";
 import { IView, ISubView } from "./interface";
 import RailView from "../components/rail/view";
 import HandleView from "../components/handle/view";
+import TrackView from "../components/track/view";
+import DotsView from "../components/dots/view";
+import MarksView from "../components/marks/view";
 
 export default class View extends PubSub {
   private parent?: JQuery<HTMLElement>;
@@ -68,7 +71,6 @@ export default class View extends PubSub {
   };
 
   private onMouseDown = (index: number, e: JQuery.Event): void => {
-    console.log("index : ", index);
     e.preventDefault();
     this.currentHandleIndex = index;
     window.addEventListener("mousemove", this.onMouseMove);
@@ -231,13 +233,13 @@ export default class View extends PubSub {
       this.getCount(this.handles),
       HandleView
     );
-    // this.createOrUpdateSubView(
-    //   props,
-    //   this.tracks,
-    //   this.getCount(props, this.handles)
-    // );
-    // this.createOrUpdateSubView(props, this.dots, 1);
-    // this.createOrUpdateSubView(props, this.marks, 1);
+    this.createOrUpdateSubView<TrackView>(
+      this.tracks,
+      this.getCount(this.tracks) - 1 || 1,
+      TrackView
+    );
+    this.createOrUpdateSubView<DotsView>(this.dots, 1, DotsView);
+    this.createOrUpdateSubView<MarksView>(this.marks, 1, MarksView);
   }
 
   private createOrUpdateSubView<T extends IView>(
@@ -246,9 +248,12 @@ export default class View extends PubSub {
     c: { new (addition: tAddition): T }
   ): void {
     if (this.props) {
-      const handlers = {
-        mousedown: this.onMouseDown,
-      };
+      let handlers;
+      if (c.name === "HandleView") {
+        handlers = {
+          mousedown: this.onMouseDown,
+        };
+      }
       for (let index = 0; index < count; index += 1) {
         if (views[index]) {
           views[index].setProps(this.props);
@@ -275,11 +280,11 @@ export default class View extends PubSub {
 
   private appendSubViews(): void {
     if (this.view) {
-      this.appendSubView(this.tracks);
       this.appendSubView(this.handles);
-      this.appendSubView(this.dots);
       this.appendSubView(this.rails);
       this.appendSubView(this.marks);
+      this.appendSubView(this.dots);
+      this.appendSubView(this.tracks);
     }
     return;
   }

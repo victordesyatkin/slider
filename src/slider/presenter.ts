@@ -28,7 +28,6 @@ export default class Presenter implements IPresenter {
   };
 
   private setPropsView = (props: tDefaultProps): void => {
-    console.log("setPropsView : ", props);
     this.view.setProps(props);
   };
 

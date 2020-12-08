@@ -1,11 +1,10 @@
 import $ from "jquery";
 import get from "lodash/get";
-import { objectToString } from "../../helpers/utils";
 import { ISubView } from "../../slider/interface";
 import { tDefaultProps, tAddition } from "../../types";
 import classnames from "classnames";
 
-export default class RailView implements ISubView {
+export default class MarkView implements ISubView {
   private props?: tDefaultProps;
   private view?: JQuery<HTMLElement>;
   private addition: tAddition;
@@ -16,7 +15,7 @@ export default class RailView implements ISubView {
 
   private createView(): void {
     if (this.props) {
-      const on = get(this.props, ["rail", "on"]);
+      const on = get(this.props, ["mark", "on"]);
       if (on) {
         this.view = $("<div/>", this.prepareAttr());
       }
@@ -36,17 +35,11 @@ export default class RailView implements ISubView {
 
   private prepareClassName = (): string => {
     const prefixCls = get(this.props, ["prefixCls"], "");
-    const index = get(this.addition, ["index"]);
-    const className = get(this.props, ["rail", "classNames", index], "");
-    return classnames(`${prefixCls}__rail`, className);
+    return classnames(`${prefixCls}__marks`);
   };
 
   private prepareStyle = (): string | undefined => {
-    const index = get(this.addition, ["index"]);
-    const style = get(this.props, ["rail", "styles", index], {});
-    return objectToString({
-      ...style,
-    });
+    return;
   };
 
   private updateView(): void {

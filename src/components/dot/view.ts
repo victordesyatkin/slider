@@ -1,12 +1,12 @@
 import $ from "jquery";
 import get from "lodash/get";
-import isUndefined from "lodash/isUndefined";
-import { calcOffset, objectToString } from "../../helpers/utils";
+import { objectToString } from "../../helpers/utils";
 import { ISubView } from "../../slider/interface";
 import { tDefaultProps, tAddition } from "../../types";
+import { calcOffset } from "../../helpers/utils";
 import classnames from "classnames";
 
-export default class HandleView implements ISubView {
+export default class DotView implements ISubView {
   private props?: tDefaultProps;
   private view?: JQuery<HTMLElement>;
   private addition: tAddition;
@@ -18,29 +18,16 @@ export default class HandleView implements ISubView {
   private createView(): void {
     if (this.props) {
       this.view = $("<div/>", this.prepareAttr());
-      this.view.on({
-        mousedown: this.onMouseDown,
-      });
     }
   }
 
-  private onMouseDown = (e: JQuery.ClickEvent): void => {
-    const mousedown = get(this.addition, ["handlers", "mousedown"]);
-    const index = get(this.addition, ["index"]);
-    if (!isUndefined(index) && mousedown) {
-      mousedown(index, e);
-    }
-  };
-
-  private prepareAttr = () => {
-    const attr: {
-      class: string | undefined;
-      style: string | undefined;
-      tabindex: number;
-    } = {
+  private prepareAttr = (): {
+    class: string | undefined;
+    style: string | undefined;
+  } => {
+    const attr: { class: string | undefined; style: string | undefined } = {
       class: this.prepareClassName(),
       style: this.prepareStyle(),
-      tabindex: -1,
     };
     return attr;
   };
@@ -48,16 +35,16 @@ export default class HandleView implements ISubView {
   private prepareClassName = (): string => {
     const prefixCls = get(this.props, ["prefixCls"], "");
     const index = get(this.addition, ["index"]);
-    const className = get(this.props, ["handle", "classNames", index], "");
-    return classnames(`${prefixCls}__handle`, className);
+    const className = get(this.props, ["dot", "classNames", index], "");
+    return classnames(`${prefixCls}__dot`, className);
   };
 
   private prepareStyle = (): string | undefined => {
     if (this.props) {
       const index = get(this.addition, ["index"]);
-      const style = get(this.props, ["handle", "styles", index], {});
-      const { values, min, max, vertical, reverse } = this.props;
-      const value = values[index];
+      const value = get(this.addition, ["value"], 0);
+      const style = get(this.props, ["dot", "styles", index], {});
+      const { vertical, min, max, reverse } = this.props;
       const offset = calcOffset(value, min, max);
       const positionStyle = vertical
         ? {
@@ -75,9 +62,10 @@ export default class HandleView implements ISubView {
         ...positionStyle,
       });
     }
+    return;
   };
 
-  private updateView() {
+  private updateView(): void {
     if (this.view) {
       this.view.attr(this.prepareAttr());
     } else {
@@ -85,16 +73,12 @@ export default class HandleView implements ISubView {
     }
   }
 
-  public getAddition(): tAddition {
-    return this.addition;
-  }
-
   public setProps = (props: tDefaultProps): void => {
     this.props = props;
     this.updateView();
   };
 
-  public render = (parent?: JQuery<HTMLElement>): void => {
+  public render = (parent: JQuery<HTMLElement>): void => {
     if (parent && this.view) {
       parent.append(this.view);
     }
@@ -104,6 +88,10 @@ export default class HandleView implements ISubView {
     if (this.view) {
       this.view.remove();
     }
+  };
+
+  public getAddition = (): tAddition => {
+    return this.addition;
   };
 
   public setAddition = (addition: tAddition): void => {

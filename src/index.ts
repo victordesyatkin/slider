@@ -5,14 +5,22 @@ import "./styles/index.scss";
 
 const props = {
   prefixCls: "slider",
-  //value: [0, 10, 40, 70],
-  //value: [10, 20],
+  //values: [0, 10, 40, 70],
   //values: [22, 80],
+  values: [10, 20],
   min: -60,
   max: 120,
-  //step: 30,
-  marks: {
-    show: true,
+  step: 30,
+  dot: {
+    on: true,
+    // render: (v: number): string => {
+    //   return `${v} $`;
+    // },
+    //values: [0],
+    //dots: true,
+  },
+  mark: {
+    on: true,
     // render: (v: number): string => {
     //   return `${v} $`;
     // },
