@@ -16,7 +16,7 @@ export default class Presenter implements IPresenter {
   }
 
   private onHandleView = (): void => {
-    this.view.subscribe("setProps", this.setPropsModel);
+    this.view.subscribe("setPropsModel", this.setPropsModel);
   };
 
   private setPropsModel = (values: number[]) => {
@@ -24,12 +24,13 @@ export default class Presenter implements IPresenter {
   };
 
   private onHandleModel = (): void => {
-    this.model.subscribe("setProps", this.setPropsView);
+    this.model.subscribe("setPropsView", this.setPropsView);
   };
 
-  private setPropsView(props: tDefaultProps): void {
+  private setPropsView = (props: tDefaultProps): void => {
+    console.log("setPropsView : ", props);
     this.view.setProps(props);
-  }
+  };
 
   public render(parent: JQuery<HTMLElement>): void {
     this.view.render(parent);

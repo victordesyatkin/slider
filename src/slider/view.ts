@@ -1,8 +1,13 @@
 import $ from "jquery";
 import classnames from "classnames";
 import get from "lodash/get";
+import isUndefined from "lodash/isUndefined";
 import PubSub from "../helpers/pubsub";
-import { objectToString } from "../helpers/utils";
+import {
+  objectToString,
+  getMousePosition,
+  ensureValueInRange,
+} from "../helpers/utils";
 import { tDefaultProps, tAddition } from "../types";
 import { IView, ISubView } from "./interface";
 import RailView from "../components/rail/view";
@@ -17,6 +22,7 @@ export default class View extends PubSub {
   private handles: ISubView[] = [];
   private dots: ISubView[] = [];
   private marks: ISubView[] = [];
+  private currentHandleIndex?: number;
 
   constructor(parent: JQuery<HTMLElement>) {
     super();
@@ -57,10 +63,166 @@ export default class View extends PubSub {
     return objectToString({ ...get(this.props, ["style"]) });
   }
 
-  private handleMouseDown = (index: number, e: JQuery.Event): void => {
-    console.log("handleMouseDown index : ", index);
-    console.log("handleMouseDown e : ", e);
+  private cleanHandleIndex = () => {
+    this.currentHandleIndex = undefined;
   };
+
+  private onMouseDown = (index: number, e: JQuery.Event): void => {
+    console.log("index : ", index);
+    e.preventDefault();
+    this.currentHandleIndex = index;
+    window.addEventListener("mousemove", this.onMouseMove);
+    window.addEventListener("mouseup", this.onMouseUp);
+  };
+
+  private onMouseUp = (e: MouseEvent): void => {
+    e.preventDefault();
+    this.cleanHandleIndex();
+    window.removeEventListener("mousemove", this.onMouseMove);
+    window.removeEventListener("mouseup", this.onMouseUp);
+  };
+
+  private onMouseMove = (e: MouseEvent): void => {
+    if (this.props && !isUndefined(this.currentHandleIndex) && this.view) {
+      const index = this.currentHandleIndex;
+      const { vertical, values } = this.props;
+      const prevValue = values[index];
+      const position = getMousePosition(vertical, e);
+      const nextValue = this.calcValueByPos(position);
+      if (prevValue !== nextValue) {
+        const v = [...values];
+        v[index] = nextValue;
+        this.publish("setPropsModel", v);
+      }
+    }
+  };
+
+  private calcValueByPos(position: number): number {
+    if (this.props) {
+      const { reverse, min, max } = this.props;
+      const sign = reverse ? -1 : +1;
+      const pixelOffset = sign * (position - this.getSliderStart());
+      let value = ensureValueInRange(this.calcValue(pixelOffset), {
+        min,
+        max,
+      });
+      value = this.calcValueWithEnsure(value);
+      return value;
+    }
+    return 0;
+  }
+
+  private checkNeighbors = (
+    allowCross: boolean | undefined,
+    value: number[]
+  ) => {
+    return !allowCross && value.length > 1;
+  };
+
+  private ensureValueCorrectNeighbors = (value: number): number => {
+    if (this.props && !isUndefined(this.currentHandleIndex)) {
+      const { allowCross, values, pushable, min, max } = this.props;
+      if (this.checkNeighbors(allowCross, values)) {
+        let prevValue = values[this.currentHandleIndex - 1];
+        let nextValue = values[this.currentHandleIndex + 1];
+        let amin = min;
+        let amax = max;
+        if (!isUndefined(prevValue)) {
+          amin = pushable ? prevValue + pushable : prevValue;
+        }
+        if (!isUndefined(nextValue)) {
+          amax = pushable ? nextValue - pushable : nextValue;
+        }
+        value = ensureValueInRange(value, {
+          min: amin,
+          max: amax,
+        });
+      }
+    }
+    return value;
+  };
+
+  private calcValueWithEnsure(value: number): number {
+    value = this.ensureValuePrecision(value);
+    value = this.ensureValueCorrectNeighbors(value);
+    return value;
+  }
+
+  private calcValue(offset: number) {
+    if (this.props) {
+      const { vertical, min, max, precision } = this.props;
+      const ratio = Math.abs(Math.max(offset, 0) / this.getSliderLength());
+      const value = vertical
+        ? (1 - ratio) * (max - min) + min
+        : ratio * (max - min) + min;
+      return Number(value.toFixed(precision));
+    }
+    return 0;
+  }
+
+  private getSliderLength(): number {
+    if (this.view && this.props) {
+      const slider = this.view.get(0);
+      const { vertical } = this.props;
+      const coords = slider.getBoundingClientRect();
+      return vertical ? coords.height : coords.width;
+    }
+    return 0;
+  }
+
+  private ensureValuePrecision = (v: number): number => {
+    if (this.props) {
+      const { step, min, max } = this.props;
+      if (!step) {
+        return v;
+      }
+      const closestPoint = isFinite(this.getClosestPoint(v, { step, min, max }))
+        ? this.getClosestPoint(v, { step, min, max })
+        : 0;
+      return parseFloat(closestPoint.toFixed(this.getPrecision(step)));
+    }
+    return 0;
+  };
+
+  private getPrecision(step: number): number {
+    const stepString = step.toString();
+    let precision = 0;
+    if (stepString.indexOf(".") >= 0) {
+      precision = stepString.length - stepString.indexOf(".") - 1;
+    }
+    return precision;
+  }
+
+  private getClosestPoint(
+    val: number,
+    { step, min, max }: { step: number | undefined; min: number; max: number }
+  ): number {
+    let points: number[] = [];
+    points = get(this.props, ["marks", "values"], points);
+    if (step) {
+      const baseNum = 10 ** this.getPrecision(step);
+      const maxSteps = Math.floor(
+        (max * baseNum - min * baseNum) / (step * baseNum)
+      );
+      const steps = Math.min((val - min) / step, maxSteps);
+      const closestStep = Math.round(steps) * step + min;
+      points.push(closestStep);
+    }
+    const diffs = points.map((point) => Math.abs(val - point));
+    return points[diffs.indexOf(Math.min(...diffs))];
+  }
+
+  private getSliderStart(): number {
+    if (this.props && this.view) {
+      const { vertical, reverse } = this.props;
+      const rect = this.view.get(0).getBoundingClientRect();
+      if (vertical) {
+        return reverse ? rect.bottom : rect.top;
+      }
+      return window.pageXOffset + (reverse ? rect.right : rect.left);
+    }
+    return 0;
+  }
 
   private createOrUpdateSubViews(): void {
     this.createOrUpdateSubView<RailView>(this.rails, 1, RailView);
@@ -85,7 +247,7 @@ export default class View extends PubSub {
   ): void {
     if (this.props) {
       const handlers = {
-        mousedown: this.handleMouseDown,
+        mousedown: this.onMouseDown,
       };
       for (let index = 0; index < count; index += 1) {
         if (views[index]) {
@@ -113,7 +275,7 @@ export default class View extends PubSub {
 
   private appendSubViews(): void {
     if (this.view) {
-      this.view.empty();
+      //this.view.empty();
       this.appendSubView(this.tracks);
       this.appendSubView(this.handles);
       this.appendSubView(this.dots);
@@ -143,7 +305,6 @@ export default class View extends PubSub {
         count = length > count ? length : count;
       }
     }
-    console.log("count : ", count);
     return count;
   }
 

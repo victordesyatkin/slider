@@ -41,9 +41,6 @@ export function ensureValueInRange(
   return val;
 }
 
-export function getMousePosition(
-  vertical: boolean,
-  e: JQuery.ClickEvent
-): number {
+export function getMousePosition(vertical: boolean, e: MouseEvent): number {
   return vertical ? e.clientY || 0 : e.pageX || 0;
 }

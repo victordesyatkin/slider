@@ -18,11 +18,14 @@ export default class HandleView implements ISubView {
   private createView(): void {
     if (this.props) {
       this.view = $("<div/>", this.prepareAttr());
-      this.view.on("mousedown", this.onMousedown);
+      this.view.on({
+        mousedown: this.onMouseDown,
+      });
     }
   }
 
-  private onMousedown = (e: JQuery.Event): void => {
+  private onMouseDown = (e: JQuery.ClickEvent): void => {
+    console.log("onMouseDown : ");
     const mousedown = get(this.addition, ["handlers", "mousedown"]);
     const index = get(this.addition, ["index"]);
     if (!isUndefined(index) && mousedown) {
@@ -80,6 +83,7 @@ export default class HandleView implements ISubView {
   private updateView() {
     if (this.view) {
       this.view.attr(this.prepareAttr());
+      console.log(this.view);
     } else {
       this.createView();
     }
