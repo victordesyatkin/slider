@@ -23,7 +23,6 @@ export type tProps = {
   pushable?: number;
   precision?: number;
   index?: number;
-  type?: string;
 };
 
 export type tDefaultProps = {
@@ -50,16 +49,16 @@ export type tDefaultProps = {
   tooltip?: tTooltip;
   pushable?: number;
   precision: number;
-  type: string;
 };
 
 export type tAddition = {
   index: number;
   handlers?: { [key: string]: tHandler };
   value?: number;
+  active?: boolean;
 };
 
-export type tHandler = (i: number, e: any) => void;
+export type tHandler = (i: number, e: any, value?: number) => void;
 
 export type tHandle = {
   className?: string[];

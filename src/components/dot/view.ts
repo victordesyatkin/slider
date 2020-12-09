@@ -1,10 +1,12 @@
 import $ from "jquery";
 import get from "lodash/get";
+import isUndefined from "lodash/isUndefined";
 import { objectToString } from "../../helpers/utils";
 import { ISubView } from "../../slider/interface";
 import { tDefaultProps, tAddition } from "../../types";
 import { calcOffset } from "../../helpers/utils";
 import classnames from "classnames";
+import { orderBy } from "lodash";
 
 export default class DotView implements ISubView {
   private props?: tDefaultProps;
@@ -18,6 +20,7 @@ export default class DotView implements ISubView {
   private createView(): void {
     if (this.props) {
       this.view = $("<div/>", this.prepareAttr());
+      this.onHandlers();
     }
   }
 
@@ -35,7 +38,29 @@ export default class DotView implements ISubView {
   private prepareClassName = (): string => {
     const prefixCls = get(this.props, ["prefixCls"], "");
     const className = get(this.props, ["dot", "className"], "");
-    return classnames(`${prefixCls}__dot`, className);
+    const reverse = get(this.props, ["reverse"]);
+    const value = get(this.addition, ["value"], 0);
+    let values = get(this.props, ["values"]);
+    let active = false;
+    if (!isUndefined(values) && !isUndefined(value)) {
+      if (values.length === 1) {
+        active = reverse
+          ? value > values[0]
+            ? true
+            : false
+          : value < values[0]
+          ? true
+          : false;
+      } else if (values.length > 1) {
+        values = orderBy(values);
+        if (value >= values[0] && value <= values[values.length - 1]) {
+          active = true;
+        }
+      }
+    }
+    return classnames(`${prefixCls}__dot`, className, {
+      [`${prefixCls}__dot_active`]: active,
+    });
   };
 
   private prepareStyle = (): string | undefined => {
@@ -70,6 +95,22 @@ export default class DotView implements ISubView {
       this.createView();
     }
   }
+
+  private onClick = (e: any) => {
+    if (this.view && this.props) {
+      const { value, handlers, index = 0 } = this.addition;
+      const click = get(handlers, ["click"]);
+      if (!isUndefined(value) && click) {
+        click(index, e, value);
+      }
+    }
+  };
+
+  private onHandlers = () => {
+    if (this.view) {
+      this.view.on("click", this.onClick);
+    }
+  };
 
   public setProps = (props: tDefaultProps): void => {
     this.props = props;

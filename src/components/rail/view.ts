@@ -1,5 +1,6 @@
 import $ from "jquery";
 import get from "lodash/get";
+import isUndefined from "lodash/isUndefined";
 import { objectToString } from "../../helpers/utils";
 import { ISubView } from "../../slider/interface";
 import { tDefaultProps, tAddition } from "../../types";
@@ -19,6 +20,7 @@ export default class RailView implements ISubView {
       const on = get(this.props, ["rail", "on"]);
       if (on) {
         this.view = $("<div/>", this.prepareAttr());
+        this.onHandlers();
       }
     }
   }
@@ -56,6 +58,22 @@ export default class RailView implements ISubView {
       this.createView();
     }
   }
+
+  private onClick = (e: any) => {
+    if (this.view && this.props) {
+      const { handlers, index = 0 } = this.addition;
+      const click = get(handlers, ["click"]);
+      if (click) {
+        click(index, e);
+      }
+    }
+  };
+
+  private onHandlers = () => {
+    if (this.view) {
+      this.view.on("click", this.onClick);
+    }
+  };
 
   public setProps = (props: tDefaultProps): void => {
     this.props = props;

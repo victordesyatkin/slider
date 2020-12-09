@@ -3,6 +3,7 @@ import get from "lodash/get";
 import isArray from "lodash/isArray";
 import uniq from "lodash/uniq";
 import orderBy from "lodash/orderBy";
+import isUndefined from "lodash/isUndefined";
 import classnames from "classnames";
 import { ISubView } from "../../slider/interface";
 import { tDefaultProps, tAddition } from "../../types";
@@ -64,7 +65,6 @@ export default class MarksView implements ISubView {
     views: ISubView[],
     c: { new (addition: tAddition): T }
   ): void {
-    console.log(this.view);
     if (this.props && this.view) {
       const { min, max, step, reverse } = this.props;
       let values: number[] = [];
@@ -73,19 +73,26 @@ export default class MarksView implements ISubView {
         values = mvalues;
       }
       if (step) {
-        const handlers = {};
         for (let i = min; i <= max; i += step) {
           values.push(i);
         }
         values = orderBy(uniq(values), reverse ? "desc" : "asc");
         length = values.length;
-        console.log(values);
+        const handlers = this.addition.handlers;
         for (let i = 0; i < length; i += 1) {
-          if (views[i]) {
+          if (!isUndefined(views[i])) {
             views[i].setProps(this.props);
-            views[i].setAddition({ index: i, handlers, value: values[i] });
+            views[i].setAddition({
+              index: i,
+              handlers,
+              value: values[i],
+            });
           } else {
-            views[i] = new c({ index: i, handlers, value: values[i] });
+            views[i] = new c({
+              index: i,
+              handlers,
+              value: values[i],
+            });
             views[i].setProps(this.props);
           }
         }

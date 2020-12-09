@@ -7,6 +7,7 @@ import {
   objectToString,
   getMousePosition,
   ensureValueInRange,
+  ensureValuePrecision,
 } from "../helpers/utils";
 import { tDefaultProps, tAddition } from "../types";
 import { IView, ISubView } from "./interface";
@@ -15,6 +16,7 @@ import HandleView from "../components/handle/view";
 import TrackView from "../components/track/view";
 import DotsView from "../components/dots/view";
 import MarksView from "../components/marks/view";
+import { add } from "lodash";
 
 export default class View extends PubSub {
   private parent?: JQuery<HTMLElement>;
@@ -70,6 +72,24 @@ export default class View extends PubSub {
     this.currentHandleIndex = undefined;
   };
 
+  private onClick = (index: number, e: MouseEvent, value?: number) => {
+    e.preventDefault();
+    if (this.props) {
+      let v: number;
+      if (!isUndefined(value)) {
+        v = value;
+      } else {
+        const vertical = get(this.props, ["vertical"], false);
+        const position = getMousePosition(vertical, e as MouseEvent);
+        v = this.calcValueByPos(position);
+      }
+      if (this.props.values[0] !== v) {
+        const values: number[] = [v];
+        this.publish("setPropsModel", values);
+      }
+    }
+  };
+
   private onMouseDown = (index: number, e: JQuery.Event): void => {
     e.preventDefault();
     this.currentHandleIndex = index;
@@ -79,7 +99,7 @@ export default class View extends PubSub {
 
   private onMouseUp = (e: MouseEvent): void => {
     e.preventDefault();
-    this.cleanHandleIndex();
+    //this.cleanHandleIndex();
     window.removeEventListener("mousemove", this.onMouseMove);
     window.removeEventListener("mouseup", this.onMouseUp);
   };
@@ -145,7 +165,7 @@ export default class View extends PubSub {
   };
 
   private calcValueWithEnsure(value: number): number {
-    value = this.ensureValuePrecision(value);
+    value = ensureValuePrecision(value, this.props);
     value = this.ensureValueCorrectNeighbors(value);
     return value;
   }
@@ -170,48 +190,6 @@ export default class View extends PubSub {
       return vertical ? coords.height : coords.width;
     }
     return 0;
-  }
-
-  private ensureValuePrecision = (v: number): number => {
-    if (this.props) {
-      const { step, min, max } = this.props;
-      if (!step) {
-        return v;
-      }
-      const closestPoint = isFinite(this.getClosestPoint(v, { step, min, max }))
-        ? this.getClosestPoint(v, { step, min, max })
-        : 0;
-      return parseFloat(closestPoint.toFixed(this.getPrecision(step)));
-    }
-    return 0;
-  };
-
-  private getPrecision(step: number): number {
-    const stepString = step.toString();
-    let precision = 0;
-    if (stepString.indexOf(".") >= 0) {
-      precision = stepString.length - stepString.indexOf(".") - 1;
-    }
-    return precision;
-  }
-
-  private getClosestPoint(
-    val: number,
-    { step, min, max }: { step: number | undefined; min: number; max: number }
-  ): number {
-    let points: number[] = [];
-    points = get(this.props, ["marks", "values"], points);
-    if (step) {
-      const baseNum = 10 ** this.getPrecision(step);
-      const maxSteps = Math.floor(
-        (max * baseNum - min * baseNum) / (step * baseNum)
-      );
-      const steps = Math.min((val - min) / step, maxSteps);
-      const closestStep = Math.round(steps) * step + min;
-      points.push(closestStep);
-    }
-    const diffs = points.map((point) => Math.abs(val - point));
-    return points[diffs.indexOf(Math.min(...diffs))];
   }
 
   private getSliderStart(): number {
@@ -242,23 +220,41 @@ export default class View extends PubSub {
     this.createOrUpdateSubView<MarksView>(this.marks, 1, MarksView);
   }
 
-  private createOrUpdateSubView<T extends IView>(
-    views: IView[],
+  private createOrUpdateSubView<T extends ISubView>(
+    views: ISubView[],
     count: number,
     c: { new (addition: tAddition): T }
   ): void {
     if (this.props) {
       let handlers;
+      let active;
       if (c.name === "HandleView") {
         handlers = {
           mousedown: this.onMouseDown,
         };
+      } else if (
+        c.name === "RailView" ||
+        c.name === "MarksView" ||
+        c.name === "DotsView"
+      ) {
+        if (this.props.values.length === 1) {
+          handlers = {
+            click: this.onClick,
+          };
+        }
       }
       for (let index = 0; index < count; index += 1) {
+        if (c.name === "HandleView") {
+          active = index === this.currentHandleIndex;
+        }
+
         if (views[index]) {
           views[index].setProps(this.props);
+          let addition = views[index].getAddition();
+          addition = { ...addition, active };
+          views[index].setAddition(addition);
         } else {
-          views[index] = new c({ index, handlers });
+          views[index] = new c({ index, handlers, active });
           views[index].setProps(this.props);
         }
       }
@@ -280,11 +276,11 @@ export default class View extends PubSub {
 
   private appendSubViews(): void {
     if (this.view) {
-      this.appendSubView(this.handles);
       this.appendSubView(this.rails);
       this.appendSubView(this.marks);
       this.appendSubView(this.dots);
       this.appendSubView(this.tracks);
+      this.appendSubView(this.handles);
     }
     return;
   }

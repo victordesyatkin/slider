@@ -19,9 +19,7 @@ export default class HandleView implements ISubView {
   private createView(): void {
     if (this.props) {
       this.view = $("<div/>", this.prepareAttr());
-      this.view.on({
-        mousedown: this.onMouseDown,
-      });
+      this.onHandlers();
     }
   }
 
@@ -48,9 +46,11 @@ export default class HandleView implements ISubView {
 
   private prepareClassName = (): string => {
     const prefixCls = get(this.props, ["prefixCls"], "");
-    const index = get(this.addition, ["index"]);
     const className = get(this.props, ["handle", "className"], "");
-    return classnames(`${prefixCls}__handle`, className);
+    const active = get(this.addition, ["active"]);
+    return classnames(`${prefixCls}__handle`, className, {
+      [`${prefixCls}__handle_active`]: active,
+    });
   };
 
   private prepareStyle = (): string | undefined => {
@@ -80,13 +80,14 @@ export default class HandleView implements ISubView {
 
   private appendTooltip = () => {
     const on = get(this.props, ["tooltip", "on"]);
-    if (on && this.view) {
+    if (on && this.view && this.props) {
       const index = get(this.addition, ["index"]);
       const value = get(this.props, ["values", index]);
       if (!isUndefined(value)) {
         const tooltip = new TooltipView({ value, index });
         if (tooltip) {
           this.view.empty();
+          tooltip.setProps(this.props);
           tooltip.render(this.view);
         }
       }
@@ -100,6 +101,14 @@ export default class HandleView implements ISubView {
       this.createView();
     }
   }
+
+  private onHandlers = () => {
+    if (this.view) {
+      this.view.on({
+        mousedown: this.onMouseDown,
+      });
+    }
+  };
 
   public getAddition(): tAddition {
     return this.addition;

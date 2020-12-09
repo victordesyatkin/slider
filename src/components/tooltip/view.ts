@@ -1,9 +1,9 @@
 import $ from "jquery";
 import get from "lodash/get";
+import isUndefined from "lodash/isUndefined";
 import { objectToString } from "../../helpers/utils";
 import { ISubView } from "../../slider/interface";
 import { tDefaultProps, tAddition } from "../../types";
-import { calcOffset } from "../../helpers/utils";
 import classnames from "classnames";
 
 export default class TooltipView implements ISubView {
@@ -35,7 +35,11 @@ export default class TooltipView implements ISubView {
   private prepareClassName = (): string => {
     const prefixCls = get(this.props, ["prefixCls"], "");
     const className = get(this.props, ["tooltip", "className"], "");
-    return classnames(`${prefixCls}__tooltip`, className);
+    const allways = get(this.props, ["tooltip", "allways"]);
+
+    return classnames(`${prefixCls}__tooltip`, className, {
+      [`${prefixCls}__tooltip_allways`]: allways,
+    });
   };
 
   private prepareStyle = (): string | undefined => {
@@ -54,7 +58,7 @@ export default class TooltipView implements ISubView {
   private prepareContent = (): void => {
     if (this.view) {
       const { value } = this.addition;
-      if (value) {
+      if (!isUndefined(value)) {
         const render = get(this.props, ["tooltip", "render"]);
         let content = `${value}`;
         if (render) {

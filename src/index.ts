@@ -5,35 +5,36 @@ import "./styles/index.scss";
 
 const props = {
   prefixCls: "slider",
-  //values: [0, 10, 40, 70],
-  //values: [22, 80],
-  values: [10, 20],
+  // values: [0, 40, 10, 70],
+  // values: [22, 80],
+  values: [10],
+  vertical: true,
   min: -60,
   max: 120,
   step: 30,
   dot: {
     on: true,
-    // render: (v: number): string => {
-    //   return `${v} $`;
-    // },
-    //values: [0],
-    //dots: true,
   },
   mark: {
     on: true,
     // render: (v: number): string => {
     //   return `${v} $`;
     // },
-    //values: [0],
-    //dots: true,
+    values: [16],
+    //dot: true,
   },
-  // tooltip: {
-  //   show: true,
-  //   render: (v: number): string => {
-  //     return `${v} $`;
-  //   },
-  //   active: true,
-  // },
+  tooltip: {
+    on: true,
+    render: (v: number): string => {
+      if (v === 60) {
+        return "☃";
+      } else if (v === 90) {
+        return "♥";
+      }
+      return `${v} $`;
+    },
+    allways: true,
+  },
   allowCross: false,
   // pushable: 0,
   // disabled: true,

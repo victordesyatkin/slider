@@ -42,7 +42,10 @@ export default class DotsView implements ISubView {
   private prepareClassName = (): string => {
     const prefixCls = get(this.props, ["prefixCls"], "");
     const className = get(this.props, ["dot", "wrapClassName"]);
-    return classnames(`${prefixCls}__dots`, className);
+    const vertical = get(this.props, ["vertical"]);
+    return classnames(`${prefixCls}__dots`, className, {
+      [`${prefixCls}__dots_vertical`]: vertical,
+    });
   };
 
   private prepareStyle = (): string | undefined => {
@@ -65,7 +68,6 @@ export default class DotsView implements ISubView {
     views: ISubView[],
     c: { new (addition: tAddition): T }
   ): void {
-    console.log(this.view);
     if (this.props && this.view) {
       const { min, max, step, reverse } = this.props;
       let values: number[] = [];
@@ -77,13 +79,12 @@ export default class DotsView implements ISubView {
         }
       }
       if (step) {
-        const handlers = {};
+        const handlers = this.addition.handlers;
         for (let i = min; i <= max; i += step) {
           values.push(i);
         }
         values = orderBy(uniq(values), reverse ? "desc" : "asc");
         length = values.length;
-        console.log(values);
         for (let i = 0; i < length; i += 1) {
           if (views[i]) {
             views[i].setProps(this.props);

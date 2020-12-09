@@ -1,5 +1,6 @@
 import $ from "jquery";
 import get from "lodash/get";
+import isUndefined from "lodash/isUndefined";
 import { ISubView } from "../../slider/interface";
 import { tDefaultProps, tAddition } from "../../types";
 import { objectToString, calcOffset } from "../../helpers/utils";
@@ -17,6 +18,7 @@ export default class MarkView implements ISubView {
   private createView(): void {
     if (this.props) {
       this.view = $("<div/>", this.prepareAttr());
+      this.onHandlers();
     }
   }
 
@@ -65,7 +67,7 @@ export default class MarkView implements ISubView {
   private prepareContent = (): void => {
     if (this.view) {
       const { value } = this.addition;
-      if (value) {
+      if (!isUndefined(value)) {
         const render = get(this.props, ["mark", "render"]);
         let content = `${value}`;
         if (render) {
@@ -78,13 +80,29 @@ export default class MarkView implements ISubView {
     }
   };
 
-  private updateView(): void {
+  private onClick = (e: any) => {
+    if (this.view && this.props) {
+      const { value, handlers, index = 0 } = this.addition;
+      const click = get(handlers, ["click"]);
+      if (!isUndefined(value) && click) {
+        click(index, e, value);
+      }
+    }
+  };
+
+  private onHandlers = () => {
+    if (this.view) {
+      this.view.on("click", this.onClick);
+    }
+  };
+
+  private updateView = (): void => {
     if (this.view) {
       this.view.attr(this.prepareAttr());
     } else {
       this.createView();
     }
-  }
+  };
 
   public setProps = (props: tDefaultProps): void => {
     this.props = props;
