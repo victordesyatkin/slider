@@ -34,16 +34,14 @@ export default class DotView implements ISubView {
 
   private prepareClassName = (): string => {
     const prefixCls = get(this.props, ["prefixCls"], "");
-    const index = get(this.addition, ["index"]);
-    const className = get(this.props, ["dot", "classNames", index], "");
+    const className = get(this.props, ["dot", "className"], "");
     return classnames(`${prefixCls}__dot`, className);
   };
 
   private prepareStyle = (): string | undefined => {
     if (this.props) {
-      const index = get(this.addition, ["index"]);
       const value = get(this.addition, ["value"], 0);
-      const style = get(this.props, ["dot", "styles", index], {});
+      const style = get(this.props, ["dot", "style"], {});
       const { vertical, min, max, reverse } = this.props;
       const offset = calcOffset(value, min, max);
       const positionStyle = vertical

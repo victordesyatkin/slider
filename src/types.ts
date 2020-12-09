@@ -62,8 +62,8 @@ export type tAddition = {
 export type tHandler = (i: number, e: any) => void;
 
 export type tHandle = {
-  classNames?: string[];
-  styles: { [key: string]: string }[];
+  className?: string[];
+  styles: { [key: string]: string };
 };
 
 export type tTrack = {
@@ -79,28 +79,43 @@ export type tRail = {
 };
 
 export type tDot = {
-  classNames?: string[];
-  styles?: { [key: string]: string }[];
+  wrapClassName?: string;
+  className?: string;
+  style?: { [key: string]: string };
   on?: boolean;
 };
 
 export type tTooltip = {
-  classNames?: string[];
-  styles?: { [key: string]: string }[];
-  render?: (value: number) => string;
+  className?: string;
+  style?: { [key: string]: string };
+  render?: (
+    value: number
+  ) =>
+    | string
+    | JQuery<HTMLElement>
+    | JQuery<HTMLElement>[]
+    | HTMLElement
+    | HTMLElement[]
+    | undefined;
   on?: boolean;
   precision?: number;
   allways?: boolean;
 };
 
 export type tMark = {
-  classNames?: string[];
-  styles?: { [key: string]: string }[];
-  render?: (value: number) => string;
+  wrapClassName?: string;
+  className?: string;
+  style?: { [key: string]: string };
+  render?:
+    | string
+    | JQuery<HTMLElement>
+    | JQuery<HTMLElement>[]
+    | HTMLElement
+    | HTMLElement[]
+    | undefined;
   values?: number[];
   on?: boolean;
-  dots?: boolean;
-  step?: number;
+  dot?: boolean;
 };
 
 export type tpbcallback = (data: any) => void;

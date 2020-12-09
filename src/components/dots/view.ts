@@ -1,7 +1,7 @@
 import $ from "jquery";
 import get from "lodash/get";
 import uniq from "lodash/uniq";
-import sortBy from "lodash/sortBy";
+import orderBy from "lodash/orderBy";
 import isArray from "lodash/isArray";
 import { ISubView, IView } from "../../slider/interface";
 import { tDefaultProps, tAddition } from "../../types";
@@ -41,7 +41,8 @@ export default class DotsView implements ISubView {
 
   private prepareClassName = (): string => {
     const prefixCls = get(this.props, ["prefixCls"], "");
-    return classnames(`${prefixCls}__dots`);
+    const className = get(this.props, ["dot", "wrapClassName"]);
+    return classnames(`${prefixCls}__dots`, className);
   };
 
   private prepareStyle = (): string | undefined => {
@@ -66,18 +67,21 @@ export default class DotsView implements ISubView {
   ): void {
     console.log(this.view);
     if (this.props && this.view) {
-      const { min, max, step } = this.props;
+      const { min, max, step, reverse } = this.props;
       let values: number[] = [];
-      const mvalues = get(this.props, ["mark", "values"]);
-      if (isArray(mvalues)) {
-        values = mvalues;
+      const on = get(this.props, ["mark", "dot"]);
+      if (on) {
+        const mvalues = get(this.props, ["mark", "values"]);
+        if (isArray(mvalues)) {
+          values = mvalues;
+        }
       }
       if (step) {
         const handlers = {};
         for (let i = min; i <= max; i += step) {
           values.push(i);
         }
-        values = sortBy(uniq(values));
+        values = orderBy(uniq(values), reverse ? "desc" : "asc");
         length = values.length;
         console.log(values);
         for (let i = 0; i < length; i += 1) {

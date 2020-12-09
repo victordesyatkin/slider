@@ -1,11 +1,12 @@
 import $ from "jquery";
 import get from "lodash/get";
+import { objectToString } from "../../helpers/utils";
 import { ISubView } from "../../slider/interface";
 import { tDefaultProps, tAddition } from "../../types";
-import { objectToString, calcOffset } from "../../helpers/utils";
+import { calcOffset } from "../../helpers/utils";
 import classnames from "classnames";
 
-export default class MarkView implements ISubView {
+export default class TooltipView implements ISubView {
   private props?: tDefaultProps;
   private view?: JQuery<HTMLElement>;
   private addition: tAddition;
@@ -33,27 +34,15 @@ export default class MarkView implements ISubView {
 
   private prepareClassName = (): string => {
     const prefixCls = get(this.props, ["prefixCls"], "");
-    const className = get(this.props, ["mark", "className"], "");
-    return classnames(`${prefixCls}__mark`, className);
+    const className = get(this.props, ["tooltip", "className"], "");
+    return classnames(`${prefixCls}__tooltip`, className);
   };
 
   private prepareStyle = (): string | undefined => {
     if (this.props) {
-      const value = get(this.addition, ["value"], 0);
-      const style = get(this.props, ["mark", "style"], {});
+      const style = get(this.props, ["tooltip", "style"], {});
       const { vertical, min, max, reverse } = this.props;
-      const offset = calcOffset(value, min, max);
-      const positionStyle = vertical
-        ? {
-            [reverse ? "top" : "bottom"]: `${offset}%`,
-            [reverse ? "bottom" : "top"]: "auto",
-            transform: reverse ? "none" : `translateY(+50%)`,
-          }
-        : {
-            [reverse ? "right" : "left"]: `${offset}%`,
-            [reverse ? "left" : "right"]: "auto",
-            transform: `translateX(${reverse ? "+" : "-"}50%)`,
-          };
+      const positionStyle = {};
       return objectToString({
         ...style,
         ...positionStyle,
@@ -66,7 +55,7 @@ export default class MarkView implements ISubView {
     if (this.view) {
       const { value } = this.addition;
       if (value) {
-        const render = get(this.props, ["mark", "render"]);
+        const render = get(this.props, ["tooltip", "render"]);
         let content = `${value}`;
         if (render) {
           content = render(value);
