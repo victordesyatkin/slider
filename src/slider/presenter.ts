@@ -19,7 +19,7 @@ export default class Presenter implements IPresenter {
     this.view.subscribe("setPropsModel", this.setPropsModel);
   };
 
-  private setPropsModel = (values: number[]) => {
+  private setPropsModel = (values: number[]): void => {
     this.model.setProps(merge(this.model.getProps(), { values }));
   };
 

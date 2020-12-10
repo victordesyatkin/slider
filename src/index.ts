@@ -44,7 +44,8 @@ const props = {
 };
 
 $(() => {
-  $(".slider__wrapper").slider(props);
+  const slider = $(".slider__wrapper").slider(props).data("slider");
+  console.log("slider : ", slider.setProps({ values: [30, 22], pushable: 10 }));
 });
 
 // const slider = new SliderPresenter(props);

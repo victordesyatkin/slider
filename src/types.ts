@@ -51,6 +51,8 @@ export type tDefaultProps = {
   precision: number;
 };
 
+export type tKeyDefaultProps = keyof tDefaultProps;
+
 export type tAddition = {
   index: number;
   handlers?: { [key: string]: tHandler };
