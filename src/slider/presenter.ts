@@ -1,6 +1,6 @@
 import { fromPairs } from "lodash";
 import merge from "lodash/merge";
-import { tDefaultProps } from "../types";
+import { DefaultProps } from "../types";
 import { IModel, IView, IPresenter } from "./interface";
 
 export default class Presenter implements IPresenter {
@@ -20,14 +20,14 @@ export default class Presenter implements IPresenter {
   };
 
   private setPropsModel = (values: number[]): void => {
-    this.model.setProps(merge(this.model.getProps(), { values }));
+    this.model.setProps(merge({ ...this.model.getProps() }, { values }));
   };
 
   private onHandleModel = (): void => {
     this.model.subscribe("setPropsView", this.setPropsView);
   };
 
-  private setPropsView = (props: tDefaultProps): void => {
+  private setPropsView = (props: DefaultProps): void => {
     this.view.setProps(props);
   };
 

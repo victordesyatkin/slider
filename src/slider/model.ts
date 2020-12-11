@@ -1,11 +1,11 @@
-import { tDefaultProps } from "../types";
+import { DefaultProps } from "../types";
 import merge from "lodash/merge";
 import PubSub from "../helpers/pubsub";
 
 export default class Model extends PubSub {
-  private props: tDefaultProps;
+  private props: DefaultProps;
 
-  constructor(props: tDefaultProps) {
+  constructor(props: DefaultProps) {
     super();
     this.props = props;
     this.onHandle();
@@ -15,12 +15,12 @@ export default class Model extends PubSub {
     this.subscribe("setPropsModel", this.setProps);
   };
 
-  public getProps = (): tDefaultProps => {
+  public getProps = (): DefaultProps => {
     return this.props;
   };
 
-  public setProps = (props: tDefaultProps): void => {
-    this.props = merge(this.props, props);
+  public setProps = (props: DefaultProps): void => {
+    this.props = merge({ ...this.props }, props);
     this.publish("setPropsView", props);
   };
 }

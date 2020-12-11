@@ -3,15 +3,15 @@ import get from "lodash/get";
 import isUndefined from "lodash/isUndefined";
 import { objectToString } from "../../helpers/utils";
 import { ISubView } from "../../slider/interface";
-import { tDefaultProps, tAddition } from "../../types";
+import { DefaultProps, Addition } from "../../types";
 import classnames from "classnames";
 
 export default class TooltipView implements ISubView {
-  private props?: tDefaultProps;
+  private props?: DefaultProps;
   private view?: JQuery<HTMLElement>;
-  private addition: tAddition;
+  private addition: Addition;
 
-  constructor(addition: tAddition) {
+  constructor(addition: Addition) {
     this.addition = addition;
   }
 
@@ -35,10 +35,10 @@ export default class TooltipView implements ISubView {
   private prepareClassName = (): string => {
     const prefixCls = get(this.props, ["prefixCls"], "");
     const className = get(this.props, ["tooltip", "className"], "");
-    const allways = get(this.props, ["tooltip", "allways"]);
+    const always = get(this.props, ["tooltip", "always"]);
 
     return classnames(`${prefixCls}__tooltip`, className, {
-      [`${prefixCls}__tooltip_allways`]: allways,
+      [`${prefixCls}__tooltip_always`]: always,
     });
   };
 
@@ -79,7 +79,7 @@ export default class TooltipView implements ISubView {
     }
   }
 
-  public setProps = (props: tDefaultProps): void => {
+  public setProps = (props: DefaultProps): void => {
     this.props = props;
     this.updateView();
     this.prepareContent();
@@ -97,11 +97,11 @@ export default class TooltipView implements ISubView {
     }
   };
 
-  public getAddition = (): tAddition => {
+  public getAddition = (): Addition => {
     return this.addition;
   };
 
-  public setAddition = (addition: tAddition): void => {
+  public setAddition = (addition: Addition): void => {
     this.addition = addition;
   };
 }

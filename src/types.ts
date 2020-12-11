@@ -1,4 +1,4 @@
-export type tProps = {
+type Props = {
   prefixCls?: string;
   vertical?: boolean;
   reverse?: boolean;
@@ -8,24 +8,24 @@ export type tProps = {
   max?: number;
   classNames?: string[];
   style?: { [key: string]: string };
-  mark?: tMark;
+  mark?: Mark;
   step?: number;
   onChange?: (value: number[]) => void;
   onBeforeChange?: (value: number[]) => void;
   onAfterChange?: (value: number[]) => void;
-  track?: tTrack;
-  handle?: tHandle;
+  track?: Track;
+  handle?: Handle;
   startPoint?: number;
-  dots?: tDot;
-  rail?: tRail;
+  dots?: Dot;
+  rail?: Rail;
   allowCross?: boolean;
-  tooltip?: tTooltip;
-  pushable?: number;
+  tooltip?: Tooltip;
+  push?: number;
   precision?: number;
   index?: number;
 };
 
-export type tDefaultProps = {
+type DefaultProps = {
   prefixCls: string;
   vertical: boolean;
   reverse: boolean;
@@ -35,58 +35,58 @@ export type tDefaultProps = {
   max: number;
   classNames?: string[];
   style?: { [key: string]: string };
-  mark?: tMark;
+  mark?: Mark;
   step?: number;
   onChange: (value: number[]) => void;
   onBeforeChange: (value: number[]) => void;
   onAfterChange: (value: number[]) => void;
-  track?: tTrack;
-  handle?: tHandle;
+  track?: Track;
+  handle?: Handle;
   startPoint?: number;
-  dot?: tDot;
-  rail?: tRail;
+  dot?: Dot;
+  rail?: Rail;
   allowCross: boolean;
-  tooltip?: tTooltip;
-  pushable?: number;
+  tooltip?: Tooltip;
+  push?: number;
   precision: number;
 };
 
-export type tKeyDefaultProps = keyof tDefaultProps;
+type KeyDefaultProps = keyof DefaultProps;
 
-export type tAddition = {
+type Addition = {
   index: number;
-  handlers?: { [key: string]: tHandler };
+  handlers?: { [key: string]: Handler };
   value?: number;
   active?: boolean;
 };
 
-export type tHandler = (i: number, e: any, value?: number) => void;
+type Handler = (i: number, e: any, value?: number) => void;
 
-export type tHandle = {
+type Handle = {
   className?: string[];
   styles: { [key: string]: string };
 };
 
-export type tTrack = {
+type Track = {
   classNames?: string[];
   styles?: { [key: string]: string }[];
   on?: boolean;
 };
 
-export type tRail = {
+type Rail = {
   classNames?: string[];
   styles?: { [key: string]: string }[];
   on?: boolean;
 };
 
-export type tDot = {
+type Dot = {
   wrapClassName?: string;
   className?: string;
   style?: { [key: string]: string };
   on?: boolean;
 };
 
-export type tTooltip = {
+type Tooltip = {
   className?: string;
   style?: { [key: string]: string };
   render?: (
@@ -100,10 +100,10 @@ export type tTooltip = {
     | undefined;
   on?: boolean;
   precision?: number;
-  allways?: boolean;
+  always?: boolean;
 };
 
-export type tMark = {
+type Mark = {
   wrapClassName?: string;
   className?: string;
   style?: { [key: string]: string };
@@ -119,4 +119,19 @@ export type tMark = {
   dot?: boolean;
 };
 
-export type tpbcallback = (data: any) => void;
+type Callback = (data: any) => void;
+
+export {
+  Callback,
+  Mark,
+  Tooltip,
+  Rail,
+  Dot,
+  Track,
+  Handle,
+  Handler,
+  Addition,
+  KeyDefaultProps,
+  DefaultProps,
+  Props,
+};

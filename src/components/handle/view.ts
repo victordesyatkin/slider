@@ -4,15 +4,15 @@ import classnames from "classnames";
 import isUndefined from "lodash/isUndefined";
 import { calcOffset, objectToString } from "../../helpers/utils";
 import { ISubView } from "../../slider/interface";
-import { tDefaultProps, tAddition } from "../../types";
+import { DefaultProps, Addition } from "../../types";
 import TooltipView from "../tooltip/view";
 
 export default class HandleView implements ISubView {
-  private props?: tDefaultProps;
+  private props?: DefaultProps;
   private view?: JQuery<HTMLElement>;
-  private addition: tAddition;
+  private addition: Addition;
 
-  constructor(addition: tAddition) {
+  constructor(addition: Addition) {
     this.addition = addition;
   }
 
@@ -110,11 +110,11 @@ export default class HandleView implements ISubView {
     }
   };
 
-  public getAddition(): tAddition {
+  public getAddition(): Addition {
     return this.addition;
   }
 
-  public setProps = (props: tDefaultProps): void => {
+  public setProps = (props: DefaultProps): void => {
     this.props = props;
     this.updateView();
     this.appendTooltip();
@@ -132,7 +132,7 @@ export default class HandleView implements ISubView {
     }
   };
 
-  public setAddition = (addition: tAddition): void => {
+  public setAddition = (addition: Addition): void => {
     this.addition = addition;
   };
 }

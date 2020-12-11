@@ -9,18 +9,17 @@ import {
   ensureValueInRange,
   ensureValuePrecision,
 } from "../helpers/utils";
-import { tDefaultProps, tAddition } from "../types";
+import { DefaultProps, Addition } from "../types";
 import { IView, ISubView } from "./interface";
 import RailView from "../components/rail/view";
 import HandleView from "../components/handle/view";
 import TrackView from "../components/track/view";
 import DotsView from "../components/dots/view";
 import MarksView from "../components/marks/view";
-import { add } from "lodash";
 
 export default class View extends PubSub {
   private parent?: JQuery<HTMLElement>;
-  private props?: tDefaultProps;
+  private props?: DefaultProps;
   private view?: JQuery<HTMLElement>;
   private rails: ISubView[] = [];
   private tracks: ISubView[] = [];
@@ -143,21 +142,20 @@ export default class View extends PubSub {
 
   private ensureValueCorrectNeighbors = (value: number): number => {
     if (this.props && !isUndefined(this.currentHandleIndex)) {
-      const { allowCross, values, pushable, min, max } = this.props;
+      const { allowCross, values, push } = this.props;
+      let { min, max } = this.props;
       if (this.checkNeighbors(allowCross, values)) {
         let prevValue = values[this.currentHandleIndex - 1];
         let nextValue = values[this.currentHandleIndex + 1];
-        let amin = min;
-        let amax = max;
         if (!isUndefined(prevValue)) {
-          amin = pushable ? prevValue + pushable : prevValue;
+          min = push ? prevValue + push : prevValue;
         }
         if (!isUndefined(nextValue)) {
-          amax = pushable ? nextValue - pushable : nextValue;
+          max = push ? nextValue - push : nextValue;
         }
         value = ensureValueInRange(value, {
-          min: amin,
-          max: amax,
+          min,
+          max,
         });
       }
     }
@@ -223,7 +221,7 @@ export default class View extends PubSub {
   private createOrUpdateSubView<T extends ISubView>(
     views: ISubView[],
     count: number,
-    c: { new (addition: tAddition): T }
+    c: { new (addition: Addition): T }
   ): void {
     if (this.props) {
       let handlers;
@@ -308,7 +306,7 @@ export default class View extends PubSub {
     return count;
   }
 
-  public setProps(props: tDefaultProps): void {
+  public setProps(props: DefaultProps): void {
     this.props = props;
     this.updateView();
     this.createOrUpdateSubViews();

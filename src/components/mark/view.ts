@@ -2,16 +2,16 @@ import $ from "jquery";
 import get from "lodash/get";
 import isUndefined from "lodash/isUndefined";
 import { ISubView } from "../../slider/interface";
-import { tDefaultProps, tAddition } from "../../types";
+import { DefaultProps, Addition } from "../../types";
 import { objectToString, calcOffset } from "../../helpers/utils";
 import classnames from "classnames";
 
 export default class MarkView implements ISubView {
-  private props?: tDefaultProps;
+  private props?: DefaultProps;
   private view?: JQuery<HTMLElement>;
-  private addition: tAddition;
+  private addition: Addition;
 
-  constructor(addition: tAddition) {
+  constructor(addition: Addition) {
     this.addition = addition;
   }
 
@@ -104,7 +104,7 @@ export default class MarkView implements ISubView {
     }
   };
 
-  public setProps = (props: tDefaultProps): void => {
+  public setProps = (props: DefaultProps): void => {
     this.props = props;
     this.updateView();
     this.prepareContent();
@@ -122,11 +122,11 @@ export default class MarkView implements ISubView {
     }
   };
 
-  public getAddition = (): tAddition => {
+  public getAddition = (): Addition => {
     return this.addition;
   };
 
-  public setAddition = (addition: tAddition): void => {
+  public setAddition = (addition: Addition): void => {
     this.addition = addition;
   };
 }

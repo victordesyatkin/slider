@@ -1,5 +1,4 @@
 import $ from "jquery";
-//import SliderPresenter from "./slider/presenter";
 import "./slider/index";
 import "./styles/index.scss";
 
@@ -33,7 +32,7 @@ const props = {
       }
       return `${v} $`;
     },
-    allways: true,
+    always: true,
   },
   allowCross: false,
   // pushable: 0,

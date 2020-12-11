@@ -1,11 +1,11 @@
-import { tpbcallback } from "../types";
+import { Callback } from "../types";
 import { IPubSub } from "./interface";
 
 export default class PubSub implements IPubSub {
-  private subscribers: { [key: string]: tpbcallback[] } = {};
+  private subscribers: { [key: string]: Callback[] } = {};
   public subscribe = (
     eventName?: string,
-    cb?: tpbcallback
+    cb?: Callback
   ): (() => void) | undefined => {
     if (!eventName || !cb) {
       return;

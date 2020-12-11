@@ -1,4 +1,4 @@
-import { tDefaultProps } from "../types";
+import { DefaultProps } from "../types";
 import get from "lodash/get";
 import orderBy from "lodash/orderBy";
 
@@ -61,7 +61,7 @@ export const getPrecision = (step: number): number => {
 export const getClosestPoint = (
   val: number,
   { step, min, max }: { step: number | undefined; min: number; max: number },
-  props: tDefaultProps
+  props: DefaultProps
 ): number => {
   if (step) {
     let points: number[] = [];
@@ -81,7 +81,7 @@ export const getClosestPoint = (
 
 export const ensureValuePrecision = (
   v: number,
-  props: tDefaultProps | undefined
+  props: DefaultProps | undefined
 ): number => {
   if (props) {
     const { step, min, max } = props;
@@ -96,7 +96,7 @@ export const ensureValuePrecision = (
   return 0;
 };
 
-export const prepareProps = (props: tDefaultProps): tDefaultProps => {
+export const prepareProps = (props: DefaultProps): DefaultProps => {
   let { values } = props;
   values = orderBy(values).map((v) => {
     return ensureValuePrecision(v, props);

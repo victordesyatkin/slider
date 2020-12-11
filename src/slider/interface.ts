@@ -1,18 +1,18 @@
-import { tAddition, tDefaultProps, tProps } from "../types";
+import { Addition, DefaultProps, Props } from "../types";
 
 export interface IModel {
-  getProps(): tDefaultProps;
-  setProps(p: tProps): void;
+  getProps(): DefaultProps;
+  setProps(p: Props): void;
 }
 
 export interface IView {
-  setProps(props: tDefaultProps): void;
+  setProps(props: DefaultProps): void;
   render(parent: JQuery<HTMLElement>): void;
   remove(): void;
 }
 export interface ISubView extends IView {
-  getAddition(): tAddition;
-  setAddition(addition: tAddition): void;
+  getAddition(): Addition;
+  setAddition(addition: Addition): void;
 }
 
 export interface IPresenter {

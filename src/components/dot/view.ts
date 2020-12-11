@@ -3,17 +3,17 @@ import get from "lodash/get";
 import isUndefined from "lodash/isUndefined";
 import { objectToString } from "../../helpers/utils";
 import { ISubView } from "../../slider/interface";
-import { tDefaultProps, tAddition } from "../../types";
+import { DefaultProps, Addition } from "../../types";
 import { calcOffset } from "../../helpers/utils";
 import classnames from "classnames";
 import { orderBy } from "lodash";
 
 export default class DotView implements ISubView {
-  private props?: tDefaultProps;
+  private props?: DefaultProps;
   private view?: JQuery<HTMLElement>;
-  private addition: tAddition;
+  private addition: Addition;
 
-  constructor(addition: tAddition) {
+  constructor(addition: Addition) {
     this.addition = addition;
   }
 
@@ -112,7 +112,7 @@ export default class DotView implements ISubView {
     }
   };
 
-  public setProps = (props: tDefaultProps): void => {
+  public setProps = (props: DefaultProps): void => {
     this.props = props;
     this.updateView();
   };
@@ -129,11 +129,11 @@ export default class DotView implements ISubView {
     }
   };
 
-  public getAddition = (): tAddition => {
+  public getAddition = (): Addition => {
     return this.addition;
   };
 
-  public setAddition = (addition: tAddition): void => {
+  public setAddition = (addition: Addition): void => {
     this.addition = addition;
   };
 }

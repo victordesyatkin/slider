@@ -4,17 +4,17 @@ import uniq from "lodash/uniq";
 import orderBy from "lodash/orderBy";
 import isArray from "lodash/isArray";
 import { ISubView, IView } from "../../slider/interface";
-import { tDefaultProps, tAddition } from "../../types";
+import { DefaultProps, Addition } from "../../types";
 import DotView from "../dot/view";
 import classnames from "classnames";
 
 export default class DotsView implements ISubView {
-  private props?: tDefaultProps;
+  private props?: DefaultProps;
   private view?: JQuery<HTMLElement>;
-  private addition: tAddition;
+  private addition: Addition;
   private dots: ISubView[] = [];
 
-  constructor(addition: tAddition) {
+  constructor(addition: Addition) {
     this.addition = addition;
   }
 
@@ -66,7 +66,7 @@ export default class DotsView implements ISubView {
 
   private createOrUpdateSubView<T extends ISubView>(
     views: ISubView[],
-    c: { new (addition: tAddition): T }
+    c: { new (addition: Addition): T }
   ): void {
     if (this.props && this.view) {
       const { min, max, step, reverse } = this.props;
@@ -126,7 +126,7 @@ export default class DotsView implements ISubView {
     }
   }
 
-  public setProps = (props: tDefaultProps): void => {
+  public setProps = (props: DefaultProps): void => {
     this.props = props;
     this.updateView();
     this.createOrUpdateSubViews();
@@ -145,11 +145,11 @@ export default class DotsView implements ISubView {
     }
   };
 
-  public getAddition = (): tAddition => {
+  public getAddition = (): Addition => {
     return this.addition;
   };
 
-  public setAddition = (addition: tAddition): void => {
+  public setAddition = (addition: Addition): void => {
     this.addition = addition;
   };
 }
