@@ -67,10 +67,6 @@ export default class View extends PubSub {
     return objectToString({ ...get(this.props, ["style"]) });
   }
 
-  private cleanHandleIndex = () => {
-    this.currentHandleIndex = undefined;
-  };
-
   private onClick = (index: number, e: MouseEvent, value?: number) => {
     e.preventDefault();
     if (this.props) {

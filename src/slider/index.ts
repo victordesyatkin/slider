@@ -1,5 +1,4 @@
 import JQuery from "jquery";
-import merge from "lodash/merge";
 import noop from "lodash/noop";
 import pick from "lodash/pick";
 import { Props, DefaultProps, KeyDefaultProps } from "../types";
@@ -26,7 +25,7 @@ export const defaultProps: DefaultProps = {
   precision: 0,
 };
 
-export default class Slider {
+class Slider {
   static PLUGIN_NAME = "slider";
   private model: IModel;
   private view: IView;
@@ -34,7 +33,7 @@ export default class Slider {
 
   constructor(element: JQuery<HTMLElement>, props: Props) {
     const mergeProps: DefaultProps = prepareProps(
-      merge({ ...defaultProps }, props)
+      JQuery.extend(true, defaultProps, props)
     );
     this.model = new Model(mergeProps);
     this.view = new View(element);
@@ -48,7 +47,7 @@ export default class Slider {
 
   setProps(props: DefaultProps): void {
     const mergeProps: DefaultProps = prepareProps(
-      merge({ ...defaultProps }, this.getProps(), props)
+      JQuery.extend(true, defaultProps, this.getProps(), props)
     );
     this.model.setProps(mergeProps);
   }
@@ -58,18 +57,24 @@ export default class Slider {
   }
 }
 
-(function ($) {
-  $.fn.slider = function (props: Props): JQuery {
-    return this.each(function () {
-      const $this = $(this);
-      if (!$this.data(Slider.PLUGIN_NAME)) {
-        $this.data(Slider.PLUGIN_NAME, new Slider($this, props));
-      } else {
-        const slider = $this.data(Slider.PLUGIN_NAME);
-        if (slider) {
-          slider.setProps(props);
-        }
+function createSlider(props: Props, $el: JQuery<HTMLElement>): JQuery {
+  return $el.each(function () {
+    const $this = $(this);
+    if (!$this.data(Slider.PLUGIN_NAME)) {
+      $this.data(Slider.PLUGIN_NAME, new Slider($this, props));
+    } else {
+      const slider = $this.data(Slider.PLUGIN_NAME);
+      if (slider) {
+        slider.setProps(props);
       }
-    });
+    }
+  });
+}
+
+(function ($: JQueryStatic) {
+  $.fn.slider = function (props: Props): JQuery {
+    return createSlider(props, this);
   };
 })(JQuery);
+
+export { Slider, createSlider };

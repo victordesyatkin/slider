@@ -75,7 +75,7 @@ describe("helpers", () => {
       expect(utils.getPrecision(5.25)).toBe(2);
       expect(utils.getPrecision(25)).toBe(0);
     });
-    test("v: number, props: DefaultProps:number -> ensureValuePrecision -> number", () => {
+    test("v: number, props: tDefaultProps:number -> ensureValuePrecision -> number", () => {
       expect(utils.ensureValuePrecision(14, defaultProps)).toBe(14);
       expect(
         utils.ensureValuePrecision(14, merge({ ...defaultProps }, { step: 25 }))
@@ -87,7 +87,7 @@ describe("helpers", () => {
         )
       ).toBe(16);
     });
-    test("14, { step: undefined, min: 16, max: 100 }, props: DefaultProps -> getClosestPoint -> 16", () => {
+    test("14, { step: undefined, min: 16, max: 100 }, props: tDefaultProps -> getClosestPoint -> 16", () => {
       expect(
         utils.getClosestPoint(
           14,
@@ -96,12 +96,12 @@ describe("helpers", () => {
         )
       ).toBe(16);
     });
-    test("20, { step: 25, min: 16, max: 100 }, DefaultProps -> getClosestPoint -> 16", () => {
+    test("20, { step: 25, min: 16, max: 100 }, tDefaultProps -> getClosestPoint -> 16", () => {
       expect(
         utils.getClosestPoint(20, { step: 25, min: 16, max: 100 }, defaultProps)
       ).toBe(16);
     });
-    test("38, { step: 25, min: 0, max: 100 }, DefaultProps -> getClosestPoint -> 30", () => {
+    test("38, { step: 25, min: 0, max: 100 }, tDefaultProps -> getClosestPoint -> 30", () => {
       expect(
         utils.getClosestPoint(
           38,
@@ -110,7 +110,7 @@ describe("helpers", () => {
         )
       ).toBe(30);
     });
-    test("(props: DefaultProps): DefaultProps, props: DefaultProps -> prepareProps -> DefaultProps", () => {
+    test("(props: tDefaultProps): tDefaultProps, props: tDefaultProps -> prepareProps -> tDefaultProps", () => {
       let input = merge({ ...defaultProps }, { values: [65, 35] });
       let output = merge({ ...defaultProps }, { values: [30, 65] });
       expect(utils.prepareProps(input)).toEqual(output);
