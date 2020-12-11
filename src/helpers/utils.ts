@@ -63,9 +63,9 @@ export const getClosestPoint = (
   { step, min, max }: { step: number | undefined; min: number; max: number },
   props: tDefaultProps
 ): number => {
-  let points: number[] = [];
-  points = [...get(props, ["mark", "values"])];
   if (step) {
+    let points: number[] = [];
+    points = [...get(props, ["mark", "values"], [])];
     const baseNum = 10 ** getPrecision(step);
     const maxSteps = Math.floor(
       (max * baseNum - min * baseNum) / (step * baseNum)
@@ -73,9 +73,10 @@ export const getClosestPoint = (
     const steps = Math.min((val - min) / step, maxSteps);
     const closestStep = Math.round(steps) * step + min;
     points.push(closestStep);
+    const diffs = points.map((point) => Math.abs(val - point));
+    return points[diffs.indexOf(Math.min(...diffs))];
   }
-  const diffs = points.map((point) => Math.abs(val - point));
-  return points[diffs.indexOf(Math.min(...diffs))];
+  return ensureValueInRange(val, { min, max });
 };
 
 export const ensureValuePrecision = (
