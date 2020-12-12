@@ -59,7 +59,7 @@ class Slider {
 
 function createSlider(props: Props, $el: JQuery<HTMLElement>): JQuery {
   return $el.each(function () {
-    const $this = $(this);
+    const $this = JQuery(this);
     if (!$this.data(Slider.PLUGIN_NAME)) {
       $this.data(Slider.PLUGIN_NAME, new Slider($this, props));
     } else {
