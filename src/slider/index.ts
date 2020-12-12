@@ -8,7 +8,7 @@ import View from "./view";
 import Presenter from "./presenter";
 import { IModel, IView, IPresenter } from "./interface";
 
-export const defaultProps: DefaultProps = {
+const defaultProps: DefaultProps = {
   prefixCls: "slider",
   values: [0],
   min: 0,
@@ -77,4 +77,4 @@ function createSlider(props: Props, $el: JQuery<HTMLElement>): JQuery {
   };
 })(JQuery);
 
-export { Slider, createSlider };
+export { Slider, createSlider, defaultProps };

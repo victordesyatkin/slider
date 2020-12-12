@@ -1,5 +1,4 @@
 import $ from "jquery";
-import { objectToString } from "../../helpers/utils";
 import { createSlider, Slider } from "../../slider/index";
 
 describe("slider", () => {
