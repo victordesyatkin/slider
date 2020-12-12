@@ -24,7 +24,6 @@ import MarksView from "../components/marks/view";
 import { DefaultProps, Addition } from "../types";
 import { IView, ISubView } from "./interface";
 export default class View extends PubSub {
-  private parent?: JQuery<HTMLElement>;
   private props?: DefaultProps;
   private view?: JQuery<HTMLElement>;
   private rails: ISubView[] = [];
@@ -34,9 +33,8 @@ export default class View extends PubSub {
   private marks: ISubView[] = [];
   private currentHandleIndex?: number;
 
-  constructor(parent: JQuery<HTMLElement>) {
+  constructor() {
     super();
-    this.parent = parent;
   }
 
   private createView(): void {
@@ -131,15 +129,15 @@ export default class View extends PubSub {
 
   private createOrUpdateSubViews(): void {
     const count = getCount(this.props);
-    this.createOrUpdateSubView<RailView>(this.rails, 1, RailView);
+    // this.createOrUpdateSubView<RailView>(this.rails, 1, RailView);
+    // this.createOrUpdateSubView<TrackView>(
+    //   this.tracks,
+    //   count - 1 || 1,
+    //   TrackView
+    // );
+    // this.createOrUpdateSubView<DotsView>(this.dots, 1, DotsView);
+    // this.createOrUpdateSubView<MarksView>(this.marks, 1, MarksView);
     this.createOrUpdateSubView<HandleView>(this.handles, count, HandleView);
-    this.createOrUpdateSubView<TrackView>(
-      this.tracks,
-      count - 1 || 1,
-      TrackView
-    );
-    this.createOrUpdateSubView<DotsView>(this.dots, 1, DotsView);
-    this.createOrUpdateSubView<MarksView>(this.marks, 1, MarksView);
   }
 
   private createOrUpdateSubView<T extends ISubView>(
@@ -186,10 +184,13 @@ export default class View extends PubSub {
 
   private cleanSubView(views: IView[], count: number): void {
     const length = views.length;
+    console.log("length : ", length);
+    console.log("count : ", count);
     if (length > count) {
       for (let i = count; i < length; i += 1) {
         if (views[i]) {
           views[i].remove();
+          delete views[i];
         }
       }
     }
@@ -198,10 +199,10 @@ export default class View extends PubSub {
 
   private appendSubViews(): void {
     if (this.view) {
-      this.appendSubView(this.rails);
-      this.appendSubView(this.marks);
-      this.appendSubView(this.dots);
-      this.appendSubView(this.tracks);
+      // this.appendSubView(this.rails);
+      // this.appendSubView(this.marks);
+      // this.appendSubView(this.dots);
+      // this.appendSubView(this.tracks);
       this.appendSubView(this.handles);
     }
     return;
@@ -216,14 +217,15 @@ export default class View extends PubSub {
   }
 
   public setProps(props: DefaultProps): void {
+    console.log("setProps : ", props);
     this.props = props;
     this.updateView();
     this.createOrUpdateSubViews();
     this.appendSubViews();
   }
 
-  public render = () => {
-    this.parent && this.view && this.parent.append(this.view);
+  public render = (parent: JQuery<HTMLElement>): void => {
+    parent && this.view && parent.append(this.view);
   };
 
   public remove = (): void => {};

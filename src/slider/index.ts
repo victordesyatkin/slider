@@ -36,9 +36,9 @@ class Slider {
       JQuery.extend(true, defaultProps, props)
     );
     this.model = new Model(mergeProps);
-    this.view = new View(element);
+    this.view = new View();
     this.presenter = new Presenter(this.model, this.view);
-    this.presenter.render(element);
+    this.view.render(element);
   }
 
   getProps(): DefaultProps {

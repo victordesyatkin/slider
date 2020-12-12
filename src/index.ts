@@ -19,8 +19,8 @@ const props = {
     // render: (v: number): string => {
     //   return `${v} $`;
     // },
-    values: [16],
-    //dot: true,
+    // values: [16],
+    // dot: true,
   },
   tooltip: {
     on: true,
@@ -44,7 +44,8 @@ const props = {
 
 $(() => {
   const slider = $(".slider__wrapper").slider(props).data("slider");
-  console.log("slider : ", slider.setProps({ values: [30, 22], pushable: 10 }));
+  setTimeout(() => slider.setProps({ values: [30, 22], push: 10 }), 5000);
+  setTimeout(() => slider.setProps({ values: [41], push: 10 }), 10000);
 });
 
 // const slider = new SliderPresenter(props);

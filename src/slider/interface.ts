@@ -15,6 +15,4 @@ export interface ISubView extends IView {
   setAddition(addition: Addition): void;
 }
 
-export interface IPresenter {
-  render(parent: JQuery<HTMLElement>): void;
-}
+export interface IPresenter {}

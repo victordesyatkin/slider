@@ -1,5 +1,6 @@
 import get from "lodash/get";
 import orderBy from "lodash/orderBy";
+import merge from "lodash/merge";
 import isUndefined from "lodash/isUndefined";
 
 import { IView } from "../slider/interface";
@@ -106,6 +107,7 @@ export const prepareProps = (props: DefaultProps): DefaultProps => {
 };
 
 export const getCount = (props?: DefaultProps): number => {
+  console.log("getCount : ", props);
   return get(props, ["values"], []).length;
 };
 
@@ -212,4 +214,43 @@ export function calcValueWithEnsure(options: {
   value = ensureValuePrecision(value, props);
   value = ensureValueCorrectNeighbors({ ...options, value });
   return value;
+}
+
+export function setFunctionGetBoundingClientRectHTMLElement(
+  style?: Partial<{
+    width: number;
+    height: number;
+    marginTop: number;
+    marginBottom: number;
+    marginLeft: number;
+    marginRight: number;
+  }>
+) {
+  const defaultStyle = {
+    width: 0,
+    height: 0,
+    marginTop: 0,
+    marginBottom: 0,
+    marginLeft: 0,
+    marginRight: 0,
+  };
+  const { width, height, marginTop, marginLeft, marginBottom, marginRight } = {
+    ...defaultStyle,
+    ...style,
+  };
+
+  window.HTMLElement.prototype.getBoundingClientRect = function () {
+    const domRect: DOMRect = {
+      width: parseFloat(this.style.width) || width || 0,
+      height: parseFloat(this.style.height) || height || 0,
+      top: parseFloat(this.style.marginTop) || marginTop || 0,
+      left: parseFloat(this.style.marginLeft) || marginLeft || 0,
+      x: 0,
+      y: 0,
+      toJSON: () => {},
+      bottom: parseFloat(this.style.marginBottom) || marginBottom || 0,
+      right: parseFloat(this.style.marginRight) || marginRight || 0,
+    };
+    return domRect;
+  };
 }

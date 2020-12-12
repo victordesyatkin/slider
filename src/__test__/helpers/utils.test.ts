@@ -4,42 +4,8 @@ import merge from "lodash/merge";
 import * as utils from "../../helpers/utils";
 import { defaultProps } from "../../slider/index";
 
-function setFunctionGetBoundingClientRectHTMLElement(
-  style?: Partial<{
-    width: number;
-    height: number;
-    marginTop: number;
-    marginBottom: number;
-    marginLeft: number;
-    marginRight: number;
-  }>
-) {
-  style = {
-    ...{
-      width: 0,
-      height: 0,
-      marginTop: 0,
-      marginBottom: 0,
-      marginLeft: 0,
-      marginRight: 0,
-    },
-    ...style,
-  };
-  window.HTMLElement.prototype.getBoundingClientRect = function () {
-    const domRect: DOMRect = {
-      width: parseFloat(this.style.width) || style.width || 0,
-      height: parseFloat(this.style.height) || style.height || 0,
-      top: parseFloat(this.style.marginTop) || style.marginTop || 0,
-      left: parseFloat(this.style.marginLeft) || style.marginLeft || 0,
-      x: 0,
-      y: 0,
-      toJSON: () => {},
-      bottom: parseFloat(this.style.marginBottom) || style.marginBottom || 0,
-      right: parseFloat(this.style.marginRight) || style.marginRight || 0,
-    };
-    return domRect;
-  };
-}
+const className1 = "class1";
+const className2 = "class2";
 
 describe("helpers", () => {
   describe("utils", () => {
@@ -62,13 +28,13 @@ describe("helpers", () => {
     });
 
     test("vertical, HTMLElement -> getHandleCenterPosition -> number", () => {
-      setFunctionGetBoundingClientRectHTMLElement();
-      document.body.innerHTML = `<div class="class1" style="width:100px;height:100px;">hello world!</div>`;
-      let el = $(".class1").get(0);
+      utils.setFunctionGetBoundingClientRectHTMLElement();
+      document.body.innerHTML = `<div class="${className1}" style="width:100px;height:100px;">hello world!</div>`;
+      let el = $(`.${className1}`).get(0);
       expect(utils.getHandleCenterPosition(false, el)).toBe(50);
       document.body.innerHTML = "";
-      document.body.innerHTML = `<div class="class2" style="width:50px;height:200px;">hello world!</div>`;
-      el = $(".class2").get(0);
+      document.body.innerHTML = `<div class="${className2}" style="width:50px;height:200px;">hello world!</div>`;
+      el = $(`.${className2}`).get(0);
       expect(utils.getHandleCenterPosition(true, el)).toBe(100);
     });
     test("val: number, { max, min }: { max: number; min: number } -> ensureValueInRange -> number", () => {
@@ -148,11 +114,14 @@ describe("helpers", () => {
     test("getSliderStart", () => {
       expect(utils.getSliderStart()).toBe(0);
       expect(utils.getSliderStart({ ...defaultProps })).toBe(0);
-      document.body.innerHTML = `<div class="class1" style="width:100px;height:100px;">hello world!</div>`;
-      let $el = $(".class1");
-      setFunctionGetBoundingClientRectHTMLElement({ height: 100, width: 100 });
+      document.body.innerHTML = `<div class="${className1}" style="width:100px;height:100px;">hello world!</div>`;
+      let $el = $(`.${className1}`);
+      utils.setFunctionGetBoundingClientRectHTMLElement({
+        height: 100,
+        width: 100,
+      });
       expect(utils.getSliderStart({ ...defaultProps }, $el)).toBe(0);
-      setFunctionGetBoundingClientRectHTMLElement({
+      utils.setFunctionGetBoundingClientRectHTMLElement({
         marginTop: 10,
         height: 100,
         width: 100,
@@ -160,7 +129,7 @@ describe("helpers", () => {
       expect(
         utils.getSliderStart({ ...defaultProps, vertical: true }, $el)
       ).toBe(10);
-      setFunctionGetBoundingClientRectHTMLElement({
+      utils.setFunctionGetBoundingClientRectHTMLElement({
         marginBottom: 40,
         height: 100,
         width: 100,
@@ -173,9 +142,12 @@ describe("helpers", () => {
       ).toBe(40);
     });
     test("getSliderLength", () => {
-      setFunctionGetBoundingClientRectHTMLElement({ width: 200, height: 100 });
-      document.body.innerHTML = `<div class="class1" style="width:200px;height:100px;">hello world!</div>`;
-      let $el = $(".class1");
+      utils.setFunctionGetBoundingClientRectHTMLElement({
+        width: 200,
+        height: 100,
+      });
+      document.body.innerHTML = `<div class="${className1}" style="width:200px;height:100px;">hello world!</div>`;
+      let $el = $(`.${className1}`);
       expect(
         utils.getSliderLength({ view: $el, props: { ...defaultProps } })
       ).toBe(200);
@@ -188,12 +160,12 @@ describe("helpers", () => {
     });
 
     test("calcValue", () => {
-      setFunctionGetBoundingClientRectHTMLElement({
+      utils.setFunctionGetBoundingClientRectHTMLElement({
         width: 200,
         height: 100,
       });
-      document.body.innerHTML = `<div class="class1" style="width:200px;height:100px;">hello world!</div>`;
-      let $el = $(".class1");
+      document.body.innerHTML = `<div class="${className1}" style="width:200px;height:100px;">hello world!</div>`;
+      let $el = $(`.${className1}`);
       expect(
         utils.calcValue({
           offset: 50,
@@ -212,12 +184,12 @@ describe("helpers", () => {
       ).toBe(50);
     });
     test("calcValueByPos", () => {
-      setFunctionGetBoundingClientRectHTMLElement({
+      utils.setFunctionGetBoundingClientRectHTMLElement({
         width: 200,
         height: 100,
       });
-      document.body.innerHTML = `<div class="class1" style="width:200px;height:100px;">hello world!</div>`;
-      let $el = $(".class1");
+      document.body.innerHTML = `<div class="${className1}" style="width:200px;height:100px;">hello world!</div>`;
+      let $el = $(`.${className1}`);
       expect(
         utils.calcValueByPos({
           position: 50,

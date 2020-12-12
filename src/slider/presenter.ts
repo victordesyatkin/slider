@@ -30,8 +30,4 @@ export default class Presenter implements IPresenter {
   private setPropsView = (props: DefaultProps): void => {
     this.view.setProps(props);
   };
-
-  public render(parent: JQuery<HTMLElement>): void {
-    this.view.render(parent);
-  }
 }
