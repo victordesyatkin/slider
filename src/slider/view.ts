@@ -2,21 +2,27 @@ import $ from "jquery";
 import classnames from "classnames";
 import get from "lodash/get";
 import isUndefined from "lodash/isUndefined";
-import PubSub from "../helpers/pubsub";
+
 import {
   objectToString,
   getMousePosition,
   ensureValueInRange,
   ensureValuePrecision,
+  getCount,
+  getSliderStart,
+  getSliderLength,
+  calcValue,
+  calcValueByPos,
 } from "../helpers/utils";
-import { DefaultProps, Addition } from "../types";
-import { IView, ISubView } from "./interface";
+import PubSub from "../helpers/pubsub";
 import RailView from "../components/rail/view";
 import HandleView from "../components/handle/view";
 import TrackView from "../components/track/view";
 import DotsView from "../components/dots/view";
 import MarksView from "../components/marks/view";
 
+import { DefaultProps, Addition } from "../types";
+import { IView, ISubView } from "./interface";
 export default class View extends PubSub {
   private parent?: JQuery<HTMLElement>;
   private props?: DefaultProps;
@@ -69,14 +75,19 @@ export default class View extends PubSub {
 
   private onClick = (index: number, e: MouseEvent, value?: number) => {
     e.preventDefault();
-    if (this.props) {
+    if (this.props && this.view) {
       let v: number;
       if (!isUndefined(value)) {
         v = value;
       } else {
         const vertical = get(this.props, ["vertical"], false);
         const position = getMousePosition(vertical, e as MouseEvent);
-        v = this.calcValueByPos(position);
+        v = calcValueByPos({
+          position,
+          view: this.view,
+          props: this.props,
+          index,
+        });
       }
       if (this.props.values[0] !== v) {
         const values: number[] = [v];
@@ -94,7 +105,6 @@ export default class View extends PubSub {
 
   private onMouseUp = (e: MouseEvent): void => {
     e.preventDefault();
-    //this.cleanHandleIndex();
     window.removeEventListener("mousemove", this.onMouseMove);
     window.removeEventListener("mouseup", this.onMouseUp);
   };
@@ -105,7 +115,12 @@ export default class View extends PubSub {
       const { vertical, values } = this.props;
       const prevValue = values[index];
       const position = getMousePosition(vertical, e);
-      const nextValue = this.calcValueByPos(position);
+      const nextValue = calcValueByPos({
+        position,
+        view: this.view,
+        props: this.props,
+        index,
+      });
       if (prevValue !== nextValue) {
         const v = [...values];
         v[index] = nextValue;
@@ -114,100 +129,13 @@ export default class View extends PubSub {
     }
   };
 
-  private calcValueByPos(position: number): number {
-    if (this.props) {
-      const { reverse, min, max } = this.props;
-      const sign = reverse ? -1 : +1;
-      const pixelOffset = sign * (position - this.getSliderStart());
-      let value = ensureValueInRange(this.calcValue(pixelOffset), {
-        min,
-        max,
-      });
-      value = this.calcValueWithEnsure(value);
-      return value;
-    }
-    return 0;
-  }
-
-  private checkNeighbors = (
-    allowCross: boolean | undefined,
-    value: number[]
-  ) => {
-    return !allowCross && value.length > 1;
-  };
-
-  private ensureValueCorrectNeighbors = (value: number): number => {
-    if (this.props && !isUndefined(this.currentHandleIndex)) {
-      const { allowCross, values, push } = this.props;
-      let { min, max } = this.props;
-      if (this.checkNeighbors(allowCross, values)) {
-        let prevValue = values[this.currentHandleIndex - 1];
-        let nextValue = values[this.currentHandleIndex + 1];
-        if (!isUndefined(prevValue)) {
-          min = push ? prevValue + push : prevValue;
-        }
-        if (!isUndefined(nextValue)) {
-          max = push ? nextValue - push : nextValue;
-        }
-        value = ensureValueInRange(value, {
-          min,
-          max,
-        });
-      }
-    }
-    return value;
-  };
-
-  private calcValueWithEnsure(value: number): number {
-    value = ensureValuePrecision(value, this.props);
-    value = this.ensureValueCorrectNeighbors(value);
-    return value;
-  }
-
-  private calcValue(offset: number) {
-    if (this.props) {
-      const { vertical, min, max, precision } = this.props;
-      const ratio = Math.abs(Math.max(offset, 0) / this.getSliderLength());
-      const value = vertical
-        ? (1 - ratio) * (max - min) + min
-        : ratio * (max - min) + min;
-      return Number(value.toFixed(precision));
-    }
-    return 0;
-  }
-
-  private getSliderLength(): number {
-    if (this.view && this.props) {
-      const slider = this.view.get(0);
-      const { vertical } = this.props;
-      const coords = slider.getBoundingClientRect();
-      return vertical ? coords.height : coords.width;
-    }
-    return 0;
-  }
-
-  private getSliderStart(): number {
-    if (this.props && this.view) {
-      const { vertical, reverse } = this.props;
-      const rect = this.view.get(0).getBoundingClientRect();
-      if (vertical) {
-        return reverse ? rect.bottom : rect.top;
-      }
-      return window.pageXOffset + (reverse ? rect.right : rect.left);
-    }
-    return 0;
-  }
-
   private createOrUpdateSubViews(): void {
+    const count = getCount(this.props);
     this.createOrUpdateSubView<RailView>(this.rails, 1, RailView);
-    this.createOrUpdateSubView<HandleView>(
-      this.handles,
-      this.getCount(this.handles),
-      HandleView
-    );
+    this.createOrUpdateSubView<HandleView>(this.handles, count, HandleView);
     this.createOrUpdateSubView<TrackView>(
       this.tracks,
-      this.getCount(this.tracks) - 1 || 1,
+      count - 1 || 1,
       TrackView
     );
     this.createOrUpdateSubView<DotsView>(this.dots, 1, DotsView);
@@ -285,21 +213,6 @@ export default class View extends PubSub {
         subView.render(this.view);
       }
     }
-  }
-
-  private getCount(views: IView[]): number {
-    let count = 0;
-    if (this.props) {
-      const { values } = this.props;
-      if (values) {
-        count = values.length;
-      }
-      if (views) {
-        const length = views.length;
-        count = length > count ? length : count;
-      }
-    }
-    return count;
   }
 
   public setProps(props: DefaultProps): void {

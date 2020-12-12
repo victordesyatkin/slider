@@ -1,6 +1,10 @@
-import { DefaultProps } from "../types";
 import get from "lodash/get";
 import orderBy from "lodash/orderBy";
+import isUndefined from "lodash/isUndefined";
+
+import { IView } from "../slider/interface";
+
+import { DefaultProps } from "../types";
 
 export function objectToString(style?: { [key: string]: string }): string {
   if (!style) {
@@ -81,19 +85,16 @@ export const getClosestPoint = (
 
 export const ensureValuePrecision = (
   v: number,
-  props: DefaultProps | undefined
+  props: DefaultProps
 ): number => {
-  if (props) {
-    const { step, min, max } = props;
-    if (!step) {
-      return v;
-    }
-    const closestPoint = isFinite(getClosestPoint(v, { step, min, max }, props))
-      ? getClosestPoint(v, { step, min, max }, props)
-      : 0;
-    return parseFloat(closestPoint.toFixed(getPrecision(step)));
+  const { step, min, max } = props;
+  if (!step) {
+    return v;
   }
-  return 0;
+  const closestPoint = isFinite(getClosestPoint(v, { step, min, max }, props))
+    ? getClosestPoint(v, { step, min, max }, props)
+    : 0;
+  return parseFloat(closestPoint.toFixed(getPrecision(step)));
 };
 
 export const prepareProps = (props: DefaultProps): DefaultProps => {
@@ -103,3 +104,112 @@ export const prepareProps = (props: DefaultProps): DefaultProps => {
   });
   return { ...props, values };
 };
+
+export const getCount = (props?: DefaultProps): number => {
+  return get(props, ["values"], []).length;
+};
+
+export const getSliderStart = (
+  props?: DefaultProps,
+  view?: JQuery<HTMLElement>
+): number => {
+  if (props && view) {
+    const { vertical, reverse } = props;
+    const rect = view.get(0).getBoundingClientRect();
+    if (vertical) {
+      return reverse ? rect.bottom : rect.top;
+    }
+    return window.pageXOffset + (reverse ? rect.right : rect.left);
+  }
+  return 0;
+};
+
+export function getSliderLength(options: {
+  view: JQuery<HTMLElement>;
+  props: DefaultProps;
+}): number {
+  const { props, view } = options;
+  const { vertical } = props;
+  const coords = view.get(0).getBoundingClientRect();
+  return vertical ? coords.height : coords.width;
+}
+
+export function calcValue(options: {
+  offset: number;
+  view: JQuery<HTMLElement>;
+  props: DefaultProps;
+  index: number;
+}): number {
+  const { offset, view, props } = options;
+  const { vertical, min, max, precision } = props;
+  const ratio = Math.abs(
+    Math.max(offset, 0) / getSliderLength({ view, props })
+  );
+  const value = vertical
+    ? (1 - ratio) * (max - min) + min
+    : ratio * (max - min) + min;
+  return Number(value.toFixed(precision));
+}
+
+export function calcValueByPos(options: {
+  position: number;
+  view: JQuery<HTMLElement>;
+  props: DefaultProps;
+  index: number;
+}): number {
+  const { position, view, props } = options;
+  const { reverse, min, max } = props;
+  const sign = reverse ? -1 : +1;
+  const offset = sign * (position - getSliderStart(props, view));
+  let value = ensureValueInRange(calcValue({ ...options, offset }), {
+    min,
+    max,
+  });
+  value = calcValueWithEnsure({ ...options, value });
+  return value;
+}
+
+export function checkNeighbors(
+  allowCross: boolean | undefined,
+  value: number[]
+) {
+  return !allowCross && value.length > 1;
+}
+
+export function ensureValueCorrectNeighbors(options: {
+  value: number;
+  props: DefaultProps;
+  index: number;
+}): number {
+  const { props, index } = options;
+  const { allowCross, values, push } = props;
+  let { min, max } = props;
+  let { value } = options;
+  if (checkNeighbors(allowCross, values)) {
+    let prevValue = get(values, [index - 1]);
+    let nextValue = get(values, [index + 1]);
+    if (!isUndefined(prevValue)) {
+      min = push ? prevValue + push : prevValue;
+    }
+    if (!isUndefined(nextValue)) {
+      max = push ? nextValue - push : nextValue;
+    }
+    value = ensureValueInRange(value, {
+      min,
+      max,
+    });
+  }
+  return value;
+}
+
+export function calcValueWithEnsure(options: {
+  value: number;
+  props: DefaultProps;
+  index: number;
+}): number {
+  const { props } = options;
+  let { value } = options;
+  value = ensureValuePrecision(value, props);
+  value = ensureValueCorrectNeighbors({ ...options, value });
+  return value;
+}

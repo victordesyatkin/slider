@@ -1,20 +1,41 @@
-import * as utils from "../../helpers/utils";
 import $ from "jquery";
 import merge from "lodash/merge";
+
+import * as utils from "../../helpers/utils";
 import { defaultProps } from "../../slider/index";
 
-function setFunctionGetBoundingClientRectHTMLElement() {
+function setFunctionGetBoundingClientRectHTMLElement(
+  style?: Partial<{
+    width: number;
+    height: number;
+    marginTop: number;
+    marginBottom: number;
+    marginLeft: number;
+    marginRight: number;
+  }>
+) {
+  style = {
+    ...{
+      width: 0,
+      height: 0,
+      marginTop: 0,
+      marginBottom: 0,
+      marginLeft: 0,
+      marginRight: 0,
+    },
+    ...style,
+  };
   window.HTMLElement.prototype.getBoundingClientRect = function () {
     const domRect: DOMRect = {
-      width: parseFloat(this.style.width) || 0,
-      height: parseFloat(this.style.height) || 0,
-      top: parseFloat(this.style.marginTop) || 0,
-      left: parseFloat(this.style.marginLeft) || 0,
+      width: parseFloat(this.style.width) || style.width || 0,
+      height: parseFloat(this.style.height) || style.height || 0,
+      top: parseFloat(this.style.marginTop) || style.marginTop || 0,
+      left: parseFloat(this.style.marginLeft) || style.marginLeft || 0,
       x: 0,
       y: 0,
       toJSON: () => {},
-      bottom: parseFloat(this.style.marginLeft) || 0,
-      right: parseFloat(this.style.marginLeft) || 0,
+      bottom: parseFloat(this.style.marginBottom) || style.marginBottom || 0,
+      right: parseFloat(this.style.marginRight) || style.marginRight || 0,
     };
     return domRect;
   };
@@ -42,11 +63,11 @@ describe("helpers", () => {
 
     test("vertical, HTMLElement -> getHandleCenterPosition -> number", () => {
       setFunctionGetBoundingClientRectHTMLElement();
-      document.body.innerHTML = `<div class="class1" style="width:100px;height:100px;">hohoho</div>`;
+      document.body.innerHTML = `<div class="class1" style="width:100px;height:100px;">hello world!</div>`;
       let el = $(".class1").get(0);
       expect(utils.getHandleCenterPosition(false, el)).toBe(50);
       document.body.innerHTML = "";
-      document.body.innerHTML = `<div class="class2" style="width:50px;height:200px;">j2j2j2</div>`;
+      document.body.innerHTML = `<div class="class2" style="width:50px;height:200px;">hello world!</div>`;
       el = $(".class2").get(0);
       expect(utils.getHandleCenterPosition(true, el)).toBe(100);
     });
@@ -117,6 +138,138 @@ describe("helpers", () => {
       input = merge({ ...input }, { step: 25 });
       output = merge({ ...input }, { values: [25, 75] });
       expect(utils.prepareProps(input)).toEqual(output);
+    });
+    test("undefined -> getCount -> 0", () => {
+      expect(utils.getCount()).toBe(0);
+    });
+    test("values: [10, 48, 14] -> getCount -> 3", () => {
+      expect(utils.getCount({ ...defaultProps, values: [10, 48, 14] })).toBe(3);
+    });
+    test("getSliderStart", () => {
+      expect(utils.getSliderStart()).toBe(0);
+      expect(utils.getSliderStart({ ...defaultProps })).toBe(0);
+      document.body.innerHTML = `<div class="class1" style="width:100px;height:100px;">hello world!</div>`;
+      let $el = $(".class1");
+      setFunctionGetBoundingClientRectHTMLElement({ height: 100, width: 100 });
+      expect(utils.getSliderStart({ ...defaultProps }, $el)).toBe(0);
+      setFunctionGetBoundingClientRectHTMLElement({
+        marginTop: 10,
+        height: 100,
+        width: 100,
+      });
+      expect(
+        utils.getSliderStart({ ...defaultProps, vertical: true }, $el)
+      ).toBe(10);
+      setFunctionGetBoundingClientRectHTMLElement({
+        marginBottom: 40,
+        height: 100,
+        width: 100,
+      });
+      expect(
+        utils.getSliderStart(
+          { ...defaultProps, vertical: true, reverse: true },
+          $el
+        )
+      ).toBe(40);
+    });
+    test("getSliderLength", () => {
+      setFunctionGetBoundingClientRectHTMLElement({ width: 200, height: 100 });
+      document.body.innerHTML = `<div class="class1" style="width:200px;height:100px;">hello world!</div>`;
+      let $el = $(".class1");
+      expect(
+        utils.getSliderLength({ view: $el, props: { ...defaultProps } })
+      ).toBe(200);
+      expect(
+        utils.getSliderLength({
+          view: $el,
+          props: { ...defaultProps, vertical: true },
+        })
+      ).toBe(100);
+    });
+
+    test("calcValue", () => {
+      setFunctionGetBoundingClientRectHTMLElement({
+        width: 200,
+        height: 100,
+      });
+      document.body.innerHTML = `<div class="class1" style="width:200px;height:100px;">hello world!</div>`;
+      let $el = $(".class1");
+      expect(
+        utils.calcValue({
+          offset: 50,
+          view: $el,
+          props: { ...defaultProps },
+          index: 0,
+        })
+      ).toBe(25);
+      expect(
+        utils.calcValue({
+          offset: 50,
+          view: $el,
+          props: { ...defaultProps, vertical: true },
+          index: 0,
+        })
+      ).toBe(50);
+    });
+    test("calcValueByPos", () => {
+      setFunctionGetBoundingClientRectHTMLElement({
+        width: 200,
+        height: 100,
+      });
+      document.body.innerHTML = `<div class="class1" style="width:200px;height:100px;">hello world!</div>`;
+      let $el = $(".class1");
+      expect(
+        utils.calcValueByPos({
+          position: 50,
+          view: $el,
+          props: { ...defaultProps },
+          index: 0,
+        })
+      ).toBe(25);
+      expect(
+        utils.calcValueByPos({
+          position: 50,
+          view: $el,
+          props: { ...defaultProps, vertical: true },
+          index: 0,
+        })
+      ).toBe(50);
+    });
+    test("checkNeighbors", () => {
+      expect(utils.checkNeighbors(false, [20, 40])).toBeTruthy();
+      expect(utils.checkNeighbors(false, [20])).toBeFalsy();
+    });
+    test("ensureValueCorrectNeighbors", () => {
+      expect(
+        utils.ensureValueCorrectNeighbors({
+          value: 20,
+          props: defaultProps,
+          index: 0,
+        })
+      ).toBe(20);
+      expect(
+        utils.ensureValueCorrectNeighbors({
+          value: 40,
+          props: { ...defaultProps, values: [40, 60], push: 10 },
+          index: 1,
+        })
+      ).toBe(50);
+    });
+    test("calcValueWithEnsure", () => {
+      expect(
+        utils.calcValueWithEnsure({
+          value: 20,
+          props: defaultProps,
+          index: 0,
+        })
+      ).toBe(20);
+      expect(
+        utils.calcValueWithEnsure({
+          value: 80,
+          props: { ...defaultProps, values: [40, 60], push: 10, max: 50 },
+          index: 1,
+        })
+      ).toBe(50);
     });
   });
 });
