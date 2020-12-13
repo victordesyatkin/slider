@@ -73,9 +73,9 @@ export default class DotsView implements ISubView {
       let values: number[] = [];
       const on = get(this.props, ["mark", "dot"]);
       if (on) {
-        const mvalues = get(this.props, ["mark", "values"]);
-        if (isArray(mvalues)) {
-          values = mvalues;
+        const markValues = get(this.props, ["mark", "values"]);
+        if (isArray(markValues)) {
+          values = markValues;
         }
       }
       if (step) {
@@ -84,7 +84,7 @@ export default class DotsView implements ISubView {
           values.push(i);
         }
         values = orderBy(uniq(values), reverse ? "desc" : "asc");
-        length = values.length;
+        const length = values.length;
         for (let i = 0; i < length; i += 1) {
           if (views[i]) {
             views[i].setProps(this.props);
@@ -107,6 +107,7 @@ export default class DotsView implements ISubView {
           views[i].remove();
         }
       }
+      views.splice(count);
     }
     return;
   }

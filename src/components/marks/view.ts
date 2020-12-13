@@ -68,16 +68,16 @@ export default class MarksView implements ISubView {
     if (this.props && this.view) {
       const { min, max, step, reverse } = this.props;
       let values: number[] = [];
-      const mvalues = get(this.props, ["mark", "values"]);
-      if (isArray(mvalues)) {
-        values = mvalues;
+      const markValues = get(this.props, ["mark", "values"]);
+      if (isArray(markValues)) {
+        values = markValues;
       }
       if (step) {
         for (let i = min; i <= max; i += step) {
           values.push(i);
         }
         values = orderBy(uniq(values), reverse ? "desc" : "asc");
-        length = values.length;
+        const length = values.length;
         const handlers = this.addition.handlers;
         for (let i = 0; i < length; i += 1) {
           if (!isUndefined(views[i])) {
@@ -109,6 +109,7 @@ export default class MarksView implements ISubView {
           views[i].remove();
         }
       }
+      views.splice(count);
     }
     return;
   }

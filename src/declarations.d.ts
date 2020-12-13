@@ -1,7 +1,7 @@
 import { Props } from "./types";
 declare global {
   interface JQuery {
-    slider(props: Props): JQuery;
+    slider(props?: Props): JQuery;
   }
 }
 

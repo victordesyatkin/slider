@@ -43,9 +43,19 @@ const props = {
 };
 
 $(() => {
-  const slider = $(".slider__wrapper").slider(props).data("slider");
-  setTimeout(() => slider.setProps({ values: [30, 90], push: 10 }), 5000);
-  setTimeout(() => slider.setProps({ values: [60], push: 10 }), 10000);
+  const slider1 = $(".slider__wrapper1").slider(props).data("slider");
+  // const slider2 = $(".slider__wrapper2").slider().data("slider");
+  // setTimeout(
+  //   () => slider1.setProps({ values: [30, 90, 20], push: 10, step: 10 }),
+  //   5000
+  // );
+  // setTimeout(
+  //   () =>
+  //     slider1.setProps({ values: [60], push: 10, step: 10, dot: { on: true } }),
+  //   10000
+  // );
+  // setTimeout(() => slider2.setProps({ values: [30, 90, 20], push: 10 }), 5000);
+  // setTimeout(() => slider2.setProps({ values: [60], push: 10 }), 10000);
 });
 
 // const slider = new SliderPresenter(props);

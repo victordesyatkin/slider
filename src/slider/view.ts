@@ -6,12 +6,7 @@ import isUndefined from "lodash/isUndefined";
 import {
   objectToString,
   getMousePosition,
-  ensureValueInRange,
-  ensureValuePrecision,
   getCount,
-  getSliderStart,
-  getSliderLength,
-  calcValue,
   calcValueByPos,
 } from "../helpers/utils";
 import PubSub from "../helpers/pubsub";

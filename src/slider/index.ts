@@ -1,9 +1,8 @@
 import JQuery from "jquery";
 import noop from "lodash/noop";
 import pick from "lodash/pick";
-import omit from "lodash/omit";
 
-import { prepareValues, prepareData } from "../helpers/utils";
+import { prepareData } from "../helpers/utils";
 import { Props, DefaultProps, KeyDefaultProps } from "../types";
 import { IModel, IView, IPresenter } from "./interface";
 import Model from "./model";
@@ -33,7 +32,7 @@ class Slider {
   private view: IView;
   private presenter: IPresenter;
 
-  constructor(element: JQuery<HTMLElement>, props: Props) {
+  constructor(element: JQuery<HTMLElement>, props?: Props) {
     const mergeProps: DefaultProps = prepareData(props);
     this.model = new Model(mergeProps);
     this.view = new View();
@@ -54,7 +53,7 @@ class Slider {
   }
 }
 
-function createSlider(props: Props, $el: JQuery<HTMLElement>): JQuery {
+function createSlider($el: JQuery<HTMLElement>, props?: Props): JQuery {
   return $el.each(function () {
     const $this = JQuery(this);
     if (!$this.data(Slider.PLUGIN_NAME)) {
@@ -69,8 +68,8 @@ function createSlider(props: Props, $el: JQuery<HTMLElement>): JQuery {
 }
 
 (function ($: JQueryStatic) {
-  $.fn.slider = function (props: Props): JQuery {
-    return createSlider(props, this);
+  $.fn.slider = function (props?: Props): JQuery {
+    return createSlider(this, props);
   };
 })(JQuery);
 

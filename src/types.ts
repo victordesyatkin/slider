@@ -9,6 +9,7 @@ type Props = {
   classNames?: string[];
   style?: { [key: string]: string };
   mark?: Mark;
+  dot?: Dot;
   step?: number;
   onChange?: (value: number[]) => void;
   onBeforeChange?: (value: number[]) => void;
@@ -16,7 +17,6 @@ type Props = {
   track?: Track;
   handle?: Handle;
   startPoint?: number;
-  dots?: Dot;
   rail?: Rail;
   allowCross?: boolean;
   tooltip?: Tooltip;
@@ -42,9 +42,9 @@ type DefaultProps = {
   onAfterChange: (value: number[]) => void;
   track?: Track;
   handle?: Handle;
-  startPoint?: number;
   dot?: Dot;
   rail?: Rail;
+  startPoint?: number;
   allowCross: boolean;
   tooltip?: Tooltip;
   push?: number;
