@@ -1,6 +1,7 @@
 import { DefaultProps, Props } from "../types";
 import { prepareData } from "../helpers/utils";
 import PubSub from "../helpers/pubsub";
+import get from "lodash/get";
 
 export default class Model extends PubSub {
   private props: DefaultProps;
@@ -12,8 +13,38 @@ export default class Model extends PubSub {
   }
 
   private onHandler = (): void => {
-    this.subscribe("setPropsModel", this.setProps);
+    this.subscribe("setPropsModel", this.setPropsForView);
+    this.subscribe("onMouseDown", this.onBeforeChange);
+    this.subscribe("onMouseUp", this.onAfterChange);
   };
+
+  private onBeforeChange = (values?: number[]) => {
+    const onBeforeChange: ((values: number[]) => void) | undefined = get(
+      this.props,
+      ["onBeforeChange"]
+    );
+    values && onBeforeChange && onBeforeChange(values);
+  };
+
+  private onChange = (values?: number[]) => {
+    const onChange: ((values: number[]) => void) | undefined = get(this.props, [
+      "onChange",
+    ]);
+    values && onChange && onChange(values);
+  };
+
+  private onAfterChange = (values?: number[]) => {
+    const onAfterChange: ((values: number[]) => void) | undefined = get(
+      this.props,
+      ["onAfterChange"]
+    );
+    values && onAfterChange && onAfterChange(values);
+  };
+
+  private setPropsForView(props: Props): void {
+    this.onChange(get(props, ["values"]));
+    this.setProps(props);
+  }
 
   public getProps = (): DefaultProps => {
     return this.props;

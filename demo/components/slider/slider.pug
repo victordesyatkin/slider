@@ -1,0 +1,7 @@
+mixin slider(options = {})
+    -
+        let {classNames = []} = options;
+        classNames = classNames.join(' '); 
+    .slider(
+        class=classNames
+    )

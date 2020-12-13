@@ -8,6 +8,7 @@ import { IModel, IView, IPresenter } from "./interface";
 import Model from "./model";
 import View from "./view";
 import Presenter from "./presenter";
+import "../style.scss";
 
 const defaultProps: DefaultProps = {
   prefixCls: "slider",

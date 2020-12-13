@@ -1,0 +1,11 @@
+mixin panel(options={})
+    -
+        let { classNames = [] } = options;
+        classNames = classNames.join(' '); 
+    .panel(
+        class=`${classNames}`
+    )
+        if (title)
+            .panel__title.title
+        .panel__input-values.js-panel_input-values
+

@@ -37,9 +37,9 @@ type DefaultProps = {
   style?: { [key: string]: string };
   mark?: Mark;
   step?: number;
-  onChange: (value: number[]) => void;
-  onBeforeChange: (value: number[]) => void;
-  onAfterChange: (value: number[]) => void;
+  onChange?: (value: number[]) => void;
+  onBeforeChange?: (value: number[]) => void;
+  onAfterChange?: (value: number[]) => void;
   track?: Track;
   handle?: Handle;
   dot?: Dot;

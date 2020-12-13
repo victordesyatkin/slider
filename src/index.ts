@@ -1,62 +1,64 @@
-import $ from "jquery";
 import "./slider/index";
-import "./styles/index.scss";
 
-const props = {
-  prefixCls: "slider",
-  // values: [0, 40, 10, 70],
-  // values: [22, 80],
-  values: [10],
-  vertical: true,
-  min: -60,
-  max: 120,
-  step: 30,
-  dot: {
-    on: true,
-  },
-  mark: {
-    on: true,
-    // render: (v: number): string => {
-    //   return `${v} $`;
-    // },
-    // values: [16],
-    // dot: true,
-  },
-  tooltip: {
-    on: true,
-    render: (v: number): string => {
-      if (v === 60) {
-        return "☃";
-      } else if (v === 90) {
-        return "♥";
-      }
-      return `${v} $`;
-    },
-    always: true,
-  },
-  allowCross: false,
-  // push: 0,
-  // disabled: true,
-  // marks: {
-  //   //show: true,
-  // },
-};
+// import $ from "jquery";
+// import "./slider/index";
+// import "./styles/index.scss";
 
-$(() => {
-  const slider1 = $(".slider__wrapper1").slider(props).data("slider");
-  // const slider2 = $(".slider__wrapper2").slider().data("slider");
-  // setTimeout(
-  //   () => slider1.setProps({ values: [30, 90, 20], push: 10, step: 10 }),
-  //   5000
-  // );
-  // setTimeout(
-  //   () =>
-  //     slider1.setProps({ values: [60], push: 10, step: 10, dot: { on: true } }),
-  //   10000
-  // );
-  // setTimeout(() => slider2.setProps({ values: [30, 90, 20], push: 10 }), 5000);
-  // setTimeout(() => slider2.setProps({ values: [60], push: 10 }), 10000);
-});
+// const props = {
+//   prefixCls: "slider",
+//   // values: [0, 40, 10, 70],
+//   // values: [22, 80],
+//   values: [10],
+//   vertical: true,
+//   min: -60,
+//   max: 120,
+//   step: 30,
+//   dot: {
+//     on: true,
+//   },
+//   mark: {
+//     on: true,
+//     // render: (v: number): string => {
+//     //   return `${v} $`;
+//     // },
+//     // values: [16],
+//     // dot: true,
+//   },
+//   tooltip: {
+//     on: true,
+//     render: (v: number): string => {
+//       if (v === 60) {
+//         return "☃";
+//       } else if (v === 90) {
+//         return "♥";
+//       }
+//       return `${v} $`;
+//     },
+//     always: true,
+//   },
+//   allowCross: false,
+//   // push: 0,
+//   // disabled: true,
+//   // marks: {
+//   //   //show: true,
+//   // },
+// };
+
+// $(() => {
+//   const slider1 = $(".slider__wrapper1").slider(props).data("slider");
+//   // const slider2 = $(".slider__wrapper2").slider().data("slider");
+//   // setTimeout(
+//   //   () => slider1.setProps({ values: [30, 90, 20], push: 10, step: 10 }),
+//   //   5000
+//   // );
+//   // setTimeout(
+//   //   () =>
+//   //     slider1.setProps({ values: [60], push: 10, step: 10, dot: { on: true } }),
+//   //   10000
+//   // );
+//   // setTimeout(() => slider2.setProps({ values: [30, 90, 20], push: 10 }), 5000);
+//   // setTimeout(() => slider2.setProps({ values: [60], push: 10 }), 10000);
+// });
 
 // const slider = new SliderPresenter(props);
 
