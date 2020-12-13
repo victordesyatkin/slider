@@ -33,8 +33,7 @@ class Slider {
   private presenter: IPresenter;
 
   constructor(element: JQuery<HTMLElement>, props?: Props) {
-    const mergeProps: DefaultProps = prepareData(props);
-    this.model = new Model(mergeProps);
+    this.model = new Model(prepareData(props));
     this.view = new View();
     this.presenter = new Presenter(this.model, this.view);
     this.view.render(element);
