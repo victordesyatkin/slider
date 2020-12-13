@@ -29,7 +29,6 @@ describe("slider", () => {
       expect($slider.length).toBe(0);
 
       view.setProps(defaultProps);
-      view.render($parent);
       $slider = $(".slider", $parent);
       expect($slider.length).toBe(1);
     });

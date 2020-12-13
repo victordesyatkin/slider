@@ -10,6 +10,8 @@ export default class TrackView implements ISubView {
   private props?: DefaultProps;
   private view?: JQuery<HTMLElement>;
   private addition: Addition;
+  private isRendered: boolean = false;
+  private parent?: JQuery<HTMLElement>;
 
   constructor(addition: Addition) {
     this.addition = addition;
@@ -68,7 +70,7 @@ export default class TrackView implements ISubView {
         length = Math.abs(length);
         offset = 100 - offset;
       }
-      const positonStyle = vertical
+      const positionStyle = vertical
         ? {
             [reverse ? "top" : "bottom"]: `${offset}%`,
             [reverse ? "bottom" : "top"]: "auto",
@@ -80,7 +82,7 @@ export default class TrackView implements ISubView {
             width: `${length}%`,
           };
       return objectToString({
-        ...positonStyle,
+        ...positionStyle,
         ...style,
       });
     }
@@ -97,11 +99,16 @@ export default class TrackView implements ISubView {
   public setProps = (props: DefaultProps): void => {
     this.props = props;
     this.updateView();
+    this.render();
   };
 
-  public render = (parent: JQuery<HTMLElement>): void => {
-    if (parent && this.view) {
-      parent.append(this.view);
+  public render = (parent?: JQuery<HTMLElement>): void => {
+    if (parent) {
+      this.parent = parent;
+    }
+    if (!this.isRendered && this.parent && this.view) {
+      this.parent.append(this.view);
+      this.isRendered = true;
     }
   };
 

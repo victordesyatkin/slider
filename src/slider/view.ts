@@ -27,6 +27,8 @@ export default class View extends PubSub {
   private dots: ISubView[] = [];
   private marks: ISubView[] = [];
   private currentHandleIndex?: number;
+  private parent?: JQuery<HTMLElement>;
+  private isRendered: boolean = false;
 
   constructor() {
     super();
@@ -214,10 +216,17 @@ export default class View extends PubSub {
     this.updateView();
     this.createOrUpdateSubViews();
     this.appendSubViews();
+    this.render();
   }
 
-  public render = (parent: JQuery<HTMLElement>): void => {
-    parent && this.view && parent.append(this.view);
+  public render = (parent?: JQuery<HTMLElement>): void => {
+    if (parent) {
+      this.parent = parent;
+    }
+    if (!this.isRendered && this.parent && this.view) {
+      this.parent.append(this.view);
+      this.isRendered = true;
+    }
   };
 
   public remove = (): void => {};

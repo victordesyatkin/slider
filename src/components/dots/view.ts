@@ -13,6 +13,8 @@ export default class DotsView implements ISubView {
   private view?: JQuery<HTMLElement>;
   private addition: Addition;
   private dots: ISubView[] = [];
+  private parent?: JQuery<HTMLElement>;
+  private isRendered: boolean = false;
 
   constructor(addition: Addition) {
     this.addition = addition;
@@ -75,7 +77,7 @@ export default class DotsView implements ISubView {
       if (on) {
         const markValues = get(this.props, ["mark", "values"]);
         if (isArray(markValues)) {
-          values = markValues;
+          values = [...markValues];
         }
       }
       if (step) {
@@ -132,11 +134,16 @@ export default class DotsView implements ISubView {
     this.updateView();
     this.createOrUpdateSubViews();
     this.appendSubViews();
+    this.render();
   };
 
-  public render = (parent: JQuery<HTMLElement>): void => {
-    if (parent && this.view) {
-      parent.append(this.view);
+  public render = (parent?: JQuery<HTMLElement>): void => {
+    if (parent) {
+      this.parent = parent;
+    }
+    if (!this.isRendered && this.parent && this.view) {
+      this.parent.append(this.view);
+      this.isRendered = true;
     }
   };
 

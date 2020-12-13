@@ -14,6 +14,8 @@ export default class MarksView implements ISubView {
   private view?: JQuery<HTMLElement>;
   private addition: Addition;
   private marks: MarkView[] = [];
+  private isRendered: boolean = false;
+  private parent?: JQuery<HTMLElement>;
 
   constructor(addition: Addition) {
     this.addition = addition;
@@ -70,7 +72,7 @@ export default class MarksView implements ISubView {
       let values: number[] = [];
       const markValues = get(this.props, ["mark", "values"]);
       if (isArray(markValues)) {
-        values = markValues;
+        values = [...markValues];
       }
       if (step) {
         for (let i = min; i <= max; i += step) {
@@ -134,11 +136,16 @@ export default class MarksView implements ISubView {
     this.updateView();
     this.createOrUpdateSubViews();
     this.appendSubViews();
+    this.render();
   };
 
-  public render = (parent: JQuery<HTMLElement>): void => {
-    if (parent && this.view) {
-      parent.append(this.view);
+  public render = (parent?: JQuery<HTMLElement>): void => {
+    if (parent) {
+      this.parent = parent;
+    }
+    if (!this.isRendered && this.parent && this.view) {
+      this.parent.append(this.view);
+      this.isRendered = true;
     }
   };
 

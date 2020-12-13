@@ -12,13 +12,15 @@ export default class DotView implements ISubView {
   private props?: DefaultProps;
   private view?: JQuery<HTMLElement>;
   private addition: Addition;
+  private parent?: JQuery<HTMLElement>;
+  private isRendered: boolean = false;
 
   constructor(addition: Addition) {
     this.addition = addition;
   }
 
   private createView(): void {
-    if (this.props) {
+    if (this.props && !isUndefined(get(this.addition, ["value"]))) {
       this.view = $("<div/>", this.prepareAttr());
       this.onHandlers();
     }
@@ -39,7 +41,7 @@ export default class DotView implements ISubView {
     const prefixCls = get(this.props, ["prefixCls"], "");
     const className = get(this.props, ["dot", "className"], "");
     const reverse = get(this.props, ["reverse"]);
-    const value = get(this.addition, ["value"], 0);
+    const value = get(this.addition, ["value"]);
     let values = get(this.props, ["values"]);
     let active = false;
     if (!isUndefined(values) && !isUndefined(value)) {
@@ -57,10 +59,11 @@ export default class DotView implements ISubView {
           active = true;
         }
       }
+      return classnames(`${prefixCls}__dot`, className, {
+        [`${prefixCls}__dot_active`]: active,
+      });
     }
-    return classnames(`${prefixCls}__dot`, className, {
-      [`${prefixCls}__dot_active`]: active,
-    });
+    return "";
   };
 
   private prepareStyle = (): string | undefined => {
@@ -115,11 +118,16 @@ export default class DotView implements ISubView {
   public setProps = (props: DefaultProps): void => {
     this.props = props;
     this.updateView();
+    this.render();
   };
 
-  public render = (parent: JQuery<HTMLElement>): void => {
-    if (parent && this.view) {
-      parent.append(this.view);
+  public render = (parent?: JQuery<HTMLElement>): void => {
+    if (parent) {
+      this.parent = parent;
+    }
+    if (!this.isRendered && this.parent && this.view) {
+      this.parent.append(this.view);
+      this.isRendered = true;
     }
   };
 

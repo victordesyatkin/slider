@@ -8,9 +8,11 @@ import { DefaultProps, Addition } from "../../types";
 import TooltipView from "../tooltip/view";
 
 export default class HandleView implements ISubView {
+  private addition: Addition;
   private props?: DefaultProps;
   private view?: JQuery<HTMLElement>;
-  private addition: Addition;
+  private isRendered: boolean = false;
+  private parent?: JQuery<HTMLElement>;
 
   constructor(addition: Addition) {
     this.addition = addition;
@@ -118,11 +120,16 @@ export default class HandleView implements ISubView {
     this.props = props;
     this.updateView();
     this.appendTooltip();
+    this.render();
   };
 
   public render = (parent?: JQuery<HTMLElement>): void => {
-    if (parent && this.view) {
-      parent.append(this.view);
+    if (parent) {
+      this.parent = parent;
+    }
+    if (!this.isRendered && this.parent && this.view) {
+      this.parent.append(this.view);
+      this.isRendered = true;
     }
   };
 
