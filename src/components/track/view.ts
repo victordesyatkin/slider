@@ -5,6 +5,7 @@ import { ISubView } from "../../slider/interface";
 import { DefaultProps, Addition } from "../../types";
 import { calcOffset } from "../../helpers/utils";
 import classnames from "classnames";
+import { isUndefined } from "lodash";
 
 export default class TrackView implements ISubView {
   private props?: DefaultProps;
@@ -18,7 +19,7 @@ export default class TrackView implements ISubView {
   }
 
   private createView(): void {
-    if (this.props) {
+    if (this.props && !isUndefined(get(this.addition, ["index"]))) {
       const on = get(this.props, ["track", "on"]);
       if (on) {
         this.view = $("<div/>", this.prepareAttr());
@@ -90,7 +91,11 @@ export default class TrackView implements ISubView {
 
   private updateView(): void {
     if (this.view) {
-      this.view.attr(this.prepareAttr());
+      if (get(this.props, ["track", "on"])) {
+        this.view.attr(this.prepareAttr());
+      } else {
+        this.remove();
+      }
     } else {
       this.createView();
     }
@@ -115,6 +120,7 @@ export default class TrackView implements ISubView {
   public remove = () => {
     if (this.view) {
       this.view.remove();
+      this.view = undefined;
     }
   };
 

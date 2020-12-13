@@ -136,6 +136,7 @@ export default class HandleView implements ISubView {
   public remove = () => {
     if (this.view) {
       this.view.remove();
+      this.view = undefined;
     }
   };
 

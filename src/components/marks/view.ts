@@ -53,7 +53,11 @@ export default class MarksView implements ISubView {
 
   private updateView(): void {
     if (this.view) {
-      this.view.attr(this.prepareAttr());
+      if (get(this.props, ["mark", "on"])) {
+        this.view.attr(this.prepareAttr());
+      } else {
+        this.remove();
+      }
     } else {
       this.createView();
     }
@@ -152,6 +156,7 @@ export default class MarksView implements ISubView {
   public remove = () => {
     if (this.view) {
       this.view.remove();
+      this.view = undefined;
     }
   };
 

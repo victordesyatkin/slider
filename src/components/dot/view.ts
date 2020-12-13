@@ -134,6 +134,7 @@ export default class DotView implements ISubView {
   public remove = () => {
     if (this.view) {
       this.view.remove();
+      this.view = undefined;
     }
   };
 

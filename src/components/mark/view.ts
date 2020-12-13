@@ -126,6 +126,7 @@ export default class MarkView implements ISubView {
   public remove = () => {
     if (this.view) {
       this.view.remove();
+      this.view = undefined;
     }
   };
 

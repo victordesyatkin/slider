@@ -56,7 +56,11 @@ export default class DotsView implements ISubView {
 
   private updateView(): void {
     if (this.view) {
-      this.view.attr(this.prepareAttr());
+      if (get(this.props, ["dot", "on"])) {
+        this.view.attr(this.prepareAttr());
+      } else {
+        this.remove();
+      }
     } else {
       this.createView();
     }
@@ -150,6 +154,7 @@ export default class DotsView implements ISubView {
   public remove = () => {
     if (this.view) {
       this.view.remove();
+      this.view = undefined;
     }
   };
 
