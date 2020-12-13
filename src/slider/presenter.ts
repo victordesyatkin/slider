@@ -20,7 +20,7 @@ export default class Presenter implements IPresenter {
   };
 
   private setPropsModel = (values: number[]): void => {
-    this.model.setProps(merge({ ...this.model.getProps() }, { values }));
+    this.model.setProps(merge({}, this.model.getProps(), { values }));
   };
 
   private onHandleModel = (): void => {

@@ -35,7 +35,7 @@ const props = {
     always: true,
   },
   allowCross: false,
-  // pushable: 0,
+  // push: 0,
   // disabled: true,
   // marks: {
   //   //show: true,
@@ -44,8 +44,8 @@ const props = {
 
 $(() => {
   const slider = $(".slider__wrapper").slider(props).data("slider");
-  setTimeout(() => slider.setProps({ values: [30, 22], push: 10 }), 5000);
-  setTimeout(() => slider.setProps({ values: [41], push: 10 }), 10000);
+  setTimeout(() => slider.setProps({ values: [30, 90], push: 10 }), 5000);
+  setTimeout(() => slider.setProps({ values: [60], push: 10 }), 10000);
 });
 
 // const slider = new SliderPresenter(props);

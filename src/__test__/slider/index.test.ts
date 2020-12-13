@@ -8,7 +8,7 @@ describe("slider", () => {
       const $el = $("#slider__wrapper");
       expect(createSlider({}, $el)).toHaveLength(1);
     });
-    test("5 class -> createSlider -> 5 slider", () => {
+    test("5 div.class -> createSlider -> 5 slider", () => {
       $("body").append(
         '<div class="slider__wrapper"/><div class="slider__wrapper"/><div class="slider__wrapper"/><div class="slider__wrapper"/><div class="slider__wrapper"/>'
       );

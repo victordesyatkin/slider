@@ -129,14 +129,14 @@ export default class View extends PubSub {
 
   private createOrUpdateSubViews(): void {
     const count = getCount(this.props);
-    // this.createOrUpdateSubView<RailView>(this.rails, 1, RailView);
-    // this.createOrUpdateSubView<TrackView>(
-    //   this.tracks,
-    //   count - 1 || 1,
-    //   TrackView
-    // );
-    // this.createOrUpdateSubView<DotsView>(this.dots, 1, DotsView);
-    // this.createOrUpdateSubView<MarksView>(this.marks, 1, MarksView);
+    this.createOrUpdateSubView<RailView>(this.rails, 1, RailView);
+    this.createOrUpdateSubView<TrackView>(
+      this.tracks,
+      count - 1 || 1,
+      TrackView
+    );
+    this.createOrUpdateSubView<DotsView>(this.dots, 1, DotsView);
+    this.createOrUpdateSubView<MarksView>(this.marks, 1, MarksView);
     this.createOrUpdateSubView<HandleView>(this.handles, count, HandleView);
   }
 
@@ -184,25 +184,23 @@ export default class View extends PubSub {
 
   private cleanSubView(views: IView[], count: number): void {
     const length = views.length;
-    console.log("length : ", length);
-    console.log("count : ", count);
     if (length > count) {
       for (let i = count; i < length; i += 1) {
         if (views[i]) {
           views[i].remove();
-          delete views[i];
         }
       }
+      views.splice(count);
     }
     return;
   }
 
   private appendSubViews(): void {
     if (this.view) {
-      // this.appendSubView(this.rails);
-      // this.appendSubView(this.marks);
-      // this.appendSubView(this.dots);
-      // this.appendSubView(this.tracks);
+      this.appendSubView(this.rails);
+      this.appendSubView(this.marks);
+      this.appendSubView(this.dots);
+      this.appendSubView(this.tracks);
       this.appendSubView(this.handles);
     }
     return;
@@ -217,7 +215,6 @@ export default class View extends PubSub {
   }
 
   public setProps(props: DefaultProps): void {
-    console.log("setProps : ", props);
     this.props = props;
     this.updateView();
     this.createOrUpdateSubViews();

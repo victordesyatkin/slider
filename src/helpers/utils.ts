@@ -5,7 +5,8 @@ import isUndefined from "lodash/isUndefined";
 
 import { IView } from "../slider/interface";
 
-import { DefaultProps } from "../types";
+import { defaultProps } from "../slider/index";
+import { DefaultProps, Props } from "../types";
 
 export function objectToString(style?: { [key: string]: string }): string {
   if (!style) {
@@ -98,7 +99,7 @@ export const ensureValuePrecision = (
   return parseFloat(closestPoint.toFixed(getPrecision(step)));
 };
 
-export const prepareProps = (props: DefaultProps): DefaultProps => {
+export const prepareValues = (props: DefaultProps): DefaultProps => {
   let { values } = props;
   values = orderBy(values).map((v) => {
     return ensureValuePrecision(v, props);
@@ -107,7 +108,6 @@ export const prepareProps = (props: DefaultProps): DefaultProps => {
 };
 
 export const getCount = (props?: DefaultProps): number => {
-  console.log("getCount : ", props);
   return get(props, ["values"], []).length;
 };
 
@@ -253,4 +253,14 @@ export function setFunctionGetBoundingClientRectHTMLElement(
     };
     return domRect;
   };
+}
+
+export function prepareData(
+  props?: Props,
+  prevProps?: DefaultProps
+): DefaultProps {
+  const values: number[] =
+    props?.values || prevProps?.values || defaultProps.values;
+  let mergeProps: DefaultProps = merge({}, defaultProps, prevProps, props);
+  return prepareValues({ ...mergeProps, values });
 }

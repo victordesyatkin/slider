@@ -1,12 +1,14 @@
 import JQuery from "jquery";
 import noop from "lodash/noop";
 import pick from "lodash/pick";
+import omit from "lodash/omit";
+
+import { prepareValues, prepareData } from "../helpers/utils";
 import { Props, DefaultProps, KeyDefaultProps } from "../types";
-import { prepareProps } from "../helpers/utils";
+import { IModel, IView, IPresenter } from "./interface";
 import Model from "./model";
 import View from "./view";
 import Presenter from "./presenter";
-import { IModel, IView, IPresenter } from "./interface";
 
 const defaultProps: DefaultProps = {
   prefixCls: "slider",
@@ -32,9 +34,7 @@ class Slider {
   private presenter: IPresenter;
 
   constructor(element: JQuery<HTMLElement>, props: Props) {
-    const mergeProps: DefaultProps = prepareProps(
-      JQuery.extend(true, defaultProps, props)
-    );
+    const mergeProps: DefaultProps = prepareData(props);
     this.model = new Model(mergeProps);
     this.view = new View();
     this.presenter = new Presenter(this.model, this.view);
@@ -45,11 +45,8 @@ class Slider {
     return this.model.getProps();
   }
 
-  setProps(props: DefaultProps): void {
-    const mergeProps: DefaultProps = prepareProps(
-      JQuery.extend(true, defaultProps, this.getProps(), props)
-    );
-    this.model.setProps(mergeProps);
+  setProps(props: Props): void {
+    this.model.setProps(props);
   }
 
   pickProps<T extends KeyDefaultProps>(keys: T[]): Partial<DefaultProps> {

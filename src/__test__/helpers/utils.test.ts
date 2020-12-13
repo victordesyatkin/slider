@@ -65,12 +65,12 @@ describe("helpers", () => {
     test("v: number, props: tDefaultProps:number -> ensureValuePrecision -> number", () => {
       expect(utils.ensureValuePrecision(14, defaultProps)).toBe(14);
       expect(
-        utils.ensureValuePrecision(14, merge({ ...defaultProps }, { step: 25 }))
+        utils.ensureValuePrecision(14, merge({}, defaultProps, { step: 25 }))
       ).toBe(25);
       expect(
         utils.ensureValuePrecision(
           14,
-          merge({ ...defaultProps }, { step: 25, mark: { values: [16] } })
+          merge({}, defaultProps, { step: 25, mark: { values: [16] } })
         )
       ).toBe(16);
     });
@@ -93,17 +93,17 @@ describe("helpers", () => {
         utils.getClosestPoint(
           38,
           { step: 25, min: 0, max: 100 },
-          merge({ ...defaultProps }, { mark: { values: [30] } })
+          merge({}, defaultProps, { mark: { values: [30] } })
         )
       ).toBe(30);
     });
-    test("(props: tDefaultProps): tDefaultProps, props: tDefaultProps -> prepareProps -> tDefaultProps", () => {
-      let input = merge({ ...defaultProps }, { values: [65, 35] });
-      let output = merge({ ...defaultProps }, { values: [30, 65] });
-      expect(utils.prepareProps(input)).toEqual(output);
-      input = merge({ ...input }, { step: 25 });
-      output = merge({ ...input }, { values: [25, 75] });
-      expect(utils.prepareProps(input)).toEqual(output);
+    test("(props: tDefaultProps): tDefaultProps, props: tDefaultProps -> prepareValues -> tDefaultProps", () => {
+      let input = merge({}, defaultProps, { values: [65, 35] });
+      let output = { ...defaultProps, values: [35, 65] };
+      expect(utils.prepareValues(input)).toEqual(output);
+      input = merge({}, input, { step: 25 });
+      output = { ...input, values: [25, 75] };
+      expect(utils.prepareValues(input)).toEqual(output);
     });
     test("undefined -> getCount -> 0", () => {
       expect(utils.getCount()).toBe(0);
@@ -242,6 +242,18 @@ describe("helpers", () => {
           index: 1,
         })
       ).toBe(50);
+    });
+    test("prepareData", () => {
+      expect(utils.prepareData()).toEqual(
+        expect.objectContaining(defaultProps)
+      );
+      let props = utils.prepareData({ values: [30, 25] });
+      expect(props.values).toEqual(expect.arrayContaining([30, 25]));
+      props = utils.prepareData(
+        { values: [14, 25] },
+        { ...defaultProps, values: [18] }
+      );
+      expect(props.values).toEqual(expect.arrayContaining([14, 25]));
     });
   });
 });
