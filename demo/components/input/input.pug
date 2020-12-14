@@ -1,0 +1,19 @@
+mixin input(options = {})
+    -
+        let { classNames=[], label='', type='number', id='', checked=false, content='', value } = options;
+        classNames = classNames.join(' '); 
+    .input(
+        class = classNames
+    )
+        if (label)
+            label.input__label(
+                for=id
+            )=label
+        input.input__input(
+            type=type
+            id=id
+            checked=checked
+            value=value
+        )
+        if (content)
+            .input__content=content

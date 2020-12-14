@@ -1,6 +1,8 @@
 {
     "example1": {
-        "panel": { "classNames": ["example__panel"] },
-        "slider": { "classNames": ["example__slider"] }
+        "panel": { "classNames": ["example__panel", "js-example__panel"] },
+        "slider": {
+            "classNames": ["example__slider", "js-example__slider"]
+        }
     }
 }

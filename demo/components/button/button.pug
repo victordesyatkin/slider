@@ -1,0 +1,11 @@
+mixin button(options = {})
+    -
+        let {classNames type='button', content=''} = options;
+        classNames = classNames.join(' '); 
+    .button(
+        class=classNames
+    )
+        button.button__button(
+            type=type
+        )
+            span.button__content=content

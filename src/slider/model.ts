@@ -18,7 +18,7 @@ export default class Model extends PubSub {
     this.subscribe("onMouseUp", this.onAfterChange);
   };
 
-  private onBeforeChange = (values?: number[]) => {
+  private onBeforeChange = (values?: number[]): void => {
     const onBeforeChange: ((values: number[]) => void) | undefined = get(
       this.props,
       ["onBeforeChange"]
@@ -26,14 +26,14 @@ export default class Model extends PubSub {
     values && onBeforeChange && onBeforeChange(values);
   };
 
-  private onChange = (values?: number[]) => {
+  private onChange = (values?: number[]): void => {
     const onChange: ((values: number[]) => void) | undefined = get(this.props, [
       "onChange",
     ]);
     values && onChange && onChange(values);
   };
 
-  private onAfterChange = (values?: number[]) => {
+  private onAfterChange = (values?: number[]): void => {
     const onAfterChange: ((values: number[]) => void) | undefined = get(
       this.props,
       ["onAfterChange"]
@@ -41,10 +41,10 @@ export default class Model extends PubSub {
     values && onAfterChange && onAfterChange(values);
   };
 
-  private setPropsForView(props: Props): void {
+  private setPropsForView = (props: Props): void => {
     this.onChange(get(props, ["values"]));
     this.setProps(props);
-  }
+  };
 
   public getProps = (): DefaultProps => {
     return this.props;

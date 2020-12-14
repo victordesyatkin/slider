@@ -25,16 +25,16 @@ describe("rail", () => {
       const view = new DotView({ index: 0 });
       const $parent = $(".slider__wrapper");
       view.render($parent);
-      let $el = $(".slider__dot", $parent);
+      let $el = $(`.${defaultProps.prefixCls}__dot`, $parent);
       expect($el.length).toBe(0);
 
       view.setProps(defaultProps);
-      $el = $(".slider__dot", $parent);
+      $el = $(`.${defaultProps.prefixCls}__dot`, $parent);
       expect($el.length).toBe(0);
 
       view.setAddition({ index: 0, value: 8 });
       view.setProps(defaultProps);
-      $el = $(".slider__dot", $parent);
+      $el = $(`.${defaultProps.prefixCls}__dot`, $parent);
       expect($el.length).toBe(1);
     });
   });

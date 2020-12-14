@@ -25,11 +25,11 @@ describe("slider", () => {
       const view = new View();
       const $parent = $(".slider__wrapper");
       view.render($parent);
-      let $slider = $(".slider", $parent);
+      let $slider = $(`.${defaultProps.prefixCls}`, $parent);
       expect($slider.length).toBe(0);
 
       view.setProps(defaultProps);
-      $slider = $(".slider", $parent);
+      $slider = $(`.${defaultProps.prefixCls}`, $parent);
       expect($slider.length).toBe(1);
     });
 
@@ -40,19 +40,19 @@ describe("slider", () => {
       const $parent = $(".slider__wrapper1");
       view.setProps(defaultProps);
       view.render($parent);
-      let $handle = $(".slider__handle", $parent);
+      let $handle = $(`.${defaultProps.prefixCls}__handle`, $parent);
       expect($handle.length).toBe(1);
 
       view.setProps({ ...defaultProps, values: [20, 80] });
-      $handle = $(".slider__handle", $parent);
+      $handle = $(`.${defaultProps.prefixCls}__handle`, $parent);
       expect($handle.length).toBe(2);
 
       view.setProps({ ...defaultProps, values: [20, 80, 50] });
-      $handle = $(".slider__handle", $parent);
+      $handle = $(`.${defaultProps.prefixCls}__handle`, $parent);
       expect($handle.length).toBe(3);
 
       view.setProps({ ...defaultProps, values: [20] });
-      $handle = $(".slider__handle", $parent);
+      $handle = $(`.${defaultProps.prefixCls}__handle`, $parent);
       expect($handle.length).toBe(1);
     });
 
@@ -63,26 +63,26 @@ describe("slider", () => {
       const $parent = $(".slider__wrapper2");
       view.setProps(defaultProps);
       view.render($parent);
-      let $tracks = $(".slider__track", $parent);
+      let $tracks = $(`.${defaultProps.prefixCls}__track`, $parent);
       expect($tracks.length).toBe(1);
 
       let values: number[] = [20, 80];
       view.setProps({ ...defaultProps, values });
-      $tracks = $(".slider__track", $parent);
+      $tracks = $(`.${defaultProps.prefixCls}__track`, $parent);
 
       expect($tracks.length).toBe(
         values.length > 1 ? values.length - 1 : values.length
       );
       values = [20, 80, 50];
       view.setProps({ ...defaultProps, values });
-      $tracks = $(".slider__track", $parent);
+      $tracks = $(`.${defaultProps.prefixCls}__track`, $parent);
 
       expect($tracks.length).toBe(
         values.length > 1 ? values.length - 1 : values.length
       );
       values = [20];
       view.setProps({ ...defaultProps, values });
-      $tracks = $(".slider__track", $parent);
+      $tracks = $(`.${defaultProps.prefixCls}__track`, $parent);
 
       expect($tracks.length).toBe(
         values.length > 1 ? values.length - 1 : values.length
@@ -98,26 +98,26 @@ describe("slider", () => {
       let props = { ...defaultProps };
       view.setProps(props);
       view.render($parent);
-      let $dot = $(".slider__dot", $parent);
+      let $dot = $(`.${defaultProps.prefixCls}__dot`, $parent);
       expect($dot.length).toBe(0);
 
       view.setProps({ ...defaultProps, dot });
-      $dot = $(".slider__dot", $parent);
+      $dot = $(`.${defaultProps.prefixCls}__dot`, $parent);
       expect($dot.length).toBe(0);
 
       props = { ...defaultProps, dot, step: 10 };
       view.setProps(props);
-      $dot = $(".slider__dot", $parent);
+      $dot = $(`.${defaultProps.prefixCls}__dot`, $parent);
       expect($dot.length).toBe(11);
 
       props = { ...defaultProps, dot, step: 50 };
       view.setProps(props);
-      $dot = $(".slider__dot", $parent);
+      $dot = $(`.${defaultProps.prefixCls}__dot`, $parent);
       expect($dot.length).toBe(3);
 
       props = { ...defaultProps, dot, step: 50, mark: { on: true } };
       view.setProps(props);
-      $dot = $(".slider__dot", $parent);
+      $dot = $(`.${defaultProps.prefixCls}__dot`, $parent);
       expect($dot.length).toBe(3);
 
       props = {
@@ -127,7 +127,7 @@ describe("slider", () => {
         mark: { on: true, values: [20] },
       };
       view.setProps(props);
-      $dot = $(".slider__dot", $parent);
+      $dot = $(`.${defaultProps.prefixCls}__dot`, $parent);
       expect($dot.length).toBe(3);
 
       props = {
@@ -137,7 +137,7 @@ describe("slider", () => {
         mark: { on: true, values: [20], dot: true },
       };
       view.setProps(props);
-      $dot = $(".slider__dot", $parent);
+      $dot = $(`.${defaultProps.prefixCls}__dot`, $parent);
       expect($dot.length).toBe(4);
     });
 
@@ -149,11 +149,11 @@ describe("slider", () => {
       let mark: Mark = { on: true };
       view.setProps({ ...defaultProps });
       view.render($parent);
-      let $mark = $(".slider__mark", $parent);
+      let $mark = $(`.${defaultProps.prefixCls}__mark`, $parent);
       expect($mark.length).toBe(0);
 
       view.setProps({ ...defaultProps, mark });
-      $mark = $(".slider__mark", $parent);
+      $mark = $(`.${defaultProps.prefixCls}__mark`, $parent);
       expect($mark.length).toBe(0);
 
       view.setProps({
@@ -161,7 +161,7 @@ describe("slider", () => {
         mark,
         step: 10,
       });
-      $mark = $(".slider__mark", $parent);
+      $mark = $(`.${defaultProps.prefixCls}__mark`, $parent);
       expect($mark.length).toBe(11);
 
       view.setProps({
@@ -169,14 +169,14 @@ describe("slider", () => {
         mark: { on: true, values: [15] },
         step: 20,
       });
-      $mark = $(".slider__mark", $parent);
+      $mark = $(`.${defaultProps.prefixCls}__mark`, $parent);
       expect($mark.length).toBe(7);
     });
 
     test("render view check count tooltip", () => {
       setFunctionGetBoundingClientRectHTMLElement();
       const className = "slider__wrapper5";
-      const findClassName = ".slider__tooltip";
+      const findClassName = `.${defaultProps.prefixCls}__tooltip`;
       $("body").append(`<div class="${className}"/>`);
       const view = new View();
       const $parent = $(`.${className}`);
@@ -207,7 +207,7 @@ describe("slider", () => {
         tooltip: { ...tooltip, always: true },
         values: [20],
       });
-      $mark = $(".slider__tooltip_always", $parent);
+      $mark = $(`.${defaultProps.prefixCls}__tooltip_always`, $parent);
       expect($mark.length).toBe(1);
     });
 

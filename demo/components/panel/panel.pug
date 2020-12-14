@@ -8,4 +8,12 @@ mixin panel(options={})
         if (title)
             .panel__title.title
         .panel__input-values.js-panel_input-values
+            +section({
+                "label": "Values",
+                "items": [
+                    {
+                        value: 10,
+                    }
+                ]
+            })
 

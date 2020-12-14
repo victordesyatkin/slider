@@ -1,3 +1,5 @@
+include ./components/input/input
+include ./components/section/section
 include ./components/panel/panel
 include ./components/slider/slider
 include ./components/example/example
@@ -11,3 +13,4 @@ html(lang="en")
         -
             let data = htmlWebpackPlugin.options.getData();
         +example(data.example1)
+        +input()  

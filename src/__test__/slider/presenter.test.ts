@@ -46,10 +46,10 @@ describe("slider", () => {
         step: 10,
         dot: { on: true },
       });
-      const $dot = $(".slider__dot", $parent);
+      const $dot = $(`.${defaultProps.prefixCls}__dot`, $parent);
       expect($dot.length).toBe(11);
 
-      const $handle = $(".slider__handle", $parent);
+      const $handle = $(`.${defaultProps.prefixCls}__handle`, $parent);
       expect($handle.length).toBe(1);
     });
   });

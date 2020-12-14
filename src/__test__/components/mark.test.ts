@@ -25,18 +25,18 @@ describe("rail", () => {
       const view = new MarkView({ index: 0 });
       const $parent = $(".slider__wrapper");
       view.render($parent);
-      let $el = $(".slider__mark", $parent);
+      let $el = $(`.${defaultProps.prefixCls}__mark`, $parent);
       expect($el.length).toBe(0);
 
       view.setProps(defaultProps);
       view.render($parent);
-      $el = $(".slider__mark", $parent);
+      $el = $(`.${defaultProps.prefixCls}__mark`, $parent);
       expect($el.length).toBe(0);
 
       view.setAddition({ index: 0, value: 62 });
       view.setProps(defaultProps);
       view.render($parent);
-      $el = $(".slider__mark", $parent);
+      $el = $(`.${defaultProps.prefixCls}__mark`, $parent);
       expect($el.length).toBe(1);
     });
   });

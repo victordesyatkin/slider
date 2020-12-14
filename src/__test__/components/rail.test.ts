@@ -27,11 +27,11 @@ describe("rail", () => {
       const view = new RailView(addition);
       const $parent = $(".slider__wrapper");
       view.render($parent);
-      let $el = $(".slider__rail", $parent);
+      let $el = $(`.${defaultProps.prefixCls}__rail`, $parent);
       expect($el.length).toBe(0);
 
       view.setProps(defaultProps);
-      $el = $(".slider__rail", $parent);
+      $el = $(`.${defaultProps.prefixCls}__rail`, $parent);
       expect($el.length).toBe(1);
     });
   });

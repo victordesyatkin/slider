@@ -8,16 +8,12 @@ import { IModel, IView, IPresenter } from "./interface";
 import Model from "./model";
 import View from "./view";
 import Presenter from "./presenter";
-import "../style.scss";
 
 const defaultProps: DefaultProps = {
-  prefixCls: "slider",
+  prefixCls: "fsd-slider",
   values: [0],
   min: 0,
   max: 100,
-  onBeforeChange: noop,
-  onChange: noop,
-  onAfterChange: noop,
   disabled: false,
   track: { on: true },
   rail: { on: true },
@@ -66,11 +62,5 @@ function createSlider($el: JQuery<HTMLElement>, props?: Props): JQuery {
     }
   });
 }
-
-(function ($: JQueryStatic) {
-  $.fn.slider = function (props?: Props): JQuery {
-    return createSlider(this, props);
-  };
-})(JQuery);
 
 export { Slider, createSlider, defaultProps };

@@ -26,16 +26,16 @@ describe("rail", () => {
       const view = new TooltipView({ index: 0 });
       const $parent = $(".slider__wrapper");
       view.render($parent);
-      let $el = $(".slider__tooltip", $parent);
+      let $el = $(`.${defaultProps.prefixCls}__tooltip`, $parent);
       expect($el.length).toBe(0);
 
       view.setProps(defaultProps);
-      $el = $(".slider__tooltip", $parent);
+      $el = $(`.${defaultProps.prefixCls}__tooltip`, $parent);
       expect($el.length).toBe(0);
 
       view.setAddition({ index: 0, value: 47 });
       view.setProps(defaultProps);
-      $el = $(".slider__tooltip", $parent);
+      $el = $(`.${defaultProps.prefixCls}__tooltip`, $parent);
       expect($el.length).toBe(1);
     });
   });

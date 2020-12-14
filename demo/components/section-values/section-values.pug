@@ -1,0 +1,12 @@
+mixin section(options = {})
+    -
+        let {classNames = [], items = [], label = ''} = options;
+    .section(
+        class=classNames
+    )   
+        .section__label=label
+        .section__items
+            each content, key  in items
+                .section__item
+                    .section__item-key=key
+                    .section__item-content                    
