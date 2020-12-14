@@ -40,14 +40,12 @@ export default class RailView implements ISubView {
 
   private prepareClassName = (): string => {
     const prefixCls = get(this.props, ["prefixCls"], "");
-    const index = get(this.addition, ["index"]);
-    const className = get(this.props, ["rail", "classNames", index], "");
+    const className = get(this.props, ["rail", "className"], "");
     return classnames(`${prefixCls}__rail`, className);
   };
 
   private prepareStyle = (): string | undefined => {
-    const index = get(this.addition, ["index"]);
-    const style = get(this.props, ["rail", "styles", index], {});
+    const style = get(this.props, ["rail", "style"], {});
     return objectToString({
       ...style,
     });

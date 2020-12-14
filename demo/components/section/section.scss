@@ -1,0 +1,26 @@
+.section {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  padding: 5px 0;
+
+  &__label {
+    width: 30%;
+  }
+
+  &__items {
+    display: flex;
+    flex-grow: 1;
+    flex-shrink: 1;
+    flex-basis: 100;
+    flex-direction: column;
+  }
+
+  &__item {
+    display: flex;
+  }
+
+  &__button-control {
+    margin-left: 5px;
+  }
+}

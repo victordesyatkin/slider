@@ -1,19 +1,13 @@
 mixin panel(options={})
     -
-        let { classNames = [] } = options;
+        let { classNames = [], sections = [] } = options;
         classNames = classNames.join(' '); 
     .panel(
         class=`${classNames}`
     )
         if (title)
             .panel__title.title
-        .panel__input-values.js-panel_input-values
-            +section({
-                "label": "Values",
-                "items": [
-                    {
-                        value: 10,
-                    }
-                ]
-            })
+        .panel__sections
+            each section, key in sections
+                +section(section)
 

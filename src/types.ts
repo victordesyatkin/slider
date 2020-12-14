@@ -63,8 +63,8 @@ type Addition = {
 type Handler = (i: number, e: any, value?: number) => void;
 
 type Handle = {
-  className?: string[];
-  styles: { [key: string]: string };
+  classNames?: string[];
+  styles: { [key: string]: string }[];
 };
 
 type Track = {
@@ -74,8 +74,8 @@ type Track = {
 };
 
 type Rail = {
-  classNames?: string[];
-  styles?: { [key: string]: string }[];
+  className?: string;
+  style?: { [key: string]: string };
   on?: boolean;
 };
 
@@ -87,7 +87,7 @@ type Dot = {
 };
 
 type Tooltip = {
-  className?: string;
+  className?: string[];
   style?: { [key: string]: string };
   render?: (
     value: number

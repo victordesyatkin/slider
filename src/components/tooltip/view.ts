@@ -47,7 +47,6 @@ export default class TooltipView implements ISubView {
   private prepareStyle = (): string | undefined => {
     if (this.props) {
       const style = get(this.props, ["tooltip", "style"], {});
-      const { vertical, min, max, reverse } = this.props;
       const positionStyle = {};
       return objectToString({
         ...style,

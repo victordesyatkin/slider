@@ -48,7 +48,8 @@ export default class HandleView implements ISubView {
 
   private prepareClassName = (): string => {
     const prefixCls = get(this.props, ["prefixCls"], "");
-    const className = get(this.props, ["handle", "className"], "");
+    const index = get(this.addition, ["index"]);
+    const className = get(this.props, ["handle", "classNames", index], "");
     const active = get(this.addition, ["active"]);
     return classnames(`${prefixCls}__handle`, className, {
       [`${prefixCls}__handle_active`]: active,
@@ -58,7 +59,7 @@ export default class HandleView implements ISubView {
   private prepareStyle = (): string | undefined => {
     if (this.props) {
       const index = get(this.addition, ["index"]);
-      const style = get(this.props, ["handle", "style"], {});
+      const style = get(this.props, ["handle", "styles", index], {});
       const { values, min, max, vertical, reverse } = this.props;
       const value = values[index];
       const offset = calcOffset(value, min, max);

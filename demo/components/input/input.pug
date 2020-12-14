@@ -1,11 +1,11 @@
 mixin input(options = {})
     -
-        let { classNames=[], label='', type='number', id='', checked=false, content='', value } = options;
+        let { classNames=[], label, type='number', id='', checked=false, content='', value } = options;
         classNames = classNames.join(' '); 
     .input(
         class = classNames
     )
-        if (label)
+        if (label !== undefined)
             label.input__label(
                 for=id
             )=label

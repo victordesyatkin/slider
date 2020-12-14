@@ -1,8 +1,185 @@
 {
     "example1": {
-        "panel": { "classNames": ["example__panel", "js-example__panel"] },
+        "panel": {
+            "classNames": ["example__panel", "js-example__panel"],
+            "sections": [
+                {
+                    "label": {
+                      "content": "Values",
+                      "href": ""
+                    },
+                  "items": [
+                    {
+                      "value": 10,
+                      "type": "number",
+                      "control": true
+                    }
+                  ]
+                },
+                {
+                    "label": {
+                        "content": "Min",
+                        "href": ""
+                    },
+                    "items": [
+                        {
+                            "value": 0,
+                            "type": "number"
+                        }
+                    ]
+                },
+                {
+                    "label": {
+                        "content": "Max",
+                        "href": ""
+                    },
+                    "items": [
+                        {
+                            "value": 100,
+                            "type": "number"
+                        }
+                    ]
+                },
+                {
+                    "label": {
+                        "content": "Step",
+                        "href": ""
+                    },
+                    "items": [
+                        {
+                            "value": 0,
+                            "type": "number"
+                        }
+                    ]
+                },
+                {
+                    "label": {
+                        "content": "Vertical",
+                        "href": ""
+                    },
+                    "items": [
+                        {
+                            "value": 0,
+                            "type": "checkbox"
+                        }
+                    ]
+                },
+                {
+                    "label": {
+                        "content": "Reverse",
+                        "href": ""
+                    },
+                    "items": [
+                        {
+                            "value": 0,
+                            "type": "checkbox"
+                        }
+                    ]
+                },
+                {
+                    "label": {
+                        "content": "Disabled",
+                        "href": ""
+                    },
+                    "items": [
+                    {
+                        "value": 0,
+                        "type": "checkbox"
+                    }
+                    ]
+                },
+                {
+                    "label": {
+                        "content": "AllowCross",
+                        "href": ""
+                    },
+                    "items": [
+                        {
+                            "value": 0,
+                            "type": "checkbox"
+                        }
+                    ]
+                },
+                {
+                    "label": {
+                        "content": "Rail",
+                        "href": ""
+                    },
+                    "items": [
+                        {
+                            "label": "On/Off",
+                            "value": 1,
+                            "type": "checkbox"
+                        },
+                        {
+                            "label": "Style (json)",
+                            "value": "",
+                            "type": "text"
+                        },
+                        {
+                            "label": "ClassName (json)",
+                            "value": "",
+                            "type": "text"
+                        }
+                    ]
+                },
+                {
+                    "label": {
+                        "content": "Track",
+                        "href": ""
+                    },
+                    "items": [
+                        {
+                            "label": "On/Off",
+                            "value": 1,
+                            "type": "checkbox"
+                        },
+                        {
+                            "label": "Styles (json)",
+                            "value": "",
+                            "type": "text"
+                        },
+                        {
+                            "label": "ClassNames (json)",
+                            "value": "",
+                            "type": "text"
+                        }
+                    ]
+                }
+            ]
+        },
         "slider": {
             "classNames": ["example__slider", "js-example__slider"]
         }
     }
 }
+
+values?: number[];
+min?: number;
+max?: number;
+step?: number;
+vertical?: boolean;
+reverse?: boolean;
+disabled?: boolean;
+allowCross?: boolean;
+
+prefixCls?: string;
+startPoint?: number;
+
+  classNames?: string[];
+  style?: { [key: string]: string };
+  
+  onChange?: (value: number[]) => void;
+  onBeforeChange?: (value: number[]) => void;
+  onAfterChange?: (value: number[]) => void;
+  
+  
+  push?: number;
+  precision?: number;
+  
+  mark?: Mark;
+  dot?: Dot;
+  tooltip?: Tooltip;
+  track?: Track;
+  handle?: Handle;
+  rail?: Rail;
