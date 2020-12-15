@@ -264,3 +264,7 @@ export function prepareData(
   let mergeProps: DefaultProps = merge({}, defaultProps, prevProps, props);
   return prepareValues({ ...mergeProps, values });
 }
+
+export function uniq() {
+  return Math.random().toString(16).substr(2);
+}

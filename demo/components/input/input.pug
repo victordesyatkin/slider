@@ -1,31 +1,32 @@
 mixin input(options = {})
     -
-        let { classNames=[], label, type='number', id='', content='', value, key='', control } = options;
+        let { classNames=[], label, type='number', content='', value, key='', control, data = {} } = options;
         let checked = value ? true : false;
+        if (control && (!label || !label?.content)) {
+            classNames = [...classNames, 'input_control'];
+        }
+        let id = Math.random().toString(16).substr(2);
         classNames = classNames.join(' ');
     .input(
         class = classNames
+        data-data=data
+        data-key=key
     )
-        +label(label, 'input__label')
+        +label({...label, id}, 'input__label')
         .input__section
-            if (key)
-                span.input__section-key=key
+            if key
+                span.input__section-key.js-input__section-key=key
             input.input__input(
                 type=type
                 id=id
                 checked=checked
                 value=value
             )
-            if (control)
-                +button({
-                    data:{type:1},
-                    type:"button",
-                    classNames:["section__button-control"],
-                    content: "&#x2795;",
-                })
+            if control
                 +button({
                     data:{type:0},
                     type:"button",
-                    classNames:["section__button-control"],
-                    content:"&#x274C;",
+                    classNames:["input__button-control"],
+                    content:"&#x274C",
+                    title: "Remove"
                 })

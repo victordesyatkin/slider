@@ -1,8 +1,11 @@
 mixin example(options = {})
-    - let { label = {}, classNames = [], panel = {}, slider = {} } = options;
-    .example.js-example(
-        class=`${classNames}`
+    -
+        let { label = {}, classNames = [], panel = {}, slider = {} } = options;
+        classNames = classNames.join([' ']);
+    //
         data-options=options
+    .example.js-example(
+        class=classNames
     )
         +label(label, 'example__label')    
         +panel(panel)

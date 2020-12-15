@@ -11,13 +11,13 @@ mixin label(options, className)
             if (target === '_blank') {
                 rel = "noopener";
             }
-        if (content)
-            if (id)
+        if content
+            if id
                 label(
                     for=id
                     class=classNames
                 )
-                    if (href) 
+                    if href
                         a.input__link.link(
                             href=href
                             title=title
@@ -30,7 +30,7 @@ mixin label(options, className)
                 .label(
                     class=classNames
                 )
-                    if (href) 
+                    if href
                         a.input__link.link(
                             href=href
                             title=title

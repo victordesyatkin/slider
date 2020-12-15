@@ -6,14 +6,26 @@ mixin section(options = {})
     )   
         +label(label, 'section__label')
         .section__items
+            - 
+                let isControl = false;
             each item, key  in items
                 .section__item
                     -
-                        let { type = '', control } = item || {};
-                        if (control)
+                        let { type = '', control=false } = item || {};
+                        if (control) {
                             item.key = `${key}:`;
+                            isControl = true;
+                        }
                     case type
                         when 'text'
                         when 'checkbox'
                         when 'number'
                             +input(item)
+            if isControl
+                +button({
+                    data:{type:1},
+                    type:"button",
+                    classNames:["section__button-control"],
+                    content:"&#x271A;",
+                    title: "Add"
+                })

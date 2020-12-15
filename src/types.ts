@@ -7,7 +7,7 @@ type Props = {
   min?: number;
   max?: number;
   classNames?: string[];
-  style?: { [key: string]: string };
+  style?: style;
   mark?: Mark;
   dot?: Dot;
   step?: number;
@@ -34,7 +34,7 @@ type DefaultProps = {
   min: number;
   max: number;
   classNames?: string[];
-  style?: { [key: string]: string };
+  style?: style;
   mark?: Mark;
   step?: number;
   onChange?: (value: number[]) => void;
@@ -64,40 +64,32 @@ type Handler = (i: number, e: any, value?: number) => void;
 
 type Handle = {
   classNames?: string[];
-  styles: { [key: string]: string }[];
+  styles: style[];
 };
 
 type Track = {
   classNames?: string[];
-  styles?: { [key: string]: string }[];
+  styles?: style[];
   on?: boolean;
 };
 
 type Rail = {
   className?: string;
-  style?: { [key: string]: string };
+  style?: style;
   on?: boolean;
 };
 
 type Dot = {
   wrapClassName?: string;
   className?: string;
-  style?: { [key: string]: string };
+  style?: style;
   on?: boolean;
 };
 
 type Tooltip = {
   className?: string[];
-  style?: { [key: string]: string };
-  render?: (
-    value: number
-  ) =>
-    | string
-    | JQuery<HTMLElement>
-    | JQuery<HTMLElement>[]
-    | HTMLElement
-    | HTMLElement[]
-    | undefined;
+  style?: style;
+  render?: render;
   on?: boolean;
   precision?: number;
   always?: boolean;
@@ -106,20 +98,27 @@ type Tooltip = {
 type Mark = {
   wrapClassName?: string;
   className?: string;
-  style?: { [key: string]: string };
-  render?:
-    | string
-    | JQuery<HTMLElement>
-    | JQuery<HTMLElement>[]
-    | HTMLElement
-    | HTMLElement[]
-    | undefined;
+  style?: style;
+  render?: render;
+
   values?: number[];
   on?: boolean;
   dot?: boolean;
 };
 
 type Callback = (data: any) => void;
+
+type style = { [key: string]: string };
+
+type render = (
+  value: number
+) =>
+  | string
+  | JQuery<HTMLElement>
+  | JQuery<HTMLElement>[]
+  | HTMLElement
+  | HTMLElement[]
+  | undefined;
 
 export {
   Callback,
@@ -134,4 +133,6 @@ export {
   KeyDefaultProps,
   DefaultProps,
   Props,
+  style,
+  render,
 };
