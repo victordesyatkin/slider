@@ -1,8 +1,39 @@
 .input {
+  padding: 0.4rem 0;
   display: flex;
-  align-items: center;
+  flex-direction: column;
+  flex-grow: 1;
+  flex-shrink: 1;
 
-  label {
-    margin-right: 5px;
+  &__section {
+    width: 100%;
+    display: flex;
+    flex-grow: 1;
+    flex-shrink: 1;
+    flex-direction: row;
+    align-items: center;
+    justify-content: flex-start;
+  }
+
+  &__section-key {
+    margin-right: 0.4rem;
+  }
+
+  &__label {
+    margin-bottom: 0.4rem;
+  }
+
+  input:focus {
+    outline: none;
+  }
+
+  input {
+    width: 100%;
+    padding: 0.2rem;
+  }
+
+  input[type="checkbox"] {
+    margin: 0;
+    width: auto;
   }
 }

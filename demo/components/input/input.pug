@@ -1,19 +1,31 @@
 mixin input(options = {})
     -
-        let { classNames=[], label, type='number', id='', checked=false, content='', value } = options;
-        classNames = classNames.join(' '); 
+        let { classNames=[], label, type='number', id='', content='', value, key='', control } = options;
+        let checked = value ? true : false;
+        classNames = classNames.join(' ');
     .input(
         class = classNames
     )
-        if (label !== undefined)
-            label.input__label(
-                for=id
-            )=label
-        input.input__input(
-            type=type
-            id=id
-            checked=checked
-            value=value
-        )
-        if (content)
-            .input__content=content
+        +label(label, 'input__label')
+        .input__section
+            if (key)
+                span.input__section-key=key
+            input.input__input(
+                type=type
+                id=id
+                checked=checked
+                value=value
+            )
+            if (control)
+                +button({
+                    data:{type:1},
+                    type:"button",
+                    classNames:["section__button-control"],
+                    content: "&#x2795;",
+                })
+                +button({
+                    data:{type:0},
+                    type:"button",
+                    classNames:["section__button-control"],
+                    content:"&#x274C;",
+                })

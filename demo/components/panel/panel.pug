@@ -1,12 +1,11 @@
 mixin panel(options={})
     -
-        let { classNames = [], sections = [] } = options;
-        classNames = classNames.join(' '); 
+        let { classNames = [], sections = [], label} = options;
+        classNames = classNames.join(' ');
     .panel(
         class=`${classNames}`
     )
-        if (title)
-            .panel__title.title
+        +label(label, 'panel__label')
         .panel__sections
             each section, key in sections
                 +section(section)

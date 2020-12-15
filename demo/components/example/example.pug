@@ -1,11 +1,10 @@
 mixin example(options = {})
-    - let { title = '', classNames = [], panel = {}, slider = {} } = options;
+    - let { label = {}, classNames = [], panel = {}, slider = {} } = options;
     .example.js-example(
         class=`${classNames}`
         data-options=options
     )
-        if (title)
-            .example__title.title=title
+        +label(label, 'example__label')    
         +panel(panel)
         +slider(slider)
         

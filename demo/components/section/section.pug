@@ -1,32 +1,19 @@
 mixin section(options = {})
     -
-        let {classNames = [], items = [], label = ''} = options;
+        let {classNames = [], items = [], label} = options;
     .section(
         class=classNames
     )   
-        .section__label=label
+        +label(label, 'section__label')
         .section__items
             each item, key  in items
                 .section__item
                     -
                         let { type = '', control } = item || {};
                         if (control)
-                            item.label = `${key}:`;
+                            item.key = `${key}:`;
                     case type
                         when 'text'
                         when 'checkbox'
                         when 'number'
                             +input(item)
-                    if (control)
-                        button(
-                            data-type=1
-                            type="button"
-                            class="section__button-control"
-                        )
-                            span +
-                        button(
-                            data-type=0
-                            type="button"
-                            class="section__button-control"
-                        )
-                            span -

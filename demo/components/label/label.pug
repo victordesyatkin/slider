@@ -1,0 +1,41 @@
+mixin label(options, className)
+    if (options)
+        -
+            let {content = '', href, title = '', target='', id, classNames} = options || {};
+            classNames = classNames || [];
+            if (className) {
+                classNames.push(className)
+            }
+            classNames = classNames.join(' ');
+            let rel = "";
+            if (target === '_blank') {
+                rel = "noopener";
+            }
+        if (content)
+            if (id)
+                label(
+                    for=id
+                    class=classNames
+                )
+                    if (href) 
+                        a.input__link.link(
+                            href=href
+                            title=title
+                            target=target
+                            rel=rel
+                        )=content
+                    else
+                        span=content
+            else            
+                .label(
+                    class=classNames
+                )
+                    if (href) 
+                        a.input__link.link(
+                            href=href
+                            title=title
+                            target=target
+                            rel=rel
+                        )=content
+                    else
+                        span=content

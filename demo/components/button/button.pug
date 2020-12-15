@@ -1,11 +1,13 @@
 mixin button(options = {})
     -
-        let {classNames type='button', content=''} = options;
-        classNames = classNames.join(' '); 
+        let {classNames=[], type='button', content, data = {}} = options;
+        classNames = (classNames || []).join(' '); 
     .button(
         class=classNames
     )
-        button.button__button(
-            type=type
-        )
-            span.button__content=content
+        if (content) 
+            button.button__button(
+                type=type
+                data=data
+            )
+                span.button__content !{content}

@@ -2,11 +2,19 @@
     "example1": {
         "panel": {
             "classNames": ["example__panel", "js-example__panel"],
+            "label": {
+                "content": "Configuration",
+                "href": "#",
+                "title": "readme",
+                "target": "_blank"
+            },
             "sections": [
                 {
                     "label": {
                       "content": "Values",
-                      "href": ""
+                      "href": "",
+                      "title": "",
+                      "target": "_blank"
                     },
                   "items": [
                     {
@@ -19,7 +27,8 @@
                 {
                     "label": {
                         "content": "Min",
-                        "href": ""
+                        "href": "",
+                        "title": ""
                     },
                     "items": [
                         {
@@ -102,22 +111,61 @@
                 },
                 {
                     "label": {
+                        "content": "Handle",
+                        "href": ""
+                    },
+                    "items": [
+                        {
+                            "label": {
+                                "content": "Class names (json)",
+                                "href": "#",
+                                "title": "readme",
+                                "target": "_blank"
+                            },
+                            "value": "",
+                            "type": "text"
+                        },
+                        {
+                            "label": {
+                                "content": "Styles (json)",
+                                "href": "#",
+                                "title": "readme",
+                                "target": "_blank"
+                            },
+                            "value": "",
+                            "type": "text"
+                        }
+                    ]
+                },
+                {
+                    "label": {
                         "content": "Rail",
                         "href": ""
                     },
                     "items": [
                         {
-                            "label": "On/Off",
+                            "label": {
+                                "content": "On/Off",
+                                "href": ""
+                            },
                             "value": 1,
                             "type": "checkbox"
                         },
                         {
-                            "label": "Style (json)",
+                            "label": {
+                                "content": "Style (json)",
+                                "href": "#",
+                                "title":"readme",
+                                "target": "_blank"
+                            },
                             "value": "",
                             "type": "text"
                         },
                         {
-                            "label": "ClassName (json)",
+                            "label": {
+                                "content": "Class name",
+                                "href": ""
+                            },
                             "value": "",
                             "type": "text"
                         }
@@ -130,20 +178,202 @@
                     },
                     "items": [
                         {
-                            "label": "On/Off",
+                            "label": {
+                                "content": "On/Off",
+                                "href": ""
+                            },
                             "value": 1,
                             "type": "checkbox"
                         },
                         {
-                            "label": "Styles (json)",
+                            "label": {
+                                "content": "Styles (json)",
+                                "href": "#",
+                                "title":"readme",
+                                "target": "_blank"
+                            },
                             "value": "",
                             "type": "text"
                         },
                         {
-                            "label": "ClassNames (json)",
+                            "label": {
+                                "content": "Class names (json)",
+                                "href": "#",
+                                "title":"readme",
+                                "target": "_blank"
+                            },
                             "value": "",
                             "type": "text"
                         }
+                    ]
+                },
+                {
+                    "label": {
+                        "content": "Dot",
+                        "href": ""
+                    },
+                    "items": [
+                        {
+                            "label": {
+                            "content": "On/Off",
+                            "href": ""
+                            },
+                            "value": 0,
+                            "type": "checkbox"
+                        },
+                        {
+                            "label": {
+                                "content": "Style (json)",
+                                "href": "#",
+                                "title":"readme",
+                                "target": "_blank"
+                            },
+                            "value": "",
+                            "type": "text"
+                        },
+                        {
+                            "label": {
+                            "content": "Class name",
+                            "href": ""
+                            },
+                            "value": "",
+                            "type": "text"
+                        },
+                        {
+                            "label": {
+                            "content": "Wrapper class name",
+                            "href": ""
+                            },
+                            "value": "",
+                            "type": "text"
+                        }
+                    ]
+                },
+                {
+                    "label": {
+                        "content": "Mark",
+                        "href": ""
+                    },
+                    "items": [
+                        {
+                            "label": {
+                                "content": "Values",
+                                "href": "#"
+                            },
+                            "type": "number",
+                            "control": true
+                        },
+                        {
+                            "label": {
+                                "content": "On/Off",
+                                "href": ""
+                            },
+                            "value": 0,
+                            "type": "checkbox"
+                        },
+                        {
+                            "label": {
+                                "content": "Dot on/off",
+                                "href": ""
+                            },
+                            "value": 0,
+                            "type": "checkbox"
+                        },
+                        {
+                            "label": {
+                                "content": "Style (json)",
+                                "href": "#",
+                                "title": "readme",
+                                "target": "_blank"
+                            },
+                            "value": "",
+                            "type": "text"
+                        },
+                        {
+                            "label": {
+                                "content": "Class name",
+                                "href": ""
+                            },
+                            "value": "",
+                            "type": "text"
+                        },
+                        {
+                            "label": {
+                                "content": "Wrapper class name",
+                                "href": ""
+                            },
+                            "value": "",
+                            "type": "text"
+                        },
+                        {
+                            "label": {
+                                "content": "Render function value",
+                                "href": "#",
+                                "title":"readme"
+                            },
+                            "value": "",
+                            "type": "text"
+                        }
+                    ]
+                },
+                {
+                    "label": {
+                        "content": "Tooltip",
+                        "href": "",
+                        "title":""
+                    },
+                    "items": [
+                    {
+                        "label": {
+                        "content": "On/Off",
+                        "href": ""
+                        },
+                        "value": 0,
+                        "type": "checkbox"
+                    },
+                    {
+                        "label": {
+                        "content": "Always",
+                        "href": ""
+                        },
+                        "value": 0,
+                        "type": "checkbox"
+                    },
+                    {
+                        "label": {
+                            "content": "Style (json)",
+                            "href": "#",
+                            "title": "readme",
+                            "target": "_blank"
+                        },
+                        "value": "",
+                        "type": "text"
+                    },
+                    {
+                        "label": {
+                        "content": "Class name",
+                        "href": ""
+                        },
+                        "value": "",
+                        "type": "text"
+                    },
+                    {
+                        "label": {
+                            "content": "Precision tooltip",
+                            "href": ""
+                        },
+                        "value": "",
+                        "type": "number"
+                    },
+                    {
+                        "label": {
+                            "content": "Render function value",
+                            "href": "#",
+                            "title": "readme"
+                        },
+                        "value": "",
+                        "type": "text"
+                    }
                     ]
                 }
             ]
@@ -153,33 +383,3 @@
         }
     }
 }
-
-values?: number[];
-min?: number;
-max?: number;
-step?: number;
-vertical?: boolean;
-reverse?: boolean;
-disabled?: boolean;
-allowCross?: boolean;
-
-prefixCls?: string;
-startPoint?: number;
-
-  classNames?: string[];
-  style?: { [key: string]: string };
-  
-  onChange?: (value: number[]) => void;
-  onBeforeChange?: (value: number[]) => void;
-  onAfterChange?: (value: number[]) => void;
-  
-  
-  push?: number;
-  precision?: number;
-  
-  mark?: Mark;
-  dot?: Dot;
-  tooltip?: Tooltip;
-  track?: Track;
-  handle?: Handle;
-  rail?: Rail;

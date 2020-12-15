@@ -8,6 +8,9 @@ body {
   font-size: 14px;
 }
 
-.title {
-  font-size: 24px;
+*,
+::after,
+::before {
+  -webkit-box-sizing: inherit;
+  box-sizing: inherit;
 }
