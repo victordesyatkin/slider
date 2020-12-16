@@ -1,13 +1,17 @@
-import $, { isFunction } from "jquery";
+import $ from "jquery";
 import get from "lodash/get";
 import isArray from "lodash/isArray";
 import isObject from "lodash/isObject";
 import isNumber from "lodash/isNumber";
-import { style, render } from "../src/types";
+import isFunction from "lodash/isFunction";
+import trim from "lodash/trim";
+import isUndefined from "lodash/isUndefined";
 
-import "./index.scss";
+import { style, render } from "../src/types";
 import Slider from "../src/index";
-import { Props } from "../src/types";
+import { Props, KeyProps } from "../src/types";
+import "./index.scss";
+import { isString } from "lodash";
 
 function requireAll(requireContext: any) {
   return requireContext.keys().map(requireContext);
@@ -37,7 +41,7 @@ class Example {
   };
 
   private getProps = (): void => {
-    const props: Props = {};
+    this.props = {};
     this.$sections = $(".section", this.$parent);
     this.$sections.each(this.processingSection);
   };
@@ -49,29 +53,113 @@ class Example {
   };
 
   private processingSection = (index: number, el: HTMLElement) => {
-    console.log(`${index}-`, el);
     const $inputs = $(".input", el).each(this.processingInput);
   };
 
   private processingInput = (index: number, el: HTMLElement) => {
-    const { property, type } = $(el).data() || {};
-    let value = $("input", el).val();
-    switch (type) {
-      case "values": {
-        if (value && isNumber(value)) {
-          this.props = {
-            values: [...get(this.props, ["values"], []), value],
-          };
-        }
-        break;
-      }
-      default: {
-      }
-    }
-    console.log("value :", value);
+    const { property, type } = get($(el).data(), ["data"]) || {};
+    let value = this.prepareValue(el, property);
+    this.prepareProp(value, type, property);
   };
 
-  private prepareArray = (s?: string): undefined | string[] => {
+  private prepareProp = (
+    value?: unknown,
+    type?: KeyProps,
+    property?: string
+  ): undefined => {
+    if (!type || !property || isUndefined(value)) {
+      return;
+    }
+    if (property === "values") {
+      if (type === "values") {
+        this.props = {
+          ...this.props,
+          values: [...(this.props?.values ?? []), value as number],
+        };
+      } else if (type === "mark") {
+        this.props = {
+          ...this.props,
+          mark: {
+            ...(this.props?.mark ?? {}),
+            values: [...(this.props?.mark?.values ?? []), value as number],
+          },
+        };
+      }
+    } else if (["min", "max", "step"].indexOf(type) !== -1) {
+      this.props = {
+        ...this.props,
+        [type]: value as number,
+      };
+    } else if (
+      ["disabled", "vertical", "reverse", "allowCross"].indexOf(type) !== -1
+    ) {
+      this.props = {
+        ...this.props,
+        [type]: !!value as boolean,
+      };
+    } else if (["dot", "mark", "ral", "tooltip"].indexOf(type) !== -1) {
+      if (property === "on") {
+        const props = get(this.props, [type], {}) || {};
+        this.props = {
+          ...this.props,
+          [type]: {
+            ...props,
+            [property]: !!value as boolean,
+          },
+        };
+      }
+    }
+  };
+
+  private prepareValue = (el?: HTMLElement, property?: string): unknown => {
+    let value;
+    if (!(el instanceof HTMLElement) || !trim(property)) {
+      return;
+    }
+    value = $("input", el).val();
+    if (isUndefined(value)) {
+      return;
+    }
+    switch (property) {
+      case "values":
+      case "min":
+      case "max":
+      case "step": {
+        if (!isNaN(Number(value)) || !isNaN(parseFloat(String(value)))) {
+          return value;
+        }
+        return;
+      }
+      case "disabled":
+      case "vertical":
+      case "reverse":
+      case "allowCross":
+      case "precision": {
+        return;
+      }
+      case "classNames":
+      case "styles": {
+        return this.prepareArray(value);
+      }
+      case "className": {
+        if (!isString(value) || !trim(value)) {
+          return;
+        }
+        return trim(value);
+      }
+      case "style": {
+        return this.prepareObject(value);
+      }
+      case "render": {
+        return this.prepareFunction(value);
+      }
+      default: {
+        return;
+      }
+    }
+  };
+
+  private prepareArray = (s?: unknown): undefined | string[] => {
     const r = this.prepareJSON(s);
     if (isArray(r)) {
       return r;
@@ -79,7 +167,7 @@ class Example {
     return;
   };
 
-  private prepareObject = (s?: string): undefined | style => {
+  private prepareObject = (s?: unknown): undefined | style => {
     const r = this.prepareJSON(s);
     if (isObject(r) && !isArray(r) && !isFunction(r)) {
       return r;
@@ -87,18 +175,25 @@ class Example {
     return;
   };
 
-  private prepareFunction = (s?: string): undefined | render => {
-    const r = this.prepareJSON(s);
-    if (isFunction(r) && !isObject(r) && !isArray(r)) {
+  private prepareFunction = (s?: unknown): undefined | render => {
+    let r;
+    if (!isString(s) || !trim(s)) {
+      return r;
+    }
+    r = new Function("v", s);
+    if (isFunction(r)) {
       return r;
     }
     return;
   };
 
   private prepareJSON = (
-    json?: string
+    json?: unknown
   ): undefined | style | string[] | render => {
     let r;
+    if (!isString(json) || !trim(json)) {
+      return r;
+    }
     if (json) {
       try {
         r = JSON.parse(json);

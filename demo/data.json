@@ -23,7 +23,7 @@
               "control": true,
               "data": {
                 "type": "values",
-                "property": ""
+                "property": "values"
               }
             }
           ]
@@ -40,7 +40,7 @@
               "type": "number",
               "data": {
                 "type": "min",
-                "property": ""
+                "property": "min"
               }
             }
           ]
@@ -56,7 +56,7 @@
               "type": "number",
               "data": {
                 "type": "max",
-                "property": ""
+                "property": "max"
               }
             }
           ]
@@ -72,7 +72,7 @@
               "type": "number",
               "data": {
                 "type": "step",
-                "property": ""
+                "property": "step"
               }
             }
           ]
@@ -88,7 +88,7 @@
               "type": "checkbox",
               "data": {
                 "type": "vertical",
-                "property": ""
+                "property": "vertical"
               }
             }
           ]
@@ -104,7 +104,7 @@
               "type": "checkbox",
               "data": {
                 "type": "reverse",
-                "property": ""
+                "property": "reverse"
               }
             }
           ]
@@ -120,7 +120,7 @@
               "type": "checkbox",
               "data": {
                 "type": "disabled",
-                "property": ""
+                "property": "disabled"
               }
             }
           ]
@@ -136,7 +136,7 @@
               "type": "checkbox",
               "data": {
                 "type": "allowCross",
-                "property": ""
+                "property": "allowCross"
               }
             }
           ]

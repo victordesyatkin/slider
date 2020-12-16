@@ -52,6 +52,7 @@ type DefaultProps = {
 };
 
 type KeyDefaultProps = keyof DefaultProps;
+type KeyProps = keyof Props;
 
 type Addition = {
   index: number;
@@ -135,4 +136,5 @@ export {
   Props,
   style,
   render,
+  KeyProps,
 };
