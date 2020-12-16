@@ -337,6 +337,18 @@
           "items": [
             {
               "label": {
+                "content": "On/Off",
+                "href": ""
+              },
+              "value": 0,
+              "type": "checkbox",
+              "data": {
+                "type": "mark",
+                "property": "on"
+              }
+            },
+            {
+              "label": {
                 "content": "Values",
                 "href": "#"
               },
@@ -349,14 +361,14 @@
             },
             {
               "label": {
-                "content": "On/Off",
-                "href": ""
+                "content": "Values",
+                "href": "#"
               },
-              "value": 0,
-              "type": "checkbox",
+              "type": "number",
+              "control": true,
               "data": {
                 "type": "mark",
-                "property": "on"
+                "property": "values"
               }
             },
             {

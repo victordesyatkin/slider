@@ -2,16 +2,16 @@ import $ from "jquery";
 import get from "lodash/get";
 import isArray from "lodash/isArray";
 import isObject from "lodash/isObject";
-import isNumber from "lodash/isNumber";
 import isFunction from "lodash/isFunction";
 import trim from "lodash/trim";
 import isUndefined from "lodash/isUndefined";
+import isString from "lodash/isString";
 
-import { style, render } from "../src/types";
+import { style, render, Props, KeyProps } from "../src/types";
 import Slider from "../src/index";
-import { Props, KeyProps } from "../src/types";
+import { uniq } from "../src/helpers/utils";
+
 import "./index.scss";
-import { isString } from "lodash";
 
 function requireAll(requireContext: any) {
   return requireContext.keys().map(requireContext);
@@ -31,8 +31,6 @@ class Example {
   constructor(parent: HTMLElement) {
     this.$parent = $(parent);
     this.$sliderWrapper = $(".js-example__slider", this.$parent);
-    this.$sections;
-    this.getProps();
     this.init();
   }
 
@@ -55,7 +53,80 @@ class Example {
     }
   };
 
+  private onClick = (e: JQuery.Event) => {
+    const target: HTMLElement = get(e, ["target"]);
+    const currentTarget: HTMLElement = get(e, ["currentTarget"]);
+    if (target) {
+      this.removeHandle(target, currentTarget);
+      this.addHandle(target, currentTarget);
+    }
+  };
+
+  private getSectionItems = (
+    currentTarget: HTMLElement
+  ): JQuery<HTMLElement> => {
+    return $(".js-section__item-control", currentTarget);
+  };
+
+  private addHandle = (
+    target: HTMLElement,
+    currentTarget: HTMLElement
+  ): void => {
+    if ($(target).closest(".js-button-add").length) {
+      const $items = this.getSectionItems(currentTarget);
+      if ($items.length > 0) {
+        const $lastItem = $($items.slice(-1));
+        const $last = $lastItem.clone();
+        $last.removeClass("section__item_first");
+        const $inputControl = $(".js-input__control", $last);
+        let key = $inputControl.data("key");
+        key += 1;
+        $inputControl.attr({ "data-key": key });
+        const $span = $(".js-input__section-key", $last);
+        $span.text(`${key + 1}:`);
+        const $input = $(".js-input__input", $last);
+        $input.attr({ id: uniq });
+        $lastItem.after($last);
+      }
+    }
+  };
+
+  private updateHandles = (currentTarget: HTMLElement) => {
+    $(".js-section__item-control", currentTarget).each(this.updateHandle);
+  };
+
+  private updateHandle = (index: number, el: HTMLElement) => {
+    const $el = $(el);
+    if (index === 0) {
+      $el.addClass("section__item_first");
+    } else {
+      $el.removeClass("section__item_first");
+    }
+    const $inputControl = $(".js-input__control", $el);
+    $inputControl.attr({ "data-key": index });
+    const $span = $(".js-input__section-key", $el);
+    $span.text(`${index + 1}:`);
+  };
+
+  private removeHandle = (
+    target: HTMLElement,
+    currentTarget: HTMLElement
+  ): void => {
+    if ($(target).closest(".js-button-remove").length) {
+      const $items = this.getSectionItems(currentTarget);
+      if ($items.length > 1) {
+        const $item = $(target).closest(".js-section__item-control");
+        if ($item.length) {
+          $item.remove();
+          this.updateHandles(currentTarget);
+        }
+      }
+    }
+  };
+
   private processingSection = (index: number, el: HTMLElement): void => {
+    $(el).on("click", this.onClick);
+    // console.log("el : ", el);
     const $inputs = $(".input", el).each(this.processingInput);
   };
 

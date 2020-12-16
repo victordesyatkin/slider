@@ -5,27 +5,32 @@ mixin section(options = {})
         class=classNames
     )   
         +label(label, 'section__label')
-        .section__items
-            - 
-                let isControl = false;
+        .section__items.js-section__items
+            - let index = 0;
             each item, key  in items
-                .section__item
-                    -
-                        let { type = '', control=false } = item || {};
-                        if (control) {
-                            item.key = `${key}:`;
-                            isControl = true;
-                        }
+                -
+                    let isControl = false;
+                    let { type = '', control=false, label:labelItem = {} } = item || {};
+                    let sectionItemClass = '';
+                    if (control) {
+                        item.key = index;
+                        isControl = true;
+                        sectionItemClass = 'section__item-control js-section__item-control' + (index === 0 ? ' section__item_first js-section__item_first' : '');
+                        index += 1;
+                    }
+                .section__item(
+                    class=sectionItemClass
+                )
+                    if isControl
+                        +button({
+                            data:{type:1},
+                            type:"button",
+                            classNames:["section__button-control", "js-button-add"],
+                            content:"&#x271A;",
+                            title: "Add"
+                        })
                     case type
                         when 'text'
                         when 'checkbox'
                         when 'number'
                             +input(item)
-            if isControl
-                +button({
-                    data:{type:1},
-                    type:"button",
-                    classNames:["section__button-control"],
-                    content:"&#x271A;",
-                    title: "Add"
-                })
