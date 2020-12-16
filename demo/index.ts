@@ -38,12 +38,15 @@ class Example {
 
   private init = (): void => {
     this.slider = this.$sliderWrapper.slider().data(Slider.PLUGIN_NAME);
+    const props = this.getProps();
+    this.setProps();
   };
 
-  private getProps = (): void => {
+  private getProps = (): Props => {
     this.props = {};
     this.$sections = $(".section", this.$parent);
     this.$sections.each(this.processingSection);
+    return this.props;
   };
 
   private setProps = (): void => {
@@ -52,11 +55,11 @@ class Example {
     }
   };
 
-  private processingSection = (index: number, el: HTMLElement) => {
+  private processingSection = (index: number, el: HTMLElement): void => {
     const $inputs = $(".input", el).each(this.processingInput);
   };
 
-  private processingInput = (index: number, el: HTMLElement) => {
+  private processingInput = (index: number, el: HTMLElement): void => {
     const { property, type } = get($(el).data(), ["data"]) || {};
     let value = this.prepareValue(el, property);
     this.prepareProp(value, type, property);
@@ -70,45 +73,49 @@ class Example {
     if (!type || !property || isUndefined(value)) {
       return;
     }
+    if (property === "precision") {
+      console.log("prepareProp : ", typeof value);
+    }
     if (property === "values") {
       if (type === "values") {
         this.props = {
           ...this.props,
-          values: [...(this.props?.values ?? []), value as number],
+          values: [...(this.props?.values || []), value as number],
         };
       } else if (type === "mark") {
         this.props = {
           ...this.props,
           mark: {
-            ...(this.props?.mark ?? {}),
-            values: [...(this.props?.mark?.values ?? []), value as number],
+            ...(this.props?.mark || {}),
+            values: [...(this.props?.mark?.values || []), value as number],
           },
         };
       }
-    } else if (["min", "max", "step"].indexOf(type) !== -1) {
-      this.props = {
-        ...this.props,
-        [type]: value as number,
-      };
     } else if (
-      ["disabled", "vertical", "reverse", "allowCross"].indexOf(type) !== -1
+      [
+        "min",
+        "max",
+        "step",
+        "disabled",
+        "vertical",
+        "reverse",
+        "allowCross",
+      ].indexOf(property) !== -1
     ) {
       this.props = {
         ...this.props,
-        [type]: !!value as boolean,
+        [property]: value as number,
       };
-    } else if (["dot", "mark", "ral", "tooltip"].indexOf(type) !== -1) {
-      if (property === "on") {
-        const props = get(this.props, [type], {}) || {};
-        this.props = {
-          ...this.props,
-          [type]: {
-            ...props,
-            [property]: !!value as boolean,
-          },
-        };
-      }
+    } else {
+      this.props = {
+        ...this.props,
+        [type]: {
+          ...((this.props || {})[type] as object),
+          [property]: value,
+        },
+      };
     }
+    return;
   };
 
   private prepareValue = (el?: HTMLElement, property?: string): unknown => {
@@ -124,18 +131,19 @@ class Example {
       case "values":
       case "min":
       case "max":
-      case "step": {
-        if (!isNaN(Number(value)) || !isNaN(parseFloat(String(value)))) {
-          return value;
+      case "step":
+      case "precision": {
+        if (isNaN(Number(value)) || isNaN(parseFloat(String(value)))) {
+          return;
         }
-        return;
+        return parseFloat(String(value));
       }
       case "disabled":
       case "vertical":
       case "reverse":
       case "allowCross":
-      case "precision": {
-        return;
+      case "on": {
+        return Boolean(parseFloat(String(value)));
       }
       case "classNames":
       case "styles": {
