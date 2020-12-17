@@ -17,6 +17,16 @@ export default class Presenter implements IPresenter {
 
   private onHandleView = (): void => {
     this.view.subscribe("setPropsModel", this.setPropsModel);
+    this.view.subscribe("onMouseDown", this.onMouseDown);
+    this.view.subscribe("onMouseUp", this.onMouseUp);
+  };
+
+  private onMouseDown = (values?: number[]) => {
+    this.model.publish("onMouseDown", values);
+  };
+
+  private onMouseUp = (values?: number[]) => {
+    this.model.publish("onMouseUp", values);
   };
 
   private setPropsModel = (values: number[]): void => {

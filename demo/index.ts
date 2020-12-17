@@ -1,15 +1,18 @@
 import $ from "jquery";
 import get from "lodash/get";
+import set from "lodash/set";
 import isArray from "lodash/isArray";
 import isObject from "lodash/isObject";
 import isFunction from "lodash/isFunction";
 import trim from "lodash/trim";
 import isUndefined from "lodash/isUndefined";
 import isString from "lodash/isString";
+import merge from "lodash/merge";
+import difference from "lodash/difference";
 
+import { uniq, ensureValueInRange } from "../src/helpers/utils";
 import { style, render, Props, KeyProps } from "../src/types";
 import Slider from "../src/index";
-import { uniq, ensureValueInRange } from "../src/helpers/utils";
 
 import "./index.scss";
 
@@ -36,7 +39,9 @@ class Example {
   }
 
   private init = (): void => {
-    this.slider = this.$sliderWrapper.slider().data(Slider.PLUGIN_NAME);
+    this.slider = this.$sliderWrapper
+      .slider({ onAfterChange: this.onAfterChange })
+      .data(Slider.PLUGIN_NAME);
     this.initHandlers();
     this.updateProps();
   };
@@ -48,6 +53,7 @@ class Example {
   private initHandler = (index: number, el: HTMLElement) => {
     $(el).on("click", this.onClick);
     $(el).on("input", this.onInput);
+    $(el).on("focusout", this.onFocusout);
   };
 
   private getProps = (): Props => {
@@ -63,8 +69,37 @@ class Example {
   };
 
   private updateProps = (): void => {
+    const props = merge({}, this.props);
     this.getProps();
-    this.setProps();
+    if (this.checkNeedUpdate(props)) {
+      this.setProps();
+    }
+  };
+
+  private checkNeedUpdate = (props?: Props): boolean => {
+    const prev = JSON.stringify(props);
+    const next = JSON.stringify(this.props);
+    if (prev !== next) {
+      return true;
+    }
+    return false;
+  };
+
+  private onAfterChange = (values?: number[]): void => {
+    if (!values || !this.props) {
+      return;
+    }
+    const prev = get(this.props, ["values"], []);
+    if (!difference(values, prev).length) {
+      return;
+    }
+    set(this.props, ["values"], values);
+    $(".js-input__control", this.$sections).each((index, el: HTMLElement) => {
+      const type = get($(el).data("data"), ["type"]);
+      if (type === "values") {
+        $(".js-input__input", el).val(values[index]);
+      }
+    });
   };
 
   private onClick = (e: JQuery.Event): void => {
@@ -78,12 +113,18 @@ class Example {
 
   private onInput = (e: JQuery.Event) => {
     const target: HTMLElement = get(e, ["target"]);
-    const currentTarget: HTMLElement = get(e, ["currentTarget"]);
-    if (target) {
+    if (target && $(target).attr("type") === "checkbox") {
       this.updateProps();
-      // console.log("target : ", target);
-      // console.log("value : ", $(target).prop("checked"));
-      // console.log("this.props :", this.props);
+    }
+  };
+
+  private onFocusout = (e: JQuery.Event) => {
+    const target: HTMLElement = get(e, ["target"]);
+    if (
+      target &&
+      ["number", "text"].indexOf($(target).attr("type") || "") !== -1
+    ) {
+      this.updateProps();
     }
   };
 
@@ -174,16 +215,16 @@ class Example {
     type?: KeyProps,
     property?: string
   ): undefined => {
-    if (!type || !property || isUndefined(value)) {
+    if (!type || !property) {
       return;
     }
     if (property === "values") {
-      if (type === "values") {
+      if (type === "values" && !isUndefined(value)) {
         this.props = {
           ...this.props,
           values: [...(this.props?.values || []), value as number],
         };
-      } else if (type === "mark") {
+      } else if (type === "mark" && !isUndefined(value)) {
         this.props = {
           ...this.props,
           mark: {
@@ -244,7 +285,8 @@ class Example {
       case "reverse":
       case "allowCross":
       case "on":
-      case "dot": {
+      case "dot":
+      case "always": {
         value = $("input", el).prop("checked");
         return Boolean(value);
       }
@@ -291,7 +333,12 @@ class Example {
     if (!isString(s) || !trim(s)) {
       return r;
     }
-    r = new Function("v", s);
+    try {
+      r = new Function("v", s);
+      r(0);
+    } catch (error) {
+      return;
+    }
     if (isFunction(r)) {
       return r;
     }

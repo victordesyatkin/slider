@@ -4,7 +4,7 @@ import classnames from "classnames";
 import isUndefined from "lodash/isUndefined";
 import { calcOffset, objectToString } from "../../helpers/utils";
 import { ISubView } from "../../slider/interface";
-import { DefaultProps, Addition } from "../../types";
+import { DefaultProps, Addition, Tooltip } from "../../types";
 import TooltipView from "../tooltip/view";
 
 export default class HandleView implements ISubView {
@@ -13,6 +13,7 @@ export default class HandleView implements ISubView {
   private view?: JQuery<HTMLElement>;
   private isRendered: boolean = false;
   private parent?: JQuery<HTMLElement>;
+  private tooltip?: TooltipView;
 
   constructor(addition: Addition) {
     this.addition = addition;
@@ -88,13 +89,19 @@ export default class HandleView implements ISubView {
       const index = get(this.addition, ["index"]);
       const value = get(this.props, ["values", index]);
       if (!isUndefined(value)) {
-        const tooltip = new TooltipView({ value, index });
-        if (tooltip) {
-          this.view.empty();
-          tooltip.setProps(this.props);
-          tooltip.render(this.view);
+        if (this.tooltip) {
+          this.tooltip.setAddition({ value, index });
+          this.tooltip.setProps(this.props);
+        } else {
+          this.tooltip = new TooltipView({ value, index });
+          this.tooltip.setProps(this.props);
+          this.tooltip.render(this.view);
         }
       }
+    } else if (this.tooltip && this.view) {
+      this.tooltip.remove();
+      this.tooltip = undefined;
+      this.view.empty();
     }
   };
 

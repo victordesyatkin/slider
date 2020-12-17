@@ -104,12 +104,14 @@ export default class View extends PubSub {
     this.currentHandleIndex = index;
     window.addEventListener("mousemove", this.onMouseMove);
     window.addEventListener("mouseup", this.onMouseUp);
+    this.publish("onMouseDown", this.props?.values || []);
   };
 
   private onMouseUp = (e: MouseEvent): void => {
     e.preventDefault();
     window.removeEventListener("mousemove", this.onMouseMove);
     window.removeEventListener("mouseup", this.onMouseUp);
+    this.publish("onMouseUp", this.props?.values || []);
   };
 
   private onMouseMove = (e: MouseEvent): void => {

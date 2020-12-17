@@ -46,13 +46,7 @@ export default class DotView implements ISubView {
     let active = false;
     if (!isUndefined(values) && !isUndefined(value)) {
       if (values.length === 1) {
-        active = reverse
-          ? value > values[0]
-            ? true
-            : false
-          : value < values[0]
-          ? true
-          : false;
+        active = value < values[0];
       } else if (values.length > 1) {
         values = orderBy(values);
         if (value >= values[0] && value <= values[values.length - 1]) {
