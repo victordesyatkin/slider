@@ -51,7 +51,7 @@ export default class MarkView implements ISubView {
         ? {
             [reverse ? "top" : "bottom"]: `${offset}%`,
             [reverse ? "bottom" : "top"]: "auto",
-            transform: reverse ? "none" : `translateY(+50%)`,
+            transform: reverse ? "translateY(-25%)" : `translateY(+50%)`,
           }
         : {
             [reverse ? "right" : "left"]: `${offset}%`,

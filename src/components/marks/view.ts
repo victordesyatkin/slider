@@ -82,17 +82,17 @@ export default class MarksView implements ISubView {
         for (let i = min; i <= max; i += step) {
           values.push(i);
         }
-        values = orderBy(uniq(values), reverse ? "desc" : "asc");
+        values = orderBy(uniq(values), [], reverse ? "desc" : "asc");
         const length = values.length;
         const handlers = this.addition.handlers;
         for (let i = 0; i < length; i += 1) {
           if (!isUndefined(views[i])) {
-            views[i].setProps(this.props);
             views[i].setAddition({
               index: i,
               handlers,
               value: values[i],
             });
+            views[i].setProps(this.props);
           } else {
             views[i] = new c({
               index: i,
@@ -157,6 +157,7 @@ export default class MarksView implements ISubView {
     if (this.view) {
       this.view.remove();
       this.view = undefined;
+      this.marks = [];
       this.isRendered = false;
     }
   };

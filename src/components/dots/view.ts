@@ -25,7 +25,6 @@ export default class DotsView implements ISubView {
       const on = get(this.props, ["dot", "on"]);
       const step = get(this.props, ["step"]);
       if (on && step) {
-        console.log("createView dot : on");
         this.view = $("<div/>", this.prepareAttr());
       }
     }
@@ -90,12 +89,12 @@ export default class DotsView implements ISubView {
         for (let i = min; i <= max; i += step) {
           values.push(i);
         }
-        values = orderBy(uniq(values), reverse ? "desc" : "asc");
+        values = orderBy(uniq(values), [], reverse ? "desc" : "asc");
         const length = values.length;
         for (let i = 0; i < length; i += 1) {
           if (views[i]) {
-            views[i].setProps(this.props);
             views[i].setAddition({ index: i, handlers, value: values[i] });
+            views[i].setProps(this.props);
           } else {
             views[i] = new c({ index: i, handlers, value: values[i] });
             views[i].setProps(this.props);
@@ -156,6 +155,7 @@ export default class DotsView implements ISubView {
     if (this.view) {
       this.view.remove();
       this.view = undefined;
+      this.dots = [];
       this.isRendered = false;
     }
   };

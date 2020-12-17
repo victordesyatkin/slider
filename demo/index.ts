@@ -81,9 +81,9 @@ class Example {
     const currentTarget: HTMLElement = get(e, ["currentTarget"]);
     if (target) {
       this.updateProps();
-      console.log("target : ", target);
-      console.log("value : ", $(target).prop("checked"));
-      console.log("this.props :", this.props);
+      // console.log("target : ", target);
+      // console.log("value : ", $(target).prop("checked"));
+      // console.log("this.props :", this.props);
     }
   };
 
@@ -114,10 +114,10 @@ class Example {
         const max = get(this.props, ["max"], 0);
         const min = get(this.props, ["min"], 0);
         const value =
-          parseFloat(String($(".js-input__input", $lastItem).val()) || "0") +
+          parseFloat(String($(".js-input__input", $lastItem).val())) +
           (max - min) * 1e-1;
         if (!isUndefined(value) && !isNaN(value)) {
-          $input.val(value); //ensureValueInRange(value, { max, min })
+          $input.val(ensureValueInRange(value, { max, min }));
         }
         $lastItem.after($last);
         this.updateProps();
@@ -243,7 +243,8 @@ class Example {
       case "vertical":
       case "reverse":
       case "allowCross":
-      case "on": {
+      case "on":
+      case "dot": {
         value = $("input", el).prop("checked");
         return Boolean(value);
       }
