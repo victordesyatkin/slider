@@ -20,6 +20,7 @@ export default class DotView implements ISubView {
   }
 
   private createView(): void {
+    console.log("createView this.props : ", this.props);
     if (this.props && !isUndefined(get(this.addition, ["value"]))) {
       this.view = $("<div/>", this.prepareAttr());
       this.onHandlers();
@@ -116,6 +117,7 @@ export default class DotView implements ISubView {
   };
 
   public setProps = (props: DefaultProps): void => {
+    console.log();
     this.props = props;
     this.updateView();
     this.render();
@@ -135,6 +137,7 @@ export default class DotView implements ISubView {
     if (this.view) {
       this.view.remove();
       this.view = undefined;
+      this.isRendered = false;
     }
   };
 

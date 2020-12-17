@@ -157,6 +157,7 @@ export default class MarksView implements ISubView {
     if (this.view) {
       this.view.remove();
       this.view = undefined;
+      this.isRendered = false;
     }
   };
 

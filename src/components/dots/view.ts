@@ -25,6 +25,7 @@ export default class DotsView implements ISubView {
       const on = get(this.props, ["dot", "on"]);
       const step = get(this.props, ["step"]);
       if (on && step) {
+        console.log("createView dot : on");
         this.view = $("<div/>", this.prepareAttr());
       }
     }
@@ -155,6 +156,7 @@ export default class DotsView implements ISubView {
     if (this.view) {
       this.view.remove();
       this.view = undefined;
+      this.isRendered = false;
     }
   };
 

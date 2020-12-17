@@ -77,6 +77,7 @@ export default class HandleView implements ISubView {
       return objectToString({
         ...style,
         ...positionStyle,
+        "z-index": index + 10,
       });
     }
   };
@@ -138,6 +139,7 @@ export default class HandleView implements ISubView {
     if (this.view) {
       this.view.remove();
       this.view = undefined;
+      this.isRendered = false;
     }
   };
 

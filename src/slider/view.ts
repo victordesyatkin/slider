@@ -68,8 +68,12 @@ export default class View extends PubSub {
     return objectToString({ ...get(this.props, ["style"]) });
   }
 
-  private onClick = (index: number, e: MouseEvent, value?: number) => {
+  private onClick = (index: number, e: MouseEvent, value?: number): void => {
     e.preventDefault();
+    const disabled = get(this.props, ["disabled"]);
+    if (disabled) {
+      return;
+    }
     if (this.props && this.view) {
       let v: number;
       if (!isUndefined(value)) {
@@ -93,6 +97,10 @@ export default class View extends PubSub {
 
   private onMouseDown = (index: number, e: JQuery.Event): void => {
     e.preventDefault();
+    const disabled = get(this.props, ["disabled"]);
+    if (disabled) {
+      return;
+    }
     this.currentHandleIndex = index;
     window.addEventListener("mousemove", this.onMouseMove);
     window.addEventListener("mouseup", this.onMouseUp);

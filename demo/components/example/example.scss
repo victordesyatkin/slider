@@ -9,14 +9,4 @@
     max-width: 400px;
     outline: 1px solid red;
   }
-
-  &__slider {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-grow: 1;
-    flex-shrink: 1;
-    flex-basis: auto;
-    outline: 1px solid green;
-  }
 }

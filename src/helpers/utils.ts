@@ -91,7 +91,7 @@ export const ensureValuePrecision = (
 ): number => {
   const { step, min, max } = props;
   if (!step) {
-    return v;
+    return ensureValueInRange(v, { max, min });
   }
   const closestPoint = isFinite(getClosestPoint(v, { step, min, max }, props))
     ? getClosestPoint(v, { step, min, max }, props)
