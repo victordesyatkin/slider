@@ -1,529 +1,1640 @@
 {
-  "example1": {
-    "panel": {
-      "classNames": ["example__panel"],
+  "examples": [
+    {
       "label": {
-        "content": "Configuration",
-        "href": "#",
+        "content": "Maximum Configuration",
+        "href": "",
         "title": "readme",
         "target": "_blank"
       },
-      "sections": [
-        {
-          "label": {
-            "content": "Values",
-            "href": "",
-            "title": "",
-            "target": "_blank"
-          },
-          "items": [
-            {
-              "value": 80,
-              "type": "number",
-              "control": true,
-              "data": {
-                "type": "values",
-                "property": "values"
-              }
-            }
-          ]
+      "panel": {
+        "classNames": ["example__panel"],
+        "label": {
+          "content": "Configuration",
+          "href": "#",
+          "title": "readme",
+          "target": "_blank"
         },
-        {
-          "label": {
-            "content": "Min",
-            "href": "",
-            "title": ""
+        "sections": [
+          {
+            "label": {
+              "content": "Values",
+              "href": "",
+              "title": "",
+              "target": "_blank"
+            },
+            "items": [
+              {
+                "value": 20,
+                "type": "number",
+                "control": true,
+                "data": {
+                  "type": "values",
+                  "property": "values"
+                }
+              },
+              {
+                "value": 45,
+                "type": "number",
+                "control": true,
+                "data": {
+                  "type": "values",
+                  "property": "values"
+                }
+              },
+              {
+                "value": 75,
+                "type": "number",
+                "control": true,
+                "data": {
+                  "type": "values",
+                  "property": "values"
+                }
+              }
+            ]
           },
-          "items": [
-            {
-              "value": 0,
-              "type": "number",
-              "data": {
-                "type": "min",
-                "property": "min"
+          {
+            "label": {
+              "content": "Min",
+              "href": "",
+              "title": ""
+            },
+            "items": [
+              {
+                "value": 0,
+                "type": "number",
+                "data": {
+                  "type": "min",
+                  "property": "min"
+                }
               }
-            }
-          ]
-        },
-        {
-          "label": {
-            "content": "Max",
-            "href": ""
+            ]
           },
-          "items": [
-            {
-              "value": 100,
-              "type": "number",
-              "data": {
-                "type": "max",
-                "property": "max"
+          {
+            "label": {
+              "content": "Max",
+              "href": ""
+            },
+            "items": [
+              {
+                "value": 100,
+                "type": "number",
+                "data": {
+                  "type": "max",
+                  "property": "max"
+                }
               }
-            }
-          ]
-        },
-        {
-          "label": {
-            "content": "Step",
-            "href": ""
+            ]
           },
-          "items": [
-            {
-              "value": 10,
-              "type": "number",
-              "data": {
-                "type": "step",
-                "property": "step"
+          {
+            "label": {
+              "content": "Step",
+              "href": ""
+            },
+            "items": [
+              {
+                "value": 10,
+                "type": "number",
+                "data": {
+                  "type": "step",
+                  "property": "step"
+                }
               }
-            }
-          ]
-        },
-        {
-          "label": {
-            "content": "Vertical",
-            "href": ""
+            ]
           },
-          "items": [
-            {
-              "value": 0,
-              "type": "checkbox",
-              "data": {
-                "type": "vertical",
-                "property": "vertical"
+          {
+            "label": {
+              "content": "Precision",
+              "href": ""
+            },
+            "items": [
+              {
+                "value": 0,
+                "type": "number",
+                "data": {
+                  "type": "precision",
+                  "property": "precision"
+                }
               }
-            }
-          ]
-        },
-        {
-          "label": {
-            "content": "Reverse",
-            "href": ""
+            ]
           },
-          "items": [
-            {
-              "value": 0,
-              "type": "checkbox",
-              "data": {
-                "type": "reverse",
-                "property": "reverse"
+          {
+            "label": {
+              "content": "Vertical",
+              "href": ""
+            },
+            "items": [
+              {
+                "value": 0,
+                "type": "checkbox",
+                "data": {
+                  "type": "vertical",
+                  "property": "vertical"
+                }
               }
-            }
-          ]
-        },
-        {
-          "label": {
-            "content": "Disabled",
-            "href": ""
+            ]
           },
-          "items": [
-            {
-              "value": 0,
-              "type": "checkbox",
-              "data": {
-                "type": "disabled",
-                "property": "disabled"
+          {
+            "label": {
+              "content": "Reverse",
+              "href": ""
+            },
+            "items": [
+              {
+                "value": 0,
+                "type": "checkbox",
+                "data": {
+                  "type": "reverse",
+                  "property": "reverse"
+                }
               }
-            }
-          ]
-        },
-        {
-          "label": {
-            "content": "AllowCross",
-            "href": ""
+            ]
           },
-          "items": [
-            {
-              "value": 0,
-              "type": "checkbox",
-              "data": {
-                "type": "allowCross",
-                "property": "allowCross"
+          {
+            "label": {
+              "content": "Disabled",
+              "href": ""
+            },
+            "items": [
+              {
+                "value": 0,
+                "type": "checkbox",
+                "data": {
+                  "type": "disabled",
+                  "property": "disabled"
+                }
               }
-            }
-          ]
-        },
-        {
-          "label": {
-            "content": "Handle",
-            "href": ""
+            ]
           },
-          "items": [
-            {
-              "label": {
-                "content": "Class names (json)",
-                "href": "#",
-                "title": "readme",
-                "target": "_blank"
-              },
-              "value": "",
-              "type": "text",
-              "data": {
-                "type": "handle",
-                "property": "classNames"
-              }
+          {
+            "label": {
+              "content": "AllowCross",
+              "href": ""
             },
-            {
-              "label": {
-                "content": "Styles (json)",
-                "href": "#",
-                "title": "readme",
-                "target": "_blank"
-              },
-              "value": "",
-              "type": "text",
-              "data": {
-                "type": "handle",
-                "property": "styles"
+            "items": [
+              {
+                "value": 0,
+                "type": "checkbox",
+                "data": {
+                  "type": "allowCross",
+                  "property": "allowCross"
+                }
               }
-            }
-          ]
-        },
-        {
-          "label": {
-            "content": "Rail",
-            "href": ""
+            ]
           },
-          "items": [
-            {
-              "label": {
-                "content": "On/Off",
-                "href": ""
-              },
-              "value": 1,
-              "type": "checkbox",
-              "data": {
-                "type": "rail",
-                "property": "on"
-              }
+          {
+            "label": {
+              "content": "Handle",
+              "href": ""
             },
-            {
-              "label": {
-                "content": "Style (json)",
-                "href": "#",
-                "title": "readme",
-                "target": "_blank"
+            "items": [
+              {
+                "label": {
+                  "content": "Class names (json)",
+                  "href": "#",
+                  "title": "readme",
+                  "target": "_blank"
+                },
+                "value": "[\"new-handle1-class-name\", \"new-handle2-class-name\", \"new-handle3-class-name\"]",
+                "type": "text",
+                "data": {
+                  "type": "handle",
+                  "property": "classNames"
+                }
               },
-              "value": "",
-              "type": "text",
-              "data": {
-                "type": "rail",
-                "property": "style"
+              {
+                "label": {
+                  "content": "Styles (json)",
+                  "href": "#",
+                  "title": "readme",
+                  "target": "_blank"
+                },
+                "value": "",
+                "type": "text",
+                "data": {
+                  "type": "handle",
+                  "property": "styles"
+                }
               }
-            },
-            {
-              "label": {
-                "content": "Class name",
-                "href": ""
-              },
-              "value": "",
-              "type": "text",
-              "data": {
-                "type": "rail",
-                "property": "className"
-              }
-            }
-          ]
-        },
-        {
-          "label": {
-            "content": "Track",
-            "href": ""
+            ]
           },
-          "items": [
-            {
-              "label": {
-                "content": "On/Off",
-                "href": ""
-              },
-              "value": 1,
-              "type": "checkbox",
-              "data": {
-                "type": "track",
-                "property": "on"
-              }
+          {
+            "label": {
+              "content": "Rail",
+              "href": ""
             },
-            {
-              "label": {
-                "content": "Styles (json)",
-                "href": "#",
-                "title": "readme",
-                "target": "_blank"
+            "items": [
+              {
+                "label": {
+                  "content": "On/Off",
+                  "href": ""
+                },
+                "value": 1,
+                "type": "checkbox",
+                "data": {
+                  "type": "rail",
+                  "property": "on"
+                }
               },
-              "value": "",
-              "type": "text",
-              "data": {
-                "type": "track",
-                "property": "styles"
-              }
-            },
-            {
-              "label": {
-                "content": "Class names (json)",
-                "href": "#",
-                "title": "readme",
-                "target": "_blank"
+              {
+                "label": {
+                  "content": "Style (json)",
+                  "href": "#",
+                  "title": "readme",
+                  "target": "_blank"
+                },
+                "value": "",
+                "type": "text",
+                "data": {
+                  "type": "rail",
+                  "property": "style"
+                }
               },
-              "value": "",
-              "type": "text",
-              "data": {
-                "type": "track",
-                "property": "classNames"
+              {
+                "label": {
+                  "content": "Class name",
+                  "href": ""
+                },
+                "value": "new-rail-class-name",
+                "type": "text",
+                "data": {
+                  "type": "rail",
+                  "property": "className"
+                }
               }
-            }
-          ]
-        },
-        {
-          "label": {
-            "content": "Dot",
-            "href": ""
+            ]
           },
-          "items": [
-            {
-              "label": {
-                "content": "On/Off",
-                "href": ""
-              },
-              "value": 0,
-              "type": "checkbox",
-              "data": {
-                "type": "dot",
-                "property": "on"
-              }
+          {
+            "label": {
+              "content": "Track",
+              "href": ""
             },
-            {
-              "label": {
-                "content": "Style (json)",
-                "href": "#",
-                "title": "readme",
-                "target": "_blank"
+            "items": [
+              {
+                "label": {
+                  "content": "On/Off",
+                  "href": ""
+                },
+                "value": 1,
+                "type": "checkbox",
+                "data": {
+                  "type": "track",
+                  "property": "on"
+                }
               },
-              "value": "",
-              "type": "text",
-              "data": {
-                "type": "dot",
-                "property": "style"
-              }
-            },
-            {
-              "label": {
-                "content": "Class name",
-                "href": ""
+              {
+                "label": {
+                  "content": "Styles (json)",
+                  "href": "#",
+                  "title": "readme",
+                  "target": "_blank"
+                },
+                "value": "",
+                "type": "text",
+                "data": {
+                  "type": "track",
+                  "property": "styles"
+                }
               },
-              "value": "",
-              "type": "text",
-              "data": {
-                "type": "dot",
-                "property": "className"
+              {
+                "label": {
+                  "content": "Class names (json)",
+                  "href": "#",
+                  "title": "readme",
+                  "target": "_blank"
+                },
+                "value": "[\"new-track1-class-name\", \"new-track2-class-name\"]",
+                "type": "text",
+                "data": {
+                  "type": "track",
+                  "property": "classNames"
+                }
               }
-            },
-            {
-              "label": {
-                "content": "Wrapper class name",
-                "href": ""
-              },
-              "value": "",
-              "type": "text",
-              "data": {
-                "type": "dot",
-                "property": "wrapClassName"
-              }
-            }
-          ]
-        },
-        {
-          "label": {
-            "content": "Mark",
-            "href": ""
+            ]
           },
-          "items": [
-            {
-              "label": {
-                "content": "On/Off",
-                "href": ""
-              },
-              "value": 0,
-              "type": "checkbox",
-              "data": {
-                "type": "mark",
-                "property": "on"
-              }
+          {
+            "label": {
+              "content": "Dot",
+              "href": ""
             },
-            {
-              "label": {
-                "content": "Values",
-                "href": "#"
+            "items": [
+              {
+                "label": {
+                  "content": "On/Off",
+                  "href": ""
+                },
+                "value": 1,
+                "type": "checkbox",
+                "data": {
+                  "type": "dot",
+                  "property": "on"
+                }
               },
-              "type": "number",
-              "control": true,
-              "data": {
-                "type": "mark",
-                "property": "values"
-              }
-            },
-            {
-              "label": {
-                "content": "Values",
-                "href": "#"
+              {
+                "label": {
+                  "content": "Style (json)",
+                  "href": "#",
+                  "title": "readme",
+                  "target": "_blank"
+                },
+                "value": "",
+                "type": "text",
+                "data": {
+                  "type": "dot",
+                  "property": "style"
+                }
               },
-              "type": "number",
-              "control": true,
-              "data": {
-                "type": "mark",
-                "property": "values"
-              }
-            },
-            {
-              "label": {
-                "content": "Dot on/off",
-                "href": ""
+              {
+                "label": {
+                  "content": "Class name",
+                  "href": ""
+                },
+                "value": "new-dot-class-name",
+                "type": "text",
+                "data": {
+                  "type": "dot",
+                  "property": "className"
+                }
               },
-              "value": 0,
-              "type": "checkbox",
-              "data": {
-                "type": "mark",
-                "property": "dot"
+              {
+                "label": {
+                  "content": "Wrapper class name",
+                  "href": ""
+                },
+                "value": "dot-wrapper-class-name",
+                "type": "text",
+                "data": {
+                  "type": "dot",
+                  "property": "wrapClassName"
+                }
               }
-            },
-            {
-              "label": {
-                "content": "Style (json)",
-                "href": "#",
-                "title": "readme",
-                "target": "_blank"
-              },
-              "value": "",
-              "type": "text",
-              "data": {
-                "type": "mark",
-                "property": "style"
-              }
-            },
-            {
-              "label": {
-                "content": "Class name",
-                "href": ""
-              },
-              "value": "",
-              "type": "text",
-              "data": {
-                "type": "mark",
-                "property": "className"
-              }
-            },
-            {
-              "label": {
-                "content": "Wrapper class name",
-                "href": ""
-              },
-              "value": "",
-              "type": "text",
-              "data": {
-                "type": "mark",
-                "property": "wrapClassName"
-              }
-            },
-            {
-              "label": {
-                "content": "Render function value",
-                "href": "#",
-                "title": "readme"
-              },
-              "value": "",
-              "type": "text",
-              "data": {
-                "type": "mark",
-                "property": "render"
-              }
-            }
-          ]
-        },
-        {
-          "label": {
-            "content": "Tooltip",
-            "href": "",
-            "title": ""
+            ]
           },
-          "items": [
-            {
-              "label": {
-                "content": "On/Off",
-                "href": ""
-              },
-              "value": 0,
-              "type": "checkbox",
-              "data": {
-                "type": "tooltip",
-                "property": "on"
-              }
+          {
+            "label": {
+              "content": "Mark",
+              "href": ""
             },
-            {
-              "label": {
-                "content": "Always",
-                "href": ""
+            "items": [
+              {
+                "label": {
+                  "content": "On/Off",
+                  "href": ""
+                },
+                "value": 1,
+                "type": "checkbox",
+                "data": {
+                  "type": "mark",
+                  "property": "on"
+                }
               },
-              "value": 0,
-              "type": "checkbox",
-              "data": {
-                "type": "tooltip",
-                "property": "always"
+              {
+                "label": {
+                  "content": "Values",
+                  "href": "#"
+                },
+                "type": "number",
+                "control": true,
+                "value": 0,
+                "data": {
+                  "type": "mark",
+                  "property": "values"
+                }
+              },
+              {
+                "label": {
+                  "content": "Values",
+                  "href": "#"
+                },
+                "type": "number",
+                "control": true,
+                "value": 45,
+                "data": {
+                  "type": "mark",
+                  "property": "values"
+                }
+              },
+              {
+                "label": {
+                  "content": "Values",
+                  "href": "#"
+                },
+                "type": "number",
+                "control": true,
+                "value": 100,
+                "data": {
+                  "type": "mark",
+                  "property": "values"
+                }
+              },
+              {
+                "label": {
+                  "content": "Dot on/off",
+                  "href": ""
+                },
+                "value": 1,
+                "type": "checkbox",
+                "data": {
+                  "type": "mark",
+                  "property": "dot"
+                }
+              },
+              {
+                "label": {
+                  "content": "Style (json)",
+                  "href": "#",
+                  "title": "readme",
+                  "target": "_blank"
+                },
+                "value": "",
+                "type": "text",
+                "data": {
+                  "type": "mark",
+                  "property": "style"
+                }
+              },
+              {
+                "label": {
+                  "content": "Class name",
+                  "href": ""
+                },
+                "value": "new-mark-class-name",
+                "type": "text",
+                "data": {
+                  "type": "mark",
+                  "property": "className"
+                }
+              },
+              {
+                "label": {
+                  "content": "Wrapper class name",
+                  "href": ""
+                },
+                "value": "mark-wrapper-class-name",
+                "type": "text",
+                "data": {
+                  "type": "mark",
+                  "property": "wrapClassName"
+                }
+              },
+              {
+                "label": {
+                  "content": "Render function value",
+                  "href": "#",
+                  "title": "readme"
+                },
+                "value": "",
+                "type": "text",
+                "data": {
+                  "type": "mark",
+                  "property": "render"
+                }
               }
+            ]
+          },
+          {
+            "label": {
+              "content": "Tooltip",
+              "href": "",
+              "title": ""
             },
-            {
-              "label": {
-                "content": "Style (json)",
-                "href": "#",
-                "title": "readme",
-                "target": "_blank"
+            "items": [
+              {
+                "label": {
+                  "content": "On/Off",
+                  "href": ""
+                },
+                "value": 1,
+                "type": "checkbox",
+                "data": {
+                  "type": "tooltip",
+                  "property": "on"
+                }
               },
-              "value": "",
-              "type": "text",
-              "data": {
-                "type": "tooltip",
-                "property": "style"
-              }
-            },
-            {
-              "label": {
-                "content": "Class name",
-                "href": ""
+              {
+                "label": {
+                  "content": "Always",
+                  "href": ""
+                },
+                "value": 0,
+                "type": "checkbox",
+                "data": {
+                  "type": "tooltip",
+                  "property": "always"
+                }
               },
-              "value": "",
-              "type": "text",
-              "data": {
-                "type": "tooltip",
-                "property": "className"
-              }
-            },
-            {
-              "label": {
-                "content": "Precision tooltip",
-                "href": ""
+              {
+                "label": {
+                  "content": "Style (json)",
+                  "href": "#",
+                  "title": "readme",
+                  "target": "_blank"
+                },
+                "value": "",
+                "type": "text",
+                "data": {
+                  "type": "tooltip",
+                  "property": "style"
+                }
               },
-              "value": "",
-              "type": "number",
-              "data": {
-                "type": "tooltip",
-                "property": "precision"
-              }
-            },
-            {
-              "label": {
-                "content": "Render function value",
-                "href": "#",
-                "title": "readme"
+              {
+                "label": {
+                  "content": "Class name",
+                  "href": ""
+                },
+                "value": "new-tooltip-class-name",
+                "type": "text",
+                "data": {
+                  "type": "tooltip",
+                  "property": "className"
+                }
               },
-              "value": "",
-              "type": "text",
-              "data": {
-                "type": "tooltip",
-                "property": "render"
+              {
+                "label": {
+                  "content": "Render function value",
+                  "href": "#",
+                  "title": "readme"
+                },
+                "value": "return `${v}$`;",
+                "type": "text",
+                "data": {
+                  "type": "tooltip",
+                  "property": "render"
+                }
               }
-            }
-          ]
-        }
-      ]
+            ]
+          }
+        ]
+      },
+      "slider": {
+        "classNames": ["example__slider", "js-example__slider"]
+      }
     },
-    "slider": {
-      "classNames": ["example__slider", "js-example__slider"]
+    {
+      "panel": {
+        "classNames": ["example__panel"],
+        "label": {
+          "content": "Configuration",
+          "href": "#",
+          "title": "readme",
+          "target": "_blank"
+        },
+        "sections": [
+          {
+            "label": {
+              "content": "Values",
+              "href": "",
+              "title": "",
+              "target": "_blank"
+            },
+            "items": [
+              {
+                "value": 45,
+                "type": "number",
+                "control": true,
+                "data": {
+                  "type": "values",
+                  "property": "values"
+                }
+              }
+            ]
+          },
+          {
+            "label": {
+              "content": "Min",
+              "href": "",
+              "title": ""
+            },
+            "items": [
+              {
+                "value": 0,
+                "type": "number",
+                "data": {
+                  "type": "min",
+                  "property": "min"
+                }
+              }
+            ]
+          },
+          {
+            "label": {
+              "content": "Max",
+              "href": ""
+            },
+            "items": [
+              {
+                "value": 100,
+                "type": "number",
+                "data": {
+                  "type": "max",
+                  "property": "max"
+                }
+              }
+            ]
+          },
+          {
+            "label": {
+              "content": "Step",
+              "href": ""
+            },
+            "items": [
+              {
+                "value": 0,
+                "type": "number",
+                "data": {
+                  "type": "step",
+                  "property": "step"
+                }
+              }
+            ]
+          },
+          {
+            "label": {
+              "content": "Precision",
+              "href": ""
+            },
+            "items": [
+              {
+                "value": 0,
+                "type": "number",
+                "data": {
+                  "type": "precision",
+                  "property": "precision"
+                }
+              }
+            ]
+          },
+          {
+            "label": {
+              "content": "Vertical",
+              "href": ""
+            },
+            "items": [
+              {
+                "value": 0,
+                "type": "checkbox",
+                "data": {
+                  "type": "vertical",
+                  "property": "vertical"
+                }
+              }
+            ]
+          },
+          {
+            "label": {
+              "content": "Reverse",
+              "href": ""
+            },
+            "items": [
+              {
+                "value": 0,
+                "type": "checkbox",
+                "data": {
+                  "type": "reverse",
+                  "property": "reverse"
+                }
+              }
+            ]
+          },
+          {
+            "label": {
+              "content": "Disabled",
+              "href": ""
+            },
+            "items": [
+              {
+                "value": 0,
+                "type": "checkbox",
+                "data": {
+                  "type": "disabled",
+                  "property": "disabled"
+                }
+              }
+            ]
+          },
+          {
+            "label": {
+              "content": "AllowCross",
+              "href": ""
+            },
+            "items": [
+              {
+                "value": 0,
+                "type": "checkbox",
+                "data": {
+                  "type": "allowCross",
+                  "property": "allowCross"
+                }
+              }
+            ]
+          },
+          {
+            "label": {
+              "content": "Handle",
+              "href": ""
+            },
+            "items": [
+              {
+                "label": {
+                  "content": "Class names (json)",
+                  "href": "#",
+                  "title": "readme",
+                  "target": "_blank"
+                },
+                "value": "",
+                "type": "text",
+                "data": {
+                  "type": "handle",
+                  "property": "classNames"
+                }
+              },
+              {
+                "label": {
+                  "content": "Styles (json)",
+                  "href": "#",
+                  "title": "readme",
+                  "target": "_blank"
+                },
+                "value": "",
+                "type": "text",
+                "data": {
+                  "type": "handle",
+                  "property": "styles"
+                }
+              }
+            ]
+          },
+          {
+            "label": {
+              "content": "Rail",
+              "href": ""
+            },
+            "items": [
+              {
+                "label": {
+                  "content": "On/Off",
+                  "href": ""
+                },
+                "value": 1,
+                "type": "checkbox",
+                "data": {
+                  "type": "rail",
+                  "property": "on"
+                }
+              },
+              {
+                "label": {
+                  "content": "Style (json)",
+                  "href": "#",
+                  "title": "readme",
+                  "target": "_blank"
+                },
+                "value": "",
+                "type": "text",
+                "data": {
+                  "type": "rail",
+                  "property": "style"
+                }
+              },
+              {
+                "label": {
+                  "content": "Class name",
+                  "href": ""
+                },
+                "value": "",
+                "type": "text",
+                "data": {
+                  "type": "rail",
+                  "property": "className"
+                }
+              }
+            ]
+          },
+          {
+            "label": {
+              "content": "Track",
+              "href": ""
+            },
+            "items": [
+              {
+                "label": {
+                  "content": "On/Off",
+                  "href": ""
+                },
+                "value": 1,
+                "type": "checkbox",
+                "data": {
+                  "type": "track",
+                  "property": "on"
+                }
+              },
+              {
+                "label": {
+                  "content": "Styles (json)",
+                  "href": "#",
+                  "title": "readme",
+                  "target": "_blank"
+                },
+                "value": "",
+                "type": "text",
+                "data": {
+                  "type": "track",
+                  "property": "styles"
+                }
+              },
+              {
+                "label": {
+                  "content": "Class names (json)",
+                  "href": "#",
+                  "title": "readme",
+                  "target": "_blank"
+                },
+                "value": "",
+                "type": "text",
+                "data": {
+                  "type": "track",
+                  "property": "classNames"
+                }
+              }
+            ]
+          },
+          {
+            "label": {
+              "content": "Dot",
+              "href": ""
+            },
+            "items": [
+              {
+                "label": {
+                  "content": "On/Off",
+                  "href": ""
+                },
+                "value": 0,
+                "type": "checkbox",
+                "data": {
+                  "type": "dot",
+                  "property": "on"
+                }
+              },
+              {
+                "label": {
+                  "content": "Style (json)",
+                  "href": "#",
+                  "title": "readme",
+                  "target": "_blank"
+                },
+                "value": "",
+                "type": "text",
+                "data": {
+                  "type": "dot",
+                  "property": "style"
+                }
+              },
+              {
+                "label": {
+                  "content": "Class name",
+                  "href": ""
+                },
+                "value": "",
+                "type": "text",
+                "data": {
+                  "type": "dot",
+                  "property": "className"
+                }
+              },
+              {
+                "label": {
+                  "content": "Wrapper class name",
+                  "href": ""
+                },
+                "value": "",
+                "type": "text",
+                "data": {
+                  "type": "dot",
+                  "property": "wrapClassName"
+                }
+              }
+            ]
+          },
+          {
+            "label": {
+              "content": "Mark",
+              "href": ""
+            },
+            "items": [
+              {
+                "label": {
+                  "content": "On/Off",
+                  "href": ""
+                },
+                "value": 1,
+                "type": "checkbox",
+                "data": {
+                  "type": "mark",
+                  "property": "on"
+                }
+              },
+              {
+                "label": {
+                  "content": "Values",
+                  "href": "#"
+                },
+                "type": "number",
+                "control": true,
+                "value": 0,
+                "data": {
+                  "type": "mark",
+                  "property": "values"
+                }
+              },
+              {
+                "label": {
+                  "content": "Values",
+                  "href": "#"
+                },
+                "type": "number",
+                "control": true,
+                "value": 100,
+                "data": {
+                  "type": "mark",
+                  "property": "values"
+                }
+              },
+              {
+                "label": {
+                  "content": "Dot on/off",
+                  "href": ""
+                },
+                "value": 0,
+                "type": "checkbox",
+                "data": {
+                  "type": "mark",
+                  "property": "dot"
+                }
+              },
+              {
+                "label": {
+                  "content": "Style (json)",
+                  "href": "#",
+                  "title": "readme",
+                  "target": "_blank"
+                },
+                "value": "",
+                "type": "text",
+                "data": {
+                  "type": "mark",
+                  "property": "style"
+                }
+              },
+              {
+                "label": {
+                  "content": "Class name",
+                  "href": ""
+                },
+                "value": "",
+                "type": "text",
+                "data": {
+                  "type": "mark",
+                  "property": "className"
+                }
+              },
+              {
+                "label": {
+                  "content": "Wrapper class name",
+                  "href": ""
+                },
+                "value": "",
+                "type": "text",
+                "data": {
+                  "type": "mark",
+                  "property": "wrapClassName"
+                }
+              },
+              {
+                "label": {
+                  "content": "Render function value",
+                  "href": "#",
+                  "title": "readme"
+                },
+                "value": "",
+                "type": "text",
+                "data": {
+                  "type": "mark",
+                  "property": "render"
+                }
+              }
+            ]
+          },
+          {
+            "label": {
+              "content": "Tooltip",
+              "href": "",
+              "title": ""
+            },
+            "items": [
+              {
+                "label": {
+                  "content": "On/Off",
+                  "href": ""
+                },
+                "value": 0,
+                "type": "checkbox",
+                "data": {
+                  "type": "tooltip",
+                  "property": "on"
+                }
+              },
+              {
+                "label": {
+                  "content": "Always",
+                  "href": ""
+                },
+                "value": 0,
+                "type": "checkbox",
+                "data": {
+                  "type": "tooltip",
+                  "property": "always"
+                }
+              },
+              {
+                "label": {
+                  "content": "Style (json)",
+                  "href": "#",
+                  "title": "readme",
+                  "target": "_blank"
+                },
+                "value": "",
+                "type": "text",
+                "data": {
+                  "type": "tooltip",
+                  "property": "style"
+                }
+              },
+              {
+                "label": {
+                  "content": "Class name",
+                  "href": ""
+                },
+                "value": "",
+                "type": "text",
+                "data": {
+                  "type": "tooltip",
+                  "property": "className"
+                }
+              },
+              {
+                "label": {
+                  "content": "Render function value",
+                  "href": "#",
+                  "title": "readme"
+                },
+                "value": "",
+                "type": "text",
+                "data": {
+                  "type": "tooltip",
+                  "property": "render"
+                }
+              }
+            ]
+          }
+        ]
+      },
+      "slider": {
+        "classNames": ["example__slider", "js-example__slider"]
+      }
+    },
+    {
+      "panel": {
+        "classNames": ["example__panel"],
+        "label": {
+          "content": "Configuration",
+          "href": "#",
+          "title": "readme",
+          "target": "_blank"
+        },
+        "sections": [
+          {
+            "label": {
+              "content": "Values",
+              "href": "",
+              "title": "",
+              "target": "_blank"
+            },
+            "items": [
+              {
+                "value": 45,
+                "type": "number",
+                "control": true,
+                "data": {
+                  "type": "values",
+                  "property": "values"
+                }
+              }
+            ]
+          },
+          {
+            "label": {
+              "content": "Min",
+              "href": "",
+              "title": ""
+            },
+            "items": [
+              {
+                "value": 0,
+                "type": "number",
+                "data": {
+                  "type": "min",
+                  "property": "min"
+                }
+              }
+            ]
+          },
+          {
+            "label": {
+              "content": "Max",
+              "href": ""
+            },
+            "items": [
+              {
+                "value": 100,
+                "type": "number",
+                "data": {
+                  "type": "max",
+                  "property": "max"
+                }
+              }
+            ]
+          },
+          {
+            "label": {
+              "content": "Step",
+              "href": ""
+            },
+            "items": [
+              {
+                "value": 0,
+                "type": "number",
+                "data": {
+                  "type": "step",
+                  "property": "step"
+                }
+              }
+            ]
+          },
+          {
+            "label": {
+              "content": "Precision",
+              "href": ""
+            },
+            "items": [
+              {
+                "value": 0,
+                "type": "number",
+                "data": {
+                  "type": "precision",
+                  "property": "precision"
+                }
+              }
+            ]
+          },
+          {
+            "label": {
+              "content": "Vertical",
+              "href": ""
+            },
+            "items": [
+              {
+                "value": 0,
+                "type": "checkbox",
+                "data": {
+                  "type": "vertical",
+                  "property": "vertical"
+                }
+              }
+            ]
+          },
+          {
+            "label": {
+              "content": "Reverse",
+              "href": ""
+            },
+            "items": [
+              {
+                "value": 0,
+                "type": "checkbox",
+                "data": {
+                  "type": "reverse",
+                  "property": "reverse"
+                }
+              }
+            ]
+          },
+          {
+            "label": {
+              "content": "Disabled",
+              "href": ""
+            },
+            "items": [
+              {
+                "value": 0,
+                "type": "checkbox",
+                "data": {
+                  "type": "disabled",
+                  "property": "disabled"
+                }
+              }
+            ]
+          },
+          {
+            "label": {
+              "content": "AllowCross",
+              "href": ""
+            },
+            "items": [
+              {
+                "value": 0,
+                "type": "checkbox",
+                "data": {
+                  "type": "allowCross",
+                  "property": "allowCross"
+                }
+              }
+            ]
+          },
+          {
+            "label": {
+              "content": "Handle",
+              "href": ""
+            },
+            "items": [
+              {
+                "label": {
+                  "content": "Class names (json)",
+                  "href": "#",
+                  "title": "readme",
+                  "target": "_blank"
+                },
+                "value": "",
+                "type": "text",
+                "data": {
+                  "type": "handle",
+                  "property": "classNames"
+                }
+              },
+              {
+                "label": {
+                  "content": "Styles (json)",
+                  "href": "#",
+                  "title": "readme",
+                  "target": "_blank"
+                },
+                "value": "",
+                "type": "text",
+                "data": {
+                  "type": "handle",
+                  "property": "styles"
+                }
+              }
+            ]
+          },
+          {
+            "label": {
+              "content": "Rail",
+              "href": ""
+            },
+            "items": [
+              {
+                "label": {
+                  "content": "On/Off",
+                  "href": ""
+                },
+                "value": 1,
+                "type": "checkbox",
+                "data": {
+                  "type": "rail",
+                  "property": "on"
+                }
+              },
+              {
+                "label": {
+                  "content": "Style (json)",
+                  "href": "#",
+                  "title": "readme",
+                  "target": "_blank"
+                },
+                "value": "",
+                "type": "text",
+                "data": {
+                  "type": "rail",
+                  "property": "style"
+                }
+              },
+              {
+                "label": {
+                  "content": "Class name",
+                  "href": ""
+                },
+                "value": "",
+                "type": "text",
+                "data": {
+                  "type": "rail",
+                  "property": "className"
+                }
+              }
+            ]
+          },
+          {
+            "label": {
+              "content": "Track",
+              "href": ""
+            },
+            "items": [
+              {
+                "label": {
+                  "content": "On/Off",
+                  "href": ""
+                },
+                "value": 1,
+                "type": "checkbox",
+                "data": {
+                  "type": "track",
+                  "property": "on"
+                }
+              },
+              {
+                "label": {
+                  "content": "Styles (json)",
+                  "href": "#",
+                  "title": "readme",
+                  "target": "_blank"
+                },
+                "value": "",
+                "type": "text",
+                "data": {
+                  "type": "track",
+                  "property": "styles"
+                }
+              },
+              {
+                "label": {
+                  "content": "Class names (json)",
+                  "href": "#",
+                  "title": "readme",
+                  "target": "_blank"
+                },
+                "value": "",
+                "type": "text",
+                "data": {
+                  "type": "track",
+                  "property": "classNames"
+                }
+              }
+            ]
+          },
+          {
+            "label": {
+              "content": "Dot",
+              "href": ""
+            },
+            "items": [
+              {
+                "label": {
+                  "content": "On/Off",
+                  "href": ""
+                },
+                "value": 0,
+                "type": "checkbox",
+                "data": {
+                  "type": "dot",
+                  "property": "on"
+                }
+              },
+              {
+                "label": {
+                  "content": "Style (json)",
+                  "href": "#",
+                  "title": "readme",
+                  "target": "_blank"
+                },
+                "value": "",
+                "type": "text",
+                "data": {
+                  "type": "dot",
+                  "property": "style"
+                }
+              },
+              {
+                "label": {
+                  "content": "Class name",
+                  "href": ""
+                },
+                "value": "",
+                "type": "text",
+                "data": {
+                  "type": "dot",
+                  "property": "className"
+                }
+              },
+              {
+                "label": {
+                  "content": "Wrapper class name",
+                  "href": ""
+                },
+                "value": "",
+                "type": "text",
+                "data": {
+                  "type": "dot",
+                  "property": "wrapClassName"
+                }
+              }
+            ]
+          },
+          {
+            "label": {
+              "content": "Mark",
+              "href": ""
+            },
+            "items": [
+              {
+                "label": {
+                  "content": "On/Off",
+                  "href": ""
+                },
+                "value": 1,
+                "type": "checkbox",
+                "data": {
+                  "type": "mark",
+                  "property": "on"
+                }
+              },
+              {
+                "label": {
+                  "content": "Values",
+                  "href": "#"
+                },
+                "type": "number",
+                "control": true,
+                "value": 0,
+                "data": {
+                  "type": "mark",
+                  "property": "values"
+                }
+              },
+              {
+                "label": {
+                  "content": "Values",
+                  "href": "#"
+                },
+                "type": "number",
+                "control": true,
+                "value": 100,
+                "data": {
+                  "type": "mark",
+                  "property": "values"
+                }
+              },
+              {
+                "label": {
+                  "content": "Dot on/off",
+                  "href": ""
+                },
+                "value": 0,
+                "type": "checkbox",
+                "data": {
+                  "type": "mark",
+                  "property": "dot"
+                }
+              },
+              {
+                "label": {
+                  "content": "Style (json)",
+                  "href": "#",
+                  "title": "readme",
+                  "target": "_blank"
+                },
+                "value": "",
+                "type": "text",
+                "data": {
+                  "type": "mark",
+                  "property": "style"
+                }
+              },
+              {
+                "label": {
+                  "content": "Class name",
+                  "href": ""
+                },
+                "value": "",
+                "type": "text",
+                "data": {
+                  "type": "mark",
+                  "property": "className"
+                }
+              },
+              {
+                "label": {
+                  "content": "Wrapper class name",
+                  "href": ""
+                },
+                "value": "",
+                "type": "text",
+                "data": {
+                  "type": "mark",
+                  "property": "wrapClassName"
+                }
+              },
+              {
+                "label": {
+                  "content": "Render function value",
+                  "href": "#",
+                  "title": "readme"
+                },
+                "value": "",
+                "type": "text",
+                "data": {
+                  "type": "mark",
+                  "property": "render"
+                }
+              }
+            ]
+          },
+          {
+            "label": {
+              "content": "Tooltip",
+              "href": "",
+              "title": ""
+            },
+            "items": [
+              {
+                "label": {
+                  "content": "On/Off",
+                  "href": ""
+                },
+                "value": 0,
+                "type": "checkbox",
+                "data": {
+                  "type": "tooltip",
+                  "property": "on"
+                }
+              },
+              {
+                "label": {
+                  "content": "Always",
+                  "href": ""
+                },
+                "value": 0,
+                "type": "checkbox",
+                "data": {
+                  "type": "tooltip",
+                  "property": "always"
+                }
+              },
+              {
+                "label": {
+                  "content": "Style (json)",
+                  "href": "#",
+                  "title": "readme",
+                  "target": "_blank"
+                },
+                "value": "",
+                "type": "text",
+                "data": {
+                  "type": "tooltip",
+                  "property": "style"
+                }
+              },
+              {
+                "label": {
+                  "content": "Class name",
+                  "href": ""
+                },
+                "value": "",
+                "type": "text",
+                "data": {
+                  "type": "tooltip",
+                  "property": "className"
+                }
+              },
+              {
+                "label": {
+                  "content": "Render function value",
+                  "href": "#",
+                  "title": "readme"
+                },
+                "value": "",
+                "type": "text",
+                "data": {
+                  "type": "tooltip",
+                  "property": "render"
+                }
+              }
+            ]
+          }
+        ]
+      },
+      "slider": {
+        "classNames": ["example__slider", "js-example__slider"]
+      }
     }
-  }
+  ]
 }

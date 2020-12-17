@@ -2,14 +2,13 @@ mixin example(options = {})
     -
         let { label = {}, classNames = [], panel = {}, slider = {} } = options;
         classNames = classNames.join([' ']);
-    //
-        data-options=options
     .example.js-example(
         class=classNames
     )
-        +label(label, 'example__label')    
-        +panel(panel)
-        +slider(slider)
+        +label(label, 'example__label')
+        .example__body    
+            +panel(panel)
+            +slider(slider)
         
         
         

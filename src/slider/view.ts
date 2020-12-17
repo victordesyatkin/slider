@@ -69,6 +69,7 @@ export default class View extends PubSub {
   }
 
   private onClick = (index: number, e: MouseEvent, value?: number): void => {
+    console.log("onClick");
     e.preventDefault();
     const disabled = get(this.props, ["disabled"]);
     if (disabled) {
@@ -165,6 +166,7 @@ export default class View extends PubSub {
         c.name === "DotsView"
       ) {
         if (this.props.values.length === 1) {
+          // console.log(this.props);
           handlers = {
             click: this.onClick,
           };
@@ -223,6 +225,7 @@ export default class View extends PubSub {
 
   public setProps(props: DefaultProps): void {
     this.props = props;
+    console.log(props);
     this.updateView();
     this.createOrUpdateSubViews();
     this.appendSubViews();

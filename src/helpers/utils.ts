@@ -1,6 +1,7 @@
 import get from "lodash/get";
 import orderBy from "lodash/orderBy";
 import merge from "lodash/merge";
+import uniq from "lodash/uniq";
 import isUndefined from "lodash/isUndefined";
 
 import { IView } from "../slider/interface";
@@ -59,7 +60,7 @@ export const getPrecision = (step: number): number => {
   const stepString = step.toString();
   let precision = 0;
   if (stepString.indexOf(".") >= 0) {
-    precision = stepString.length - stepString.indexOf(".") - 1;
+    precision = stepString.length - 1 - stepString.indexOf(".");
   }
   return precision;
 };
@@ -79,6 +80,7 @@ export const getClosestPoint = (
     const steps = Math.min((val - min) / step, maxSteps);
     const closestStep = Math.round(steps) * step + min;
     points.push(closestStep);
+    points = uniq(points);
     const diffs = points.map((point) => Math.abs(val - point));
     return points[diffs.indexOf(Math.min(...diffs))];
   }
@@ -261,10 +263,18 @@ export function prepareData(
 ): DefaultProps {
   const values: number[] =
     props?.values || prevProps?.values || defaultProps.values;
+  const markValues: number[] | undefined =
+    props?.mark?.values ||
+    prevProps?.mark?.values ||
+    defaultProps?.mark?.values;
   let mergeProps: DefaultProps = merge({}, defaultProps, prevProps, props);
-  return prepareValues({ ...mergeProps, values });
+  return prepareValues({
+    ...mergeProps,
+    values,
+    mark: { ...mergeProps?.mark, values: markValues },
+  });
 }
 
-export function uniq() {
+export function uniqId() {
   return Math.random().toString(16).substr(2);
 }

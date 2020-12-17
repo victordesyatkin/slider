@@ -92,7 +92,6 @@ type Tooltip = {
   style?: style;
   render?: render;
   on?: boolean;
-  precision?: number;
   always?: boolean;
 };
 

@@ -13,5 +13,6 @@ html(lang="en")
         title Demo sliders
     body
         -
-            let data = htmlWebpackPlugin.options.getData();
-        +example(data.example1)
+            let { examples = [] } = htmlWebpackPlugin.options.getData();
+        each example in examples            
+            +example(example)

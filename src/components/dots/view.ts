@@ -23,8 +23,7 @@ export default class DotsView implements ISubView {
   private createView(): void {
     if (this.props) {
       const on = get(this.props, ["dot", "on"]);
-      const step = get(this.props, ["step"]);
-      if (on && step) {
+      if (on) {
         this.view = $("<div/>", this.prepareAttr());
       }
     }
@@ -85,20 +84,20 @@ export default class DotsView implements ISubView {
         }
       }
       if (step) {
-        const handlers = this.addition.handlers;
         for (let i = min; i <= max; i += step) {
           values.push(i);
         }
-        values = orderBy(uniq(values), [], reverse ? "desc" : "asc");
-        const length = values.length;
-        for (let i = 0; i < length; i += 1) {
-          if (views[i]) {
-            views[i].setAddition({ index: i, handlers, value: values[i] });
-            views[i].setProps(this.props);
-          } else {
-            views[i] = new c({ index: i, handlers, value: values[i] });
-            views[i].setProps(this.props);
-          }
+      }
+      const handlers = this.addition.handlers;
+      values = orderBy(uniq(values), [], reverse ? "desc" : "asc");
+      const length = values.length;
+      for (let i = 0; i < length; i += 1) {
+        if (views[i]) {
+          views[i].setAddition({ index: i, handlers, value: values[i] });
+          views[i].setProps(this.props);
+        } else {
+          views[i] = new c({ index: i, handlers, value: values[i] });
+          views[i].setProps(this.props);
         }
       }
       this.cleanSubView(views, values.length);

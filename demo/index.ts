@@ -10,7 +10,7 @@ import isString from "lodash/isString";
 import merge from "lodash/merge";
 import difference from "lodash/difference";
 
-import { uniq, ensureValueInRange } from "../src/helpers/utils";
+import { uniqId, ensureValueInRange } from "../src/helpers/utils";
 import { style, render, Props, KeyProps } from "../src/types";
 import Slider from "../src/index";
 
@@ -43,7 +43,7 @@ class Example {
       .slider({ onAfterChange: this.onAfterChange })
       .data(Slider.PLUGIN_NAME);
     this.initHandlers();
-    this.updateProps();
+    //this.updateProps();
   };
 
   private initHandlers = () => {
@@ -151,7 +151,7 @@ class Example {
         const $span = $(".js-input__section-key", $last);
         $span.text(`${key + 1}:`);
         const $input = $(".js-input__input", $last);
-        $input.attr({ id: uniq });
+        $input.attr({ id: uniqId });
         const max = get(this.props, ["max"], 0);
         const min = get(this.props, ["min"], 0);
         const value =
@@ -242,6 +242,7 @@ class Example {
         "vertical",
         "reverse",
         "allowCross",
+        "precision",
       ].indexOf(property) !== -1
     ) {
       this.props = {
@@ -294,7 +295,8 @@ class Example {
       case "styles": {
         return this.prepareArray(value);
       }
-      case "className": {
+      case "className":
+      case "wrapClassName": {
         if (!isString(value) || !trim(value)) {
           return;
         }
