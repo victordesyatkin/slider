@@ -8,6 +8,7 @@ import {
   getMousePosition,
   getCount,
   calcValueByPos,
+  calcValueWithEnsure,
 } from "../helpers/utils";
 import PubSub from "../helpers/pubsub";
 import RailView from "../components/rail/view";
@@ -77,7 +78,20 @@ export default class View extends PubSub {
     if (this.props && this.view) {
       let v: number;
       if (!isUndefined(value)) {
-        v = value;
+        if (this.props.values.length === 1) {
+          v = value;
+        } else if (
+          !isUndefined(this.currentHandleIndex) &&
+          this.props.values.length > 1
+        ) {
+          v = calcValueWithEnsure({
+            value,
+            props: this.props,
+            index: this.currentHandleIndex,
+          });
+        } else {
+          return;
+        }
       } else {
         const vertical = get(this.props, ["vertical"], false);
         const position = getMousePosition(vertical, e as MouseEvent);
@@ -85,12 +99,16 @@ export default class View extends PubSub {
           position,
           view: this.view,
           props: this.props,
-          index,
+          index: this.currentHandleIndex || index,
         });
+        console.log("calcValueByPos v : ", v);
       }
+      console.log("values : ", v);
+      console.log("currentHandleIndex : ", this.currentHandleIndex);
       if (this.props.values.length === 1 && this.props.values[0] !== v) {
         const values: number[] = [v];
         this.publish("setPropsModel", values);
+        this.publish("onMouseUp", this.props?.values || []);
       } else if (
         this.props.values.length > 1 &&
         !isUndefined(this.currentHandleIndex) &&
@@ -99,6 +117,7 @@ export default class View extends PubSub {
         const values: number[] = [...this.props.values];
         values[this.currentHandleIndex] = v;
         this.publish("setPropsModel", values);
+        this.publish("onMouseUp", this.props?.values || []);
       }
     }
   };
@@ -231,6 +250,7 @@ export default class View extends PubSub {
 
   public setProps(props: DefaultProps): void {
     this.props = props;
+    console.log("setProps this.props : ", this.props);
     this.updateView();
     this.createOrUpdateSubViews();
     this.appendSubViews();

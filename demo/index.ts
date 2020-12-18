@@ -72,6 +72,7 @@ class Example {
     const props = merge({}, this.props);
     this.getProps();
     if (this.checkNeedUpdate(props)) {
+      console.log("updateProps this.props: ", this.props);
       this.setProps();
     }
   };
@@ -120,6 +121,7 @@ class Example {
 
   private onFocusout = (e: JQuery.Event) => {
     const target: HTMLElement = get(e, ["target"]);
+    console.log("onFocusout");
     if (
       target &&
       ["number", "text"].indexOf($(target).attr("type") || "") !== -1

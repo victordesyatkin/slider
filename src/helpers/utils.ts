@@ -66,45 +66,45 @@ export const getPrecision = (step: number): number => {
 };
 
 export const getClosestPoint = (
-  val: number,
+  value: number,
   { step, min, max }: { step: number | undefined; min: number; max: number },
   props: DefaultProps
 ): number => {
   if (step) {
-    let points: number[] = [];
-    points = [...get(props, ["mark", "values"], [])];
+    let points: number[] = [...get(props, ["mark", "values"], [])];
     const baseNum = 10 ** getPrecision(step);
     const maxSteps = Math.floor(
       (max * baseNum - min * baseNum) / (step * baseNum)
     );
-    const steps = Math.min((val - min) / step, maxSteps);
+    const steps = Math.min((value - min) / step, maxSteps);
     const closestStep = Math.round(steps) * step + min;
     points.push(closestStep);
     points = uniq(points);
-    const diffs = points.map((point) => Math.abs(val - point));
+    const diffs = points.map((point) => Math.abs(value - point));
     return points[diffs.indexOf(Math.min(...diffs))];
+  } else {
+    return value;
   }
-  return ensureValueInRange(val, { min, max });
 };
 
 export const ensureValuePrecision = (
   v: number,
-  props: DefaultProps
+  props: DefaultProps,
+  index: number
 ): number => {
   const { step, min, max } = props;
-  if (!step) {
-    return ensureValueInRange(v, { max, min });
-  }
   const closestPoint = isFinite(getClosestPoint(v, { step, min, max }, props))
     ? getClosestPoint(v, { step, min, max }, props)
     : 0;
-  return parseFloat(closestPoint.toFixed(getPrecision(step)));
+  return isUndefined(step)
+    ? closestPoint
+    : parseFloat(closestPoint.toFixed(getPrecision(step)));
 };
 
 export const prepareValues = (props: DefaultProps): DefaultProps => {
   let { values } = props;
-  values = orderBy(values).map((v) => {
-    return ensureValuePrecision(v, props);
+  values = orderBy(values).map((v, index) => {
+    return calcValueWithEnsure({ value: v, props, index });
   });
   return { ...props, values };
 };
@@ -190,20 +190,22 @@ export function ensureValueCorrectNeighbors(options: {
   let { min, max } = props;
   let { value } = options;
   if (checkNeighbors(allowCross, values)) {
-    let prevValue = get(values, [index - 1]);
-    let nextValue = get(values, [index + 1]);
+    let prevValue = get(values, [index - 1], min);
+    let nextValue = get(values, [index + 1], max);
     if (!isUndefined(prevValue)) {
       min = push ? prevValue + push : prevValue;
     }
     if (!isUndefined(nextValue)) {
       max = push ? nextValue - push : nextValue;
     }
-    value = ensureValueInRange(value, {
-      min,
-      max,
-    });
+    console.log("min : ", prevValue);
+    console.log("max : ", nextValue);
+    console.log("index : ", index);
   }
-  return value;
+  return ensureValueInRange(value, {
+    min,
+    max,
+  });
 }
 
 export function calcValueWithEnsure(options: {
@@ -211,9 +213,10 @@ export function calcValueWithEnsure(options: {
   props: DefaultProps;
   index: number;
 }): number {
-  const { props } = options;
+  const { props, index } = options;
   let { value } = options;
-  value = ensureValuePrecision(value, props);
+  value = ensureValuePrecision(value, props, index);
+  console.log("ensureValuePrecision : ", value);
   value = ensureValueCorrectNeighbors({ ...options, value });
   return value;
 }
@@ -267,7 +270,8 @@ export function prepareData(
     props?.mark?.values ||
     prevProps?.mark?.values ||
     defaultProps?.mark?.values;
-  let mergeProps: DefaultProps = merge({}, defaultProps, prevProps, props);
+  console.log("prepareData props: ", props);
+  let mergeProps: DefaultProps = merge({}, defaultProps, props);
   return prepareValues({
     ...mergeProps,
     values,
