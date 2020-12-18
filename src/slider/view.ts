@@ -69,7 +69,6 @@ export default class View extends PubSub {
   }
 
   private onClick = (index: number, e: MouseEvent, value?: number): void => {
-    console.log("onClick");
     e.preventDefault();
     const disabled = get(this.props, ["disabled"]);
     if (disabled) {
@@ -89,8 +88,16 @@ export default class View extends PubSub {
           index,
         });
       }
-      if (this.props.values[0] !== v) {
+      if (this.props.values.length === 1 && this.props.values[0] !== v) {
         const values: number[] = [v];
+        this.publish("setPropsModel", values);
+      } else if (
+        this.props.values.length > 1 &&
+        !isUndefined(this.currentHandleIndex) &&
+        this.props.values[this.currentHandleIndex] !== v
+      ) {
+        const values: number[] = [...this.props.values];
+        values[this.currentHandleIndex] = v;
         this.publish("setPropsModel", values);
       }
     }
@@ -165,8 +172,7 @@ export default class View extends PubSub {
         c.name === "MarksView" ||
         c.name === "DotsView"
       ) {
-        if (this.props.values.length === 1) {
-          // console.log(this.props);
+        if (this.props.values.length > 0) {
           handlers = {
             click: this.onClick,
           };
@@ -178,10 +184,10 @@ export default class View extends PubSub {
         }
 
         if (views[index]) {
-          views[index].setProps(this.props);
           let addition = views[index].getAddition();
-          addition = { ...addition, active };
+          addition = { ...addition, handlers, active };
           views[index].setAddition(addition);
+          views[index].setProps(this.props);
         } else {
           views[index] = new c({ index, handlers, active });
           views[index].setProps(this.props);
@@ -225,7 +231,6 @@ export default class View extends PubSub {
 
   public setProps(props: DefaultProps): void {
     this.props = props;
-    console.log(props);
     this.updateView();
     this.createOrUpdateSubViews();
     this.appendSubViews();

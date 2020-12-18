@@ -43,7 +43,7 @@ class Example {
       .slider({ onAfterChange: this.onAfterChange })
       .data(Slider.PLUGIN_NAME);
     this.initHandlers();
-    //this.updateProps();
+    this.updateProps();
   };
 
   private initHandlers = () => {

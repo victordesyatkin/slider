@@ -20,7 +20,6 @@ export default class MarkView implements ISubView {
   private createView(): void {
     if (this.props && !isUndefined(get(this.addition, ["value"]))) {
       this.view = $("<div/>", this.prepareAttr());
-      this.onHandlers();
     }
   }
 
@@ -94,6 +93,7 @@ export default class MarkView implements ISubView {
 
   private onHandlers = () => {
     if (this.view) {
+      this.view.off("click", this.onClick);
       this.view.on("click", this.onClick);
     }
   };
@@ -109,6 +109,7 @@ export default class MarkView implements ISubView {
   public setProps = (props: DefaultProps): void => {
     this.props = props;
     this.updateView();
+    this.onHandlers();
     this.prepareContent();
     this.render();
   };

@@ -22,7 +22,6 @@ export default class RailView implements ISubView {
       const on = get(this.props, ["rail", "on"]);
       if (on) {
         this.view = $("<div/>", this.prepareAttr());
-        this.onHandlers();
       }
     }
   }
@@ -75,6 +74,7 @@ export default class RailView implements ISubView {
 
   private onHandlers = () => {
     if (this.view) {
+      this.view.off("click", this.onClick);
       this.view.on("click", this.onClick);
     }
   };
@@ -82,6 +82,7 @@ export default class RailView implements ISubView {
   public setProps = (props: DefaultProps): void => {
     this.props = props;
     this.updateView();
+    this.onHandlers();
     this.render();
   };
 
