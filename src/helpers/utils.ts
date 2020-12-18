@@ -102,11 +102,15 @@ export const ensureValuePrecision = (
 };
 
 export const prepareValues = (props: DefaultProps): DefaultProps => {
-  let { values } = props;
+  let { values, mark } = props;
   values = orderBy(values).map((v, index) => {
     return calcValueWithEnsure({ value: v, props, index });
   });
-  return { ...props, values };
+  let markValues: number[] = (mark?.values || []).map((v) => {
+    return ensureValueInRange(v, { min: props.min, max: props.max });
+  });
+  markValues = orderBy(uniq(markValues), [], ["asc"]);
+  return { ...props, values, mark: { ...mark, values: markValues } };
 };
 
 export const getCount = (props?: DefaultProps): number => {
@@ -173,11 +177,8 @@ export function calcValueByPos(options: {
   return value;
 }
 
-export function checkNeighbors(
-  allowCross: boolean | undefined,
-  value: number[]
-) {
-  return !allowCross && value.length > 1;
+export function checkNeighbors(value: number[]) {
+  return value.length > 1;
 }
 
 export function ensureValueCorrectNeighbors(options: {
@@ -186,17 +187,17 @@ export function ensureValueCorrectNeighbors(options: {
   index: number;
 }): number {
   const { props, index } = options;
-  const { allowCross, values, push } = props;
+  const { indent, values } = props;
   let { min, max } = props;
   let { value } = options;
-  if (checkNeighbors(allowCross, values)) {
+  if (checkNeighbors(values)) {
     let prevValue = get(values, [index - 1], min);
     let nextValue = get(values, [index + 1], max);
     if (!isUndefined(prevValue)) {
-      min = push ? prevValue + push : prevValue;
+      min = indent ? prevValue + indent : prevValue;
     }
     if (!isUndefined(nextValue)) {
-      max = push ? nextValue - push : nextValue;
+      max = indent ? nextValue - indent : nextValue;
     }
   }
   return ensureValueInRange(value, {

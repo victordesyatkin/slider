@@ -19,7 +19,7 @@ const defaultProps: DefaultProps = {
   rail: { on: true },
   vertical: false,
   reverse: false,
-  allowCross: false,
+  push: false,
   precision: 0,
 };
 

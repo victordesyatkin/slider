@@ -246,8 +246,9 @@ class Example {
         "disabled",
         "vertical",
         "reverse",
-        "allowCross",
+        "push",
         "precision",
+        "indent",
       ].indexOf(property) !== -1
     ) {
       this.props = {
@@ -280,7 +281,8 @@ class Example {
       case "min":
       case "max":
       case "step":
-      case "precision": {
+      case "precision":
+      case "indent": {
         if (isNaN(Number(value)) || isNaN(parseFloat(String(value)))) {
           return;
         }
@@ -289,7 +291,7 @@ class Example {
       case "disabled":
       case "vertical":
       case "reverse":
-      case "allowCross":
+      case "push":
       case "on":
       case "dot":
       case "always": {

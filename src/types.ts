@@ -18,9 +18,8 @@ type Props = {
   handle?: Handle;
   startPoint?: number;
   rail?: Rail;
-  allowCross?: boolean;
   tooltip?: Tooltip;
-  push?: number;
+  indent?: number;
   precision?: number;
   index?: number;
 };
@@ -45,9 +44,8 @@ type DefaultProps = {
   dot?: Dot;
   rail?: Rail;
   startPoint?: number;
-  allowCross: boolean;
   tooltip?: Tooltip;
-  push?: number;
+  indent?: number;
   precision: number;
 };
 
