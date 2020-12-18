@@ -19,14 +19,14 @@ export default class HandleView implements ISubView {
     this.addition = addition;
   }
 
-  private createView(): void {
+  createView(): void {
     if (this.props) {
       this.view = $("<div/>", this.prepareAttr());
       this.onHandlers();
     }
   }
 
-  private onMouseDown = (e: JQuery.ClickEvent): void => {
+  onMouseDown = (e: JQuery.ClickEvent): void => {
     const mousedown = get(this.addition, ["handlers", "mousedown"]);
     const index = get(this.addition, ["index"]);
     if (!isUndefined(index) && mousedown) {
@@ -34,7 +34,7 @@ export default class HandleView implements ISubView {
     }
   };
 
-  private prepareAttr = () => {
+  prepareAttr = () => {
     const attr: {
       class: string | undefined;
       style: string | undefined;
@@ -47,7 +47,7 @@ export default class HandleView implements ISubView {
     return attr;
   };
 
-  private prepareClassName = (): string => {
+  prepareClassName = (): string => {
     const prefixCls = get(this.props, ["prefixCls"], "");
     const index = get(this.addition, ["index"]);
     const className = get(this.props, ["handle", "classNames", index], "");
@@ -57,7 +57,7 @@ export default class HandleView implements ISubView {
     });
   };
 
-  private prepareStyle = (): string | undefined => {
+  prepareStyle = (): string | undefined => {
     if (this.props) {
       const index = get(this.addition, ["index"]);
       const style = get(this.props, ["handle", "styles", index], {});
@@ -83,7 +83,7 @@ export default class HandleView implements ISubView {
     }
   };
 
-  private appendTooltip = () => {
+  appendTooltip = (): void => {
     const on = get(this.props, ["tooltip", "on"]);
     if (on && this.view && this.props) {
       const index = get(this.addition, ["index"]);
@@ -105,7 +105,7 @@ export default class HandleView implements ISubView {
     }
   };
 
-  private updateView() {
+  updateView(): void {
     if (this.view) {
       this.view.attr(this.prepareAttr());
     } else {
@@ -113,7 +113,7 @@ export default class HandleView implements ISubView {
     }
   }
 
-  private onHandlers = () => {
+  onHandlers = (): void => {
     if (this.view) {
       this.view.on({
         mousedown: this.onMouseDown,
@@ -121,18 +121,20 @@ export default class HandleView implements ISubView {
     }
   };
 
-  public getAddition(): Addition {
+  onClick = (): void => {};
+
+  getAddition(): Addition {
     return this.addition;
   }
 
-  public setProps = (props: DefaultProps): void => {
+  setProps = (props: DefaultProps): void => {
     this.props = props;
     this.updateView();
     this.appendTooltip();
     this.render();
   };
 
-  public render = (parent?: JQuery<HTMLElement>): void => {
+  render = (parent?: JQuery<HTMLElement>): void => {
     if (parent) {
       this.parent = parent;
     }
@@ -142,7 +144,7 @@ export default class HandleView implements ISubView {
     }
   };
 
-  public remove = () => {
+  remove = (): void => {
     if (this.view) {
       this.view.remove();
       this.view = undefined;
@@ -150,7 +152,7 @@ export default class HandleView implements ISubView {
     }
   };
 
-  public setAddition = (addition: Addition): void => {
+  setAddition = (addition: Addition): void => {
     this.addition = addition;
   };
 }

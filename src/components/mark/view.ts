@@ -17,13 +17,13 @@ export default class MarkView implements ISubView {
     this.addition = addition;
   }
 
-  private createView(): void {
+  createView(): void {
     if (this.props && !isUndefined(get(this.addition, ["value"]))) {
       this.view = $("<div/>", this.prepareAttr());
     }
   }
 
-  private prepareAttr = (): {
+  prepareAttr = (): {
     class: string | undefined;
     style: string | undefined;
   } => {
@@ -34,13 +34,13 @@ export default class MarkView implements ISubView {
     return attr;
   };
 
-  private prepareClassName = (): string => {
+  prepareClassName = (): string => {
     const prefixCls = get(this.props, ["prefixCls"], "");
     const className = get(this.props, ["mark", "className"], "");
     return classnames(`${prefixCls}__mark`, className);
   };
 
-  private prepareStyle = (): string | undefined => {
+  prepareStyle = (): string | undefined => {
     if (this.props) {
       const value = get(this.addition, ["value"], 0);
       const style = get(this.props, ["mark", "style"], {});
@@ -65,7 +65,7 @@ export default class MarkView implements ISubView {
     return;
   };
 
-  private prepareContent = (): void => {
+  prepareContent = (): void => {
     if (this.view) {
       const { value } = this.addition;
       if (!isUndefined(value)) {
@@ -81,7 +81,7 @@ export default class MarkView implements ISubView {
     }
   };
 
-  private onClick = (e: any) => {
+  onClick = (e: any) => {
     if (this.view && this.props) {
       const { value, handlers, index = 0 } = this.addition;
       const click = get(handlers, ["click"]);
@@ -91,14 +91,14 @@ export default class MarkView implements ISubView {
     }
   };
 
-  private onHandlers = () => {
+  onHandlers = () => {
     if (this.view) {
       this.view.off("click", this.onClick);
       this.view.on("click", this.onClick);
     }
   };
 
-  private updateView = (): void => {
+  updateView = (): void => {
     if (this.view) {
       this.view.attr(this.prepareAttr());
     } else {
@@ -106,7 +106,7 @@ export default class MarkView implements ISubView {
     }
   };
 
-  public setProps = (props: DefaultProps): void => {
+  setProps = (props: DefaultProps): void => {
     this.props = props;
     this.updateView();
     this.onHandlers();
@@ -114,7 +114,7 @@ export default class MarkView implements ISubView {
     this.render();
   };
 
-  public render = (parent?: JQuery<HTMLElement>): void => {
+  render = (parent?: JQuery<HTMLElement>): void => {
     if (parent) {
       this.parent = parent;
     }
@@ -124,7 +124,7 @@ export default class MarkView implements ISubView {
     }
   };
 
-  public remove = () => {
+  remove = () => {
     if (this.view) {
       this.view.remove();
       this.view = undefined;
@@ -132,11 +132,11 @@ export default class MarkView implements ISubView {
     }
   };
 
-  public getAddition = (): Addition => {
+  getAddition = (): Addition => {
     return this.addition;
   };
 
-  public setAddition = (addition: Addition): void => {
+  setAddition = (addition: Addition): void => {
     this.addition = addition;
   };
 }

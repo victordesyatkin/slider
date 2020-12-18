@@ -3,9 +3,9 @@ import $ from "jquery";
 import { defaultProps } from "../../slider/index";
 import { setFunctionGetBoundingClientRectHTMLElement } from "../../helpers/utils";
 
-describe("rail", () => {
+describe("dots", () => {
   describe("view", () => {
-    test("create marks view", () => {
+    test("create dots view", () => {
       const view = new DotsView({ index: 0 });
       expect(view).toBeInstanceOf(DotsView);
 
@@ -33,7 +33,7 @@ describe("rail", () => {
 
       view.setProps({ ...defaultProps, dot: { on: true } });
       $el = $(`.${defaultProps.prefixCls}__dots`, $parent);
-      expect($el.length).toBe(0);
+      expect($el.length).toBe(1);
 
       $el = $(`.${defaultProps.prefixCls}__dot`, $parent);
       expect($el.length).toBe(0);

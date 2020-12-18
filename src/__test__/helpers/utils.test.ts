@@ -81,7 +81,7 @@ describe("helpers", () => {
           { step: undefined, min: 16, max: 100 },
           defaultProps
         )
-      ).toBe(16);
+      ).toBe(14);
     });
     test("20, { step: 25, min: 16, max: 100 }, tDefaultProps -> getClosestPoint -> 16", () => {
       expect(
@@ -208,8 +208,8 @@ describe("helpers", () => {
       ).toBe(50);
     });
     test("checkNeighbors", () => {
-      expect(utils.checkNeighbors(false, [20, 40])).toBeTruthy();
-      expect(utils.checkNeighbors(false, [20])).toBeFalsy();
+      expect(utils.checkNeighbors([20, 40])).toBeTruthy();
+      expect(utils.checkNeighbors([20])).toBeFalsy();
     });
     test("ensureValueCorrectNeighbors", () => {
       expect(
@@ -222,7 +222,7 @@ describe("helpers", () => {
       expect(
         utils.ensureValueCorrectNeighbors({
           value: 40,
-          props: { ...defaultProps, values: [40, 60], push: 10 },
+          props: { ...defaultProps, values: [40, 60], indent: 10 },
           index: 1,
         })
       ).toBe(50);
@@ -235,13 +235,12 @@ describe("helpers", () => {
           index: 0,
         })
       ).toBe(20);
-      expect(
-        utils.calcValueWithEnsure({
-          value: 80,
-          props: { ...defaultProps, values: [40, 60], push: 10, max: 50 },
-          index: 1,
-        })
-      ).toBe(50);
+      const v = utils.calcValueWithEnsure({
+        value: 80,
+        props: { ...defaultProps, values: [40, 60], indent: 10, max: 50 },
+        index: 1,
+      });
+      expect(v).toBe(50);
     });
     test("prepareData", () => {
       expect(utils.prepareData()).toEqual(

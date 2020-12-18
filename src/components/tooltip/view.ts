@@ -17,13 +17,13 @@ export default class TooltipView implements ISubView {
     this.addition = addition;
   }
 
-  private createView(): void {
+  createView(): void {
     if (this.props && !isUndefined(get(this.addition, ["value"]))) {
       this.view = $("<div/>", this.prepareAttr());
     }
   }
 
-  private prepareAttr = (): {
+  prepareAttr = (): {
     class: string | undefined;
     style: string | undefined;
   } => {
@@ -34,7 +34,7 @@ export default class TooltipView implements ISubView {
     return attr;
   };
 
-  private prepareClassName = (): string => {
+  prepareClassName = (): string => {
     const prefixCls = get(this.props, ["prefixCls"], "");
     const className = get(this.props, ["tooltip", "className"], "");
     const always = get(this.props, ["tooltip", "always"]);
@@ -44,7 +44,7 @@ export default class TooltipView implements ISubView {
     });
   };
 
-  private prepareStyle = (): string | undefined => {
+  prepareStyle = (): string | undefined => {
     if (this.props) {
       const style = get(this.props, ["tooltip", "style"], {});
       const positionStyle = {};
@@ -56,7 +56,7 @@ export default class TooltipView implements ISubView {
     return;
   };
 
-  private prepareContent = (): void => {
+  prepareContent = (): void => {
     if (this.view) {
       const { value } = this.addition;
       if (!isUndefined(value)) {
@@ -72,7 +72,7 @@ export default class TooltipView implements ISubView {
     }
   };
 
-  private updateView(): void {
+  updateView(): void {
     if (this.view) {
       if (get(this.props, ["tooltip", "on"])) {
         this.view.attr(this.prepareAttr());
@@ -84,14 +84,18 @@ export default class TooltipView implements ISubView {
     }
   }
 
-  public setProps = (props: DefaultProps): void => {
+  setProps = (props: DefaultProps): void => {
     this.props = props;
     this.updateView();
     this.prepareContent();
     this.render();
   };
 
-  public render = (parent?: JQuery<HTMLElement>): void => {
+  onHandlers = (): void => {};
+
+  onClick = (): void => {};
+
+  render = (parent?: JQuery<HTMLElement>): void => {
     if (parent) {
       this.parent = parent;
     }
@@ -101,7 +105,7 @@ export default class TooltipView implements ISubView {
     }
   };
 
-  public remove = () => {
+  remove = () => {
     if (this.view) {
       this.view.remove();
       this.view = undefined;
@@ -109,11 +113,11 @@ export default class TooltipView implements ISubView {
     }
   };
 
-  public getAddition = (): Addition => {
+  getAddition = (): Addition => {
     return this.addition;
   };
 
-  public setAddition = (addition: Addition): void => {
+  setAddition = (addition: Addition): void => {
     this.addition = addition;
   };
 }

@@ -1,5 +1,5 @@
 import $ from "jquery";
-import { createSlider, Slider } from "../../slider/index";
+import { createSlider, Slider, defaultProps } from "../../slider/index";
 
 describe("slider", () => {
   describe("createSlider", () => {

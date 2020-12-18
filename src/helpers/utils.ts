@@ -89,8 +89,7 @@ export const getClosestPoint = (
 
 export const ensureValuePrecision = (
   v: number,
-  props: DefaultProps,
-  index: number
+  props: DefaultProps
 ): number => {
   const { step, min, max } = props;
   const closestPoint = isFinite(getClosestPoint(v, { step, min, max }, props))
@@ -191,8 +190,8 @@ export function ensureValueCorrectNeighbors(options: {
   let { min, max } = props;
   let { value } = options;
   if (checkNeighbors(values)) {
-    let prevValue = get(values, [index - 1], min);
-    let nextValue = get(values, [index + 1], max);
+    let prevValue = get(values, [index - 1]);
+    let nextValue = get(values, [index + 1]);
     if (!isUndefined(prevValue)) {
       min = indent ? prevValue + indent : prevValue;
     }
@@ -211,9 +210,9 @@ export function calcValueWithEnsure(options: {
   props: DefaultProps;
   index: number;
 }): number {
-  const { props, index } = options;
+  const { props } = options;
   let { value } = options;
-  value = ensureValuePrecision(value, props, index);
+  value = ensureValuePrecision(value, props);
   value = ensureValueCorrectNeighbors({ ...options, value });
   return value;
 }

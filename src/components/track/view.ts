@@ -18,7 +18,7 @@ export default class TrackView implements ISubView {
     this.addition = addition;
   }
 
-  private createView(): void {
+  createView(): void {
     if (this.props && !isUndefined(get(this.addition, ["index"]))) {
       const on = get(this.props, ["track", "on"]);
       if (on) {
@@ -27,7 +27,7 @@ export default class TrackView implements ISubView {
     }
   }
 
-  private prepareAttr = (): {
+  prepareAttr = (): {
     class: string | undefined;
     style: string | undefined;
   } => {
@@ -38,7 +38,7 @@ export default class TrackView implements ISubView {
     return attr;
   };
 
-  private prepareClassName = (): string => {
+  prepareClassName = (): string => {
     const prefixCls = get(this.props, ["prefixCls"], "");
     const index = get(this.addition, ["index"]);
     const className = get(this.props, ["track", "classNames", index], "");
@@ -49,7 +49,7 @@ export default class TrackView implements ISubView {
     );
   };
 
-  private prepareStyle = (): string | undefined => {
+  prepareStyle = (): string | undefined => {
     if (this.props) {
       const index = get(this.addition, ["index"]);
       const style = get(this.props, ["track", "styles", index], {});
@@ -89,7 +89,7 @@ export default class TrackView implements ISubView {
     }
   };
 
-  private updateView(): void {
+  updateView(): void {
     if (this.view) {
       if (get(this.props, ["track", "on"])) {
         this.view.attr(this.prepareAttr());
@@ -101,13 +101,17 @@ export default class TrackView implements ISubView {
     }
   }
 
-  public setProps = (props: DefaultProps): void => {
+  onHandlers = (): void => {};
+
+  onClick = (): void => {};
+
+  setProps = (props: DefaultProps): void => {
     this.props = props;
     this.updateView();
     this.render();
   };
 
-  public render = (parent?: JQuery<HTMLElement>): void => {
+  render = (parent?: JQuery<HTMLElement>): void => {
     if (parent) {
       this.parent = parent;
     }
@@ -117,7 +121,7 @@ export default class TrackView implements ISubView {
     }
   };
 
-  public remove = () => {
+  remove = () => {
     if (this.view) {
       this.view.remove();
       this.view = undefined;
@@ -125,11 +129,11 @@ export default class TrackView implements ISubView {
     }
   };
 
-  public getAddition = (): Addition => {
+  getAddition = (): Addition => {
     return this.addition;
   };
 
-  public setAddition = (addition: Addition): void => {
+  setAddition = (addition: Addition): void => {
     this.addition = addition;
   };
 }

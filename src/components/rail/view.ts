@@ -1,6 +1,5 @@
 import $ from "jquery";
 import get from "lodash/get";
-import isUndefined from "lodash/isUndefined";
 import { objectToString } from "../../helpers/utils";
 import { ISubView } from "../../slider/interface";
 import { DefaultProps, Addition } from "../../types";
@@ -17,7 +16,7 @@ export default class RailView implements ISubView {
     this.addition = addition;
   }
 
-  private createView(): void {
+  createView(): void {
     if (this.props) {
       const on = get(this.props, ["rail", "on"]);
       if (on) {
@@ -26,7 +25,7 @@ export default class RailView implements ISubView {
     }
   }
 
-  private prepareAttr = (): {
+  prepareAttr = (): {
     class: string | undefined;
     style: string | undefined;
   } => {
@@ -37,20 +36,20 @@ export default class RailView implements ISubView {
     return attr;
   };
 
-  private prepareClassName = (): string => {
+  prepareClassName = (): string => {
     const prefixCls = get(this.props, ["prefixCls"], "");
     const className = get(this.props, ["rail", "className"], "");
     return classnames(`${prefixCls}__rail`, className);
   };
 
-  private prepareStyle = (): string | undefined => {
+  prepareStyle = (): string | undefined => {
     const style = get(this.props, ["rail", "style"], {});
     return objectToString({
       ...style,
     });
   };
 
-  private updateView(): void {
+  updateView(): void {
     if (this.view) {
       if (get(this.props, ["rail", "on"])) {
         this.view.attr(this.prepareAttr());
@@ -62,7 +61,7 @@ export default class RailView implements ISubView {
     }
   }
 
-  private onClick = (e: any) => {
+  onClick = (e: any) => {
     if (this.view && this.props) {
       const { handlers, index = 0 } = this.addition;
       const click = get(handlers, ["click"]);
@@ -72,21 +71,21 @@ export default class RailView implements ISubView {
     }
   };
 
-  private onHandlers = () => {
+  onHandlers = () => {
     if (this.view) {
       this.view.off("click", this.onClick);
       this.view.on("click", this.onClick);
     }
   };
 
-  public setProps = (props: DefaultProps): void => {
+  setProps = (props: DefaultProps): void => {
     this.props = props;
     this.updateView();
     this.onHandlers();
     this.render();
   };
 
-  public render = (parent?: JQuery<HTMLElement>): void => {
+  render = (parent?: JQuery<HTMLElement>): void => {
     if (parent) {
       this.parent = parent;
     }
@@ -96,7 +95,7 @@ export default class RailView implements ISubView {
     }
   };
 
-  public remove = () => {
+  remove = () => {
     if (this.view) {
       this.view.remove();
       this.view = undefined;
@@ -104,11 +103,11 @@ export default class RailView implements ISubView {
     }
   };
 
-  public getAddition = (): Addition => {
+  getAddition = (): Addition => {
     return this.addition;
   };
 
-  public setAddition = (addition: Addition): void => {
+  setAddition = (addition: Addition): void => {
     this.addition = addition;
   };
 }

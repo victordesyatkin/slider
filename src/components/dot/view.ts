@@ -19,14 +19,14 @@ export default class DotView implements ISubView {
     this.addition = addition;
   }
 
-  private createView(): void {
+  createView(): void {
     if (this.props && !isUndefined(get(this.addition, ["value"]))) {
       this.view = $("<div/>", this.prepareAttr());
       this.onHandlers();
     }
   }
 
-  private prepareAttr = (): {
+  prepareAttr = (): {
     class: string | undefined;
     style: string | undefined;
   } => {
@@ -37,7 +37,7 @@ export default class DotView implements ISubView {
     return attr;
   };
 
-  private prepareClassName = (): string => {
+  prepareClassName = (): string => {
     const prefixCls = get(this.props, ["prefixCls"], "");
     const className = get(this.props, ["dot", "className"], "");
     const value = get(this.addition, ["value"]);
@@ -45,7 +45,7 @@ export default class DotView implements ISubView {
     let active = false;
     if (!isUndefined(values) && !isUndefined(value)) {
       if (values.length === 1) {
-        active = value < values[0];
+        active = value > values[0];
       } else if (values.length > 1) {
         values = orderBy(values);
         if (value >= values[0] && value <= values[values.length - 1]) {
@@ -59,32 +59,32 @@ export default class DotView implements ISubView {
     return "";
   };
 
-  private prepareStyle = (): string | undefined => {
-    if (this.props) {
-      const value = get(this.addition, ["value"], 0);
-      const style = get(this.props, ["dot", "style"], {});
-      const { vertical, min, max, reverse } = this.props;
-      const offset = calcOffset(value, min, max);
-      const positionStyle = vertical
-        ? {
-            [reverse ? "top" : "bottom"]: `${offset}%`,
-            [reverse ? "bottom" : "top"]: "auto",
-            transform: reverse ? "none" : `translateY(+50%)`,
-          }
-        : {
-            [reverse ? "right" : "left"]: `${offset}%`,
-            [reverse ? "left" : "right"]: "auto",
-            transform: `translateX(${reverse ? "+" : "-"}50%)`,
-          };
-      return objectToString({
-        ...style,
-        ...positionStyle,
-      });
+  prepareStyle = (): string | undefined => {
+    if (!this.props) {
+      return;
     }
-    return;
+    const value = get(this.addition, ["value"], 0);
+    const style = get(this.props, ["dot", "style"], {});
+    const { vertical, min, max, reverse } = this.props;
+    const offset = calcOffset(value, min, max);
+    const positionStyle = vertical
+      ? {
+          [reverse ? "top" : "bottom"]: `${offset}%`,
+          [reverse ? "bottom" : "top"]: "auto",
+          transform: reverse ? "none" : `translateY(+50%)`,
+        }
+      : {
+          [reverse ? "right" : "left"]: `${offset}%`,
+          [reverse ? "left" : "right"]: "auto",
+          transform: `translateX(${reverse ? "+" : "-"}50%)`,
+        };
+    return objectToString({
+      ...style,
+      ...positionStyle,
+    });
   };
 
-  private updateView(): void {
+  updateView(): void {
     if (this.view) {
       this.view.attr(this.prepareAttr());
     } else {
@@ -92,7 +92,7 @@ export default class DotView implements ISubView {
     }
   }
 
-  private onClick = (e: any) => {
+  onClick = (e: any): void => {
     if (this.view && this.props) {
       const { value, handlers, index = 0 } = this.addition;
       const click = get(handlers, ["click"]);
@@ -102,19 +102,19 @@ export default class DotView implements ISubView {
     }
   };
 
-  private onHandlers = () => {
+  onHandlers = (): void => {
     if (this.view) {
       this.view.on("click", this.onClick);
     }
   };
 
-  public setProps = (props: DefaultProps): void => {
+  setProps = (props: DefaultProps): void => {
     this.props = props;
     this.updateView();
     this.render();
   };
 
-  public render = (parent?: JQuery<HTMLElement>): void => {
+  render = (parent?: JQuery<HTMLElement>): void => {
     if (parent) {
       this.parent = parent;
     }
@@ -124,7 +124,7 @@ export default class DotView implements ISubView {
     }
   };
 
-  public remove = () => {
+  remove = (): void => {
     if (this.view) {
       this.view.remove();
       this.view = undefined;
@@ -132,11 +132,11 @@ export default class DotView implements ISubView {
     }
   };
 
-  public getAddition = (): Addition => {
+  getAddition = (): Addition => {
     return this.addition;
   };
 
-  public setAddition = (addition: Addition): void => {
+  setAddition = (addition: Addition): void => {
     this.addition = addition;
   };
 }

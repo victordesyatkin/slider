@@ -19,8 +19,8 @@ const defaultProps: DefaultProps = {
   rail: { on: true },
   vertical: false,
   reverse: false,
-  push: false,
   precision: 0,
+  mark: { values: [] },
 };
 
 class Slider {
