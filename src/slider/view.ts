@@ -101,14 +101,11 @@ export default class View extends PubSub {
           props: this.props,
           index: this.currentHandleIndex || index,
         });
-        console.log("calcValueByPos v : ", v);
       }
-      console.log("values : ", v);
-      console.log("currentHandleIndex : ", this.currentHandleIndex);
       if (this.props.values.length === 1 && this.props.values[0] !== v) {
         const values: number[] = [v];
         this.publish("setPropsModel", values);
-        this.publish("onMouseUp", this.props?.values || []);
+        this.publish("onMouseUp", values);
       } else if (
         this.props.values.length > 1 &&
         !isUndefined(this.currentHandleIndex) &&
@@ -117,7 +114,7 @@ export default class View extends PubSub {
         const values: number[] = [...this.props.values];
         values[this.currentHandleIndex] = v;
         this.publish("setPropsModel", values);
-        this.publish("onMouseUp", this.props?.values || []);
+        this.publish("onMouseUp", values);
       }
     }
   };
@@ -250,7 +247,6 @@ export default class View extends PubSub {
 
   public setProps(props: DefaultProps): void {
     this.props = props;
-    console.log("setProps this.props : ", this.props);
     this.updateView();
     this.createOrUpdateSubViews();
     this.appendSubViews();

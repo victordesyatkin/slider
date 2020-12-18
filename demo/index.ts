@@ -9,6 +9,7 @@ import isUndefined from "lodash/isUndefined";
 import isString from "lodash/isString";
 import merge from "lodash/merge";
 import difference from "lodash/difference";
+import orderBy from "lodash/orderBy";
 
 import { uniqId, ensureValueInRange } from "../src/helpers/utils";
 import { style, render, Props, KeyProps } from "../src/types";
@@ -72,7 +73,6 @@ class Example {
     const props = merge({}, this.props);
     this.getProps();
     if (this.checkNeedUpdate(props)) {
-      console.log("updateProps this.props: ", this.props);
       this.setProps();
     }
   };
@@ -90,8 +90,12 @@ class Example {
     if (!values || !this.props) {
       return;
     }
-    const prev = get(this.props, ["values"], []);
-    if (!difference(values, prev).length) {
+    const prev = JSON.stringify(
+      orderBy(get(this.props, ["values"], []), [], ["asc"])
+    );
+    const next = JSON.stringify(orderBy(values || [], [], ["asc"]));
+
+    if (next === prev) {
       return;
     }
     set(this.props, ["values"], values);
@@ -121,7 +125,6 @@ class Example {
 
   private onFocusout = (e: JQuery.Event) => {
     const target: HTMLElement = get(e, ["target"]);
-    console.log("onFocusout");
     if (
       target &&
       ["number", "text"].indexOf($(target).attr("type") || "") !== -1

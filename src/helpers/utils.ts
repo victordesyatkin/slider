@@ -198,9 +198,6 @@ export function ensureValueCorrectNeighbors(options: {
     if (!isUndefined(nextValue)) {
       max = push ? nextValue - push : nextValue;
     }
-    console.log("min : ", prevValue);
-    console.log("max : ", nextValue);
-    console.log("index : ", index);
   }
   return ensureValueInRange(value, {
     min,
@@ -216,7 +213,6 @@ export function calcValueWithEnsure(options: {
   const { props, index } = options;
   let { value } = options;
   value = ensureValuePrecision(value, props, index);
-  console.log("ensureValuePrecision : ", value);
   value = ensureValueCorrectNeighbors({ ...options, value });
   return value;
 }
@@ -270,8 +266,7 @@ export function prepareData(
     props?.mark?.values ||
     prevProps?.mark?.values ||
     defaultProps?.mark?.values;
-  console.log("prepareData props: ", props);
-  let mergeProps: DefaultProps = merge({}, defaultProps, props);
+  let mergeProps: DefaultProps = merge({}, defaultProps, prevProps, props);
   return prepareValues({
     ...mergeProps,
     values,
