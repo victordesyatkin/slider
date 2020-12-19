@@ -24,6 +24,7 @@ describe("helpers", () => {
       pubsub.publish("mockCallback", 7);
       pubsub.publish("mockCallback", "hello");
       expect(mockCallback.mock.calls.length).toBe(1);
+      expect(pubsub.subscribe()).toBeUndefined();
     });
   });
 });

@@ -51,5 +51,23 @@ describe("rail", () => {
       $el = $(`.${defaultProps.prefixCls}__mark`, $parent);
       expect($el.length).toBe(12);
     });
+    test("updateView marks", () => {
+      const className = "slider__wrapper-10";
+      $("body").append(`<div class="${className}"/>`);
+      let addition = { index: 0 };
+      const view = new MarksView(addition);
+      const $parent = $(`.${className}`);
+      let $el = $(`.${defaultProps.prefixCls}__marks`, $parent);
+      expect($el.length).toBe(0);
+      let props = { ...defaultProps, mark: { on: true } };
+      view.setProps(props);
+      view.render($parent);
+      $el = $(`.${defaultProps.prefixCls}__marks`, $parent);
+      expect($el.length).toBe(1);
+      props = { ...defaultProps, mark: { on: false } };
+      view.setProps(props);
+      $el = $(`.${defaultProps.prefixCls}__marks`, $parent);
+      expect($el.length).toBe(0);
+    });
   });
 });

@@ -103,7 +103,19 @@ describe("helpers", () => {
       expect(utils.prepareValues(input)).toEqual(output);
       input = merge({}, input, { step: 25 });
       output = { ...input, values: [25, 75] };
-      expect(utils.prepareValues(input)).toEqual(output);
+      let r = utils.prepareValues(input);
+      expect(r).toEqual(output);
+      expect(r.mark).toBeUndefined();
+      expect(r.mark?.values).toBeUndefined();
+      input = merge({}, input, { step: 25 }, { mark: { values: [50, 40] } });
+      r = utils.prepareValues(input);
+      expect(r.mark).toEqual(
+        expect.objectContaining({
+          values: expect.any(Array),
+        })
+      );
+      expect(r.mark.values.length).toBe(2);
+      expect(r.mark.values).toEqual(expect.arrayContaining([40, 50]));
     });
     test("undefined -> getCount -> 0", () => {
       expect(utils.getCount()).toBe(0);
@@ -253,6 +265,12 @@ describe("helpers", () => {
         { ...defaultProps, values: [18] }
       );
       expect(props.values).toEqual(expect.arrayContaining([14, 25]));
+    });
+    test("uniqId", () => {
+      const id1 = utils.uniqId();
+      const id2 = utils.uniqId();
+      expect(id1).toEqual(expect.any(String));
+      expect(id2).toEqual(expect.not.stringContaining(id1));
     });
   });
 });

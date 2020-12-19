@@ -26,7 +26,7 @@ export default class HandleView implements ISubView {
     }
   }
 
-  onMouseDown = (e: JQuery.ClickEvent): void => {
+  onMouseDown = (e: any): void => {
     const mousedown = get(this.addition, ["handlers", "mousedown"]);
     const index = get(this.addition, ["index"]);
     if (!isUndefined(index) && mousedown) {

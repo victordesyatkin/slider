@@ -69,5 +69,32 @@ describe("dots", () => {
       $el = $(`.${defaultProps.prefixCls}__dot`, $parent);
       expect($el.length).toBe(13);
     });
+
+    test("updateView dots view", () => {
+      const className = "slider__wrapper-9";
+      $("body").append(`<div class="${className}"/>`);
+      let addition = { index: 0 };
+      const view = new DotsView(addition);
+      const $parent = $(`.${className}`);
+      let props = { ...defaultProps, dot: { on: true } };
+      view.setProps(props);
+      view.render($parent);
+      let $el = $(`.${defaultProps.prefixCls}__dots`, $parent);
+      expect($el.length).toBe(1);
+      view.setProps({ ...props, dot: { on: false } });
+      view.updateView();
+      $el = $(`.${defaultProps.prefixCls}__dots`, $parent);
+      expect($el.length).toBe(0);
+    });
+
+    test("createView dots view", () => {
+      const className = "slider__wrapper-10";
+      $("body").append(`<div class="${className}"/>`);
+      let addition = { index: 0 };
+      const view = new DotsView(addition);
+      const $parent = $(`.${className}`);
+      let $el = $(`.${defaultProps.prefixCls}__dots`, $parent);
+      expect($el.length).toBe(0);
+    });
   });
 });
