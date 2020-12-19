@@ -103,17 +103,33 @@ describe("rail", () => {
     test("view dot prepareClassName", () => {
       const view = new DotView({ index: 0, value: 70 });
       expect(view.prepareClassName()).toBe("");
-      view.setAddition({ index: 0, value: 40 });
-      view.setProps({
+      let addition = { index: 0, value: 40 };
+      view.setAddition(addition);
+      let props = {
         ...defaultProps,
         dot: { on: true },
         step: 10,
         values: [10, 80],
-      });
+      };
+      view.setProps(props);
       $("body").append('<div class="slider__wrapper12"/>');
       const $parent = $(".slider__wrapper12");
       view.render($parent);
       let $el = $(`.${defaultProps.prefixCls}__dot_active`, $parent);
+      expect($el.length).toBe(1);
+
+      expect(props.values.length).toBeGreaterThan(1);
+      expect(addition.value).toBeGreaterThanOrEqual(props.values[0]);
+      expect(addition.value).toBeLessThanOrEqual(props.values[1]);
+      expect($el.length).toBe(1);
+
+      expect(view.prepareClassName()).toBe(
+        "fsd-slider__dot fsd-slider__dot_active"
+      );
+      props = { ...props, values: [20] };
+      view.setProps(props);
+      expect(props.values.length).toBe(1);
+      expect(addition.value).toBeGreaterThanOrEqual(props.values[0]);
       expect($el.length).toBe(1);
 
       expect(view.prepareClassName()).toBe(
@@ -151,7 +167,7 @@ describe("rail", () => {
       view.setProps(merge({}, { ...defaultProps }));
       expect(view.onClick(event)).toBeUndefined();
       const mockCallback = jest.fn(
-        (index: number, e: any, value: number): void => {}
+        (index: number, e: any, value?: number): void => {}
       );
       view.setAddition({
         ...view.getAddition(),
@@ -176,6 +192,31 @@ describe("rail", () => {
       view.remove();
       $el = $(`.${defaultProps.prefixCls}__dot`, $parent);
       expect($el.length).toBe(0);
+    });
+
+    test("view dot onHandlers", () => {
+      const mockCallback = jest.fn(
+        (index: number, e: any, value?: number): void => {}
+      );
+      const addition = {
+        index: 0,
+        value: 40,
+        handlers: { click: mockCallback },
+      };
+      const view = new DotView(addition);
+      expect(view.onHandlers()).toBeUndefined();
+      expect(view.remove()).toBeUndefined();
+
+      view.setProps(defaultProps);
+      $("body").append('<div class="slider__wrapper13"/>');
+      const $parent = $(".slider__wrapper13");
+      view.render($parent);
+      let $el = $(`.${defaultProps.prefixCls}__dot`, $parent);
+      expect($el.length).toBe(1);
+      const event = new Event("click");
+      expect(view.onClick(event)).toBeUndefined();
+      $el.trigger("click");
+      expect(mockCallback.mock.calls.length).toBe(2);
     });
   });
 });
