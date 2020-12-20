@@ -1,9 +1,10 @@
 import { DefaultProps, Props } from "../types";
 import { prepareData } from "../helpers/utils";
+import { IModel } from "../slider/interface";
 import PubSub from "../helpers/pubsub";
 import get from "lodash/get";
 
-export default class Model extends PubSub {
+export default class Model extends PubSub implements IModel {
   private props: DefaultProps;
 
   constructor(props: DefaultProps) {

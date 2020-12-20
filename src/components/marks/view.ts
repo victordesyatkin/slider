@@ -8,8 +8,9 @@ import classnames from "classnames";
 import { ISubView } from "../../slider/interface";
 import { DefaultProps, Addition } from "../../types";
 import MarkView from "../mark/view";
+import PubSub from "../../helpers/pubsub";
 
-export default class MarksView implements ISubView {
+export default class MarksView extends PubSub implements ISubView {
   private props?: DefaultProps;
   private view?: JQuery<HTMLElement>;
   private addition: Addition;
@@ -18,6 +19,7 @@ export default class MarksView implements ISubView {
   private parent?: JQuery<HTMLElement>;
 
   constructor(addition: Addition) {
+    super();
     this.addition = addition;
   }
 
@@ -107,7 +109,7 @@ export default class MarksView implements ISubView {
     }
   }
 
-  cleanSubView(views: ISubView[], count: number): void {
+  cleanSubView = (views: ISubView[], count: number): void => {
     const length = views.length;
     if (length > count) {
       for (let i = count; i < length; i += 1) {
@@ -118,7 +120,7 @@ export default class MarksView implements ISubView {
       views.splice(count);
     }
     return;
-  }
+  };
 
   appendSubViews(): void {
     if (this.view) {

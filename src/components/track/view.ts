@@ -6,8 +6,9 @@ import { DefaultProps, Addition } from "../../types";
 import { calcOffset } from "../../helpers/utils";
 import classnames from "classnames";
 import { isUndefined } from "lodash";
+import PubSub from "../../helpers/pubsub";
 
-export default class TrackView implements ISubView {
+export default class TrackView extends PubSub implements ISubView {
   private props?: DefaultProps;
   private view?: JQuery<HTMLElement>;
   private addition: Addition;
@@ -15,6 +16,7 @@ export default class TrackView implements ISubView {
   private parent?: JQuery<HTMLElement>;
 
   constructor(addition: Addition) {
+    super();
     this.addition = addition;
   }
 

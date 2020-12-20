@@ -3,12 +3,13 @@ import get from "lodash/get";
 import isUndefined from "lodash/isUndefined";
 import { objectToString } from "../../helpers/utils";
 import { ISubView } from "../../slider/interface";
-import { DefaultProps, Addition } from "../../types";
+import { DefaultProps, Addition, Callback } from "../../types";
 import { calcOffset } from "../../helpers/utils";
+import PubSub from "../../helpers/pubsub";
 import classnames from "classnames";
 import { orderBy } from "lodash";
 
-export default class DotView implements ISubView {
+export default class DotView extends PubSub implements ISubView {
   private props?: DefaultProps;
   private view?: JQuery<HTMLElement>;
   private addition: Addition;
@@ -16,6 +17,7 @@ export default class DotView implements ISubView {
   private isRendered: boolean = false;
 
   constructor(addition: Addition) {
+    super();
     this.addition = addition;
   }
 

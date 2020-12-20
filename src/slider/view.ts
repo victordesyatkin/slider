@@ -19,7 +19,7 @@ import MarksView from "../components/marks/view";
 
 import { DefaultProps, Addition } from "../types";
 import { IView, ISubView } from "./interface";
-export default class View extends PubSub {
+export default class View extends PubSub implements IView {
   props?: DefaultProps;
   view?: JQuery<HTMLElement>;
   rails: ISubView[] = [];
@@ -147,6 +147,7 @@ export default class View extends PubSub {
       const index = this.currentHandleIndex;
       const { vertical, values } = this.props;
       const prevValue = values[index];
+
       const position = getMousePosition(vertical, e);
       const nextValue = calcValueByPos({
         position,
@@ -162,7 +163,7 @@ export default class View extends PubSub {
     }
   };
 
-  createOrUpdateSubViews(): void {
+  createOrUpdateSubViews = (): void => {
     const count = getCount(this.props);
     this.createOrUpdateSubView<RailView>(this.rails, 1, RailView);
     this.createOrUpdateSubView<TrackView>(
@@ -173,7 +174,7 @@ export default class View extends PubSub {
     this.createOrUpdateSubView<DotsView>(this.dots, 1, DotsView);
     this.createOrUpdateSubView<MarksView>(this.marks, 1, MarksView);
     this.createOrUpdateSubView<HandleView>(this.handles, count, HandleView);
-  }
+  };
 
   createOrUpdateSubView<T extends ISubView>(
     views: ISubView[],
@@ -249,7 +250,7 @@ export default class View extends PubSub {
     }
   }
 
-  public setProps(props: DefaultProps): void {
+  setProps(props: DefaultProps): void {
     this.props = props;
     this.updateView();
     this.createOrUpdateSubViews();
@@ -257,7 +258,7 @@ export default class View extends PubSub {
     this.render();
   }
 
-  public render = (parent?: JQuery<HTMLElement>): void => {
+  render = (parent?: JQuery<HTMLElement>): void => {
     if (parent) {
       this.parent = parent;
     }
@@ -267,5 +268,5 @@ export default class View extends PubSub {
     }
   };
 
-  public remove = (): void => {};
+  remove = (): void => {};
 }

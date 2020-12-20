@@ -5,6 +5,7 @@ import { objectToString } from "../../helpers/utils";
 import { ISubView } from "../../slider/interface";
 import { DefaultProps, Addition } from "../../types";
 import classnames from "classnames";
+import PubSub from "../../helpers/pubsub";
 
 export default class TooltipView implements ISubView {
   private props?: DefaultProps;

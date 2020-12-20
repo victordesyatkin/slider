@@ -5,6 +5,7 @@ import { ISubView } from "../../slider/interface";
 import { DefaultProps, Addition } from "../../types";
 import { objectToString, calcOffset } from "../../helpers/utils";
 import classnames from "classnames";
+import PubSub from "../../helpers/pubsub";
 
 export default class MarkView implements ISubView {
   private props?: DefaultProps;

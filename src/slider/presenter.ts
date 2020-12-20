@@ -4,8 +4,8 @@ import { DefaultProps } from "../types";
 import { IModel, IView, IPresenter } from "./interface";
 
 export default class Presenter implements IPresenter {
-  private model: any;
-  private view: any;
+  private model: IModel;
+  private view: IView;
 
   constructor(model: IModel, view: IView) {
     this.model = model;

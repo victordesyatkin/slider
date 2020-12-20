@@ -1,11 +1,12 @@
 import { Addition, DefaultProps, Props } from "../types";
+import { IPubSub } from "../helpers/interface";
 
-export interface IModel {
+export interface IModel extends IPubSub {
   getProps(): DefaultProps;
   setProps(p: Props): void;
 }
 
-export interface IView {
+export interface IView extends IPubSub {
   setProps(props: DefaultProps): void;
   render(parent: JQuery<HTMLElement>): void;
   remove(): void;

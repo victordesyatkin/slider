@@ -6,8 +6,9 @@ import { calcOffset, objectToString } from "../../helpers/utils";
 import { ISubView } from "../../slider/interface";
 import { DefaultProps, Addition, Tooltip } from "../../types";
 import TooltipView from "../tooltip/view";
+import PubSub from "../../helpers/pubsub";
 
-export default class HandleView implements ISubView {
+export default class HandleView extends PubSub implements ISubView {
   private addition: Addition;
   private props?: DefaultProps;
   private view?: JQuery<HTMLElement>;
@@ -16,6 +17,7 @@ export default class HandleView implements ISubView {
   private tooltip?: TooltipView;
 
   constructor(addition: Addition) {
+    super();
     this.addition = addition;
   }
 

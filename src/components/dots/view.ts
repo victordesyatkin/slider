@@ -170,4 +170,12 @@ export default class DotsView implements ISubView {
   setAddition = (addition: Addition): void => {
     this.addition = addition;
   };
+
+  subscribe = (eventName?: string, cb?: Callback): (() => void) | undefined => {
+    return;
+  };
+
+  unsubscribe = (eventName?: string): void => {};
+
+  publish = (eventName?: string, data?: any): void => {};
 }

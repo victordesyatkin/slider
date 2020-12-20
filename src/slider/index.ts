@@ -24,7 +24,7 @@ const defaultProps: DefaultProps = {
 };
 
 class Slider {
-  static PLUGIN_NAME = "slider";
+  static PLUGIN_NAME: string = "slider";
   private model: IModel;
   private view: IView;
   private presenter: IPresenter;
