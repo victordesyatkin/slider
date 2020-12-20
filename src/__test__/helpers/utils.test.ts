@@ -105,8 +105,8 @@ describe("helpers", () => {
       output = { ...input, values: [25, 75] };
       let r = utils.prepareValues(input);
       expect(r).toEqual(output);
-      expect(r.mark).toBeUndefined();
-      expect(r.mark?.values).toBeUndefined();
+      expect(r?.mark).toStrictEqual({ values: [] });
+      expect(r?.mark?.values).toStrictEqual([]);
       input = merge({}, input, { step: 25 }, { mark: { values: [50, 40] } });
       r = utils.prepareValues(input);
       expect(r.mark).toEqual(
@@ -114,8 +114,8 @@ describe("helpers", () => {
           values: expect.any(Array),
         })
       );
-      expect(r.mark.values.length).toBe(2);
-      expect(r.mark.values).toEqual(expect.arrayContaining([40, 50]));
+      expect(r?.mark?.values.length).toBe(2);
+      expect(r?.mark?.values).toEqual(expect.arrayContaining([40, 50]));
     });
     test("undefined -> getCount -> 0", () => {
       expect(utils.getCount()).toBe(0);

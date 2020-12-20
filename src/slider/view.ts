@@ -20,26 +20,26 @@ import MarksView from "../components/marks/view";
 import { DefaultProps, Addition } from "../types";
 import { IView, ISubView } from "./interface";
 export default class View extends PubSub {
-  private props?: DefaultProps;
-  private view?: JQuery<HTMLElement>;
-  private rails: ISubView[] = [];
-  private tracks: ISubView[] = [];
-  private handles: ISubView[] = [];
-  private dots: ISubView[] = [];
-  private marks: ISubView[] = [];
-  private currentHandleIndex?: number;
-  private parent?: JQuery<HTMLElement>;
-  private isRendered: boolean = false;
+  props?: DefaultProps;
+  view?: JQuery<HTMLElement>;
+  rails: ISubView[] = [];
+  tracks: ISubView[] = [];
+  handles: ISubView[] = [];
+  dots: ISubView[] = [];
+  marks: ISubView[] = [];
+  currentHandleIndex?: number;
+  parent?: JQuery<HTMLElement>;
+  isRendered: boolean = false;
 
   constructor() {
     super();
   }
 
-  private createView(): void {
+  createView(): void {
     this.view = $("<div/>", this.prepareAttr());
   }
 
-  private updateView = (): void => {
+  updateView = (): void => {
     if (!this.view) {
       this.createView();
     } else {
@@ -47,14 +47,14 @@ export default class View extends PubSub {
     }
   };
 
-  private prepareAttr = (): { class: string; style: string } => {
+  prepareAttr = (): { class: string; style: string } => {
     return {
       class: this.prepareClassName(),
       style: this.prepareStyle(),
     };
   };
 
-  private prepareClassName(): string {
+  prepareClassName(): string {
     const { prefixCls, mark, disabled, vertical, classNames } =
       this.props || {};
     return classnames(prefixCls, {
@@ -65,11 +65,11 @@ export default class View extends PubSub {
     });
   }
 
-  private prepareStyle(): string {
+  prepareStyle(): string {
     return objectToString({ ...get(this.props, ["style"]) });
   }
 
-  private onClick = (index: number, e: MouseEvent, value?: number): void => {
+  onClick = (index: number, e: MouseEvent, value?: number): void => {
     e.preventDefault();
     const disabled = get(this.props, ["disabled"]);
     if (disabled) {
@@ -119,7 +119,7 @@ export default class View extends PubSub {
     }
   };
 
-  private onMouseDown = (index: number, e: JQuery.Event): void => {
+  onMouseDown = (index: number, e: MouseEvent): void => {
     e.preventDefault();
     const disabled = get(this.props, ["disabled"]);
     if (disabled) {
@@ -131,14 +131,18 @@ export default class View extends PubSub {
     this.publish("onMouseDown", this.props?.values || []);
   };
 
-  private onMouseUp = (e: MouseEvent): void => {
+  onMouseUp = (e: MouseEvent): void => {
     e.preventDefault();
+    const disabled = get(this.props, ["disabled"]);
+    if (disabled) {
+      return;
+    }
     window.removeEventListener("mousemove", this.onMouseMove);
     window.removeEventListener("mouseup", this.onMouseUp);
     this.publish("onMouseUp", this.props?.values || []);
   };
 
-  private onMouseMove = (e: MouseEvent): void => {
+  onMouseMove = (e: MouseEvent): void => {
     if (this.props && !isUndefined(this.currentHandleIndex) && this.view) {
       const index = this.currentHandleIndex;
       const { vertical, values } = this.props;
@@ -158,7 +162,7 @@ export default class View extends PubSub {
     }
   };
 
-  private createOrUpdateSubViews(): void {
+  createOrUpdateSubViews(): void {
     const count = getCount(this.props);
     this.createOrUpdateSubView<RailView>(this.rails, 1, RailView);
     this.createOrUpdateSubView<TrackView>(
@@ -171,7 +175,7 @@ export default class View extends PubSub {
     this.createOrUpdateSubView<HandleView>(this.handles, count, HandleView);
   }
 
-  private createOrUpdateSubView<T extends ISubView>(
+  createOrUpdateSubView<T extends ISubView>(
     views: ISubView[],
     count: number,
     c: { new (addition: Addition): T }
@@ -213,7 +217,7 @@ export default class View extends PubSub {
     }
   }
 
-  private cleanSubView(views: IView[], count: number): void {
+  cleanSubView(views: IView[], count: number): void {
     const length = views.length;
     if (length > count) {
       for (let i = count; i < length; i += 1) {
@@ -226,7 +230,7 @@ export default class View extends PubSub {
     return;
   }
 
-  private appendSubViews(): void {
+  appendSubViews(): void {
     if (this.view) {
       this.appendSubView(this.rails);
       this.appendSubView(this.marks);
@@ -237,7 +241,7 @@ export default class View extends PubSub {
     return;
   }
 
-  private appendSubView(subViews: IView[]): void {
+  appendSubView(subViews: IView[]): void {
     if (this.view) {
       for (const subView of subViews) {
         subView.render(this.view);

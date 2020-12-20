@@ -12,13 +12,13 @@ export default class Model extends PubSub {
     this.onHandler();
   }
 
-  private onHandler = (): void => {
+  onHandler = (): void => {
     this.subscribe("setPropsModel", this.setPropsForView);
     this.subscribe("onMouseDown", this.onBeforeChange);
     this.subscribe("onMouseUp", this.onAfterChange);
   };
 
-  private onBeforeChange = (values?: number[]): void => {
+  onBeforeChange = (values?: number[]): void => {
     const onBeforeChange: ((values: number[]) => void) | undefined = get(
       this.props,
       ["onBeforeChange"]
@@ -26,14 +26,14 @@ export default class Model extends PubSub {
     values && onBeforeChange && onBeforeChange(values);
   };
 
-  private onChange = (values?: number[]): void => {
+  onChange = (values?: number[]): void => {
     const onChange: ((values: number[]) => void) | undefined = get(this.props, [
       "onChange",
     ]);
     values && onChange && onChange(values);
   };
 
-  private onAfterChange = (values?: number[]): void => {
+  onAfterChange = (values?: number[]): void => {
     const onAfterChange: ((values: number[]) => void) | undefined = get(
       this.props,
       ["onAfterChange"]
@@ -41,16 +41,16 @@ export default class Model extends PubSub {
     values && onAfterChange && onAfterChange(values);
   };
 
-  private setPropsForView = (props: Props): void => {
+  setPropsForView = (props: Props): void => {
     this.onChange(get(props, ["values"]));
     this.setProps(props);
   };
 
-  public getProps = (): DefaultProps => {
+  getProps = (): DefaultProps => {
     return this.props;
   };
 
-  public setProps = (props: Props): void => {
+  setProps = (props: Props): void => {
     this.props = prepareData(props, this.getProps());
     this.publish("setPropsView", this.props);
   };

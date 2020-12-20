@@ -1,6 +1,7 @@
 import $ from "jquery";
 import { defaultProps } from "../../slider/index";
 import Model from "../../slider/model";
+import { DefaultProps } from "../../types";
 
 describe("slider", () => {
   describe("model", () => {
@@ -58,6 +59,37 @@ describe("slider", () => {
         })
       );
       expect(props.min).toBe(10);
+    });
+    test("onBeforeChange model", () => {
+      const mockCallback = jest.fn((data: any): void => {});
+      let props: DefaultProps = {
+        ...defaultProps,
+        onBeforeChange: mockCallback,
+      };
+      const model = new Model(props);
+      model.onBeforeChange([10, 20]);
+      expect(mockCallback.mock.calls.length).toBe(1);
+      expect(mockCallback.mock.calls[0][0]).toStrictEqual([10, 20]);
+
+      model.onBeforeChange();
+      expect(mockCallback.mock.calls.length).toBe(1);
+      expect(mockCallback.mock.calls[0][0]).toStrictEqual([10, 20]);
+    });
+
+    test("onAfterChange model", () => {
+      const mockCallback = jest.fn((data: any): void => {});
+      let props: DefaultProps = {
+        ...defaultProps,
+        onAfterChange: mockCallback,
+      };
+      const model = new Model(props);
+      model.onAfterChange([10, 20]);
+      expect(mockCallback.mock.calls.length).toBe(1);
+      expect(mockCallback.mock.calls[0][0]).toStrictEqual([10, 20]);
+
+      model.onAfterChange();
+      expect(mockCallback.mock.calls.length).toBe(1);
+      expect(mockCallback.mock.calls[0][0]).toStrictEqual([10, 20]);
     });
   });
 });

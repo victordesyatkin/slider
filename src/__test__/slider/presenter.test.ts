@@ -4,6 +4,7 @@ import { defaultProps } from "../../slider/index";
 import Model from "../../slider/model";
 import View from "../../slider/view";
 import Presenter from "../../slider/presenter";
+import { DefaultProps } from "../../types";
 
 describe("slider", () => {
   describe("presenter", () => {
@@ -51,6 +52,38 @@ describe("slider", () => {
 
       const $handle = $(`.${defaultProps.prefixCls}__handle`, $parent);
       expect($handle.length).toBe(1);
+    });
+
+    test("onMouseDown presenter", () => {
+      const mockCallback = jest.fn((values?: number[]): void => {});
+      let props: DefaultProps = {
+        ...defaultProps,
+        onBeforeChange: mockCallback,
+      };
+      const model = new Model(props);
+      const view = new View();
+      const presenter = new Presenter(model, view);
+      presenter.onMouseDown();
+      expect(mockCallback.mock.calls.length).toBe(0);
+      presenter.onMouseDown([10, 20]);
+      expect(mockCallback.mock.calls.length).toBe(1);
+      expect(mockCallback.mock.calls[0][0]).toStrictEqual([10, 20]);
+    });
+
+    test("onMouseUp presenter", () => {
+      const mockCallback = jest.fn((values?: number[]): void => {});
+      let props: DefaultProps = {
+        ...defaultProps,
+        onAfterChange: mockCallback,
+      };
+      const model = new Model(props);
+      const view = new View();
+      const presenter = new Presenter(model, view);
+      presenter.onMouseUp();
+      expect(mockCallback.mock.calls.length).toBe(0);
+      presenter.onMouseUp([10, 20]);
+      expect(mockCallback.mock.calls.length).toBe(1);
+      expect(mockCallback.mock.calls[0][0]).toStrictEqual([10, 20]);
     });
   });
 });
