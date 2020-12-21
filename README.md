@@ -46,20 +46,27 @@
             <code>npm i</code>
         <h5>3. Запуск демо</h5>
             <code>npm run start</code>
+            <code>http://localhost:8080/</code>
         <h5>3. Запуск тестов</h5>
             <code>npm t</code>
     <h4>Ручная Инициализация</h4>
-    <p><span style="color: #969896;">// Инициализация</span></p>
-    <p><code>$(<span style="color: #df5000;">'#my-element'</span>).slider([options])</code></p>
-    <p><span style="color: #969896;">// Доступ к экземпляру объекта</span></p>
-    <p><code>$(<span style="color: #df5000;">'#my-element'</span>).data(<span style="color: #df5000;">'slider'</span>)</code></p>
-    <h4>API</h4>
+        <h5>Инициализация</h5>
+            <code>$(<span style="color: #df5000;">'#my-element'</span>).slider([options])</code>
+        <h5>Доступ к экземпляру объекта</h5>
+            <code>$(<span style="color: #df5000;">'#my-element'</span>).data(<span style="color: #df5000;">'slider'</span>)</code>
+    <h4 id="api">API</h4>
     <table>
         <tr>
             <th>Имя</th>
             <th>Тип</th>
             <th>Поумолчанию</th>
             <th>Описание</th>
+        </tr>
+        <tr>
+            <td>values</td>
+            <td>number[]</td>
+            <td>[0]</td>
+            <td>Значение для каждого handle</td>
         </tr>
         <tr>
             <td>className</td>

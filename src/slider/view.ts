@@ -165,33 +165,39 @@ export default class View extends PubSub implements IView {
 
   createOrUpdateSubViews = (): void => {
     const count = getCount(this.props);
-    this.createOrUpdateSubView<RailView>(this.rails, 1, RailView);
+    this.createOrUpdateSubView<RailView>(this.rails, 1, RailView, "click");
     this.createOrUpdateSubView<TrackView>(
       this.tracks,
       count - 1 || 1,
       TrackView
     );
-    this.createOrUpdateSubView<DotsView>(this.dots, 1, DotsView);
-    this.createOrUpdateSubView<MarksView>(this.marks, 1, MarksView);
-    this.createOrUpdateSubView<HandleView>(this.handles, count, HandleView);
+    this.createOrUpdateSubView<DotsView>(this.dots, 1, DotsView, "click");
+    this.createOrUpdateSubView<MarksView>(this.marks, 1, MarksView, "click");
+    this.createOrUpdateSubView<HandleView>(
+      this.handles,
+      count,
+      HandleView,
+      "mousedown"
+    );
   };
 
   createOrUpdateSubView<T extends ISubView>(
     views: ISubView[],
     count: number,
-    c: { new (addition: Addition): T }
+    c: { new (addition: Addition): T },
+    action?: string
   ): void {
     if (this.props) {
       let handlers;
       let active;
-      if (c.name === "HandleView") {
+      if (action === "mousedown") {
         handlers = {
           mousedown: this.onMouseDown,
         };
       } else if (
-        c.name === "RailView" ||
-        c.name === "MarksView" ||
-        c.name === "DotsView"
+        action === "click" ||
+        action === "click" ||
+        action === "click"
       ) {
         if (this.props.values.length > 0) {
           handlers = {
@@ -200,7 +206,7 @@ export default class View extends PubSub implements IView {
         }
       }
       for (let index = 0; index < count; index += 1) {
-        if (c.name === "HandleView") {
+        if (c.name === "mousedown") {
           active = index === this.currentHandleIndex;
         }
 

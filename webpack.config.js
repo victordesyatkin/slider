@@ -93,12 +93,16 @@ module.exports = (env = {}) => {
         inject: true,
         hash: true,
         favicon: "./assets/images/favicon.png",
+        alwaysWriteToDisk: true,
+        inject: true,
+        hash: true,
       }),
     ],
 
     output: {
-      filename: "main-[fullhash].js",
+      filename: "[name].[fullhash:8].js",
       path: path.resolve(__dirname, "dist"),
+      chunkFilename: "[id].[chunkhash].js",
     },
 
     devServer: {
