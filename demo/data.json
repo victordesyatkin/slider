@@ -11,7 +11,7 @@
         "classNames": ["example__panel"],
         "label": {
           "content": "Configuration",
-          "href": "https://github.com/victordesyatkin/slider/blob/master/README.md",
+          "href": "https://github.com/victordesyatkin/slider/blob/master/README.md#api",
           "title": "readme",
           "target": "_blank"
         },
@@ -191,7 +191,7 @@
               {
                 "label": {
                   "content": "Class names (json)",
-                  "href": "https://github.com/victordesyatkin/slider/blob/master/README.md",
+                  "href": "https://github.com/victordesyatkin/slider/blob/master/README.md#api",
                   "title": "readme",
                   "target": "_blank"
                 },
@@ -205,7 +205,7 @@
               {
                 "label": {
                   "content": "Styles (json)",
-                  "href": "https://github.com/victordesyatkin/slider/blob/master/README.md",
+                  "href": "https://github.com/victordesyatkin/slider/blob/master/README.md#api",
                   "title": "readme",
                   "target": "_blank"
                 },
@@ -239,7 +239,7 @@
               {
                 "label": {
                   "content": "Style (json)",
-                  "href": "https://github.com/victordesyatkin/slider/blob/master/README.md",
+                  "href": "https://github.com/victordesyatkin/slider/blob/master/README.md#api",
                   "title": "readme",
                   "target": "_blank"
                 },
@@ -285,7 +285,7 @@
               {
                 "label": {
                   "content": "Styles (json)",
-                  "href": "https://github.com/victordesyatkin/slider/blob/master/README.md",
+                  "href": "https://github.com/victordesyatkin/slider/blob/master/README.md#api",
                   "title": "readme",
                   "target": "_blank"
                 },
@@ -299,7 +299,7 @@
               {
                 "label": {
                   "content": "Class names (json)",
-                  "href": "https://github.com/victordesyatkin/slider/blob/master/README.md",
+                  "href": "https://github.com/victordesyatkin/slider/blob/master/README.md#api",
                   "title": "readme",
                   "target": "_blank"
                 },
@@ -333,7 +333,7 @@
               {
                 "label": {
                   "content": "Style (json)",
-                  "href": "https://github.com/victordesyatkin/slider/blob/master/README.md",
+                  "href": "https://github.com/victordesyatkin/slider/blob/master/README.md#api",
                   "title": "readme",
                   "target": "_blank"
                 },
@@ -391,7 +391,7 @@
               {
                 "label": {
                   "content": "Values",
-                  "href": "https://github.com/victordesyatkin/slider/blob/master/README.md"
+                  "href": "https://github.com/victordesyatkin/slider/blob/master/README.md#api"
                 },
                 "type": "number",
                 "control": true,
@@ -404,7 +404,7 @@
               {
                 "label": {
                   "content": "Values",
-                  "href": "https://github.com/victordesyatkin/slider/blob/master/README.md"
+                  "href": "https://github.com/victordesyatkin/slider/blob/master/README.md#api"
                 },
                 "type": "number",
                 "control": true,
@@ -417,7 +417,7 @@
               {
                 "label": {
                   "content": "Values",
-                  "href": "https://github.com/victordesyatkin/slider/blob/master/README.md"
+                  "href": "https://github.com/victordesyatkin/slider/blob/master/README.md#api"
                 },
                 "type": "number",
                 "control": true,
@@ -442,7 +442,7 @@
               {
                 "label": {
                   "content": "Style (json)",
-                  "href": "https://github.com/victordesyatkin/slider/blob/master/README.md",
+                  "href": "https://github.com/victordesyatkin/slider/blob/master/README.md#api",
                   "title": "readme",
                   "target": "_blank"
                 },
@@ -480,7 +480,7 @@
               {
                 "label": {
                   "content": "Render function value",
-                  "href": "https://github.com/victordesyatkin/slider/blob/master/README.md",
+                  "href": "https://github.com/victordesyatkin/slider/blob/master/README.md#api",
                   "title": "readme"
                 },
                 "value": "",
@@ -526,7 +526,7 @@
               {
                 "label": {
                   "content": "Style (json)",
-                  "href": "https://github.com/victordesyatkin/slider/blob/master/README.md",
+                  "href": "https://github.com/victordesyatkin/slider/blob/master/README.md#api",
                   "title": "readme",
                   "target": "_blank"
                 },
@@ -552,7 +552,7 @@
               {
                 "label": {
                   "content": "Render function value",
-                  "href": "https://github.com/victordesyatkin/slider/blob/master/README.md",
+                  "href": "https://github.com/victordesyatkin/slider/blob/master/README.md#api",
                   "title": "readme"
                 },
                 "value": "return `${v}%`;",
@@ -581,7 +581,7 @@
         "classNames": ["example__panel"],
         "label": {
           "content": "Configuration",
-          "href": "https://github.com/victordesyatkin/slider/blob/master/README.md",
+          "href": "https://github.com/victordesyatkin/slider/blob/master/README.md#api",
           "title": "readme",
           "target": "_blank"
         },
@@ -743,7 +743,7 @@
               {
                 "label": {
                   "content": "Class names (json)",
-                  "href": "https://github.com/victordesyatkin/slider/blob/master/README.md",
+                  "href": "https://github.com/victordesyatkin/slider/blob/master/README.md#api",
                   "title": "readme",
                   "target": "_blank"
                 },
@@ -757,7 +757,7 @@
               {
                 "label": {
                   "content": "Styles (json)",
-                  "href": "https://github.com/victordesyatkin/slider/blob/master/README.md",
+                  "href": "https://github.com/victordesyatkin/slider/blob/master/README.md#api",
                   "title": "readme",
                   "target": "_blank"
                 },
@@ -791,7 +791,7 @@
               {
                 "label": {
                   "content": "Style (json)",
-                  "href": "https://github.com/victordesyatkin/slider/blob/master/README.md",
+                  "href": "https://github.com/victordesyatkin/slider/blob/master/README.md#api",
                   "title": "readme",
                   "target": "_blank"
                 },
@@ -837,7 +837,7 @@
               {
                 "label": {
                   "content": "Styles (json)",
-                  "href": "https://github.com/victordesyatkin/slider/blob/master/README.md",
+                  "href": "https://github.com/victordesyatkin/slider/blob/master/README.md#api",
                   "title": "readme",
                   "target": "_blank"
                 },
@@ -851,7 +851,7 @@
               {
                 "label": {
                   "content": "Class names (json)",
-                  "href": "https://github.com/victordesyatkin/slider/blob/master/README.md",
+                  "href": "https://github.com/victordesyatkin/slider/blob/master/README.md#api",
                   "title": "readme",
                   "target": "_blank"
                 },
@@ -885,7 +885,7 @@
               {
                 "label": {
                   "content": "Style (json)",
-                  "href": "https://github.com/victordesyatkin/slider/blob/master/README.md",
+                  "href": "https://github.com/victordesyatkin/slider/blob/master/README.md#api",
                   "title": "readme",
                   "target": "_blank"
                 },
@@ -943,7 +943,7 @@
               {
                 "label": {
                   "content": "Values",
-                  "href": "https://github.com/victordesyatkin/slider/blob/master/README.md"
+                  "href": "https://github.com/victordesyatkin/slider/blob/master/README.md#api"
                 },
                 "type": "number",
                 "control": true,
@@ -956,7 +956,7 @@
               {
                 "label": {
                   "content": "Values",
-                  "href": "https://github.com/victordesyatkin/slider/blob/master/README.md"
+                  "href": "https://github.com/victordesyatkin/slider/blob/master/README.md#api"
                 },
                 "type": "number",
                 "control": true,
@@ -981,7 +981,7 @@
               {
                 "label": {
                   "content": "Style (json)",
-                  "href": "https://github.com/victordesyatkin/slider/blob/master/README.md",
+                  "href": "https://github.com/victordesyatkin/slider/blob/master/README.md#api",
                   "title": "readme",
                   "target": "_blank"
                 },
@@ -1019,7 +1019,7 @@
               {
                 "label": {
                   "content": "Render function value",
-                  "href": "https://github.com/victordesyatkin/slider/blob/master/README.md",
+                  "href": "https://github.com/victordesyatkin/slider/blob/master/README.md#api",
                   "title": "readme"
                 },
                 "value": "return `${v}&#176;C`",
@@ -1065,7 +1065,7 @@
               {
                 "label": {
                   "content": "Style (json)",
-                  "href": "https://github.com/victordesyatkin/slider/blob/master/README.md",
+                  "href": "https://github.com/victordesyatkin/slider/blob/master/README.md#api",
                   "title": "readme",
                   "target": "_blank"
                 },
@@ -1091,7 +1091,7 @@
               {
                 "label": {
                   "content": "Render function value",
-                  "href": "https://github.com/victordesyatkin/slider/blob/master/README.md",
+                  "href": "https://github.com/victordesyatkin/slider/blob/master/README.md#api",
                   "title": "readme"
                 },
                 "value": "return `${v}&#176;C`",
@@ -1120,7 +1120,7 @@
         "classNames": ["example__panel"],
         "label": {
           "content": "Configuration",
-          "href": "https://github.com/victordesyatkin/slider/blob/master/README.md",
+          "href": "https://github.com/victordesyatkin/slider/blob/master/README.md#api",
           "title": "readme",
           "target": "_blank"
         },
@@ -1282,7 +1282,7 @@
               {
                 "label": {
                   "content": "Class names (json)",
-                  "href": "https://github.com/victordesyatkin/slider/blob/master/README.md",
+                  "href": "https://github.com/victordesyatkin/slider/blob/master/README.md#api",
                   "title": "readme",
                   "target": "_blank"
                 },
@@ -1296,7 +1296,7 @@
               {
                 "label": {
                   "content": "Styles (json)",
-                  "href": "https://github.com/victordesyatkin/slider/blob/master/README.md",
+                  "href": "https://github.com/victordesyatkin/slider/blob/master/README.md#api",
                   "title": "readme",
                   "target": "_blank"
                 },
@@ -1330,7 +1330,7 @@
               {
                 "label": {
                   "content": "Style (json)",
-                  "href": "https://github.com/victordesyatkin/slider/blob/master/README.md",
+                  "href": "https://github.com/victordesyatkin/slider/blob/master/README.md#api",
                   "title": "readme",
                   "target": "_blank"
                 },
@@ -1376,7 +1376,7 @@
               {
                 "label": {
                   "content": "Styles (json)",
-                  "href": "https://github.com/victordesyatkin/slider/blob/master/README.md",
+                  "href": "https://github.com/victordesyatkin/slider/blob/master/README.md#api",
                   "title": "readme",
                   "target": "_blank"
                 },
@@ -1390,7 +1390,7 @@
               {
                 "label": {
                   "content": "Class names (json)",
-                  "href": "https://github.com/victordesyatkin/slider/blob/master/README.md",
+                  "href": "https://github.com/victordesyatkin/slider/blob/master/README.md#api",
                   "title": "readme",
                   "target": "_blank"
                 },
@@ -1424,7 +1424,7 @@
               {
                 "label": {
                   "content": "Style (json)",
-                  "href": "https://github.com/victordesyatkin/slider/blob/master/README.md",
+                  "href": "https://github.com/victordesyatkin/slider/blob/master/README.md#api",
                   "title": "readme",
                   "target": "_blank"
                 },
@@ -1482,7 +1482,7 @@
               {
                 "label": {
                   "content": "Values",
-                  "href": "https://github.com/victordesyatkin/slider/blob/master/README.md"
+                  "href": "https://github.com/victordesyatkin/slider/blob/master/README.md#api"
                 },
                 "type": "number",
                 "control": true,
@@ -1495,7 +1495,7 @@
               {
                 "label": {
                   "content": "Values",
-                  "href": "https://github.com/victordesyatkin/slider/blob/master/README.md"
+                  "href": "https://github.com/victordesyatkin/slider/blob/master/README.md#api"
                 },
                 "type": "number",
                 "control": true,
@@ -1520,7 +1520,7 @@
               {
                 "label": {
                   "content": "Style (json)",
-                  "href": "https://github.com/victordesyatkin/slider/blob/master/README.md",
+                  "href": "https://github.com/victordesyatkin/slider/blob/master/README.md#api",
                   "title": "readme",
                   "target": "_blank"
                 },
@@ -1558,7 +1558,7 @@
               {
                 "label": {
                   "content": "Render function value",
-                  "href": "https://github.com/victordesyatkin/slider/blob/master/README.md",
+                  "href": "https://github.com/victordesyatkin/slider/blob/master/README.md#api",
                   "title": "readme"
                 },
                 "value": "",
@@ -1604,7 +1604,7 @@
               {
                 "label": {
                   "content": "Style (json)",
-                  "href": "https://github.com/victordesyatkin/slider/blob/master/README.md",
+                  "href": "https://github.com/victordesyatkin/slider/blob/master/README.md#api",
                   "title": "readme",
                   "target": "_blank"
                 },
@@ -1630,7 +1630,7 @@
               {
                 "label": {
                   "content": "Render function value",
-                  "href": "https://github.com/victordesyatkin/slider/blob/master/README.md",
+                  "href": "https://github.com/victordesyatkin/slider/blob/master/README.md#api",
                   "title": "readme"
                 },
                 "value": "",
