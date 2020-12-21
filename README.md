@@ -131,9 +131,10 @@
             <td>handle</td>
             <td>object</td>
             <td>{}</td>
-            <td>Ручка, {
-                classNames?: string[] = [] - имя класса для каждой ручки;
-                styles: style[] = [] стиль для каждой ручки;
+            <td>Ручка,<br/>
+            {<br/>
+                classNames?: string[] = [] - имя класса для каждой ручки,<br/>
+                styles: style[] = [] стиль для каждой ручки,<br/>
             }
             </td>
         </tr>
@@ -141,10 +142,11 @@
             <td>track</td>
             <td>object</td>
             <td>{on: true}</td>
-            <td>Трек, {
-                classNames?: string[] = [] - имя класса для каждого трека;
-                styles: style[] = [] стиль для каждого трека;
-                on?: boolean = true - вкл/выкл,
+            <td>Трек,<br/>
+            {<br/>
+                classNames?: string[] = [] - имя класса для каждого трека,<br/>
+                styles: style[] = [] стиль для каждого трека,<br/>
+                on?: boolean = true - вкл/выкл,<br/>
             }
             </td>
         </tr>
@@ -152,10 +154,11 @@
             <td>rail</td>
             <td>object</td>
             <td>{on: true}</td>
-            <td>Рельс, {
-                className?: string = '' - имя класса рельсы;
-                styles: style[] = [] - стиль рельсы;
-                on?: boolean = true - вкл/выкл,
+            <td>Рельс, <br/>
+            {<br/>
+                className?: string = '' - имя класса рельсы,<br/>
+                styles: style[] = [] - стиль рельсы,<br/>
+                on?: boolean = true - вкл/выкл,<br/>
             }
             </td>
         </tr>
@@ -163,25 +166,27 @@
             <td>dot</td>
             <td>object</td>
             <td>{}</td>
-            <td>Точки-отметки отображаются при наличие значения step, {
-                on?: boolean = false - вкл/выкл,
-                wrapClassName?: string = '' - имя класса для родительского класса точек-отметок,
-                style?: {"backgound": "red"} - стиль для точек-отметок,
-                className?: string = '' - имя класса для точек-отметок ;
+            <td>Точки-отметки отображаются при наличие значения step,<br/>
+            {<br/>
+                on?: boolean = false - вкл/выкл,<br/>
+                wrapClassName?: string = '' - имя класса для родительского класса точек-отметок,<br/>
+                style?: {"backgound": "red"} - стиль для точек-отметок,<br/>
+                className?: string = '' - имя класса для точек-отметок,<br/>
             }</td>
         </tr>
         <tr>
             <td>mark</td>
             <td>object</td>
             <td>{}</td>
-            <td>Отметки шкала, {
-                on?: boolean = false - вкл/выкл,
-                wrapClassName?: string = '' - имя класса для родительского класса отметок,
-                style?: {"backgound": "red"} - стиль для отметок,
-                className?: string = '' - имя класса для отметок,
-                render?: (value: number) => | string | JQuery<HTMLElement> | JQuery<HTMLElement>[] | HTMLElement | HTMLElement[] | undefined; - функция для изменения отображения отметок,
-                values?: number[] - дополнительные значения отметок для шкалы отображаются внезависимости от значения step,
-                dot?: boolean = false, вкл/выкл точек-меток для дополнительных значений отметок 
+            <td>Отметки-шкала, <br/>
+            {<br/>
+                on?: boolean = false - вкл/выкл,<br/>
+                wrapClassName?: string = '' - имя класса для родительского класса отметок-шкалы,<br/>
+                style?: {"backgound": "red"} - стиль для отметок-шкалы,<br/>
+                className?: string = '' - имя класса для отметок-шкалы,<br/>
+                render?: (value: number) => | string | JQuery<HTMLElement> | JQuery<HTMLElement>[] | HTMLElement | HTMLElement[] | undefined; - функция для изменения отображения отметок-шкалы,<br/>
+                values?: number[] - дополнительные значения отметок-шкалы отображаются внезависимости от значения step,<br/>
+                dot?: boolean = false, вкл/выкл точек-меток для дополнительных значений отметок-шкалы,<br/>
             }
             </td>
         </tr>
@@ -189,12 +194,13 @@
             <td>tooltip</td>
             <td>object</td>
             <td>{}</td>
-            <td>Всплывающие подсказки, {
-                on?: boolean = false - вкл/выкл,
-                style?: {"backgound": "red"} - стиль для подсказки,
-                className?: string = '' - имя класса для подсказки,
-                render?: (value: number) => | string | JQuery<HTMLElement> | JQuery<HTMLElement>[] | HTMLElement | HTMLElement[] | undefined; - функция для изменения отображения подсказки,
-                always?: boolean = false, вкл/выкл постоянного отображения подсказок, если установлено значение false подсказки отображаются только при наведении на handle
+            <td>Всплывающие подсказки,<br/>
+            {<br/>
+                on?: boolean = false - вкл/выкл,<br/>
+                style?: {"backgound": "red"} - стиль для подсказки,<br/>
+                className?: string = '' - имя класса для подсказки,<br/>
+                render?: (value: number) => | string | JQuery<HTMLElement> | JQuery<HTMLElement>[] | HTMLElement | HTMLElement[] | undefined; - функция для изменения отображения подсказки,<br/>
+                always?: boolean = false, вкл/выкл постоянного отображения подсказок, если установлено значение false подсказки отображаются только при наведении на handle<br/>
             }
             </td>
         </tr>
