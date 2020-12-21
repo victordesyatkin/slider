@@ -7,7 +7,7 @@
 </head>
 <body>
     <h1>Демо-проект Slider</h1>
-    <h4><a href="https://github.com/victordesyatkin/slider/blob/master/dist/index.html" target="_blank">Online demo</a></h4>
+    <h4><a href=" https://victordesyatkin.github.io/slider/dist/index.html" target="_blank">Online demo</a></h4>
     <h4>Проект выполнялся для получения:</h4>
     <ul>
         <li>Базовые навыки typescript.</li>
