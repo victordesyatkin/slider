@@ -7,8 +7,9 @@ import { ISubView, IView } from "../../slider/interface";
 import { DefaultProps, Addition } from "../../types";
 import DotView from "../dot/view";
 import classnames from "classnames";
+import PubSub from "../../helpers/pubsub";
 
-export default class DotsView implements ISubView {
+export default class DotsView extends PubSub implements ISubView {
   private props?: DefaultProps;
   private view?: JQuery<HTMLElement>;
   private addition: Addition;
@@ -17,6 +18,7 @@ export default class DotsView implements ISubView {
   private isRendered: boolean = false;
 
   constructor(addition: Addition) {
+    super();
     this.addition = addition;
   }
 
@@ -170,12 +172,4 @@ export default class DotsView implements ISubView {
   setAddition = (addition: Addition): void => {
     this.addition = addition;
   };
-
-  subscribe = (eventName?: string, cb?: Callback): (() => void) | undefined => {
-    return;
-  };
-
-  unsubscribe = (eventName?: string): void => {};
-
-  publish = (eventName?: string, data?: any): void => {};
 }

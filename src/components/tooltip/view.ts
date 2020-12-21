@@ -7,7 +7,7 @@ import { DefaultProps, Addition } from "../../types";
 import classnames from "classnames";
 import PubSub from "../../helpers/pubsub";
 
-export default class TooltipView implements ISubView {
+export default class TooltipView extends PubSub implements ISubView {
   private props?: DefaultProps;
   private view?: JQuery<HTMLElement>;
   private addition: Addition;
@@ -15,6 +15,7 @@ export default class TooltipView implements ISubView {
   private parent?: JQuery<HTMLElement>;
 
   constructor(addition: Addition) {
+    super();
     this.addition = addition;
   }
 
