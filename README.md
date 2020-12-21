@@ -21,7 +21,7 @@
         В приложении использовался архитектурный шаблон проектирования MVP.
         Чтобы отвязать слои <a href="./docs/uml_diagram_bind.png" target="_blank" rel="noopener">View</a>, <a href="./docs/uml_diagram_bind.png" target="_blank" rel="noopener" target="_blank">Model</a> от внешних зависимостей использовался поведенческий шаблон проектирования Pub/Sub.
         Передача данных между <a href="./docs/uml_diagram_bind.png" target="_blank" rel="noopener">View</a> и <a href="./docs/uml_diagram_bind.png" target="_blank" rel="noopener" target="_blank">Model</a> осуществляется при помощи слоя <a href="./docs/uml_diagram_bind.png" target="_blank" rel="noopener" target="_blank">Presenter</a>
-        Все свойства и обработчики передаются от <a href="./docs/uml_diagram_bind.png" target="_blank" rel="noopener">Model</a> к <a href="./docs/uml_diagram_bind.png" target="_blank" rel="noopener">View</a>, а затем в <a href="./docs/uml_diagram_bind.png" target="_blank" rel="noopener">SubView</a>. 
+        Все свойства передаются от <a href="./docs/uml_diagram_bind.png" target="_blank" rel="noopener">Model</a> к <a href="./docs/uml_diagram_bind.png" target="_blank" rel="noopener">View</a>, а затем все свойства и обработчики в <a href="./docs/uml_diagram_bind.png" target="_blank" rel="noopener">SubView</a>. 
     </p>
     <h4>UML Diagram</h4>
     <ul>
@@ -41,13 +41,38 @@
     </ul>
     <h4>Установка</h4>
         <h5>1. Клонированить репозиторий</h5>
-            <p>git clone git@github.com:victordesyatkin/slider.git</p>
+            <code>git clone git@github.com:victordesyatkin/slider.git</code>
         <h5>2. Установить зависимости</h5>
-            <p>npm i</p>
+            <code>npm i</code>
         <h5>3. Запуск демо</h5>
-            <p>npm run start</p>
+            <code>npm run start</code>
         <h5>3. Запуск тестов</h5>
-            <p>npm t</p>
+            <code>npm t</code>
+    <h4>Ручная Инициализация</h4>
+    <code>
+        <span style="color: #969896;">
+            // Инициализация
+        </span>
+        $(<span style="color: #df5000;">'#my-element'</span>).slider([options])
+        <span style="color: #969896;">
+            // Доступ к экземпляру объекта
+        </span>
+        $(<span style="color: #df5000;">'#my-element'</span>).data(<span style="color: #df5000;">'slider'</span>)
+    </code>
     <h4>API</h4>
+    <table>
+        <tr>
+            <th>Название</th>
+            <th>Тип</th>
+            <th>Поумолчанию</th>
+            <th>Описание</th>
+        </tr>
+        <tr>
+            <th>Название</th>
+            <th>Тип</th>
+            <th>Поумолчанию</th>
+            <th>Описание</th>
+        </tr>
+    </table>
 </body>
 </html>
