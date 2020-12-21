@@ -49,16 +49,10 @@
         <h5>3. Запуск тестов</h5>
             <code>npm t</code>
     <h4>Ручная Инициализация</h4>
-    <p>
-        <span style="color: #969896;">
-            // Инициализация
-        </span>
-        $(<span style="color: #df5000;">'#my-element'</span>).slider([options])<br/>
-        <span style="color: #969896;">
-            // Доступ к экземпляру объекта
-        </span>
-        $(<span style="color: #df5000;">'#my-element'</span>).data(<span style="color: #df5000;">'slider'</span>)
-    </p>
+    <p><span style="color: #969896;">// Инициализация</span></p>
+    <p><code>$(<span style="color: #df5000;">'#my-element'</span>).slider([options])</code></p>
+    <p><span style="color: #969896;">// Доступ к экземпляру объекта</span></p>
+    <p><code>$(<span style="color: #df5000;">'#my-element'</span>).data(<span style="color: #df5000;">'slider'</span>)</code></p>
     <h4>API</h4>
     <table>
         <tr>
