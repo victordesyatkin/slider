@@ -53,7 +53,7 @@
         <span style="color: #969896;">
             // Инициализация
         </span>
-        $(<span style="color: #df5000;">'#my-element'</span>).slider([options])
+        $(<span style="color: #df5000;">'#my-element'</span>).slider([options])<br/>
         <span style="color: #969896;">
             // Доступ к экземпляру объекта
         </span>
@@ -62,16 +62,141 @@
     <h4>API</h4>
     <table>
         <tr>
-            <th>Название</th>
+            <th>Имя</th>
             <th>Тип</th>
             <th>Поумолчанию</th>
             <th>Описание</th>
         </tr>
         <tr>
-            <th>Название</th>
-            <th>Тип</th>
-            <th>Поумолчанию</th>
-            <th>Описание</th>
+            <td>className</td>
+            <td>string</td>
+            <td>''</td>
+            <td>Имя класса, которое добавляется к главному родительскому узлу слайдера</td>
+        </tr>
+        <tr>
+            <td>min</td>
+            <td>number</td>
+            <td>0</td>
+            <td>Минимальное значение для слайдера</td>
+        </tr>
+        <tr>
+            <td>max</td>
+            <td>number</td>
+            <td>100</td>
+            <td>Максимальное значение для слайдера</td>
+        </tr>
+        <tr>
+            <td>step</td>
+            <td>number</td>
+            <td>0</td>
+            <td>Шаг для хода handle слайдера, отображения dot, mark</td>
+        </tr>
+        <tr>
+            <td>vertical</td>
+            <td>boolean</td>
+            <td>false</td>
+            <td>Ориентация слайдера если vertical true, то слайдер будет вертикальным</td>
+        </tr>
+        <tr>
+            <td>reverse</td>
+            <td>boolean</td>
+            <td>false</td>
+            <td>Направление компонентов слайдера если reverse true, то компоненты отображаются реверсивно</td>
+        </tr>
+        <tr>
+            <td>disabled</td>
+            <td>boolean</td>
+            <td>false</td>
+            <td>Отключение слайдера</td>
+        </tr>
+        <tr>
+            <td>onBeforeChange</td>
+            <td>Function</td>
+            <td>noop</td>
+            <td>Функция будет срабатывать перед началом движения handle, когда его подняли</td>
+        </tr>
+        <tr>
+            <td>onChange</td>
+            <td>Function</td>
+            <td>noop</td>
+            <td>Функция будет срабатывать при движения handle</td>
+        </tr>
+        <tr>
+            <td>onAfterChange</td>
+            <td>Function</td>
+            <td>noop</td>
+            <td>Функция будет срабатывать после движения handle, когда его отпустили</td>
+        </tr>
+        <tr>
+            <td>handle</td>
+            <td>object</td>
+            <td>{}</td>
+            <td>Ручка, {
+                classNames?: string[] = [] - имя класса для каждой ручки;
+                styles: style[] = [] стиль для каждой ручки;
+            }
+            </td>
+        </tr>
+        <tr>
+            <td>track</td>
+            <td>object</td>
+            <td>{on: true}</td>
+            <td>Трек, {
+                classNames?: string[] = [] - имя класса для каждого трека;
+                styles: style[] = [] стиль для каждого трека;
+                on?: boolean = true - вкл/выкл,
+            }
+            </td>
+        </tr>
+        <tr>
+            <td>rail</td>
+            <td>object</td>
+            <td>{on: true}</td>
+            <td>Рельс, {
+                className?: string = '' - имя класса рельсы;
+                styles: style[] = [] - стиль рельсы;
+                on?: boolean = true - вкл/выкл,
+            }
+            </td>
+        </tr>
+        <tr>
+            <td>dot</td>
+            <td>object</td>
+            <td>{}</td>
+            <td>Точки-отметки отображаются при наличие значения step, {
+                on?: boolean = false - вкл/выкл,
+                wrapClassName?: string = '' - имя класса для родительского класса точек-отметок,
+                style?: {"backgound": "red"} - стиль для точек-отметок,
+                className?: string = '' - имя класса для точек-отметок ;
+            }</td>
+        </tr>
+        <tr>
+            <td>mark</td>
+            <td>object</td>
+            <td>{}</td>
+            <td>Отметки шкала, {
+                on?: boolean = false - вкл/выкл,
+                wrapClassName?: string = '' - имя класса для родительского класса отметок,
+                style?: {"backgound": "red"} - стиль для отметок,
+                className?: string = '' - имя класса для отметок,
+                render?: (value: number) => | string | JQuery<HTMLElement> | JQuery<HTMLElement>[] | HTMLElement | HTMLElement[] | undefined; - функция для изменения отображения отметок,
+                values?: number[] - дополнительные значения отметок для шкалы отображаются внезависимости от значения step,
+                dot?: boolean = false, вкл/выкл точек-меток для дополнительных значений отметок 
+            }
+            </td>
+        </tr>
+        <tr>
+            <td>tooltip</td>
+            <td>object</td>
+            <td>{}</td>
+            <td>Всплывающие подсказки, {
+                on?: boolean = false - вкл/выкл,
+                style?: {"backgound": "red"} - стиль для подсказки,
+                className?: string = '' - имя класса для подсказки,
+                render?: (value: number) => | string | JQuery<HTMLElement> | JQuery<HTMLElement>[] | HTMLElement | HTMLElement[] | undefined; - функция для изменения отображения подсказки,
+                always?: boolean = false, вкл/выкл постоянного отображения подсказок, если установлено значение false подсказки отображаются только при наведении на handle
+            }
+            </td>
         </tr>
     </table>
 </body>
