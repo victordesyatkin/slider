@@ -46,7 +46,7 @@
             <code>npm i</code>
         <h5>3. Запуск демо</h5>
             <code>npm run start</code>
-            <code>http://localhost:8080/</code>
+            <span>and then go to <a href="http://localhost:8080/" target="_blank" rel="noopener">http://localhost:8080/</a></span>
         <h5>3. Запуск тестов</h5>
             <code>npm t</code>
     <h4>Ручная Инициализация</h4>
