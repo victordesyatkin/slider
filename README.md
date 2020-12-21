@@ -33,7 +33,7 @@
     <p>
         Тестирование осуществляется с помощью фреймворка для тестирования JavaScript <a href="https://jestjs.io/Jest" target="_blank" rel="noopener">Jest</a>
     </p>
-    <h4>JavaScript-библиотеки и jQuery-плагины</h4>
+    <h4>JavaScript-библиотеки</h4>
     <ul>
         <li><a href="https://www.npmjs.com/package/jquery" target="_blank" rel="noopener">jquery</a></li>
         <li><a href="https://www.npmjs.com/package/lodash" target="_blank" rel="noopener">lodash</a></li>
