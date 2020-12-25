@@ -1,7 +1,8 @@
-import View from "../../slider/view";
 import $ from "jquery";
-import { defaultProps } from "../../slider/index";
+
 import { setFunctionGetBoundingClientRectHTMLElement } from "../../helpers/utils";
+import View from "../../slider/view";
+import { defaultProps } from "../../slider/index";
 import { Dot, Mark, Tooltip } from "../../types";
 
 describe("slider", () => {

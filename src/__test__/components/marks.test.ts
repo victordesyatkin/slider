@@ -1,8 +1,8 @@
-import MarksView from "../../components/marks/view";
 import $ from "jquery";
+
+import MarksView from "../../components/marks/view";
 import { defaultProps } from "../../slider/index";
 import { setFunctionGetBoundingClientRectHTMLElement } from "../../helpers/utils";
-import { Rail, Dot, Mark, Tooltip } from "../../types";
 
 describe("rail", () => {
   describe("view", () => {

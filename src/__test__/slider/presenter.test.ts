@@ -1,4 +1,5 @@
 import $ from "jquery";
+
 import { prepareData } from "../../helpers/utils";
 import { defaultProps } from "../../slider/index";
 import Model from "../../slider/model";

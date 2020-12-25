@@ -1,17 +1,18 @@
-import { Addition, DefaultProps, Props } from "../types";
 import { IPubSub } from "../helpers/interface";
 
-export interface IModel extends IPubSub {
+import { Addition, DefaultProps, Props } from "../types";
+
+interface IModel extends IPubSub {
   getProps(): DefaultProps;
   setProps(p: Props): void;
 }
 
-export interface IView extends IPubSub {
+interface IView extends IPubSub {
   setProps(props: DefaultProps): void;
   render(parent: JQuery<HTMLElement>): void;
   remove(): void;
 }
-export interface ISubView extends IView {
+interface ISubView extends IView {
   createView(): void;
   prepareAttr(): {
     class: string | undefined;
@@ -31,4 +32,6 @@ export interface ISubView extends IView {
   setAddition(addition: Addition): void;
 }
 
-export interface IPresenter {}
+interface IPresenter {}
+
+export { IPresenter, ISubView, IView, IModel };

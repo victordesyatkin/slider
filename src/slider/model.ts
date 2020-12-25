@@ -1,8 +1,10 @@
-import { DefaultProps, Props } from "../types";
+import get from "lodash/get";
+
+import PubSub from "../helpers/pubsub";
 import { prepareData } from "../helpers/utils";
 import { IModel } from "../slider/interface";
-import PubSub from "../helpers/pubsub";
-import get from "lodash/get";
+
+import { DefaultProps, Props } from "../types";
 
 export default class Model extends PubSub implements IModel {
   private props: DefaultProps;
@@ -12,6 +14,15 @@ export default class Model extends PubSub implements IModel {
     this.props = props;
     this.onHandler();
   }
+
+  getProps = (): DefaultProps => {
+    return this.props;
+  };
+
+  setProps = (props: Props): void => {
+    this.props = prepareData(props, this.getProps());
+    this.publish("setPropsView", this.props);
+  };
 
   onHandler = (): void => {
     this.subscribe("setPropsModel", this.setPropsForView);
@@ -45,14 +56,5 @@ export default class Model extends PubSub implements IModel {
   setPropsForView = (props: Props): void => {
     this.onChange(get(props, ["values"]));
     this.setProps(props);
-  };
-
-  getProps = (): DefaultProps => {
-    return this.props;
-  };
-
-  setProps = (props: Props): void => {
-    this.props = prepareData(props, this.getProps());
-    this.publish("setPropsView", this.props);
   };
 }

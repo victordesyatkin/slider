@@ -35,6 +35,26 @@ export default class View extends PubSub implements IView {
     super();
   }
 
+  setProps(props: DefaultProps): void {
+    this.props = props;
+    this.updateView();
+    this.createOrUpdateSubViews();
+    this.appendSubViews();
+    this.render();
+  }
+
+  render = (parent?: JQuery<HTMLElement>): void => {
+    if (parent) {
+      this.parent = parent;
+    }
+    if (!this.isRendered && this.parent && this.view) {
+      this.parent.append(this.view);
+      this.isRendered = true;
+    }
+  };
+
+  remove = (): void => {};
+
   createView(): void {
     this.view = $("<div/>", this.prepareAttr());
   }
@@ -255,24 +275,4 @@ export default class View extends PubSub implements IView {
       }
     }
   }
-
-  setProps(props: DefaultProps): void {
-    this.props = props;
-    this.updateView();
-    this.createOrUpdateSubViews();
-    this.appendSubViews();
-    this.render();
-  }
-
-  render = (parent?: JQuery<HTMLElement>): void => {
-    if (parent) {
-      this.parent = parent;
-    }
-    if (!this.isRendered && this.parent && this.view) {
-      this.parent.append(this.view);
-      this.isRendered = true;
-    }
-  };
-
-  remove = (): void => {};
 }

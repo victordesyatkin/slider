@@ -1,5 +1,6 @@
-import TooltipView from "../../components/tooltip/view";
 import $ from "jquery";
+
+import TooltipView from "../../components/tooltip/view";
 import { defaultProps } from "../../slider/index";
 import { setFunctionGetBoundingClientRectHTMLElement } from "../../helpers/utils";
 import { DefaultProps, Addition } from "../../types";

@@ -1,13 +1,14 @@
 import $ from "jquery";
+import classnames from "classnames";
 import get from "lodash/get";
 import uniq from "lodash/uniq";
 import orderBy from "lodash/orderBy";
 import isArray from "lodash/isArray";
+
+import PubSub from "../../helpers/pubsub";
 import { ISubView, IView } from "../../slider/interface";
 import { DefaultProps, Addition } from "../../types";
 import DotView from "../dot/view";
-import classnames from "classnames";
-import PubSub from "../../helpers/pubsub";
 
 export default class DotsView extends PubSub implements ISubView {
   private props?: DefaultProps;
@@ -21,6 +22,33 @@ export default class DotsView extends PubSub implements ISubView {
     super();
     this.addition = addition;
   }
+
+  render = (parent?: JQuery<HTMLElement>): void => {
+    if (parent) {
+      this.parent = parent;
+    }
+    if (!this.isRendered && this.parent && this.view) {
+      this.parent.append(this.view);
+      this.isRendered = true;
+    }
+  };
+
+  remove = () => {
+    if (this.view) {
+      this.view.remove();
+      this.view = undefined;
+      this.dots = [];
+      this.isRendered = false;
+    }
+  };
+
+  getAddition = (): Addition => {
+    return this.addition;
+  };
+
+  setAddition = (addition: Addition): void => {
+    this.addition = addition;
+  };
 
   createView(): void {
     if (this.props) {
@@ -145,31 +173,4 @@ export default class DotsView extends PubSub implements ISubView {
   onClick = (): void => {};
 
   onHandlers = (): void => {};
-
-  render = (parent?: JQuery<HTMLElement>): void => {
-    if (parent) {
-      this.parent = parent;
-    }
-    if (!this.isRendered && this.parent && this.view) {
-      this.parent.append(this.view);
-      this.isRendered = true;
-    }
-  };
-
-  remove = () => {
-    if (this.view) {
-      this.view.remove();
-      this.view = undefined;
-      this.dots = [];
-      this.isRendered = false;
-    }
-  };
-
-  getAddition = (): Addition => {
-    return this.addition;
-  };
-
-  setAddition = (addition: Addition): void => {
-    this.addition = addition;
-  };
 }

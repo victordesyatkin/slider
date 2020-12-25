@@ -1,14 +1,15 @@
 import $ from "jquery";
+import classnames from "classnames";
 import get from "lodash/get";
 import isArray from "lodash/isArray";
 import uniq from "lodash/uniq";
 import orderBy from "lodash/orderBy";
 import isUndefined from "lodash/isUndefined";
-import classnames from "classnames";
+
+import PubSub from "../../helpers/pubsub";
 import { ISubView } from "../../slider/interface";
 import { DefaultProps, Addition } from "../../types";
 import MarkView from "../mark/view";
-import PubSub from "../../helpers/pubsub";
 
 export default class MarksView extends PubSub implements ISubView {
   private props?: DefaultProps;
@@ -22,6 +23,41 @@ export default class MarksView extends PubSub implements ISubView {
     super();
     this.addition = addition;
   }
+
+  setProps = (props: DefaultProps): void => {
+    this.props = props;
+    this.updateView();
+    this.createOrUpdateSubViews();
+    this.appendSubViews();
+    this.render();
+  };
+
+  render = (parent?: JQuery<HTMLElement>): void => {
+    if (parent) {
+      this.parent = parent;
+    }
+    if (!this.isRendered && this.parent && this.view) {
+      this.parent.append(this.view);
+      this.isRendered = true;
+    }
+  };
+
+  remove = () => {
+    if (this.view) {
+      this.view.remove();
+      this.view = undefined;
+      this.marks = [];
+      this.isRendered = false;
+    }
+  };
+
+  getAddition = (): Addition => {
+    return this.addition;
+  };
+
+  setAddition = (addition: Addition): void => {
+    this.addition = addition;
+  };
 
   createView(): void {
     if (this.props) {
@@ -137,42 +173,7 @@ export default class MarksView extends PubSub implements ISubView {
     }
   }
 
-  setProps = (props: DefaultProps): void => {
-    this.props = props;
-    this.updateView();
-    this.createOrUpdateSubViews();
-    this.appendSubViews();
-    this.render();
-  };
-
-  render = (parent?: JQuery<HTMLElement>): void => {
-    if (parent) {
-      this.parent = parent;
-    }
-    if (!this.isRendered && this.parent && this.view) {
-      this.parent.append(this.view);
-      this.isRendered = true;
-    }
-  };
-
   onHandlers = (): void => {};
 
   onClick = (): void => {};
-
-  remove = () => {
-    if (this.view) {
-      this.view.remove();
-      this.view = undefined;
-      this.marks = [];
-      this.isRendered = false;
-    }
-  };
-
-  getAddition = (): Addition => {
-    return this.addition;
-  };
-
-  setAddition = (addition: Addition): void => {
-    this.addition = addition;
-  };
 }

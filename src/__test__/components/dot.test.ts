@@ -1,8 +1,9 @@
-import DotView from "../../components/dot/view";
 import $ from "jquery";
+import merge from "lodash/merge";
+
+import DotView from "../../components/dot/view";
 import { defaultProps } from "../../slider/index";
 import { setFunctionGetBoundingClientRectHTMLElement } from "../../helpers/utils";
-import { merge } from "lodash";
 
 describe("rail", () => {
   describe("view", () => {

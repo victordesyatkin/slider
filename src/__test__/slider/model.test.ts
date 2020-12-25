@@ -1,4 +1,3 @@
-import $ from "jquery";
 import { defaultProps } from "../../slider/index";
 import Model from "../../slider/model";
 import { DefaultProps } from "../../types";

@@ -25,7 +25,7 @@ module.exports = (env = {}) => {
     entry: "./demo/index.ts",
 
     mode: "development",
-    devtool: "inline-source-map",
+    // devtool: "inline-source-map",
     devtool: isDev && "source-map",
 
     module: {

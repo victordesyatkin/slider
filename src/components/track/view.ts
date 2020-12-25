@@ -1,12 +1,12 @@
 import $ from "jquery";
+import classnames from "classnames";
 import get from "lodash/get";
-import { objectToString } from "../../helpers/utils";
+import isUndefined from "lodash/isUndefined";
+
+import { objectToString, calcOffset } from "../../helpers/utils";
+import PubSub from "../../helpers/pubsub";
 import { ISubView } from "../../slider/interface";
 import { DefaultProps, Addition } from "../../types";
-import { calcOffset } from "../../helpers/utils";
-import classnames from "classnames";
-import { isUndefined } from "lodash";
-import PubSub from "../../helpers/pubsub";
 
 export default class TrackView extends PubSub implements ISubView {
   private props?: DefaultProps;

@@ -1,4 +1,5 @@
 import { Callback } from "../types";
+
 import { IPubSub } from "./interface";
 
 export default class PubSub implements IPubSub {

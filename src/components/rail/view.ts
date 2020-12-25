@@ -1,10 +1,11 @@
 import $ from "jquery";
+import classnames from "classnames";
 import get from "lodash/get";
+
+import PubSub from "../../helpers/pubsub";
 import { objectToString } from "../../helpers/utils";
 import { ISubView } from "../../slider/interface";
 import { DefaultProps, Addition } from "../../types";
-import classnames from "classnames";
-import PubSub from "../../helpers/pubsub";
 
 export default class RailView extends PubSub implements ISubView {
   private props?: DefaultProps;
@@ -17,6 +18,39 @@ export default class RailView extends PubSub implements ISubView {
     super();
     this.addition = addition;
   }
+
+  setProps = (props: DefaultProps): void => {
+    this.props = props;
+    this.updateView();
+    this.onHandlers();
+    this.render();
+  };
+
+  render = (parent?: JQuery<HTMLElement>): void => {
+    if (parent) {
+      this.parent = parent;
+    }
+    if (!this.isRendered && this.parent && this.view) {
+      this.parent.append(this.view);
+      this.isRendered = true;
+    }
+  };
+
+  remove = () => {
+    if (this.view) {
+      this.view.remove();
+      this.view = undefined;
+      this.isRendered = false;
+    }
+  };
+
+  getAddition = (): Addition => {
+    return this.addition;
+  };
+
+  setAddition = (addition: Addition): void => {
+    this.addition = addition;
+  };
 
   createView(): void {
     if (this.props) {
@@ -78,38 +112,5 @@ export default class RailView extends PubSub implements ISubView {
       this.view.off("click", this.onClick);
       this.view.on("click", this.onClick);
     }
-  };
-
-  setProps = (props: DefaultProps): void => {
-    this.props = props;
-    this.updateView();
-    this.onHandlers();
-    this.render();
-  };
-
-  render = (parent?: JQuery<HTMLElement>): void => {
-    if (parent) {
-      this.parent = parent;
-    }
-    if (!this.isRendered && this.parent && this.view) {
-      this.parent.append(this.view);
-      this.isRendered = true;
-    }
-  };
-
-  remove = () => {
-    if (this.view) {
-      this.view.remove();
-      this.view = undefined;
-      this.isRendered = false;
-    }
-  };
-
-  getAddition = (): Addition => {
-    return this.addition;
-  };
-
-  setAddition = (addition: Addition): void => {
-    this.addition = addition;
   };
 }

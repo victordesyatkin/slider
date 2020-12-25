@@ -4,12 +4,10 @@ import merge from "lodash/merge";
 import uniq from "lodash/uniq";
 import isUndefined from "lodash/isUndefined";
 
-import { IView } from "../slider/interface";
-
 import { defaultProps } from "../slider/index";
 import { DefaultProps, Props } from "../types";
 
-export function objectToString(style?: { [key: string]: string }): string {
+function objectToString(style?: { [key: string]: string }): string {
   if (!style) {
     return "";
   }
@@ -19,7 +17,7 @@ export function objectToString(style?: { [key: string]: string }): string {
   return lines.join("");
 }
 
-export function calcOffset(
+function calcOffset(
   value: number,
   min: number,
   max: number,
@@ -29,7 +27,7 @@ export function calcOffset(
   return Number(Math.max(0, ratio * 100).toFixed(precision));
 }
 
-export function getHandleCenterPosition(
+function getHandleCenterPosition(
   vertical: boolean,
   handle: HTMLElement
 ): number {
@@ -39,7 +37,7 @@ export function getHandleCenterPosition(
     : window.pageXOffset + coords.left + coords.width * 0.5;
 }
 
-export function ensureValueInRange(
+function ensureValueInRange(
   val: number,
   { max, min }: { max: number; min: number }
 ): number {
@@ -52,24 +50,24 @@ export function ensureValueInRange(
   return val;
 }
 
-export const getMousePosition = (vertical: boolean, e: MouseEvent): number => {
+function getMousePosition(vertical: boolean, e: MouseEvent): number {
   return vertical ? e.clientY || 0 : e.pageX || 0;
-};
+}
 
-export const getPrecision = (step: number): number => {
+function getPrecision(step: number): number {
   const stepString = step.toString();
   let precision = 0;
   if (stepString.indexOf(".") >= 0) {
     precision = stepString.length - 1 - stepString.indexOf(".");
   }
   return precision;
-};
+}
 
-export const getClosestPoint = (
+function getClosestPoint(
   value: number,
   { step, min, max }: { step: number | undefined; min: number; max: number },
   props: DefaultProps
-): number => {
+): number {
   if (step) {
     let points: number[] = [...get(props, ["mark", "values"], [])];
     const baseNum = 10 ** getPrecision(step);
@@ -85,12 +83,9 @@ export const getClosestPoint = (
   } else {
     return value;
   }
-};
+}
 
-export const ensureValuePrecision = (
-  v: number,
-  props: DefaultProps
-): number => {
+function ensureValuePrecision(v: number, props: DefaultProps): number {
   const { step, min, max } = props;
   const closestPoint = isFinite(getClosestPoint(v, { step, min, max }, props))
     ? getClosestPoint(v, { step, min, max }, props)
@@ -98,9 +93,9 @@ export const ensureValuePrecision = (
   return isUndefined(step)
     ? closestPoint
     : parseFloat(closestPoint.toFixed(getPrecision(step)));
-};
+}
 
-export const prepareValues = (props: DefaultProps): DefaultProps => {
+function prepareValues(props: DefaultProps): DefaultProps {
   let { values, mark } = props;
   values = orderBy(values).map((v, index) => {
     return calcValueWithEnsure({ value: v, props, index });
@@ -110,16 +105,16 @@ export const prepareValues = (props: DefaultProps): DefaultProps => {
   });
   markValues = orderBy(uniq(markValues), [], ["asc"]);
   return { ...props, values, mark: { ...mark, values: markValues } };
-};
+}
 
-export const getCount = (props?: DefaultProps): number => {
+function getCount(props?: DefaultProps): number {
   return get(props, ["values"], []).length;
-};
+}
 
-export const getSliderStart = (
+function getSliderStart(
   props?: DefaultProps,
   view?: JQuery<HTMLElement>
-): number => {
+): number {
   if (props && view) {
     const { vertical, reverse } = props;
     const rect = view.get(0).getBoundingClientRect();
@@ -129,9 +124,9 @@ export const getSliderStart = (
     return window.pageXOffset + (reverse ? rect.right : rect.left);
   }
   return 0;
-};
+}
 
-export function getSliderLength(options: {
+function getSliderLength(options: {
   view: JQuery<HTMLElement>;
   props: DefaultProps;
 }): number {
@@ -141,7 +136,7 @@ export function getSliderLength(options: {
   return vertical ? coords.height : coords.width;
 }
 
-export function calcValue(options: {
+function calcValue(options: {
   offset: number;
   view: JQuery<HTMLElement>;
   props: DefaultProps;
@@ -158,7 +153,7 @@ export function calcValue(options: {
   return Number(value.toFixed(precision));
 }
 
-export function calcValueByPos(options: {
+function calcValueByPos(options: {
   position: number;
   view: JQuery<HTMLElement>;
   props: DefaultProps;
@@ -176,11 +171,11 @@ export function calcValueByPos(options: {
   return value;
 }
 
-export function checkNeighbors(value: number[]) {
+function checkNeighbors(value: number[]) {
   return value.length > 1;
 }
 
-export function ensureValueCorrectNeighbors(options: {
+function ensureValueCorrectNeighbors(options: {
   value: number;
   props: DefaultProps;
   index: number;
@@ -205,7 +200,7 @@ export function ensureValueCorrectNeighbors(options: {
   });
 }
 
-export function calcValueWithEnsure(options: {
+function calcValueWithEnsure(options: {
   value: number;
   props: DefaultProps;
   index: number;
@@ -217,7 +212,7 @@ export function calcValueWithEnsure(options: {
   return value;
 }
 
-export function setFunctionGetBoundingClientRectHTMLElement(
+function setFunctionGetBoundingClientRectHTMLElement(
   style?: Partial<{
     width: number;
     height: number;
@@ -256,10 +251,7 @@ export function setFunctionGetBoundingClientRectHTMLElement(
   };
 }
 
-export function prepareData(
-  props?: Props,
-  prevProps?: DefaultProps
-): DefaultProps {
+function prepareData(props?: Props, prevProps?: DefaultProps): DefaultProps {
   const values: number[] =
     props?.values || prevProps?.values || defaultProps.values;
   const markValues: number[] | undefined =
@@ -274,6 +266,29 @@ export function prepareData(
   });
 }
 
-export function uniqId() {
+function uniqId() {
   return Math.random().toString(16).substr(2);
 }
+
+export {
+  objectToString,
+  uniqId,
+  prepareData,
+  setFunctionGetBoundingClientRectHTMLElement,
+  calcValueWithEnsure,
+  ensureValueCorrectNeighbors,
+  checkNeighbors,
+  calcValueByPos,
+  calcValue,
+  getSliderLength,
+  getSliderStart,
+  getCount,
+  prepareValues,
+  ensureValuePrecision,
+  getClosestPoint,
+  getPrecision,
+  getMousePosition,
+  ensureValueInRange,
+  calcOffset,
+  getHandleCenterPosition,
+};

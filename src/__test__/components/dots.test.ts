@@ -1,5 +1,6 @@
-import DotsView from "../../components/dots/view";
 import $ from "jquery";
+
+import DotsView from "../../components/dots/view";
 import { defaultProps } from "../../slider/index";
 import { setFunctionGetBoundingClientRectHTMLElement } from "../../helpers/utils";
 

@@ -1,4 +1,5 @@
 import $ from "jquery";
+
 import { defaultProps } from "../../slider/index";
 import HandleView from "../../components/handle/view";
 

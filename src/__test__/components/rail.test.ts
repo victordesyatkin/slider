@@ -1,5 +1,6 @@
-import RailView from "../../components/rail/view";
 import $ from "jquery";
+
+import RailView from "../../components/rail/view";
 import { defaultProps } from "../../slider/index";
 import { setFunctionGetBoundingClientRectHTMLElement } from "../../helpers/utils";
 import { DefaultProps, Addition } from "../../types";

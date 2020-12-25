@@ -8,7 +8,6 @@ import trim from "lodash/trim";
 import isUndefined from "lodash/isUndefined";
 import isString from "lodash/isString";
 import merge from "lodash/merge";
-import difference from "lodash/difference";
 import orderBy from "lodash/orderBy";
 
 import { uniqId, ensureValueInRange } from "../src/helpers/utils";

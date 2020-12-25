@@ -1,6 +1,7 @@
-import MarkView from "../../components/mark/view";
 import $ from "jquery";
+
 import { defaultProps } from "../../slider/index";
+import MarkView from "../../components/mark/view";
 import { setFunctionGetBoundingClientRectHTMLElement } from "../../helpers/utils";
 import { DefaultProps, Addition } from "../../types";
 
