@@ -1,36 +1,39 @@
-mixin section(options = {})
+mixin section(props = {})
     -
-        let {classNames = [], items = [], label} = options;
-    .section(
+        let { items = [], label } = props;
+        let className = 'section';
+        let classNames = `${className}`;
+    div(
         class=classNames
     )   
-        +label(label, 'section__label')
+        .section__label
+            +caption(label)
         .section__items.js-section__items
             - let index = 0;
-            each item, key  in items
+            each item in items
                 -
-                    let isControl = false;
-                    let { type = '', control=false, label:labelItem = {} } = item || {};
-                    let sectionItemClass = '';
-                    if (control) {
+                    
+                    let { isControl, buttonAdd } = item || {};
+                    let sectionItemClass = 'section__item';
+                    let sectionItemClasses = `${sectionItemClass}`;
+                    if (isControl) {
                         item.key = index;
-                        isControl = true;
-                        sectionItemClass = 'section__item-control js-section__item-control' + (index === 0 ? ' section__item_first js-section__item_first' : '');
+                        sectionItemClasses += ` ${sectionItemClasses}_control js-${sectionItemClasses}_control`;
+                        sectionItemClass += index === 0 ? ` ${sectionItemClasses}_first js-${sectionItemClasses}_first` : ''
                         index += 1;
                     }
-                .section__item(
-                    class=sectionItemClass
+                div(
+                    class=sectionItemClasses
                 )
-                    if isControl
-                        +button({
-                            data:{type:1},
-                            type:"button",
-                            classNames:["section__button-control", "js-button-add"],
-                            content:"&#x271A;",
-                            title: "Add"
-                        })
-                    case type
-                        when 'text'
-                        when 'checkbox'
-                        when 'number'
-                            +input(item)
+                    if buttonAdd
+                        +button(buttonAdd)
+                        //- +button({
+                        //-     data: { type: 1 },
+                        //-     type:"button",
+                        //-     content:"&#x271A;",
+                        //-     isControl: isControl,
+                        //-     isAdd: true,
+                        //-     title: "Add"
+                        //- })
+                    +input({...item, isFirst})
+                            

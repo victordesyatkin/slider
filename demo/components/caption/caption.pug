@@ -1,9 +1,9 @@
-mixin label(props = {})
+mixin caption(props = {})
     -
-        let { id, classNames, content } = props;
-        let className = 'label';
+        let { content } = props;
+        let className = 'caption';
         let classNames = `${className}`;
-    label(
+    div(
         for=id
         class=classNames
     )

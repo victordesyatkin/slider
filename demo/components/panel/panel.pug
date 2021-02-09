@@ -1,12 +1,16 @@
-mixin panel(options={})
+include ../link/link
+
+mixin panel(props = {})
     -
-        let { classNames = [], sections = [], label} = options;
-        classNames = classNames.join(' ');
-    .panel(
-        class=`${classNames}`
+        let { sections = [], link } = options;
+        let className = 'panel';
+        let classNames = `${className}`;
+    div(
+        class=classNames
     )
-        +label(label, 'panel__label')
+        .panel__head
+            +link(link)
         .panel__sections
-            each section, key in sections
+            each section in sections
                 +section(section)
 

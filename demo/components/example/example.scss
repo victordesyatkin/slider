@@ -4,25 +4,25 @@
   display: flex;
   flex-direction: column;
 
-  &__label {
-    &.label {
-      text-align: center;
-      font-weight: bold;
-    }
-  }
+  // &__label {
+  //   &.label {
+  //     text-align: center;
+  //     font-weight: bold;
+  //   }
+  // }
 
   &__body {
     padding: 1rem 0;
     display: flex;
   }
 
-  &__panel {
-    &.panel {
-      flex-shrink: 0;
-      max-width: 400px;
-      border: 1px solid #e4e4e4;
-      border-radius: 4px;
-      padding: 1rem;
-    }
-  }
+  // &__panel {
+  //   &.panel {
+  //     flex-shrink: 0;
+  //     max-width: 400px;
+  //     border: 1px solid #e4e4e4;
+  //     border-radius: 4px;
+  //     padding: 1rem;
+  //   }
+  // }
 }

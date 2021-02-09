@@ -1,0 +1,13 @@
+mixin link(props = {})
+    -
+        let { content, href, title, target } = props;
+        let rel = "";
+        if (target === '_blank') {
+            rel = "noopener";
+        }
+    a.link(
+        href=href
+        title=title
+        target=target
+        rel=rel
+    )=content

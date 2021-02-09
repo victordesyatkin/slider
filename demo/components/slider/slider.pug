@@ -1,8 +1,8 @@
-mixin slider(options = {})
+mixin slider(props = {})
     -
-        let {classNames = []} = options;
-        classNames = classNames.join(' '); 
-    .slider(
+        let className = 'slider';
+        let classNames = `${className}`;
+    div(
         class=classNames
     )
         .slider__dummy.js-slider__dummy

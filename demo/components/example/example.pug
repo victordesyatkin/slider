@@ -1,11 +1,14 @@
-mixin example(options = {})
+include label/label
+include link/link
+
+mixin example(props = {})
     -
-        let { label = {}, classNames = [], panel = {}, slider = {} } = options;
-        classNames = classNames.join([' ']);
-    .example.js-example(
-        class=classNames
-    )
-        +label(label, 'example__label')
+        let { label, panel, slider, link } = props;
+    .example.js-example
+        if label
+            +label(label)
+        if link
+            +link(link)
         .example__body    
             +panel(panel)
             +slider(slider)

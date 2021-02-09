@@ -1,22 +1,24 @@
-mixin input(options = {})
+mixin input(props = {})
     -
-        let { classNames=[], label, type='number', content='', value, key='', control, data = {} } = options;
+        let { label = {}, type = 'number', content, value, key, isControl, data = {}, link, isFirst, buttonRemove } = props;
         let checked = value && type === "checkbox" ? true : false;
-        if (control) {
-            classNames = [...classNames, 'input__control', 'js-input__control'];
-        }
+        let className = 'input';
+        let classNames = `${className} js-${className}`;
+        classNames += isControl ? ` ${className}__control js-${className}__control` : '';
         let id = Math.random().toString(16).substr(2);
-        if (control && key > 1 && (label || label?.content)) {
-            const { content, ...other} = label;
-            label = {...other, id};
+        let { content, ...other} = label;
+        if (isControl && !isFirst && content) {
+            label = { ...label, id };
         }
-        classNames = classNames.join(' ');
-    .input.js-input(
+    div(
         class = classNames
         data-data=data
         data-key=key
     )
-        +label(label, 'input__label')
+        if link
+            +link(link)
+        if label
+            +label(label)
         .input__section
             if key >= 0 && control
                 span.input__section-key.js-input__section-key #{key + 1}:
@@ -26,11 +28,12 @@ mixin input(options = {})
                 checked=checked
                 value=value
             )
-            if control
-                +button({
-                    data:{type:0},
-                    type:"button",
-                    classNames:["input__button-control", "js-button-remove"],
-                    content:"&#x274C",
-                    title: "Remove"
-                })
+            if buttonRemove
+                +button(buttonRemove)
+                //- +button({
+                //-     data:{ type: 0 },
+                //-     type:"button",
+                //-     classNames:["input__button-control", "js-button-remove"],
+                //-     content:"&#x274C",
+                //-     title: "Remove"
+                //- })
