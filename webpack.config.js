@@ -3,7 +3,9 @@ const path = require("path");
 const fs = require("fs");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
+const CopyWebpackPlugin = require("copy-webpack-plugin");
 const { CleanWebpackPlugin } = require("clean-webpack-plugin");
+const webpack = require("webpack");
 
 module.exports = (env = {}) => {
   const { mode = "development" } = env;
@@ -21,11 +23,62 @@ module.exports = (env = {}) => {
     ];
   };
 
+  const getPlugins = () => {
+    const plugins = [
+      new CleanWebpackPlugin(),
+      new HtmlWebpackPlugin({
+        getData: () => {
+          try {
+            return JSON.parse(
+              fs.readFileSync(
+                `${path.resolve(__dirname, "demo")}/data.json`,
+                "utf8"
+              )
+            );
+          } catch (e) {
+            console.warn(`data.json was not provided`);
+            return {};
+          }
+        },
+        template: "./demo/index.pug",
+        filename: "index.html",
+        alwaysWriteToDisk: true,
+        inject: true,
+        hash: true,
+        alwaysWriteToDisk: true,
+        meta: {
+          viewport: "initial-scale=1.0, width=device-width",
+          "msapplication-TileColor": "#da532c",
+          "theme-color": "#ffffff",
+        },
+      }),
+      new CopyWebpackPlugin({
+        patterns: [
+          {
+            from: "assets/favicons",
+            to: "assets/favicons",
+          },
+        ],
+      }),
+      new webpack.HotModuleReplacementPlugin(),
+    ];
+    if (isProd) {
+      plugins.push(
+        new MiniCssExtractPlugin({
+          filename: isDev ? "[name].css" : "[name].[hash].css",
+          chunkFilename: isDev ? "[id].css" : "[id].[hash].css",
+          insertAt: {
+            after: "title",
+          },
+        })
+      );
+    }
+    return plugins;
+  };
+
   return {
     entry: "./demo/index.ts",
-
-    mode: "development",
-    // devtool: "inline-source-map",
+    mode: isProd ? "production" : isDev && "development",
     devtool: isDev && "source-map",
 
     module: {
@@ -71,33 +124,7 @@ module.exports = (env = {}) => {
         },
       ],
     },
-    plugins: [
-      new CleanWebpackPlugin(),
-      new HtmlWebpackPlugin({
-        getData: () => {
-          try {
-            return JSON.parse(
-              fs.readFileSync(
-                `${path.resolve(__dirname, "demo")}/data.json`,
-                "utf8"
-              )
-            );
-          } catch (e) {
-            console.warn(`data.json was not provided`);
-            return {};
-          }
-        },
-        template: `./demo/index.pug`,
-        filename: "index.html",
-        alwaysWriteToDisk: true,
-        inject: true,
-        hash: true,
-        favicon: "./assets/images/favicon.png",
-        alwaysWriteToDisk: true,
-        inject: true,
-        hash: true,
-      }),
-    ],
+    plugins: getPlugins(),
 
     output: {
       filename: "[name].[fullhash:8].js",
@@ -106,7 +133,9 @@ module.exports = (env = {}) => {
     },
 
     devServer: {
+      hot: true,
       open: true,
+      watchContentBase: true,
     },
 
     resolve: {

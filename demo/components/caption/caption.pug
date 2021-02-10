@@ -1,12 +1,17 @@
-mixin caption(props = {})
-    -
-        let { content } = props;
-        let className = 'caption';
-        let classNames = `${className}`;
-    div(
-        for=id
-        class=classNames
-    )
-        span(
-            class=`${className}__content`
-        )=content
+mixin caption(props)
+    if props
+        -
+            let { content, theme } = props;
+            let className = 'caption';
+            let classNames = `${className}`;
+            let themes = {
+                section: 'section',
+            };
+            classNames += themes[theme] ? ` ${className}_theme_${themes[theme]}` : '';
+        div(
+            for=id
+            class=classNames
+        )
+            span(
+                class=`${className}__content`
+            )=content

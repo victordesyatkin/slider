@@ -1,39 +1,45 @@
+include ../caption/caption
+include ../input/input
+include ../button/button
+
 mixin section(props = {})
     -
-        let { items = [], label } = props;
+        let { items = [], caption, buttonAdd, buttonRemove } = props;
         let className = 'section';
         let classNames = `${className}`;
     div(
         class=classNames
     )   
-        .section__label
-            +caption(label)
+        .section__caption
+            +caption(caption)
         .section__items.js-section__items
             - let index = 0;
             each item in items
                 -
                     
-                    let { isControl, buttonAdd } = item || {};
+                    let { isControl } = item || {};
                     let sectionItemClass = 'section__item';
                     let sectionItemClasses = `${sectionItemClass}`;
+                    let isFirst = false;
                     if (isControl) {
                         item.key = index;
-                        sectionItemClasses += ` ${sectionItemClasses}_control js-${sectionItemClasses}_control`;
-                        sectionItemClass += index === 0 ? ` ${sectionItemClasses}_first js-${sectionItemClasses}_first` : ''
+                        isFirst = index === 0;
+                        sectionItemClasses += ` ${sectionItemClass}_control js-${sectionItemClass}_control`;
+                        sectionItemClasses += isFirst ? ` ${sectionItemClass}_first js-${sectionItemClass}_first` : ''
                         index += 1;
                     }
                 div(
                     class=sectionItemClasses
                 )
-                    if buttonAdd
-                        +button(buttonAdd)
-                        //- +button({
-                        //-     data: { type: 1 },
-                        //-     type:"button",
-                        //-     content:"&#x271A;",
-                        //-     isControl: isControl,
-                        //-     isAdd: true,
-                        //-     title: "Add"
-                        //- })
-                    +input({...item, isFirst})
-                            
+                    if isControl
+                        .section__button-control
+                            +button(buttonAdd)
+                    -
+                        if (isFirst) {
+                            item = { ...item, isFirst };
+                        }
+                        if (isControl) {
+                            item = { ...item, buttonRemove };
+                        }
+                    .section__input
+                        +input(item)

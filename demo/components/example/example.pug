@@ -1,14 +1,13 @@
-include label/label
-include link/link
+include ../caption/caption
+include ../panel/panel
+include ../slider/slider
 
 mixin example(props = {})
     -
-        let { label, panel, slider, link } = props;
+        let { caption, panel, slider } = props;
     .example.js-example
-        if label
-            +label(label)
-        if link
-            +link(link)
+        .example__head
+            +caption(caption)
         .example__body    
             +panel(panel)
             +slider(slider)

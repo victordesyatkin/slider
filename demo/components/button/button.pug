@@ -1,17 +1,19 @@
-mixin button(props = {})
-    -
-        let { type = 'button', content, data = {}, title, isControl, isAdd, isRemove } = props;
-        let className = 'button';
-        let classNames = `${className}`;
-        classNames += isControl ? ` ${className}_control` : '';
-        classNames += isAdd ? `js-${className}_add`: '';
-        classNames += isRemove ? `js-${className}_remove`: '';
-    div(
-        class=classNames
-    )
-        button.button__button(
-            type=type
-            data=data
-            title=title
-        )
-            span.button__content !{content}
+mixin button(props)
+    if props
+        -
+            let { type = 'button', content, data = {}, title, isControl, isAdd, isRemove } = props;
+            let className = 'button';
+            let classNames = `${className}`;
+            classNames += isControl ? ` ${className}_control` : '';
+            classNames += isAdd ? ` js-${className}_add`: '';
+            classNames += isRemove ? ` js-${className}_remove`: '';
+        if content
+            div(
+                class=classNames
+            )
+                button.button__button(
+                    type=type
+                    data=data
+                    title=title
+                )
+                    span.button__content !{content}

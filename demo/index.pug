@@ -1,18 +1,26 @@
-include ./components/label/label
-include ./components/button/button
-include ./components/input/input
-include ./components/section/section
-include ./components/panel/panel
-include ./components/slider/slider
 include ./components/example/example
-<!DOCTYPE html>
-html(lang="en")
+
+doctype html
+-
+    let { examples = [], meta = [], links = [], title, lang } = htmlWebpackPlugin.options.getData();
+html(lang=lang)
     head
-        meta(charset="UTF-8")
-        meta(name="viewport", content="width=device-width, initial-scale=1.0")
-        title Demo sliders
+        title=title
+        each item in meta
+            - let { name, content, charset } = item || {};
+            meta(
+                name=name,
+                content=content
+                charset=charset
+            )
+        each link in links
+            - let { rel, href, sizes, type } = link || {};
+            link(
+                rel=rel,
+                href=href,
+                sizes=sizes,
+                type=type
+            )
     body
-        -
-            let { examples = [] } = htmlWebpackPlugin.options.getData();
         each example in examples            
             +example(example)
