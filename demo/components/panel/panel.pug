@@ -1,8 +1,9 @@
 include ../link/link
+include ../section/section
 
 mixin panel(props = {})
     -
-        let { sections = [], link } = options;
+        let { sections = [], link } = props;
         let className = 'panel';
         let classNames = `${className}`;
     div(

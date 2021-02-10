@@ -13,16 +13,8 @@ import orderBy from "lodash/orderBy";
 import { uniqId, ensureValueInRange } from "../src/helpers/utils";
 import { style, render, Props, KeyProps } from "../src/types";
 import Slider from "../src/index";
-
+import "./components/example/example";
 import "./index.scss";
-
-function requireAll(requireContext: any) {
-  return requireContext.keys().map(requireContext);
-}
-
-requireAll(
-  require.context("./components", true, /^\.\/(?!.*(?:__tests__)).*\.(ts?)$/)
-);
 
 class Example {
   private $parent: JQuery<HTMLElement>;
@@ -50,10 +42,10 @@ class Example {
     this.$sections.each(this.initHandler);
   };
 
-  private initHandler = (index: number, el: HTMLElement) => {
-    $(el).on("click", this.onClick);
-    $(el).on("input", this.onInput);
-    $(el).on("focusout", this.onFocusout);
+  private initHandler = (index: number, element: HTMLElement) => {
+    $(element).on("click", this.handleClickSection);
+    $(element).on("input", this.handleInputSection);
+    $(element).on("focusout", this.handleFocusoutSection);
   };
 
   private getProps = (): Props => {
@@ -98,32 +90,34 @@ class Example {
       return;
     }
     set(this.props, ["values"], values);
-    $(".js-input__control", this.$sections).each((index, el: HTMLElement) => {
-      const type = get($(el).data("data"), ["type"]);
-      if (type === "values") {
-        $(".js-input__input", el).val(values[index]);
+    $(".js-input_control", this.$sections).each(
+      (index, element: HTMLElement) => {
+        const type = get($(element).data("data"), ["type"]);
+        if (type === "values") {
+          $(".js-input__input", element).val(values[index]);
+        }
       }
-    });
+    );
   };
 
-  private onClick = (e: JQuery.Event): void => {
-    const target: HTMLElement = get(e, ["target"]);
-    const currentTarget: HTMLElement = get(e, ["currentTarget"]);
+  private handleClickSection = (event: JQuery.Event): void => {
+    const target: HTMLElement = get(event, ["target"]);
+    const currentTarget: HTMLElement = get(event, ["currentTarget"]);
     if (target) {
       this.removeHandle(target, currentTarget);
       this.addHandle(target, currentTarget);
     }
   };
 
-  private onInput = (e: JQuery.Event) => {
-    const target: HTMLElement = get(e, ["target"]);
+  private handleInputSection = (event: JQuery.Event) => {
+    const target: HTMLElement = get(event, ["target"]);
     if (target && $(target).attr("type") === "checkbox") {
       this.updateProps();
     }
   };
 
-  private onFocusout = (e: JQuery.Event) => {
-    const target: HTMLElement = get(e, ["target"]);
+  private handleFocusoutSection = (event: JQuery.Event) => {
+    const target: HTMLElement = get(event, ["target"]);
     if (
       target &&
       ["number", "text"].indexOf($(target).attr("type") || "") !== -1
@@ -135,20 +129,21 @@ class Example {
   private getSectionItems = (
     currentTarget: HTMLElement
   ): JQuery<HTMLElement> => {
-    return $(".js-section__item-control", currentTarget);
+    return $(".js-section__item_control", currentTarget);
   };
 
   private addHandle = (
     target: HTMLElement,
     currentTarget: HTMLElement
   ): void => {
-    if ($(target).closest(".js-button-add").length) {
+    if ($(target).closest(".js-button_add").length) {
       const $items = this.getSectionItems(currentTarget);
       if ($items.length > 0) {
         const $lastItem = $($items.slice(-1));
         const $last = $lastItem.clone();
         $last.removeClass("section__item_first");
         const $inputControl = $(".js-input", $last);
+        $inputControl.removeClass("input_first");
         let key = $inputControl.data("key");
         key += 1;
         $inputControl.attr({ "data-key": key });
@@ -171,19 +166,21 @@ class Example {
   };
 
   private updateHandles = (currentTarget: HTMLElement) => {
-    $(".js-section__item-control", currentTarget).each(this.updateHandle);
+    $(".js-section__item_control", currentTarget).each(this.updateHandle);
   };
 
-  private updateHandle = (index: number, el: HTMLElement) => {
-    const $el = $(el);
+  private updateHandle = (index: number, element: HTMLElement) => {
+    const $element = $(element);
+    const $inputControl = $(".js-input", $element);
     if (index === 0) {
-      $el.addClass("section__item_first");
+      $element.addClass(["section__item_first", "js-section__item_first"]);
+      $inputControl.addClass(["input_first", "js-input_first"]);
     } else {
-      $el.removeClass("section__item_first");
+      $element.removeClass(["section__item_first", "js-section__item_first"]);
+      $inputControl.removeClass(["input_first", "js-input_first"]);
     }
-    const $inputControl = $(".js-input", $el);
     $inputControl.attr({ "data-key": index });
-    const $span = $(".js-input__section-key", $el);
+    const $span = $(".js-input__section-key", $element);
     $span.text(`${index + 1}:`);
   };
 
@@ -191,10 +188,10 @@ class Example {
     target: HTMLElement,
     currentTarget: HTMLElement
   ): void => {
-    if ($(target).closest(".js-button-remove").length) {
+    if ($(target).closest(".js-button_remove").length) {
       const $items = this.getSectionItems(currentTarget);
       if ($items.length > 1) {
-        const $item = $(target).closest(".js-section__item-control");
+        const $item = $(target).closest(".js-section__item_control");
         if ($item.length) {
           $item.remove();
           this.updateHandles(currentTarget);
@@ -204,13 +201,13 @@ class Example {
     }
   };
 
-  private processingSection = (index: number, el: HTMLElement): void => {
-    $(".input", el).each(this.processingInput);
+  private processingSection = (index: number, element: HTMLElement): void => {
+    $(".input", element).each(this.processingInput);
   };
 
-  private processingInput = (index: number, el: HTMLElement): void => {
-    const { property, type } = get($(el).data(), ["data"]) || {};
-    let value = this.prepareValue(el, property);
+  private processingInput = (index: number, element: HTMLElement): void => {
+    const { property, type } = get($(element).data(), ["data"]) || {};
+    let value = this.prepareValue(element, property);
     this.prepareProp(value, type, property);
   };
 
@@ -266,12 +263,15 @@ class Example {
     return;
   };
 
-  private prepareValue = (el?: HTMLElement, property?: string): unknown => {
+  private prepareValue = (
+    element?: HTMLElement,
+    property?: string
+  ): unknown => {
     let value;
-    if (!(el instanceof HTMLElement) || !trim(property)) {
+    if (!(element instanceof HTMLElement) || !trim(property)) {
       return;
     }
-    value = $("input", el).val();
+    value = $("input", element).val();
     if (isUndefined(value)) {
       return;
     }
@@ -294,7 +294,7 @@ class Example {
       case "on":
       case "dot":
       case "always": {
-        value = $("input", el).prop("checked");
+        value = $("input", element).prop("checked");
         return Boolean(value);
       }
       case "classNames":
@@ -320,35 +320,35 @@ class Example {
     }
   };
 
-  private prepareArray = (s?: unknown): undefined | string[] => {
-    const r = this.prepareJSON(s);
-    if (isArray(r)) {
-      return r;
+  private prepareArray = (string?: unknown): undefined | string[] => {
+    const result = this.prepareJSON(string);
+    if (isArray(result)) {
+      return result;
     }
     return;
   };
 
-  private prepareObject = (s?: unknown): undefined | style => {
-    const r = this.prepareJSON(s);
-    if (isObject(r) && !isArray(r) && !isFunction(r)) {
-      return r;
+  private prepareObject = (string?: unknown): undefined | style => {
+    const result = this.prepareJSON(string);
+    if (isObject(result) && !isArray(result) && !isFunction(result)) {
+      return result;
     }
     return;
   };
 
-  private prepareFunction = (s?: unknown): undefined | render => {
-    let r;
-    if (!isString(s) || !trim(s)) {
-      return r;
+  private prepareFunction = (string?: unknown): undefined | render => {
+    let result;
+    if (!isString(string) || !trim(string)) {
+      return result;
     }
     try {
-      r = new Function("v", s);
-      r(0);
+      result = new Function("v", string);
+      result(0);
     } catch (error) {
       return;
     }
-    if (isFunction(r)) {
-      return r;
+    if (isFunction(result)) {
+      return result;
     }
     return;
   };
@@ -356,22 +356,25 @@ class Example {
   private prepareJSON = (
     json?: unknown
   ): undefined | style | string[] | render => {
-    let r;
+    let result;
     if (!isString(json) || !trim(json)) {
-      return r;
+      return result;
     }
     if (json) {
       try {
-        r = JSON.parse(json);
+        result = JSON.parse(json);
       } catch (error) {}
     }
-    return r;
+    return result;
   };
 }
 
-$(function renderComponent() {
-  const components: Example[] = [];
-  $(".js-example").each(function () {
-    components.push(new Example(this));
-  });
-});
+function renderExample(this: HTMLElement): void {
+  new Example(this);
+}
+
+function renderComponent() {
+  $(".js-example").each(renderExample);
+}
+
+$(renderComponent);

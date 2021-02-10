@@ -1,18 +1,15 @@
-$parent: "section";
+$parent: 'section';
 
-.section {
+.#{$parent} {
   display: flex;
   align-items: center;
   width: 100%;
   padding: 0.4rem;
   border: 1px solid #e4e4e4;
   border-radius: 4px;
+  margin-top: 0.4rem;
 
-  &:not(first-child) {
-    margin-top: 0.4rem;
-  }
-
-  &__label {
+  &__caption {
     width: 35%;
   }
 
@@ -30,25 +27,14 @@ $parent: "section";
     flex-direction: column;
   }
 
-  &__item_first {
-    &.#{$parent}__item-control {
-      .#{$parent}__button-control {
-        display: flex;
-      }
-      .input__label {
-        display: block;
-      }
-    }
-  }
-
-  &__item-control {
-    .input__label {
-      display: none;
-    }
-  }
-
   &__button-control {
     display: none;
-    align-self: flex-end;
+  }
+
+  &__item_first {
+    .#{$parent}__button-control {
+      display: flex;
+      align-self: flex-end;
+    }
   }
 }

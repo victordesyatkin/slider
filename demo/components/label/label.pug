@@ -1,12 +1,13 @@
-mixin label(props = {})
-    -
-        let { id, classNames, content } = props;
-        let className = 'label';
-        let classNames = `${className}`;
-    label(
-        for=id
-        class=classNames
-    )
-        span(
-            class=`${className}__content`
-        )=content
+mixin label(props)
+    if props
+        -
+            let { id, content } = props;
+            let className = 'label';
+            let classNames = `${className}`;
+        label(
+            for=id
+            class=classNames
+        )
+            span(
+                class=`${className}__content`
+            )=content

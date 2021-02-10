@@ -1,9 +1,16 @@
-.input {
+$parent: 'input';
+
+.#{$parent} {
   padding: 0.4rem 0;
   display: flex;
   flex-direction: column;
   flex-grow: 1;
   flex-shrink: 1;
+  cursor: pointer;
+
+  &_control {
+    flex-direction: row;
+  }
 
   &__section {
     width: 100%;
@@ -19,29 +26,45 @@
     margin-right: 0.4rem;
   }
 
-  &__label {
+  &__label,
+  &__link {
     margin-bottom: 0.4rem;
   }
 
-  input:focus {
+  &_control {
+    .#{$parent}__label,
+    .#{$parent}__link {
+      margin-bottom: 0;
+      display: none;
+    }
+  }
+
+  &_first {
+    flex-direction: column;
+
+    .#{$parent}__label,
+    .#{$parent}__link {
+      margin-bottom: 0.4rem;
+      display: inherit;
+    }
+  }
+
+  &__input:focus {
     outline: none;
   }
 
-  input {
+  &__input {
     width: 100%;
     padding: 0.2rem;
+    cursor: pointer;
   }
 
-  input[type="checkbox"] {
+  &__input[type='checkbox'] {
     margin: 0;
     width: auto;
   }
 
   &__button-control {
     margin-left: 0.4rem;
-  }
-
-  &__label {
-    display: none;
   }
 }

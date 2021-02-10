@@ -1,0 +1,11 @@
+$parent: 'caption';
+
+.#{$parent} {
+  text-align: center;
+  font-weight: bold;
+
+  &.#{$parent}_theme_section {
+    font-weight: normal;
+    text-align: left;
+  }
+}

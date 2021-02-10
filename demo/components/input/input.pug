@@ -1,39 +1,45 @@
-mixin input(props = {})
-    -
-        let { label = {}, type = 'number', content, value, key, isControl, data = {}, link, isFirst, buttonRemove } = props;
-        let checked = value && type === "checkbox" ? true : false;
-        let className = 'input';
-        let classNames = `${className} js-${className}`;
-        classNames += isControl ? ` ${className}__control js-${className}__control` : '';
-        let id = Math.random().toString(16).substr(2);
-        let { content, ...other} = label;
-        if (isControl && !isFirst && content) {
-            label = { ...label, id };
-        }
-    div(
-        class = classNames
-        data-data=data
-        data-key=key
-    )
-        if link
-            +link(link)
-        if label
-            +label(label)
-        .input__section
-            if key >= 0 && control
-                span.input__section-key.js-input__section-key #{key + 1}:
-            input.input__input.js-input__input(
-                type=type
-                id=id
-                checked=checked
-                value=value
-            )
-            if buttonRemove
-                +button(buttonRemove)
-                //- +button({
-                //-     data:{ type: 0 },
-                //-     type:"button",
-                //-     classNames:["input__button-control", "js-button-remove"],
-                //-     content:"&#x274C",
-                //-     title: "Remove"
-                //- })
+include ../link/link
+include ../label/label
+include ../button/button
+
+mixin input(props)
+    if props
+        -
+            let { label, type = 'number', content, value, key, isControl, data = {}, link, isFirst, buttonRemove } = props;
+            let isChecked = value && type === "checkbox" ? true : false;
+            let className = 'input';
+            let classNames = `${className} js-${className}`;
+            classNames += isControl ? ` ${className}_control js-${className}_control` : '';
+            classNames += isFirst ? ` ${className}_first js-${className}_first` : '';
+            let id = Math.random().toString(16).substr(2);
+            if (label) {
+                label = { ...label, id };
+            }
+        div(
+            class=classNames
+            data-data=data
+            data-key=key
+        )
+            if link
+                div(
+                    class=`${className}__link`
+                )
+                    +link(link)
+
+            if label
+                div(
+                    class=`${className}__label`
+                )
+                    +label(label)
+            .input__section
+                if key >= 0 && isControl
+                    span.input__section-key.js-input__section-key #{key + 1}:
+                input.input__input.js-input__input(
+                    type=type
+                    id=id
+                    checked=isChecked
+                    value=value
+                    )
+                if isControl
+                    .input__button-control
+                        +button(buttonRemove)
