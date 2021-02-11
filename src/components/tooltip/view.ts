@@ -20,14 +20,14 @@ export default class TooltipView extends PubSub implements ISubView {
     this.addition = addition;
   }
 
-  public setProps = (props: DefaultProps): void => {
+  public setProps(props: DefaultProps): void {
     this.props = props;
     this.updateView();
     this.prepareContent();
     this.render();
-  };
+  }
 
-  public render = (parent?: JQuery<HTMLElement>): void => {
+  public render(parent?: JQuery<HTMLElement>): void {
     if (parent) {
       this.parent = parent;
     }
@@ -35,23 +35,23 @@ export default class TooltipView extends PubSub implements ISubView {
       this.parent.append(this.view);
       this.isRendered = true;
     }
-  };
+  }
 
-  public remove = () => {
+  public remove(): void {
     if (this.view) {
       this.view.remove();
       this.view = undefined;
       this.isRendered = false;
     }
-  };
+  }
 
-  public getAddition = (): Addition => {
+  public getAddition(): Addition {
     return this.addition;
-  };
+  }
 
-  public setAddition = (addition: Addition): void => {
+  public setAddition(addition: Addition): void {
     this.addition = addition;
-  };
+  }
 
   private createView(): void {
     if (this.props && !isUndefined(get(this.addition, ["value"]))) {
@@ -59,18 +59,18 @@ export default class TooltipView extends PubSub implements ISubView {
     }
   }
 
-  private prepareAttr = (): {
+  private prepareAttr(): {
     class: string | undefined;
     style: string | undefined;
-  } => {
+  } {
     const attr: { class: string | undefined; style: string | undefined } = {
       class: this.prepareClassName(),
       style: this.prepareStyle(),
     };
     return attr;
-  };
+  }
 
-  private prepareClassName = (): string => {
+  private prepareClassName(): string {
     const prefixCls = get(this.props, ["prefixCls"], "");
     const className = get(this.props, ["tooltip", "className"], "");
     const always = get(this.props, ["tooltip", "always"]);
@@ -78,9 +78,9 @@ export default class TooltipView extends PubSub implements ISubView {
     return classnames(`${prefixCls}__tooltip`, className, {
       [`${prefixCls}__tooltip_always`]: always,
     });
-  };
+  }
 
-  private prepareStyle = (): string | undefined => {
+  private prepareStyle(): string | undefined {
     if (this.props) {
       const style = get(this.props, ["tooltip", "style"], {});
       const positionStyle = {};
@@ -90,9 +90,9 @@ export default class TooltipView extends PubSub implements ISubView {
       });
     }
     return;
-  };
+  }
 
-  private prepareContent = (): void => {
+  private prepareContent(): void {
     if (this.view) {
       const { value } = this.addition;
       if (!isUndefined(value)) {
@@ -106,7 +106,7 @@ export default class TooltipView extends PubSub implements ISubView {
         }
       }
     }
-  };
+  }
 
   private updateView(): void {
     if (this.view) {

@@ -20,13 +20,13 @@ export default class TrackView extends PubSub implements ISubView {
     this.addition = addition;
   }
 
-  public setProps = (props: DefaultProps): void => {
+  public setProps(props: DefaultProps): void {
     this.props = props;
     this.updateView();
     this.render();
-  };
+  }
 
-  public render = (parent?: JQuery<HTMLElement>): void => {
+  public render(parent?: JQuery<HTMLElement>): void {
     if (parent) {
       this.parent = parent;
     }
@@ -34,23 +34,23 @@ export default class TrackView extends PubSub implements ISubView {
       this.parent.append(this.view);
       this.isRendered = true;
     }
-  };
+  }
 
-  public remove = () => {
+  public remove(): void {
     if (this.view) {
       this.view.remove();
       this.view = undefined;
       this.isRendered = false;
     }
-  };
+  }
 
-  public getAddition = (): Addition => {
+  public getAddition(): Addition {
     return this.addition;
-  };
+  }
 
-  public setAddition = (addition: Addition): void => {
+  public setAddition(addition: Addition): void {
     this.addition = addition;
-  };
+  }
 
   private createView(): void {
     if (this.props && !isUndefined(get(this.addition, ["index"]))) {
@@ -61,18 +61,18 @@ export default class TrackView extends PubSub implements ISubView {
     }
   }
 
-  private prepareAttr = (): {
+  private prepareAttr(): {
     class: string | undefined;
     style: string | undefined;
-  } => {
+  } {
     const attr: { class: string | undefined; style: string | undefined } = {
       class: this.prepareClassName(),
       style: this.prepareStyle(),
     };
     return attr;
-  };
+  }
 
-  private prepareClassName = (): string => {
+  private prepareClassName(): string {
     const prefixCls = get(this.props, ["prefixCls"], "");
     const index = get(this.addition, ["index"]);
     const className = get(this.props, ["track", "classNames", index], "");
@@ -81,9 +81,9 @@ export default class TrackView extends PubSub implements ISubView {
       { [`${prefixCls}__track-${index}`]: true },
       className
     );
-  };
+  }
 
-  private prepareStyle = (): string | undefined => {
+  private prepareStyle(): string | undefined {
     if (this.props) {
       const index = get(this.addition, ["index"]);
       const style = get(this.props, ["track", "styles", index], {});
@@ -121,7 +121,7 @@ export default class TrackView extends PubSub implements ISubView {
         ...style,
       });
     }
-  };
+  }
 
   private updateView(): void {
     if (this.view) {

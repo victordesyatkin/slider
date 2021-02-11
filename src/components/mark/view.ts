@@ -1,5 +1,6 @@
 import $ from "jquery";
 import classnames from "classnames";
+import bind from "bind-decorator";
 import get from "lodash/get";
 import isUndefined from "lodash/isUndefined";
 
@@ -8,7 +9,7 @@ import { objectToString, calcOffset } from "../../helpers/utils";
 import { ISubView } from "../../slider/interface";
 import { DefaultProps, Addition } from "../../types";
 
-export default class MarkView extends PubSub implements ISubView {
+class MarkView extends PubSub implements ISubView {
   private props?: DefaultProps;
   private view?: JQuery<HTMLElement>;
   private addition: Addition;
@@ -20,15 +21,15 @@ export default class MarkView extends PubSub implements ISubView {
     this.addition = addition;
   }
 
-  public setProps = (props: DefaultProps): void => {
+  public setProps(props: DefaultProps): void {
     this.props = props;
     this.updateView();
     this.initHandles();
     this.prepareContent();
     this.render();
-  };
+  }
 
-  public render = (parent?: JQuery<HTMLElement>): void => {
+  public render(parent?: JQuery<HTMLElement>): void {
     if (parent) {
       this.parent = parent;
     }
@@ -36,23 +37,23 @@ export default class MarkView extends PubSub implements ISubView {
       this.parent.append(this.view);
       this.isRendered = true;
     }
-  };
+  }
 
-  public remove = () => {
+  public remove(): void {
     if (this.view) {
       this.view.remove();
       this.view = undefined;
       this.isRendered = false;
     }
-  };
+  }
 
-  public getAddition = (): Addition => {
+  public getAddition(): Addition {
     return this.addition;
-  };
+  }
 
-  public setAddition = (addition: Addition): void => {
+  public setAddition(addition: Addition): void {
     this.addition = addition;
-  };
+  }
 
   private createView(): void {
     if (this.props && !isUndefined(get(this.addition, ["value"]))) {
@@ -60,24 +61,24 @@ export default class MarkView extends PubSub implements ISubView {
     }
   }
 
-  private prepareAttr = (): {
+  private prepareAttr(): {
     class: string | undefined;
     style: string | undefined;
-  } => {
+  } {
     const attr: { class: string | undefined; style: string | undefined } = {
       class: this.prepareClassName(),
       style: this.prepareStyle(),
     };
     return attr;
-  };
+  }
 
-  private prepareClassName = (): string => {
+  private prepareClassName(): string {
     const prefixCls = get(this.props, ["prefixCls"], "");
     const className = get(this.props, ["mark", "className"], "");
     return classnames(`${prefixCls}__mark`, className);
-  };
+  }
 
-  private prepareStyle = (): string | undefined => {
+  private prepareStyle(): string | undefined {
     if (this.props) {
       const value = get(this.addition, ["value"], 0);
       const style = get(this.props, ["mark", "style"], {});
@@ -100,9 +101,9 @@ export default class MarkView extends PubSub implements ISubView {
       });
     }
     return;
-  };
+  }
 
-  private prepareContent = (): void => {
+  private prepareContent(): void {
     if (this.view) {
       const { value } = this.addition;
       if (!isUndefined(value)) {
@@ -116,30 +117,33 @@ export default class MarkView extends PubSub implements ISubView {
         }
       }
     }
-  };
+  }
 
-  private handleViewClick = (e: any) => {
+  @bind
+  private handleViewClick(event: any): void {
     if (this.view && this.props) {
       const { value, handles, index = 0 } = this.addition;
       const handleViewClick = get(handles, ["handleViewClick"]);
       if (!isUndefined(value) && handleViewClick) {
-        handleViewClick(index, e, value);
+        handleViewClick(index, event, value);
       }
     }
-  };
+  }
 
-  private initHandles = () => {
+  private initHandles(): void {
     if (this.view) {
       this.view.off("click", this.handleViewClick);
       this.view.on("click", this.handleViewClick);
     }
-  };
+  }
 
-  private updateView = (): void => {
+  private updateView(): void {
     if (this.view) {
       this.view.attr(this.prepareAttr());
     } else {
       this.createView();
     }
-  };
+  }
 }
+
+export default MarkView;

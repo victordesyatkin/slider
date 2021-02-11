@@ -24,15 +24,15 @@ export default class MarksView extends PubSub implements ISubView {
     this.addition = addition;
   }
 
-  public setProps = (props: DefaultProps): void => {
+  public setProps(props: DefaultProps): void {
     this.props = props;
     this.updateView();
     this.createOrUpdateSubViews();
     this.appendSubViews();
     this.render();
-  };
+  }
 
-  public render = (parent?: JQuery<HTMLElement>): void => {
+  public render(parent?: JQuery<HTMLElement>): void {
     if (parent) {
       this.parent = parent;
     }
@@ -40,24 +40,24 @@ export default class MarksView extends PubSub implements ISubView {
       this.parent.append(this.view);
       this.isRendered = true;
     }
-  };
+  }
 
-  public remove = () => {
+  public remove(): void {
     if (this.view) {
       this.view.remove();
       this.view = undefined;
       this.marks = [];
       this.isRendered = false;
     }
-  };
+  }
 
-  public getAddition = (): Addition => {
+  public getAddition(): Addition {
     return this.addition;
-  };
+  }
 
-  public setAddition = (addition: Addition): void => {
+  public setAddition(addition: Addition): void {
     this.addition = addition;
-  };
+  }
 
   private createView(): void {
     if (this.props) {
@@ -68,26 +68,26 @@ export default class MarksView extends PubSub implements ISubView {
     }
   }
 
-  private prepareAttr = (): {
+  private prepareAttr(): {
     class: string | undefined;
     style: string | undefined;
-  } => {
+  } {
     const attr: { class: string | undefined; style: string | undefined } = {
       class: this.prepareClassName(),
       style: this.prepareStyle(),
     };
     return attr;
-  };
+  }
 
-  private prepareClassName = (): string => {
+  private prepareClassName(): string {
     const prefixCls = get(this.props, ["prefixCls"], "");
     const className = get(this.props, ["mark", "wrapClassName"]);
     return classnames(`${prefixCls}__marks`, className);
-  };
+  }
 
-  private prepareStyle = (): string | undefined => {
+  private prepareStyle(): string | undefined {
     return;
-  };
+  }
 
   private updateView(): void {
     if (this.view) {
@@ -101,7 +101,7 @@ export default class MarksView extends PubSub implements ISubView {
     }
   }
 
-  private createOrUpdateSubViews() {
+  private createOrUpdateSubViews(): void {
     this.createOrUpdateSubView<MarkView>(this.marks, MarkView);
   }
 
@@ -145,7 +145,7 @@ export default class MarksView extends PubSub implements ISubView {
     }
   }
 
-  private cleanSubView = (views: ISubView[], count: number): void => {
+  private cleanSubView(views: ISubView[], count: number): void {
     const length = views.length;
     if (length > count) {
       for (let i = count; i < length; i += 1) {
@@ -156,7 +156,7 @@ export default class MarksView extends PubSub implements ISubView {
       views.splice(count);
     }
     return;
-  };
+  }
 
   private appendSubViews(): void {
     if (this.view) {

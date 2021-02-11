@@ -35,15 +35,17 @@ class Slider {
     this.view.render(element);
   }
 
-  getProps(): DefaultProps {
+  public getProps(): DefaultProps {
     return this.model.getProps();
   }
 
-  setProps(props: Props): void {
+  public setProps(props: Props): void {
     this.model.setProps(props);
   }
 
-  pickProps<T extends KeyDefaultProps>(keys: T[]): Partial<DefaultProps> {
+  public pickProps<T extends KeyDefaultProps>(
+    keys: T[]
+  ): Partial<DefaultProps> {
     return pick(this.model.getProps(), keys);
   }
 }

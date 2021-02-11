@@ -1,4 +1,5 @@
 import $ from "jquery";
+import bind from "bind-decorator";
 import classnames from "classnames";
 import get from "lodash/get";
 import isUndefined from "lodash/isUndefined";
@@ -16,10 +17,9 @@ import HandleView from "../components/handle/view";
 import TrackView from "../components/track/view";
 import DotsView from "../components/dots/view";
 import MarksView from "../components/marks/view";
-
 import { DefaultProps, Addition } from "../types";
 import { IView, ISubView } from "./interface";
-export default class View extends PubSub implements IView {
+class View extends PubSub implements IView {
   props?: DefaultProps;
   view?: JQuery<HTMLElement>;
   rails: ISubView[] = [];
@@ -35,7 +35,7 @@ export default class View extends PubSub implements IView {
     super();
   }
 
-  setProps(props: DefaultProps): void {
+  public setProps(props: DefaultProps): void {
     this.props = props;
     this.updateView();
     this.createOrUpdateSubViews();
@@ -43,7 +43,7 @@ export default class View extends PubSub implements IView {
     this.render();
   }
 
-  render = (parent?: JQuery<HTMLElement>): void => {
+  public render(parent?: JQuery<HTMLElement>): void {
     if (parent) {
       this.parent = parent;
     }
@@ -51,28 +51,28 @@ export default class View extends PubSub implements IView {
       this.parent.append(this.view);
       this.isRendered = true;
     }
-  };
+  }
 
-  remove = (): void => {};
+  public remove(): void {}
 
   private createView(): void {
     this.view = $("<div/>", this.prepareAttr());
   }
 
-  private updateView = (): void => {
+  private updateView(): void {
     if (!this.view) {
       this.createView();
     } else {
       this.view.attr(this.prepareAttr());
     }
-  };
+  }
 
-  private prepareAttr = (): { class: string; style: string } => {
+  private prepareAttr(): { class: string; style: string } {
     return {
       class: this.prepareClassName(),
       style: this.prepareStyle(),
     };
-  };
+  }
 
   private prepareClassName(): string {
     const { prefixCls, mark, disabled, vertical, classNames } =
@@ -89,11 +89,8 @@ export default class View extends PubSub implements IView {
     return objectToString({ ...get(this.props, ["style"]) });
   }
 
-  private handleViewClick = (
-    index: number,
-    e: MouseEvent,
-    value?: number
-  ): void => {
+  @bind
+  private handleViewClick(index: number, e: MouseEvent, value?: number): void {
     e.preventDefault();
     const disabled = get(this.props, ["disabled"]);
     if (disabled) {
@@ -141,9 +138,10 @@ export default class View extends PubSub implements IView {
         this.publish("onWindowMouseUp", values);
       }
     }
-  };
+  }
 
-  private handleViewMouseDown = (index: number, e: MouseEvent): void => {
+  @bind
+  private handleViewMouseDown(index: number, e: MouseEvent): void {
     e.preventDefault();
     const disabled = get(this.props, ["disabled"]);
     if (disabled) {
@@ -153,9 +151,10 @@ export default class View extends PubSub implements IView {
     window.addEventListener("mousemove", this.handleWindowMouseMove);
     window.addEventListener("mouseup", this.handleWindowMouseUp);
     this.publish("onViewMouseDown", this.props?.values || []);
-  };
+  }
 
-  private handleWindowMouseUp = (e: MouseEvent): void => {
+  @bind
+  private handleWindowMouseUp(e: MouseEvent): void {
     e.preventDefault();
     const disabled = get(this.props, ["disabled"]);
     if (disabled) {
@@ -164,9 +163,10 @@ export default class View extends PubSub implements IView {
     window.removeEventListener("mousemove", this.handleWindowMouseMove);
     window.removeEventListener("mouseup", this.handleWindowMouseUp);
     this.publish("handleWindowMouseUp", this.props?.values || []);
-  };
+  }
 
-  private handleWindowMouseMove = (e: MouseEvent): void => {
+  @bind
+  private handleWindowMouseMove(e: MouseEvent): void {
     if (this.props && !isUndefined(this.currentHandleIndex) && this.view) {
       const index = this.currentHandleIndex;
       const { vertical, values } = this.props;
@@ -185,9 +185,9 @@ export default class View extends PubSub implements IView {
         this.publish("setPropsModel", v);
       }
     }
-  };
+  }
 
-  private createOrUpdateSubViews = (): void => {
+  private createOrUpdateSubViews(): void {
     const count = getCount(this.props);
     this.createOrUpdateSubView<RailView>(this.rails, 1, RailView, "click");
     this.createOrUpdateSubView<TrackView>(
@@ -203,7 +203,7 @@ export default class View extends PubSub implements IView {
       HandleView,
       "mousedown"
     );
-  };
+  }
 
   private createOrUpdateSubView<T extends ISubView>(
     views: ISubView[],
@@ -276,3 +276,5 @@ export default class View extends PubSub implements IView {
     }
   }
 }
+
+export default View;

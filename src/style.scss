@@ -26,7 +26,7 @@ $dark25: rgba(31, 32, 65, 0.25);
 $green-light: #6fcf97;
 $blue-light: #66d2ea;
 
-$prefixClass: "fsd-slider";
+$prefixClass: 'fsd-slider';
 
 $disabledColor: #ccc;
 $border-radius-base: 6px;
@@ -110,6 +110,7 @@ $ease-in-quint: cubic-bezier(0.755, 0.05, 0.855, 0.06);
     border: 2px solid #ffffff;
     touch-action: pan-x;
     z-index: 2;
+    cursor: pointer;
 
     &.#{$prefixClass}__handle_active {
       z-index: 100 !important;
