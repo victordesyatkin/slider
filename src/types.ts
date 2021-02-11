@@ -54,7 +54,7 @@ type KeyProps = keyof Props;
 
 type Addition = {
   index: number;
-  handlers?: { [key: string]: Handler };
+  handles?: { [key: string]: Handler };
   value?: number;
   active?: boolean;
 };

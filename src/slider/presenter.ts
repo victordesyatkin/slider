@@ -11,33 +11,33 @@ export default class Presenter implements IPresenter {
     this.model = model;
     this.view = view;
     this.view.setProps(this.model.getProps());
-    this.onHandleView();
-    this.onHandleModel();
+    this.initHandlesView();
+    this.initHandlesModel();
   }
 
-  onHandleView = (): void => {
+  private initHandlesView = (): void => {
     this.view.subscribe("setPropsModel", this.setPropsModel);
-    this.view.subscribe("onMouseDown", this.onMouseDown);
-    this.view.subscribe("onMouseUp", this.onMouseUp);
+    this.view.subscribe("handleViewMouseDown", this.handleViewMouseDown);
+    this.view.subscribe("handleWindowMouseUp", this.handleWindowMouseUp);
   };
 
-  onHandleModel = (): void => {
+  private initHandlesModel = (): void => {
     this.model.subscribe("setPropsView", this.setPropsView);
   };
 
-  onMouseDown = (values?: number[]) => {
-    this.model.publish("onMouseDown", values);
+  private handleViewMouseDown = (values?: number[]) => {
+    this.model.publish("handleViewMouseDown", values);
   };
 
-  onMouseUp = (values?: number[]) => {
-    this.model.publish("onMouseUp", values);
+  private handleWindowMouseUp = (values?: number[]) => {
+    this.model.publish("handleWindowMouseUp", values);
   };
 
-  setPropsModel = (values: number[]): void => {
+  private setPropsModel = (values: number[]): void => {
     this.model.setProps(merge({}, this.model.getProps(), { values }));
   };
 
-  setPropsView = (props: DefaultProps): void => {
+  private setPropsView = (props: DefaultProps): void => {
     this.view.setProps(props);
   };
 }

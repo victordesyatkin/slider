@@ -43,9 +43,9 @@ class Example {
   };
 
   private initHandler = (index: number, element: HTMLElement) => {
-    $(element).on("click", this.handleClickSection);
-    $(element).on("input", this.handleInputSection);
-    $(element).on("focusout", this.handleFocusoutSection);
+    $(element).on("click", this.handleSectionClick);
+    $(element).on("input", this.handleSectionInput);
+    $(element).on("focusout", this.handleSectionFocusout);
   };
 
   private getProps = (): Props => {
@@ -100,7 +100,7 @@ class Example {
     );
   };
 
-  private handleClickSection = (event: JQuery.Event): void => {
+  private handleSectionClick = (event: JQuery.Event): void => {
     const target: HTMLElement = get(event, ["target"]);
     const currentTarget: HTMLElement = get(event, ["currentTarget"]);
     if (target) {
@@ -109,14 +109,14 @@ class Example {
     }
   };
 
-  private handleInputSection = (event: JQuery.Event) => {
+  private handleSectionInput = (event: JQuery.Event) => {
     const target: HTMLElement = get(event, ["target"]);
     if (target && $(target).attr("type") === "checkbox") {
       this.updateProps();
     }
   };
 
-  private handleFocusoutSection = (event: JQuery.Event) => {
+  private handleSectionFocusout = (event: JQuery.Event) => {
     const target: HTMLElement = get(event, ["target"]);
     if (
       target &&

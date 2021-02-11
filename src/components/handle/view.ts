@@ -22,18 +22,14 @@ export default class HandleView extends PubSub implements ISubView {
     this.addition = addition;
   }
 
-  getAddition(): Addition {
-    return this.addition;
-  }
-
-  setProps = (props: DefaultProps): void => {
+  public setProps = (props: DefaultProps): void => {
     this.props = props;
     this.updateView();
     this.appendTooltip();
     this.render();
   };
 
-  render = (parent?: JQuery<HTMLElement>): void => {
+  public render = (parent?: JQuery<HTMLElement>): void => {
     if (parent) {
       this.parent = parent;
     }
@@ -43,7 +39,7 @@ export default class HandleView extends PubSub implements ISubView {
     }
   };
 
-  remove = (): void => {
+  public remove = (): void => {
     if (this.view) {
       this.view.remove();
       this.view = undefined;
@@ -51,26 +47,33 @@ export default class HandleView extends PubSub implements ISubView {
     }
   };
 
-  setAddition = (addition: Addition): void => {
+  public getAddition(): Addition {
+    return this.addition;
+  }
+
+  public setAddition = (addition: Addition): void => {
     this.addition = addition;
   };
 
-  createView(): void {
+  private createView(): void {
     if (this.props) {
       this.view = $("<div/>", this.prepareAttr());
-      this.onHandlers();
+      this.initHandles();
     }
   }
 
-  onMouseDown = (e: any): void => {
-    const mousedown = get(this.addition, ["handlers", "mousedown"]);
+  private handleViewMouseDown = (e: any): void => {
+    const handleViewMouseDown = get(this.addition, [
+      "handles",
+      "handleViewMouseDown",
+    ]);
     const index = get(this.addition, ["index"]);
-    if (!isUndefined(index) && mousedown) {
-      mousedown(index, e);
+    if (!isUndefined(index) && handleViewMouseDown) {
+      handleViewMouseDown(index, e);
     }
   };
 
-  prepareAttr = () => {
+  private prepareAttr = () => {
     const attr: {
       class: string | undefined;
       style: string | undefined;
@@ -83,7 +86,7 @@ export default class HandleView extends PubSub implements ISubView {
     return attr;
   };
 
-  prepareClassName = (): string => {
+  private prepareClassName = (): string => {
     const prefixCls = get(this.props, ["prefixCls"], "");
     const index = get(this.addition, ["index"]);
     const className = get(this.props, ["handle", "classNames", index], "");
@@ -93,7 +96,7 @@ export default class HandleView extends PubSub implements ISubView {
     });
   };
 
-  prepareStyle = (): string | undefined => {
+  private prepareStyle = (): string | undefined => {
     if (this.props) {
       const index = get(this.addition, ["index"]);
       const style = get(this.props, ["handle", "styles", index], {});
@@ -119,7 +122,7 @@ export default class HandleView extends PubSub implements ISubView {
     }
   };
 
-  appendTooltip = (): void => {
+  private appendTooltip = (): void => {
     const on = get(this.props, ["tooltip", "on"]);
     if (on && this.view && this.props) {
       const index = get(this.addition, ["index"]);
@@ -141,7 +144,7 @@ export default class HandleView extends PubSub implements ISubView {
     }
   };
 
-  updateView(): void {
+  private updateView(): void {
     if (this.view) {
       this.view.attr(this.prepareAttr());
     } else {
@@ -149,13 +152,11 @@ export default class HandleView extends PubSub implements ISubView {
     }
   }
 
-  onHandlers = (): void => {
+  private initHandles = (): void => {
     if (this.view) {
       this.view.on({
-        mousedown: this.onMouseDown,
+        mousedown: this.handleViewMouseDown,
       });
     }
   };
-
-  onClick = (): void => {};
 }

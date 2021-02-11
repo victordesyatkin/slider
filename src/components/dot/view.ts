@@ -21,20 +21,13 @@ export default class DotView extends PubSub implements ISubView {
     this.addition = addition;
   }
 
-  createView(): void {
-    if (this.props && !isUndefined(get(this.addition, ["value"]))) {
-      this.view = $("<div/>", this.prepareAttr());
-      this.onHandlers();
-    }
-  }
-
-  setProps = (props: DefaultProps): void => {
+  public setProps = (props: DefaultProps): void => {
     this.props = props;
     this.updateView();
     this.render();
   };
 
-  render = (parent?: JQuery<HTMLElement>): void => {
+  public render = (parent?: JQuery<HTMLElement>): void => {
     if (parent) {
       this.parent = parent;
     }
@@ -44,7 +37,7 @@ export default class DotView extends PubSub implements ISubView {
     }
   };
 
-  remove = (): void => {
+  public remove = (): void => {
     if (this.view) {
       this.view.remove();
       this.view = undefined;
@@ -52,15 +45,22 @@ export default class DotView extends PubSub implements ISubView {
     }
   };
 
-  getAddition = (): Addition => {
+  public getAddition = (): Addition => {
     return this.addition;
   };
 
-  setAddition = (addition: Addition): void => {
+  public setAddition = (addition: Addition): void => {
     this.addition = addition;
   };
 
-  prepareAttr = (): {
+  private createView(): void {
+    if (this.props && !isUndefined(get(this.addition, ["value"]))) {
+      this.view = $("<div/>", this.prepareAttr());
+      this.initHandles();
+    }
+  }
+
+  private prepareAttr = (): {
     class: string | undefined;
     style: string | undefined;
   } => {
@@ -71,7 +71,7 @@ export default class DotView extends PubSub implements ISubView {
     return attr;
   };
 
-  prepareClassName = (): string => {
+  private prepareClassName = (): string => {
     const prefixCls = get(this.props, ["prefixCls"], "");
     const className = get(this.props, ["dot", "className"], "");
     const value = get(this.addition, ["value"]);
@@ -93,7 +93,7 @@ export default class DotView extends PubSub implements ISubView {
     return "";
   };
 
-  prepareStyle = (): string | undefined => {
+  private prepareStyle = (): string | undefined => {
     if (!this.props) {
       return;
     }
@@ -118,7 +118,7 @@ export default class DotView extends PubSub implements ISubView {
     });
   };
 
-  updateView(): void {
+  private updateView(): void {
     if (this.view) {
       this.view.attr(this.prepareAttr());
     } else {
@@ -126,19 +126,19 @@ export default class DotView extends PubSub implements ISubView {
     }
   }
 
-  onClick = (e: any): void => {
+  private handleViewClick = (e: any): void => {
     if (this.view && this.props) {
-      const { value, handlers, index = 0 } = this.addition;
-      const click = get(handlers, ["click"]);
+      const { value, handles, index = 0 } = this.addition;
+      const click = get(handles, ["handleViewClick"]);
       if (!isUndefined(value) && click) {
         click(index, e, value);
       }
     }
   };
 
-  onHandlers = (): void => {
+  private initHandles = (): void => {
     if (this.view) {
-      this.view.on("click", this.onClick);
+      this.view.on("click", this.handleViewClick);
     }
   };
 }

@@ -1942,8 +1942,9 @@
             ]
           },
           {
-            "label": {
-              "content": "Rail"
+            "caption": {
+              "content": "Rail",
+              "theme": "section"
             },
             "items": [
               {

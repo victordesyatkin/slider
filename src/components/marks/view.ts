@@ -24,7 +24,7 @@ export default class MarksView extends PubSub implements ISubView {
     this.addition = addition;
   }
 
-  setProps = (props: DefaultProps): void => {
+  public setProps = (props: DefaultProps): void => {
     this.props = props;
     this.updateView();
     this.createOrUpdateSubViews();
@@ -32,7 +32,7 @@ export default class MarksView extends PubSub implements ISubView {
     this.render();
   };
 
-  render = (parent?: JQuery<HTMLElement>): void => {
+  public render = (parent?: JQuery<HTMLElement>): void => {
     if (parent) {
       this.parent = parent;
     }
@@ -42,7 +42,7 @@ export default class MarksView extends PubSub implements ISubView {
     }
   };
 
-  remove = () => {
+  public remove = () => {
     if (this.view) {
       this.view.remove();
       this.view = undefined;
@@ -51,15 +51,15 @@ export default class MarksView extends PubSub implements ISubView {
     }
   };
 
-  getAddition = (): Addition => {
+  public getAddition = (): Addition => {
     return this.addition;
   };
 
-  setAddition = (addition: Addition): void => {
+  public setAddition = (addition: Addition): void => {
     this.addition = addition;
   };
 
-  createView(): void {
+  private createView(): void {
     if (this.props) {
       const on = get(this.props, ["mark", "on"]);
       if (on) {
@@ -68,7 +68,7 @@ export default class MarksView extends PubSub implements ISubView {
     }
   }
 
-  prepareAttr = (): {
+  private prepareAttr = (): {
     class: string | undefined;
     style: string | undefined;
   } => {
@@ -79,17 +79,17 @@ export default class MarksView extends PubSub implements ISubView {
     return attr;
   };
 
-  prepareClassName = (): string => {
+  private prepareClassName = (): string => {
     const prefixCls = get(this.props, ["prefixCls"], "");
     const className = get(this.props, ["mark", "wrapClassName"]);
     return classnames(`${prefixCls}__marks`, className);
   };
 
-  prepareStyle = (): string | undefined => {
+  private prepareStyle = (): string | undefined => {
     return;
   };
 
-  updateView(): void {
+  private updateView(): void {
     if (this.view) {
       if (get(this.props, ["mark", "on"])) {
         this.view.attr(this.prepareAttr());
@@ -101,11 +101,11 @@ export default class MarksView extends PubSub implements ISubView {
     }
   }
 
-  createOrUpdateSubViews() {
+  private createOrUpdateSubViews() {
     this.createOrUpdateSubView<MarkView>(this.marks, MarkView);
   }
 
-  createOrUpdateSubView<T extends ISubView>(
+  private createOrUpdateSubView<T extends ISubView>(
     views: ISubView[],
     c: { new (addition: Addition): T }
   ): void {
@@ -123,19 +123,19 @@ export default class MarksView extends PubSub implements ISubView {
       }
       values = orderBy(uniq(values), [], reverse ? "desc" : "asc");
       const length = values.length;
-      const handlers = this.addition.handlers;
+      const handles = this.addition.handles;
       for (let i = 0; i < length; i += 1) {
         if (!isUndefined(views[i])) {
           views[i].setAddition({
             index: i,
-            handlers,
+            handles,
             value: values[i],
           });
           views[i].setProps(this.props);
         } else {
           views[i] = new c({
             index: i,
-            handlers,
+            handles,
             value: values[i],
           });
           views[i].setProps(this.props);
@@ -145,7 +145,7 @@ export default class MarksView extends PubSub implements ISubView {
     }
   }
 
-  cleanSubView = (views: ISubView[], count: number): void => {
+  private cleanSubView = (views: ISubView[], count: number): void => {
     const length = views.length;
     if (length > count) {
       for (let i = count; i < length; i += 1) {
@@ -158,22 +158,18 @@ export default class MarksView extends PubSub implements ISubView {
     return;
   };
 
-  appendSubViews(): void {
+  private appendSubViews(): void {
     if (this.view) {
       this.appendSubView(this.marks);
     }
     return;
   }
 
-  appendSubView(subViews: ISubView[]): void {
+  private appendSubView(subViews: ISubView[]): void {
     if (this.view) {
       for (const subView of subViews) {
         subView.render(this.view);
       }
     }
   }
-
-  onHandlers = (): void => {};
-
-  onClick = (): void => {};
 }

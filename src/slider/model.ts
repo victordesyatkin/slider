@@ -3,7 +3,6 @@ import get from "lodash/get";
 import PubSub from "../helpers/pubsub";
 import { prepareData } from "../helpers/utils";
 import { IModel } from "../slider/interface";
-
 import { DefaultProps, Props } from "../types";
 
 export default class Model extends PubSub implements IModel {
@@ -12,7 +11,7 @@ export default class Model extends PubSub implements IModel {
   constructor(props: DefaultProps) {
     super();
     this.props = props;
-    this.onHandler();
+    this.onHandles();
   }
 
   getProps = (): DefaultProps => {
@@ -24,13 +23,13 @@ export default class Model extends PubSub implements IModel {
     this.publish("setPropsView", this.props);
   };
 
-  onHandler = (): void => {
+  private onHandles = (): void => {
     this.subscribe("setPropsModel", this.setPropsForView);
-    this.subscribe("onMouseDown", this.onBeforeChange);
-    this.subscribe("onMouseUp", this.onAfterChange);
+    this.subscribe("handleViewMouseDown", this.handleModelBeforeChange);
+    this.subscribe("handleWindowMouseUp", this.handleModelAfterChange);
   };
 
-  onBeforeChange = (values?: number[]): void => {
+  private handleModelBeforeChange = (values?: number[]): void => {
     const onBeforeChange: ((values: number[]) => void) | undefined = get(
       this.props,
       ["onBeforeChange"]
@@ -38,14 +37,14 @@ export default class Model extends PubSub implements IModel {
     values && onBeforeChange && onBeforeChange(values);
   };
 
-  onChange = (values?: number[]): void => {
+  private handleModelChange = (values?: number[]): void => {
     const onChange: ((values: number[]) => void) | undefined = get(this.props, [
       "onChange",
     ]);
     values && onChange && onChange(values);
   };
 
-  onAfterChange = (values?: number[]): void => {
+  private handleModelAfterChange = (values?: number[]): void => {
     const onAfterChange: ((values: number[]) => void) | undefined = get(
       this.props,
       ["onAfterChange"]
@@ -53,8 +52,8 @@ export default class Model extends PubSub implements IModel {
     values && onAfterChange && onAfterChange(values);
   };
 
-  setPropsForView = (props: Props): void => {
-    this.onChange(get(props, ["values"]));
+  private setPropsForView = (props: Props): void => {
+    this.handleModelChange(get(props, ["values"]));
     this.setProps(props);
   };
 }

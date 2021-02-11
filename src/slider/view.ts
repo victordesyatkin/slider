@@ -55,11 +55,11 @@ export default class View extends PubSub implements IView {
 
   remove = (): void => {};
 
-  createView(): void {
+  private createView(): void {
     this.view = $("<div/>", this.prepareAttr());
   }
 
-  updateView = (): void => {
+  private updateView = (): void => {
     if (!this.view) {
       this.createView();
     } else {
@@ -67,14 +67,14 @@ export default class View extends PubSub implements IView {
     }
   };
 
-  prepareAttr = (): { class: string; style: string } => {
+  private prepareAttr = (): { class: string; style: string } => {
     return {
       class: this.prepareClassName(),
       style: this.prepareStyle(),
     };
   };
 
-  prepareClassName(): string {
+  private prepareClassName(): string {
     const { prefixCls, mark, disabled, vertical, classNames } =
       this.props || {};
     return classnames(prefixCls, {
@@ -85,11 +85,15 @@ export default class View extends PubSub implements IView {
     });
   }
 
-  prepareStyle(): string {
+  private prepareStyle(): string {
     return objectToString({ ...get(this.props, ["style"]) });
   }
 
-  onClick = (index: number, e: MouseEvent, value?: number): void => {
+  private handleViewClick = (
+    index: number,
+    e: MouseEvent,
+    value?: number
+  ): void => {
     e.preventDefault();
     const disabled = get(this.props, ["disabled"]);
     if (disabled) {
@@ -125,7 +129,7 @@ export default class View extends PubSub implements IView {
       if (this.props.values.length === 1 && this.props.values[0] !== v) {
         const values: number[] = [v];
         this.publish("setPropsModel", values);
-        this.publish("onMouseUp", values);
+        this.publish("onWindowMouseUp", values);
       } else if (
         this.props.values.length > 1 &&
         !isUndefined(this.currentHandleIndex) &&
@@ -134,35 +138,35 @@ export default class View extends PubSub implements IView {
         const values: number[] = [...this.props.values];
         values[this.currentHandleIndex] = v;
         this.publish("setPropsModel", values);
-        this.publish("onMouseUp", values);
+        this.publish("onWindowMouseUp", values);
       }
     }
   };
 
-  onMouseDown = (index: number, e: MouseEvent): void => {
+  private handleViewMouseDown = (index: number, e: MouseEvent): void => {
     e.preventDefault();
     const disabled = get(this.props, ["disabled"]);
     if (disabled) {
       return;
     }
     this.currentHandleIndex = index;
-    window.addEventListener("mousemove", this.onMouseMove);
-    window.addEventListener("mouseup", this.onMouseUp);
-    this.publish("onMouseDown", this.props?.values || []);
+    window.addEventListener("mousemove", this.handleWindowMouseMove);
+    window.addEventListener("mouseup", this.handleWindowMouseUp);
+    this.publish("onViewMouseDown", this.props?.values || []);
   };
 
-  onMouseUp = (e: MouseEvent): void => {
+  private handleWindowMouseUp = (e: MouseEvent): void => {
     e.preventDefault();
     const disabled = get(this.props, ["disabled"]);
     if (disabled) {
       return;
     }
-    window.removeEventListener("mousemove", this.onMouseMove);
-    window.removeEventListener("mouseup", this.onMouseUp);
-    this.publish("onMouseUp", this.props?.values || []);
+    window.removeEventListener("mousemove", this.handleWindowMouseMove);
+    window.removeEventListener("mouseup", this.handleWindowMouseUp);
+    this.publish("handleWindowMouseUp", this.props?.values || []);
   };
 
-  onMouseMove = (e: MouseEvent): void => {
+  private handleWindowMouseMove = (e: MouseEvent): void => {
     if (this.props && !isUndefined(this.currentHandleIndex) && this.view) {
       const index = this.currentHandleIndex;
       const { vertical, values } = this.props;
@@ -183,7 +187,7 @@ export default class View extends PubSub implements IView {
     }
   };
 
-  createOrUpdateSubViews = (): void => {
+  private createOrUpdateSubViews = (): void => {
     const count = getCount(this.props);
     this.createOrUpdateSubView<RailView>(this.rails, 1, RailView, "click");
     this.createOrUpdateSubView<TrackView>(
@@ -201,27 +205,23 @@ export default class View extends PubSub implements IView {
     );
   };
 
-  createOrUpdateSubView<T extends ISubView>(
+  private createOrUpdateSubView<T extends ISubView>(
     views: ISubView[],
     count: number,
     c: { new (addition: Addition): T },
     action?: string
   ): void {
     if (this.props) {
-      let handlers;
+      let handles;
       let active;
       if (action === "mousedown") {
-        handlers = {
-          mousedown: this.onMouseDown,
+        handles = {
+          handleViewMouseDown: this.handleViewMouseDown,
         };
-      } else if (
-        action === "click" ||
-        action === "click" ||
-        action === "click"
-      ) {
+      } else if (action === "click") {
         if (this.props.values.length > 0) {
-          handlers = {
-            click: this.onClick,
+          handles = {
+            handleViewClick: this.handleViewClick,
           };
         }
       }
@@ -232,11 +232,11 @@ export default class View extends PubSub implements IView {
 
         if (views[index]) {
           let addition = views[index].getAddition();
-          addition = { ...addition, handlers, active };
+          addition = { ...addition, handles, active };
           views[index].setAddition(addition);
           views[index].setProps(this.props);
         } else {
-          views[index] = new c({ index, handlers, active });
+          views[index] = new c({ index, handles, active });
           views[index].setProps(this.props);
         }
       }
@@ -244,7 +244,7 @@ export default class View extends PubSub implements IView {
     }
   }
 
-  cleanSubView(views: IView[], count: number): void {
+  private cleanSubView(views: IView[], count: number): void {
     const length = views.length;
     if (length > count) {
       for (let i = count; i < length; i += 1) {
@@ -257,7 +257,7 @@ export default class View extends PubSub implements IView {
     return;
   }
 
-  appendSubViews(): void {
+  private appendSubViews(): void {
     if (this.view) {
       this.appendSubView(this.rails);
       this.appendSubView(this.marks);
@@ -268,7 +268,7 @@ export default class View extends PubSub implements IView {
     return;
   }
 
-  appendSubView(subViews: IView[]): void {
+  private appendSubView(subViews: IView[]): void {
     if (this.view) {
       for (const subView of subViews) {
         subView.render(this.view);

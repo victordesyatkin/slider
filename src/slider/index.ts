@@ -3,7 +3,6 @@ import pick from "lodash/pick";
 
 import { prepareData } from "../helpers/utils";
 import { Props, DefaultProps, KeyDefaultProps } from "../types";
-
 import { IModel, IView, IPresenter } from "./interface";
 import Model from "./model";
 import View from "./view";
@@ -49,8 +48,8 @@ class Slider {
   }
 }
 
-function createSlider($el: JQuery<HTMLElement>, props?: Props): JQuery {
-  return $el.each(function () {
+function createSlider($element: JQuery<HTMLElement>, props?: Props): JQuery {
+  return $element.each(function () {
     const $this = JQuery(this);
     if (!$this.data(Slider.PLUGIN_NAME)) {
       $this.data(Slider.PLUGIN_NAME, new Slider($this, props));

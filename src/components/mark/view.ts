@@ -20,15 +20,15 @@ export default class MarkView extends PubSub implements ISubView {
     this.addition = addition;
   }
 
-  setProps = (props: DefaultProps): void => {
+  public setProps = (props: DefaultProps): void => {
     this.props = props;
     this.updateView();
-    this.onHandlers();
+    this.initHandles();
     this.prepareContent();
     this.render();
   };
 
-  render = (parent?: JQuery<HTMLElement>): void => {
+  public render = (parent?: JQuery<HTMLElement>): void => {
     if (parent) {
       this.parent = parent;
     }
@@ -38,7 +38,7 @@ export default class MarkView extends PubSub implements ISubView {
     }
   };
 
-  remove = () => {
+  public remove = () => {
     if (this.view) {
       this.view.remove();
       this.view = undefined;
@@ -46,21 +46,21 @@ export default class MarkView extends PubSub implements ISubView {
     }
   };
 
-  getAddition = (): Addition => {
+  public getAddition = (): Addition => {
     return this.addition;
   };
 
-  setAddition = (addition: Addition): void => {
+  public setAddition = (addition: Addition): void => {
     this.addition = addition;
   };
 
-  createView(): void {
+  private createView(): void {
     if (this.props && !isUndefined(get(this.addition, ["value"]))) {
       this.view = $("<div/>", this.prepareAttr());
     }
   }
 
-  prepareAttr = (): {
+  private prepareAttr = (): {
     class: string | undefined;
     style: string | undefined;
   } => {
@@ -71,13 +71,13 @@ export default class MarkView extends PubSub implements ISubView {
     return attr;
   };
 
-  prepareClassName = (): string => {
+  private prepareClassName = (): string => {
     const prefixCls = get(this.props, ["prefixCls"], "");
     const className = get(this.props, ["mark", "className"], "");
     return classnames(`${prefixCls}__mark`, className);
   };
 
-  prepareStyle = (): string | undefined => {
+  private prepareStyle = (): string | undefined => {
     if (this.props) {
       const value = get(this.addition, ["value"], 0);
       const style = get(this.props, ["mark", "style"], {});
@@ -102,7 +102,7 @@ export default class MarkView extends PubSub implements ISubView {
     return;
   };
 
-  prepareContent = (): void => {
+  private prepareContent = (): void => {
     if (this.view) {
       const { value } = this.addition;
       if (!isUndefined(value)) {
@@ -118,24 +118,24 @@ export default class MarkView extends PubSub implements ISubView {
     }
   };
 
-  onClick = (e: any) => {
+  private handleViewClick = (e: any) => {
     if (this.view && this.props) {
-      const { value, handlers, index = 0 } = this.addition;
-      const click = get(handlers, ["click"]);
-      if (!isUndefined(value) && click) {
-        click(index, e, value);
+      const { value, handles, index = 0 } = this.addition;
+      const handleViewClick = get(handles, ["handleViewClick"]);
+      if (!isUndefined(value) && handleViewClick) {
+        handleViewClick(index, e, value);
       }
     }
   };
 
-  onHandlers = () => {
+  private initHandles = () => {
     if (this.view) {
-      this.view.off("click", this.onClick);
-      this.view.on("click", this.onClick);
+      this.view.off("click", this.handleViewClick);
+      this.view.on("click", this.handleViewClick);
     }
   };
 
-  updateView = (): void => {
+  private updateView = (): void => {
     if (this.view) {
       this.view.attr(this.prepareAttr());
     } else {

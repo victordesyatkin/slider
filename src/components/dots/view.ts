@@ -23,7 +23,15 @@ export default class DotsView extends PubSub implements ISubView {
     this.addition = addition;
   }
 
-  render = (parent?: JQuery<HTMLElement>): void => {
+  public setProps = (props: DefaultProps): void => {
+    this.props = props;
+    this.updateView();
+    this.createOrUpdateSubViews();
+    this.appendSubViews();
+    this.render();
+  };
+
+  public render = (parent?: JQuery<HTMLElement>): void => {
     if (parent) {
       this.parent = parent;
     }
@@ -33,7 +41,7 @@ export default class DotsView extends PubSub implements ISubView {
     }
   };
 
-  remove = () => {
+  public remove = () => {
     if (this.view) {
       this.view.remove();
       this.view = undefined;
@@ -42,15 +50,15 @@ export default class DotsView extends PubSub implements ISubView {
     }
   };
 
-  getAddition = (): Addition => {
+  public getAddition = (): Addition => {
     return this.addition;
   };
 
-  setAddition = (addition: Addition): void => {
+  public setAddition = (addition: Addition): void => {
     this.addition = addition;
   };
 
-  createView(): void {
+  private createView(): void {
     if (this.props) {
       const on = get(this.props, ["dot", "on"]);
       if (on) {
@@ -59,7 +67,7 @@ export default class DotsView extends PubSub implements ISubView {
     }
   }
 
-  prepareAttr = (): {
+  private prepareAttr = (): {
     class: string | undefined;
     style: string | undefined;
   } => {
@@ -70,7 +78,7 @@ export default class DotsView extends PubSub implements ISubView {
     return attr;
   };
 
-  prepareClassName = (): string => {
+  private prepareClassName = (): string => {
     const prefixCls = get(this.props, ["prefixCls"], "");
     const className = get(this.props, ["dot", "wrapClassName"]);
     const vertical = get(this.props, ["vertical"]);
@@ -79,11 +87,11 @@ export default class DotsView extends PubSub implements ISubView {
     });
   };
 
-  prepareStyle = (): string | undefined => {
+  private prepareStyle = (): string | undefined => {
     return;
   };
 
-  updateView(): void {
+  private updateView(): void {
     if (this.view) {
       if (get(this.props, ["dot", "on"])) {
         this.view.attr(this.prepareAttr());
@@ -95,11 +103,11 @@ export default class DotsView extends PubSub implements ISubView {
     }
   }
 
-  createOrUpdateSubViews() {
+  private createOrUpdateSubViews() {
     this.createOrUpdateSubView<DotView>(this.dots, DotView);
   }
 
-  createOrUpdateSubView<T extends ISubView>(
+  private createOrUpdateSubView<T extends ISubView>(
     views: ISubView[],
     c: { new (addition: Addition): T }
   ): void {
@@ -118,15 +126,15 @@ export default class DotsView extends PubSub implements ISubView {
           values.push(i);
         }
       }
-      const handlers = this.addition.handlers;
+      const handles = this.addition.handles;
       values = orderBy(uniq(values), [], reverse ? "desc" : "asc");
       const length = values.length;
       for (let i = 0; i < length; i += 1) {
         if (views[i]) {
-          views[i].setAddition({ index: i, handlers, value: values[i] });
+          views[i].setAddition({ index: i, handles, value: values[i] });
           views[i].setProps(this.props);
         } else {
-          views[i] = new c({ index: i, handlers, value: values[i] });
+          views[i] = new c({ index: i, handles, value: values[i] });
           views[i].setProps(this.props);
         }
       }
@@ -134,7 +142,7 @@ export default class DotsView extends PubSub implements ISubView {
     }
   }
 
-  cleanSubView(views: IView[], count: number): void {
+  private cleanSubView(views: IView[], count: number): void {
     const length = views.length;
     if (length > count) {
       for (let i = count; i < length; i += 1) {
@@ -147,30 +155,18 @@ export default class DotsView extends PubSub implements ISubView {
     return;
   }
 
-  appendSubViews(): void {
+  private appendSubViews(): void {
     if (this.view) {
       this.appendSubView(this.dots);
     }
     return;
   }
 
-  appendSubView(subViews: IView[]): void {
+  private appendSubView(subViews: IView[]): void {
     if (this.view) {
       for (const subView of subViews) {
         subView.render(this.view);
       }
     }
   }
-
-  setProps = (props: DefaultProps): void => {
-    this.props = props;
-    this.updateView();
-    this.createOrUpdateSubViews();
-    this.appendSubViews();
-    this.render();
-  };
-
-  onClick = (): void => {};
-
-  onHandlers = (): void => {};
 }

@@ -20,7 +20,14 @@ export default class TooltipView extends PubSub implements ISubView {
     this.addition = addition;
   }
 
-  render = (parent?: JQuery<HTMLElement>): void => {
+  public setProps = (props: DefaultProps): void => {
+    this.props = props;
+    this.updateView();
+    this.prepareContent();
+    this.render();
+  };
+
+  public render = (parent?: JQuery<HTMLElement>): void => {
     if (parent) {
       this.parent = parent;
     }
@@ -30,7 +37,7 @@ export default class TooltipView extends PubSub implements ISubView {
     }
   };
 
-  remove = () => {
+  public remove = () => {
     if (this.view) {
       this.view.remove();
       this.view = undefined;
@@ -38,21 +45,21 @@ export default class TooltipView extends PubSub implements ISubView {
     }
   };
 
-  getAddition = (): Addition => {
+  public getAddition = (): Addition => {
     return this.addition;
   };
 
-  setAddition = (addition: Addition): void => {
+  public setAddition = (addition: Addition): void => {
     this.addition = addition;
   };
 
-  createView(): void {
+  private createView(): void {
     if (this.props && !isUndefined(get(this.addition, ["value"]))) {
       this.view = $("<div/>", this.prepareAttr());
     }
   }
 
-  prepareAttr = (): {
+  private prepareAttr = (): {
     class: string | undefined;
     style: string | undefined;
   } => {
@@ -63,7 +70,7 @@ export default class TooltipView extends PubSub implements ISubView {
     return attr;
   };
 
-  prepareClassName = (): string => {
+  private prepareClassName = (): string => {
     const prefixCls = get(this.props, ["prefixCls"], "");
     const className = get(this.props, ["tooltip", "className"], "");
     const always = get(this.props, ["tooltip", "always"]);
@@ -73,7 +80,7 @@ export default class TooltipView extends PubSub implements ISubView {
     });
   };
 
-  prepareStyle = (): string | undefined => {
+  private prepareStyle = (): string | undefined => {
     if (this.props) {
       const style = get(this.props, ["tooltip", "style"], {});
       const positionStyle = {};
@@ -85,7 +92,7 @@ export default class TooltipView extends PubSub implements ISubView {
     return;
   };
 
-  prepareContent = (): void => {
+  private prepareContent = (): void => {
     if (this.view) {
       const { value } = this.addition;
       if (!isUndefined(value)) {
@@ -101,7 +108,7 @@ export default class TooltipView extends PubSub implements ISubView {
     }
   };
 
-  updateView(): void {
+  private updateView(): void {
     if (this.view) {
       if (get(this.props, ["tooltip", "on"])) {
         this.view.attr(this.prepareAttr());
@@ -112,15 +119,4 @@ export default class TooltipView extends PubSub implements ISubView {
       this.createView();
     }
   }
-
-  setProps = (props: DefaultProps): void => {
-    this.props = props;
-    this.updateView();
-    this.prepareContent();
-    this.render();
-  };
-
-  onHandlers = (): void => {};
-
-  onClick = (): void => {};
 }
