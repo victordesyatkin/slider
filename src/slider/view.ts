@@ -9,7 +9,8 @@ import {
   getMousePosition,
   getCount,
   calcValueByPos,
-  calcValueWithEnsure,
+  getSliderStart,
+  getSliderLength,
 } from "../helpers/utils";
 import PubSub from "../helpers/pubsub";
 import RailView from "../components/rail/view";
@@ -27,7 +28,6 @@ class View extends PubSub implements IView {
   handles: ISubView[] = [];
   dots: ISubView[] = [];
   marks: ISubView[] = [];
-  currentHandleIndex?: number;
   parent?: JQuery<HTMLElement>;
   isRendered: boolean = false;
 
@@ -90,79 +90,43 @@ class View extends PubSub implements IView {
   }
 
   @bind
-  private handleViewClick(index: number, e: MouseEvent, value?: number): void {
-    e.preventDefault();
-    const disabled = get(this.props, ["disabled"]);
-    if (disabled) {
-      return;
-    }
-    if (this.props && this.view) {
-      let v: number;
-      if (!isUndefined(value)) {
-        if (this.props.values.length === 1) {
-          v = value;
-        } else if (
-          !isUndefined(this.currentHandleIndex) &&
-          this.props.values.length > 1
-        ) {
-          v = calcValueWithEnsure({
-            value,
-            props: this.props,
-            index: this.currentHandleIndex,
-          });
-        } else {
-          return;
-        }
-      } else {
-        const vertical = get(this.props, ["vertical"], false);
-        const position = getMousePosition(vertical, e as MouseEvent);
-        v = calcValueByPos({
-          position,
-          view: this.view,
-          props: this.props,
-          index: this.currentHandleIndex || index,
-        });
-      }
-      if (this.props.values.length === 1 && this.props.values[0] !== v) {
-        const values: number[] = [v];
-        this.publish("setPropsModel", values);
-        this.publish("onWindowMouseUp", values);
-      } else if (
-        this.props.values.length > 1 &&
-        !isUndefined(this.currentHandleIndex) &&
-        this.props.values[this.currentHandleIndex] !== v
-      ) {
-        const values: number[] = [...this.props.values];
-        values[this.currentHandleIndex] = v;
-        this.publish("setPropsModel", values);
-        this.publish("onWindowMouseUp", values);
-      }
-    }
+  private handleViewClick(
+    index: number,
+    event: MouseEvent,
+    value?: number
+  ): void {
+    event.preventDefault();
+    this.publish("handleViewClick", {
+      index,
+      event,
+      value,
+      start: getSliderStart({ props: this.props, view: this.view }),
+      length: getSliderLength({ props: this.props, view: this.view }),
+    });
   }
 
   @bind
-  private handleViewMouseDown(index: number, e: MouseEvent): void {
-    e.preventDefault();
+  private handleViewMouseDown(index: number, event: MouseEvent): void {
+    event.preventDefault();
     const disabled = get(this.props, ["disabled"]);
     if (disabled) {
       return;
     }
-    this.currentHandleIndex = index;
     window.addEventListener("mousemove", this.handleWindowMouseMove);
     window.addEventListener("mouseup", this.handleWindowMouseUp);
-    this.publish("onViewMouseDown", this.props?.values || []);
+    this.publish("handleViewMouseDown", { index });
   }
 
   @bind
-  private handleWindowMouseUp(e: MouseEvent): void {
-    e.preventDefault();
+  private handleWindowMouseUp(event: MouseEvent): void {
+    event.preventDefault();
     const disabled = get(this.props, ["disabled"]);
     if (disabled) {
       return;
     }
     window.removeEventListener("mousemove", this.handleWindowMouseMove);
     window.removeEventListener("mouseup", this.handleWindowMouseUp);
-    this.publish("handleWindowMouseUp", this.props?.values || []);
+    this.publish("handleWindowMouseUp");
   }
 
   @bind
@@ -208,7 +172,7 @@ class View extends PubSub implements IView {
   private createOrUpdateSubView<T extends ISubView>(
     views: ISubView[],
     count: number,
-    c: { new (addition: Addition): T },
+    subView: { new (addition: Addition): T },
     action?: string
   ): void {
     if (this.props) {
@@ -226,7 +190,7 @@ class View extends PubSub implements IView {
         }
       }
       for (let index = 0; index < count; index += 1) {
-        if (c.name === "mousedown") {
+        if (subView.name === "HandleView") {
           active = index === this.currentHandleIndex;
         }
 
@@ -236,7 +200,7 @@ class View extends PubSub implements IView {
           views[index].setAddition(addition);
           views[index].setProps(this.props);
         } else {
-          views[index] = new c({ index, handles, active });
+          views[index] = new subView({ index, handles, active });
           views[index].setProps(this.props);
         }
       }

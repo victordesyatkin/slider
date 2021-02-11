@@ -20,6 +20,7 @@ export default class Presenter implements IPresenter {
     this.view.subscribe("setPropsModel", this.setPropsModel);
     this.view.subscribe("handleViewMouseDown", this.handleViewMouseDown);
     this.view.subscribe("handleWindowMouseUp", this.handleWindowMouseUp);
+    this.view.subscribe("handleViewClick", this.handleViewClick);
   }
 
   private initHandlesModel(): void {
@@ -34,6 +35,17 @@ export default class Presenter implements IPresenter {
   @bind
   private handleWindowMouseUp(values?: number[]): void {
     this.model.publish("handleWindowMouseUp", values);
+  }
+
+  @bind
+  handleViewClick(options: {
+    index: number;
+    event: MouseEvent;
+    value?: number;
+    length: number;
+    start: number;
+  }) {
+    this.model.publish("handleViewClick", options);
   }
 
   @bind

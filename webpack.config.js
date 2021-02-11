@@ -47,7 +47,6 @@ module.exports = (env = {}) => {
         hash: true,
         alwaysWriteToDisk: true,
         meta: {
-          viewport: "initial-scale=1.0, width=device-width",
           "msapplication-TileColor": "#da532c",
           "theme-color": "#ffffff",
         },

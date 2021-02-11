@@ -23,14 +23,6 @@ export default class DotsView extends PubSub implements ISubView {
     this.addition = addition;
   }
 
-  public setProps(props: DefaultProps): void {
-    this.props = props;
-    this.updateView();
-    this.createOrUpdateSubViews();
-    this.appendSubViews();
-    this.render();
-  }
-
   public render(parent?: JQuery<HTMLElement>): void {
     if (parent) {
       this.parent = parent;
@@ -39,6 +31,14 @@ export default class DotsView extends PubSub implements ISubView {
       this.parent.append(this.view);
       this.isRendered = true;
     }
+  }
+
+  public setProps(props: DefaultProps): void {
+    this.props = props;
+    this.updateView();
+    this.createOrUpdateSubViews();
+    this.appendSubViews();
+    this.render();
   }
 
   public remove(): void {
@@ -109,7 +109,7 @@ export default class DotsView extends PubSub implements ISubView {
 
   private createOrUpdateSubView<T extends ISubView>(
     views: ISubView[],
-    c: { new (addition: Addition): T }
+    subView: { new (addition: Addition): T }
   ): void {
     if (this.props && this.view) {
       const { min, max, step, reverse } = this.props;
@@ -134,7 +134,7 @@ export default class DotsView extends PubSub implements ISubView {
           views[i].setAddition({ index: i, handles, value: values[i] });
           views[i].setProps(this.props);
         } else {
-          views[i] = new c({ index: i, handles, value: values[i] });
+          views[i] = new subView({ index: i, handles, value: values[i] });
           views[i].setProps(this.props);
         }
       }

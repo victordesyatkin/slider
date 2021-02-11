@@ -5,7 +5,13 @@ doctype html
     let { examples = [], meta = [], links = [], title, lang } = htmlWebpackPlugin.options.getData();
 html(lang=lang)
     head
-        title=title
+        meta(
+            charset="utf-8"
+        )
+        meta(
+            name="viewport"
+            content="width=device-width, initial-scale=1"
+        )
         each item in meta
             - let { name, content, charset } = item || {};
             meta(
@@ -21,6 +27,7 @@ html(lang=lang)
                 sizes=sizes,
                 type=type
             )
+        title=title
     body
         each example in examples            
             +example(example)

@@ -111,10 +111,11 @@ function getCount(props?: DefaultProps): number {
   return get(props, ["values"], []).length;
 }
 
-function getSliderStart(
-  props?: DefaultProps,
-  view?: JQuery<HTMLElement>
-): number {
+function getSliderStart(options: {
+  props?: DefaultProps;
+  view?: JQuery<HTMLElement>;
+}): number {
+  const { props, view } = options;
   if (props && view) {
     const { vertical, reverse } = props;
     const rect = view.get(0).getBoundingClientRect();
@@ -127,26 +128,27 @@ function getSliderStart(
 }
 
 function getSliderLength(options: {
-  view: JQuery<HTMLElement>;
-  props: DefaultProps;
+  view?: JQuery<HTMLElement>;
+  props?: DefaultProps;
 }): number {
   const { props, view } = options;
-  const { vertical } = props;
-  const coords = view.get(0).getBoundingClientRect();
-  return vertical ? coords.height : coords.width;
+  if (props && view) {
+    const { vertical } = props;
+    const coords = view.get(0).getBoundingClientRect();
+    return vertical ? coords.height : coords.width;
+  }
+  return 0;
 }
 
 function calcValue(options: {
   offset: number;
-  view: JQuery<HTMLElement>;
+  length: number;
   props: DefaultProps;
   index: number;
 }): number {
-  const { offset, view, props } = options;
+  const { offset, length, props } = options;
   const { vertical, min, max, precision } = props;
-  const ratio = Math.abs(
-    Math.max(offset, 0) / getSliderLength({ view, props })
-  );
+  const ratio = Math.abs(Math.max(offset, 0) / length);
   const value = vertical
     ? (1 - ratio) * (max - min) + min
     : ratio * (max - min) + min;
@@ -155,14 +157,15 @@ function calcValue(options: {
 
 function calcValueByPos(options: {
   position: number;
-  view: JQuery<HTMLElement>;
+  start: number;
   props: DefaultProps;
   index: number;
+  length: number;
 }): number {
-  const { position, view, props } = options;
+  const { position, props, start } = options;
   const { reverse, min, max } = props;
   const sign = reverse ? -1 : +1;
-  const offset = sign * (position - getSliderStart(props, view));
+  const offset = sign * (position - start);
   let value = ensureValueInRange(calcValue({ ...options, offset }), {
     min,
     max,

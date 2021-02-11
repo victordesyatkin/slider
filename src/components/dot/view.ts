@@ -132,6 +132,7 @@ class DotView extends PubSub implements ISubView {
     if (this.view && this.props) {
       const { value, handles, index = 0 } = this.addition;
       const handleViewClick = get(handles, ["handleViewClick"]);
+      console.log("handleViewClick this.addition : ", handleViewClick);
       if (!isUndefined(value) && handleViewClick) {
         handleViewClick(index, event, value);
       }
