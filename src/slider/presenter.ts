@@ -1,4 +1,5 @@
 import merge from "lodash/merge";
+import bind from "bind-decorator";
 
 import { DefaultProps } from "../types";
 import { IModel, IView, IPresenter } from "./interface";
@@ -25,18 +26,22 @@ export default class Presenter implements IPresenter {
     this.model.subscribe("setPropsView", this.setPropsView);
   }
 
+  @bind
   private handleViewMouseDown(values?: number[]): void {
     this.model.publish("handleViewMouseDown", values);
   }
 
+  @bind
   private handleWindowMouseUp(values?: number[]): void {
     this.model.publish("handleWindowMouseUp", values);
   }
 
+  @bind
   private setPropsModel(values: number[]): void {
     this.model.setProps(merge({}, this.model.getProps(), { values }));
   }
 
+  @bind
   private setPropsView(props: DefaultProps): void {
     this.view.setProps(props);
   }
