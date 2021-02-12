@@ -5,12 +5,11 @@ describe("helpers", () => {
     test("create pubsub", () => {
       const pubsub = new PubSub();
       expect(pubsub).toBeInstanceOf(PubSub);
-      expect(pubsub).toEqual({
-        subscribers: expect.any(Object),
-        unsubscribe: expect.any(Function),
-        subscribe: expect.any(Function),
-        publish: expect.any(Function),
-      });
+      expect(pubsub).toEqual(
+        expect.objectContaining({
+          subscribers: {},
+        })
+      );
     });
     test("pubsub subscribe unsubscribe publish", () => {
       const pubsub = new PubSub();

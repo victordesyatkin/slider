@@ -124,22 +124,27 @@ describe("helpers", () => {
       expect(utils.getCount({ ...defaultProps, values: [10, 48, 14] })).toBe(3);
     });
     test("getSliderStart", () => {
-      expect(utils.getSliderStart()).toBe(0);
-      expect(utils.getSliderStart({ ...defaultProps })).toBe(0);
+      expect(utils.getSliderStart({})).toBe(0);
+      expect(utils.getSliderStart({ props: { ...defaultProps } })).toBe(0);
       document.body.innerHTML = `<div class="${className1}" style="width:100px;height:100px;">hello world!</div>`;
       let $el = $(`.${className1}`);
       utils.setFunctionGetBoundingClientRectHTMLElement({
         height: 100,
         width: 100,
       });
-      expect(utils.getSliderStart({ ...defaultProps }, $el)).toBe(0);
+      expect(
+        utils.getSliderStart({ props: { ...defaultProps }, view: $el })
+      ).toBe(0);
       utils.setFunctionGetBoundingClientRectHTMLElement({
         marginTop: 10,
         height: 100,
         width: 100,
       });
       expect(
-        utils.getSliderStart({ ...defaultProps, vertical: true }, $el)
+        utils.getSliderStart({
+          props: { ...defaultProps, vertical: true },
+          view: $el,
+        })
       ).toBe(10);
       utils.setFunctionGetBoundingClientRectHTMLElement({
         marginBottom: 40,
@@ -147,10 +152,10 @@ describe("helpers", () => {
         width: 100,
       });
       expect(
-        utils.getSliderStart(
-          { ...defaultProps, vertical: true, reverse: true },
-          $el
-        )
+        utils.getSliderStart({
+          props: { ...defaultProps, vertical: true, reverse: true },
+          view: $el,
+        })
       ).toBe(40);
     });
     test("getSliderLength", () => {
@@ -181,7 +186,7 @@ describe("helpers", () => {
       expect(
         utils.calcValue({
           offset: 50,
-          view: $el,
+          length: 200,
           props: { ...defaultProps },
           index: 0,
         })
@@ -189,7 +194,7 @@ describe("helpers", () => {
       expect(
         utils.calcValue({
           offset: 50,
-          view: $el,
+          length: 100,
           props: { ...defaultProps, vertical: true },
           index: 0,
         })
@@ -205,17 +210,19 @@ describe("helpers", () => {
       expect(
         utils.calcValueByPos({
           position: 50,
-          view: $el,
+          length: 200,
           props: { ...defaultProps },
           index: 0,
+          start: 0,
         })
       ).toBe(25);
       expect(
         utils.calcValueByPos({
           position: 50,
-          view: $el,
+          length: 100,
           props: { ...defaultProps, vertical: true },
           index: 0,
+          start: 0,
         })
       ).toBe(50);
     });
