@@ -26,26 +26,30 @@ describe("rail", () => {
       const view = new MarkView({ index: 0 });
       const $parent = $(".slider__wrapper");
       view.render($parent);
-      let $el = $(`.${defaultProps.prefixCls}__mark`, $parent);
-      expect($el.length).toBe(0);
+      let $element = $(`.${defaultProps.prefixCls}__mark`, $parent);
+      expect($element.length).toBe(0);
 
       view.setProps(defaultProps);
       view.render($parent);
-      $el = $(`.${defaultProps.prefixCls}__mark`, $parent);
-      expect($el.length).toBe(0);
+      $element = $(`.${defaultProps.prefixCls}__mark`, $parent);
+      expect($element.length).toBe(0);
 
       view.setAddition({ index: 0, value: 62 });
       view.setProps(defaultProps);
       view.render($parent);
-      $el = $(`.${defaultProps.prefixCls}__mark`, $parent);
-      expect($el.length).toBe(1);
+      $element = $(`.${defaultProps.prefixCls}__mark`, $parent);
+      expect($element.length).toBe(1);
     });
 
     test("prepareStyle mark view", () => {
       let addition = { index: 0 };
       const mark = new MarkView(addition);
-      let style = mark.prepareStyle();
-      expect(style).toBeUndefined();
+      let className = "slider__wrapper-0";
+      $("body").append(`<div class="${className}"/>`);
+      const $parent = $(`.${className}`);
+      mark.render($parent);
+      let $element = $(`.${defaultProps.prefixCls}__mark`, $parent);
+      expect($element.css("color")).toBeUndefined();
     });
 
     test("prepareContent mark view", () => {
@@ -59,53 +63,62 @@ describe("rail", () => {
       };
       const mark = new MarkView(addition);
       mark.setProps(props);
-      let content = mark.prepareContent();
-      expect(content).toBeUndefined();
-
       let className = "slider__wrapper-1";
       $("body").append(`<div class="${className}"/>`);
       const $parent = $(`.${className}`);
       mark.render($parent);
-      let $el = $(`.${defaultProps.prefixCls}__mark`, $parent);
-      expect($el.length).toBe(1);
-      expect($el.text()).toBe(`${addition.value}`);
+      let $element = $(`.${defaultProps.prefixCls}__mark`, $parent);
+      expect($element.length).toBe(1);
+      expect($element.text()).toBe(`${addition.value}`);
       props = { ...props, mark: { render: mockCallback, on: true } };
       mark.setProps(props);
-      $el = $(`.${defaultProps.prefixCls}__mark`, $parent);
-      expect($el.length).toBe(1);
-      expect($el.text()).toBe(`${addition.value}%`);
+      $element = $(`.${defaultProps.prefixCls}__mark`, $parent);
+      expect($element.length).toBe(1);
+      expect($element.text()).toBe(`${addition.value}%`);
 
       props = { ...props, mark: { on: true } };
       mark.setProps(props);
-      mark.prepareContent();
-      $el = $(`.${defaultProps.prefixCls}__mark`, $parent);
-      expect($el.length).toBe(1);
-      expect($el.text()).toBe(`${addition.value}`);
+
+      $element = $(`.${defaultProps.prefixCls}__mark`, $parent);
+      expect($element.length).toBe(1);
+      expect($element.text()).toBe(`${addition.value}`);
     });
 
-    test("onClick mark view", () => {
-      let mockCallback = jest.fn((value: number): string => {
+    test("handleViewClick mark view", () => {
+      let handleViewClick = jest.fn((value: number): string => {
         return `${value}%`;
       });
       let addition: Addition = {
         index: 0,
         value: 80,
-        handlers: { click: mockCallback },
+        handles: { handleViewClick },
       };
       let props: DefaultProps = {
         ...defaultProps,
       };
       const mark = new MarkView(addition);
-      let event = new Event("click");
-      mark.onClick(event);
+      let className = "slider__wrapper-2";
+      $("body").append(`<div class="${className}"/>`);
+      const $parent = $(`.${className}`);
+      mark.render($parent);
+      let $element = $(`.${defaultProps.prefixCls}__mark`, $parent);
+      $element.trigger("click");
       mark.setProps(props);
-      mark.onClick(event);
-      expect(mockCallback.mock.calls.length).toBe(1);
-      addition = { index: 0, handlers: { click: mockCallback } };
+      expect(handleViewClick.mock.calls.length).toBe(0);
+
+      addition = { index: 0, handles: { handleViewClick } };
       mark.setAddition(addition);
       mark.setProps(props);
-      mark.onClick(event);
-      expect(mockCallback.mock.calls.length).toBe(1);
+      $element = $(`.${defaultProps.prefixCls}__mark`, $parent);
+      $element.trigger("click");
+      expect(handleViewClick.mock.calls.length).toBe(0);
+
+      addition = { index: 0, value: 80, handles: { handleViewClick } };
+      mark.setAddition(addition);
+      mark.setProps(props);
+      $element = $(`.${defaultProps.prefixCls}__mark`, $parent);
+      $element.trigger("click");
+      expect(handleViewClick.mock.calls.length).toBe(1);
     });
 
     test("getAddition mark view", () => {

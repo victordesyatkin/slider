@@ -4,28 +4,37 @@ import { defaultProps } from "../../slider/index";
 import HandleView from "../../components/handle/view";
 
 describe("handle", () => {
-  test("onMouseDown handle view", () => {
-    let mockCallback1 = jest.fn(
-      (index: number, e: any, value?: number): void => {}
+  test("handleViewMouseDown handle view", () => {
+    let handleViewMouseDown1 = jest.fn(
+      (index: number, event: any, value?: number): void => {}
     );
-    let addition = { index: 0, handlers: { mousedown: mockCallback1 } };
+    let addition = {
+      index: 0,
+      handlers: { handleViewMouseDown: handleViewMouseDown1 },
+    };
     const view = new HandleView(addition);
-    const event = new Event("click");
-    view.onMouseDown(event);
     let className = "slider__wrapper-9";
     $("body").append(`<div class="${className}"/>`);
     const $parent = $(`.${className}`);
-    expect(mockCallback1.mock.calls.length).toBe(1);
-    let mockCallback2 = jest.fn(
-      (index: number, e: any, value?: number): void => {}
-    );
-    view.setAddition({ ...addition, handlers: { mousedown: mockCallback2 } });
     view.setProps(defaultProps);
     view.render($parent);
-    let $el = $(`.${defaultProps.prefixCls}__handle`, $parent);
-    expect($el.length).toBe(1);
-    $el.trigger("mousedown");
-    expect(mockCallback2.mock.calls.length).toBe(1);
+    let $element = $(`.${defaultProps.prefixCls}__handle`, $parent);
+    $element.trigger("mousedown");
+    expect(handleViewMouseDown1.mock.calls.length).toBe(0);
+
+    let handleViewMouseDown2 = jest.fn(
+      (index: number, event: any, value?: number): void => {}
+    );
+    view.setAddition({
+      ...addition,
+      handles: { handleViewMouseDown: handleViewMouseDown2 },
+    });
+    view.setProps(defaultProps);
+    view.render($parent);
+    $element = $(`.${defaultProps.prefixCls}__handle`, $parent);
+    expect($element.length).toBe(1);
+    $element.trigger("mousedown");
+    expect(handleViewMouseDown2.mock.calls.length).toBe(1);
   });
 
   test("on/off tooltip handle view", () => {

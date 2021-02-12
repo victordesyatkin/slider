@@ -28,12 +28,12 @@ describe("rail", () => {
       const view = new RailView(addition);
       const $parent = $(".slider__wrapper");
       view.render($parent);
-      let $el = $(`.${defaultProps.prefixCls}__rail`, $parent);
-      expect($el.length).toBe(0);
+      let $element = $(`.${defaultProps.prefixCls}__rail`, $parent);
+      expect($element.length).toBe(0);
 
       view.setProps(defaultProps);
-      $el = $(`.${defaultProps.prefixCls}__rail`, $parent);
-      expect($el.length).toBe(1);
+      $element = $(`.${defaultProps.prefixCls}__rail`, $parent);
+      expect($element.length).toBe(1);
     });
 
     test("updateView rail view", () => {
@@ -46,17 +46,19 @@ describe("rail", () => {
       view.setAddition(addition);
       view.setProps(props);
       view.render($parent);
-      let $el = $(`.${defaultProps.prefixCls}__rail`, $parent);
-      expect($el.length).toBe(1);
+      let $element = $(`.${defaultProps.prefixCls}__rail`, $parent);
+      expect($element.length).toBe(1);
       props = { ...defaultProps, rail: { on: false } };
       view.setProps(props);
-      $el = $(`.${defaultProps.prefixCls}__rail`, $parent);
-      expect($el.length).toBe(0);
+      $element = $(`.${defaultProps.prefixCls}__rail`, $parent);
+      expect($element.length).toBe(0);
     });
 
-    test("onClick rail view", () => {
+    test("handleViewClick rail view", () => {
       let className = "slider__wrapper-13";
-      let mockCallback = jest.fn((value: number): string => {
+      $("body").append(`<div class="${className}"/>`);
+      const $parent = $(`.${className}`);
+      let handleViewClick = jest.fn((value: number): string => {
         return `${value}%`;
       });
       let addition: Addition = {
@@ -66,16 +68,17 @@ describe("rail", () => {
         ...defaultProps,
       };
       const view = new RailView(addition);
-      let event = new Event("click");
-      view.onClick(event);
+      view.render($parent);
       view.setProps(props);
-      view.onClick(event);
-      expect(mockCallback.mock.calls.length).toBe(0);
-      addition = { index: 0, handlers: { click: mockCallback } };
+      let $view = $(`.${defaultProps.prefixCls}__rail`, $parent);
+      $view.trigger("click");
+      expect(handleViewClick.mock.calls.length).toBe(0);
+      addition = { index: 0, handles: { handleViewClick } };
       view.setAddition(addition);
       view.setProps(props);
-      view.onClick(event);
-      expect(mockCallback.mock.calls.length).toBe(1);
+      $view = $(`.${defaultProps.prefixCls}__rail`, $parent);
+      $view.trigger("click");
+      expect(handleViewClick.mock.calls.length).toBe(1);
     });
   });
 });

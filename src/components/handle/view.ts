@@ -64,7 +64,7 @@ export default class HandleView extends PubSub implements ISubView {
   }
 
   @bind
-  private handleViewMouseDown(event: any): void {
+  private handleViewMouseDown(event: MouseEvent): void {
     const handleViewMouseDown = get(this.addition, [
       "handles",
       "handleViewMouseDown",

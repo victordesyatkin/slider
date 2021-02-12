@@ -3,7 +3,7 @@ import $ from "jquery";
 import { setFunctionGetBoundingClientRectHTMLElement } from "../../helpers/utils";
 import View from "../../slider/view";
 import { defaultProps } from "../../slider/index";
-import { Dot, Mark, Tooltip } from "../../types";
+import { Dot, Mark, Tooltip, DefaultPropsView } from "../../types";
 
 describe("slider", () => {
   describe("view", () => {
@@ -228,145 +228,92 @@ describe("slider", () => {
       expect(mockCallback.mock.calls[0][0]).toBe(5);
     });
 
-    test("onClick", () => {
+    test("handleViewClick", () => {
       setFunctionGetBoundingClientRectHTMLElement({ width: 100, height: 100 });
+      $("body").append('<div class="slider__wrapper7"/>');
       const view = new View();
-      let index = 0;
-      let event = new MouseEvent("click");
-      let mockCallback1 = jest.fn((values?: number[]): void => {});
-      let mockCallback2 = jest.fn((values?: number[]): void => {});
-      view.subscribe("setPropsModel", mockCallback1);
-      view.subscribe("onMouseUp", mockCallback2);
-      view.onClick(index, event);
-      expect(mockCallback1.mock.calls.length).toBe(0);
-      expect(mockCallback2.mock.calls.length).toBe(0);
-      let props = { ...defaultProps, disabled: true };
-      view.setProps(props);
-      view.onClick(index, event);
-      expect(mockCallback1.mock.calls.length).toBe(0);
-      expect(mockCallback2.mock.calls.length).toBe(0);
-      props = { ...defaultProps, disabled: false, vertical: true };
-      view.setProps(props);
-      event = new MouseEvent("click", {
-        clientY: 50,
-      });
-      view.onClick(index, event);
-      expect(mockCallback1.mock.calls.length).toBe(1);
-      expect(mockCallback2.mock.calls.length).toBe(1);
-      expect(mockCallback1.mock.calls[0][0]).toStrictEqual([50]);
-      expect(mockCallback2.mock.calls[0][0]).toStrictEqual([50]);
-      props = {
-        ...defaultProps,
-        disabled: false,
-        vertical: true,
-        values: [40, 65],
-      };
-      view.setProps(props);
-      event = new MouseEvent("click", {
-        clientY: 50,
-      });
-      view.currentHandleIndex = 0;
-      view.onClick(index, event);
-      expect(mockCallback1.mock.calls.length).toBe(2);
-      expect(mockCallback2.mock.calls.length).toBe(2);
-      expect(mockCallback1.mock.calls[1][0]).toStrictEqual([50, 65]);
-      expect(mockCallback2.mock.calls[1][0]).toStrictEqual([50, 65]);
-      view.onClick(index, event, 45);
-      expect(mockCallback1.mock.calls.length).toBe(3);
-      expect(mockCallback2.mock.calls.length).toBe(3);
-      expect(mockCallback1.mock.calls[2][0]).toStrictEqual([45, 65]);
-      expect(mockCallback2.mock.calls[2][0]).toStrictEqual([45, 65]);
-
-      props = {
-        ...defaultProps,
-        disabled: false,
-        vertical: true,
-        values: [30],
-      };
-      view.setProps(props);
-      view.onClick(index, event, 45);
-      expect(mockCallback1.mock.calls.length).toBe(4);
-      expect(mockCallback2.mock.calls.length).toBe(4);
-      expect(mockCallback1.mock.calls[3][0]).toStrictEqual([45]);
-      expect(mockCallback2.mock.calls[3][0]).toStrictEqual([45]);
-
-      props = {
-        ...defaultProps,
-        disabled: false,
-        vertical: true,
-        values: [30, 72],
-      };
-      view.currentHandleIndex = undefined;
-      view.setProps(props);
-      view.onClick(index, event, 45);
-      expect(mockCallback1.mock.calls.length).toBe(4);
-      expect(mockCallback2.mock.calls.length).toBe(4);
-    });
-
-    test("onMouseDown slider view", () => {
-      let mockCallback = jest.fn((values?: number[]): void => {});
-      const view = new View();
-      let props = { ...defaultProps };
-      view.subscribe("onMouseDown", mockCallback);
-      view.setProps(props);
-
-      let index = 0;
-      let event = new MouseEvent("click");
-      view.onMouseDown(index, event);
-      expect(mockCallback.mock.calls.length).toBe(1);
-      expect(mockCallback.mock.calls[0][0]).toStrictEqual([0]);
-
-      props = { ...defaultProps, disabled: true };
-      view.setProps(props);
-      view.onMouseDown(index, event);
+      const $parent = $(".slider__wrapper7");
+      view.setProps(defaultProps);
+      view.render($parent);
+      let mockCallback = jest.fn(
+        (options: {
+          index: number;
+          event: MouseEvent;
+          value?: number;
+          length: number;
+          start: number;
+        }): void => {}
+      );
+      view.subscribe("handleViewClick", mockCallback);
+      let $rail = $(`.${defaultProps.prefixCls}__rail`, $parent);
+      $rail.trigger("click");
       expect(mockCallback.mock.calls.length).toBe(1);
     });
 
-    test("onMouseUp slider view", () => {
-      let mockCallback = jest.fn((values?: number[]): void => {});
-      const view = new View();
-      let props = { ...defaultProps };
-      view.subscribe("onMouseUp", mockCallback);
-      view.setProps(props);
-
-      let event = new MouseEvent("click");
-      view.onMouseUp(event);
-      expect(mockCallback.mock.calls.length).toBe(1);
-      expect(mockCallback.mock.calls[0][0]).toStrictEqual([0]);
-
-      props = { ...defaultProps, disabled: true };
-      view.setProps(props);
-      view.onMouseUp(event);
-      expect(mockCallback.mock.calls.length).toBe(1);
-    });
-
-    test("onMouseMove slider view", () => {
-      let mockCallback = jest.fn((values?: number[]): void => {});
-      const view = new View();
-      let props = { ...defaultProps };
-      view.subscribe("setPropsModel", mockCallback);
-      let event = new MouseEvent("click");
-      view.onMouseMove(event);
-      expect(mockCallback.mock.calls.length).toBe(0);
-
-      view.setProps(props);
-      view.onMouseMove(event);
-      expect(mockCallback.mock.calls.length).toBe(0);
-
+    test("handleViewMouseDown slider view", () => {
       setFunctionGetBoundingClientRectHTMLElement({ width: 100, height: 100 });
-      view.currentHandleIndex = 0;
-      props = { ...props, vertical: true };
-      view.setProps(props);
-      event = new MouseEvent("mousemove", {
-        clientY: 30,
+      $("body").append('<div class="slider__wrapper8"/>');
+      const view = new View();
+      const $parent = $(".slider__wrapper8");
+      view.setProps({ ...defaultProps, dot: { on: true } });
+      view.render($parent);
+      let mockCallback = jest.fn((options: { index: number }): void => {});
+      view.subscribe("handleViewMouseDown", mockCallback);
+      const $handle = $(`.${defaultProps.prefixCls}__handle`, $parent);
+      $handle.trigger("mousedown");
+      expect(mockCallback.mock.calls.length).toBe(1);
+      expect(mockCallback.mock.calls[0][0]).toStrictEqual({ index: 0 });
+    });
+
+    test("handleWindowMouseUp slider view", () => {
+      setFunctionGetBoundingClientRectHTMLElement({
+        width: 100,
+        height: 100,
       });
-      view.onMouseMove(event);
+      $("body").append('<div class="slider__wrapper9"/>');
+      const $parent = $(".slider__wrapper9");
+      const view = new View();
+      view.render($parent);
+      view.setProps(defaultProps);
+      let mockCallback = jest.fn((): void => {});
+      view.subscribe("handleWindowMouseUp", mockCallback);
+      window.dispatchEvent(new Event("mouseup"));
+      expect(mockCallback.mock.calls.length).toBe(0);
+      const $handle = $(`.${defaultProps.prefixCls}__handle`, $parent);
+      $handle.trigger("mousedown");
+      window.dispatchEvent(new Event("mouseup"));
       expect(mockCallback.mock.calls.length).toBe(1);
-      expect(mockCallback.mock.calls[0][0]).toStrictEqual([70]);
-      props = { ...props, values: [70] };
-      view.setProps(props);
-      view.onMouseMove(event);
+    });
+
+    test("handleWindowMouseMove slider view", () => {
+      setFunctionGetBoundingClientRectHTMLElement({
+        width: 100,
+        height: 100,
+      });
+      $("body").append('<div class="slider__wrapper10"/>');
+      const $parent = $(".slider__wrapper10");
+      const view = new View();
+      view.render($parent);
+      view.setProps(defaultProps);
+      let mockCallback = jest.fn(
+        (options: {
+          event: MouseEvent;
+          start: number;
+          length: number;
+        }): void => {}
+      );
+      view.subscribe("handleWindowMouseMove", mockCallback);
+      expect(mockCallback.mock.calls.length).toBe(0);
+      const $handle = $(`.${defaultProps.prefixCls}__handle`, $parent);
+      $handle.trigger("mousedown");
+      let event = new MouseEvent("mousemove");
+      window.dispatchEvent(event);
       expect(mockCallback.mock.calls.length).toBe(1);
+      expect(mockCallback.mock.calls[0][0]).toStrictEqual({
+        event,
+        start: 0,
+        length: 100,
+      });
     });
   });
 });

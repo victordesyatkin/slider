@@ -38,20 +38,20 @@ function getHandleCenterPosition(
 }
 
 function ensureValueInRange(
-  val: number,
+  value: number,
   { max, min }: { max: number; min: number }
 ): number {
-  if (val <= min) {
+  if (value <= min) {
     return min;
   }
-  if (val >= max) {
+  if (value >= max) {
     return max;
   }
-  return val;
+  return value;
 }
 
-function getMousePosition(vertical: boolean, e: MouseEvent): number {
-  return vertical ? e.clientY || 0 : e.pageX || 0;
+function getMousePosition(vertical: boolean, event: MouseEvent): number {
+  return vertical ? event.clientY || 0 : event.pageX || 0;
 }
 
 function getPrecision(step: number): number {
@@ -85,10 +85,12 @@ function getClosestPoint(
   }
 }
 
-function ensureValuePrecision(v: number, props: DefaultProps): number {
+function ensureValuePrecision(value: number, props: DefaultProps): number {
   const { step, min, max } = props;
-  const closestPoint = isFinite(getClosestPoint(v, { step, min, max }, props))
-    ? getClosestPoint(v, { step, min, max }, props)
+  const closestPoint = isFinite(
+    getClosestPoint(value, { step, min, max }, props)
+  )
+    ? getClosestPoint(value, { step, min, max }, props)
     : 0;
   return isUndefined(step)
     ? closestPoint
@@ -97,11 +99,11 @@ function ensureValuePrecision(v: number, props: DefaultProps): number {
 
 function prepareValues(props: DefaultProps): DefaultProps {
   let { values, mark } = props;
-  values = orderBy(values).map((v, index) => {
-    return calcValueWithEnsure({ value: v, props, index });
+  values = orderBy(values).map((value, index) => {
+    return calcValueWithEnsure({ value, props, index });
   });
-  let markValues: number[] = (mark?.values || []).map((v) => {
-    return ensureValueInRange(v, { min: props.min, max: props.max });
+  let markValues: number[] = (mark?.values || []).map((value) => {
+    return ensureValueInRange(value, { min: props.min, max: props.max });
   });
   markValues = orderBy(uniq(markValues), [], ["asc"]);
   return { ...props, values, mark: { ...mark, values: markValues } };

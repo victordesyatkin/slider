@@ -29,13 +29,13 @@ class Model extends PubSub implements IModel {
 
   public setProps(props: Props): void {
     this.props = prepareData(props, this.getProps());
-    this.publish("setPropsView", this.props);
+    this.publish("setPropsForView", this.props);
   }
 
   private initHandles(): void {
+    this.subscribe("handleViewClick", this.handleViewClick);
     this.subscribe("handleViewMouseDown", this.handleViewMouseDown);
     this.subscribe("handleWindowMouseUp", this.handleWindowMouseUp);
-    this.subscribe("handleViewClick", this.handleViewClick);
     this.subscribe("handleWindowMouseMove", this.handleWindowMouseMove);
   }
 
@@ -117,16 +117,14 @@ class Model extends PubSub implements IModel {
     }
     this.currentHandleIndex = index;
     this.publish(
-      "setPropsView",
+      "setPropsForView",
       merge({}, this.props, { currentHandleIndex: this.currentHandleIndex })
     );
     const { values } = this.props;
-    if (values) {
-      const handleModelBeforeChange:
-        | ((values: number[]) => void)
-        | undefined = get(this.props, ["onBeforeChange"]);
-      handleModelBeforeChange && handleModelBeforeChange(values);
-    }
+    const handleModelBeforeChange:
+      | ((values: number[]) => void)
+      | undefined = get(this.props, ["onBeforeChange"]);
+    handleModelBeforeChange && handleModelBeforeChange(values);
   }
 
   @bind
@@ -136,12 +134,10 @@ class Model extends PubSub implements IModel {
       return;
     }
     const { values } = this.props;
-    if (values) {
-      const handleModelAfterChange:
-        | ((values: number[]) => void)
-        | undefined = get(this.props, ["onAfterChange"]);
-      handleModelAfterChange && handleModelAfterChange(values);
-    }
+    const handleModelAfterChange:
+      | ((values: number[]) => void)
+      | undefined = get(this.props, ["onAfterChange"]);
+    handleModelAfterChange && handleModelAfterChange(values);
   }
 
   @bind
@@ -151,7 +147,8 @@ class Model extends PubSub implements IModel {
     length: number;
   }): void {
     const { event, start, length } = options;
-    if (!isUndefined(this.currentHandleIndex)) {
+    const { disabled } = this.props;
+    if (!disabled && !isUndefined(this.currentHandleIndex)) {
       const index = this.currentHandleIndex;
       const { vertical, values: prevValues } = this.props;
       const prevValue = prevValues[index];

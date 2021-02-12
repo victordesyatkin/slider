@@ -1,90 +1,108 @@
 import $ from "jquery";
 
-import { prepareData } from "../../helpers/utils";
 import { defaultProps } from "../../slider/index";
 import Model from "../../slider/model";
 import View from "../../slider/view";
 import Presenter from "../../slider/presenter";
-import { DefaultProps } from "../../types";
+import { DefaultPropsView, DefaultProps } from "../../types";
 
 describe("slider", () => {
   describe("presenter", () => {
-    test("check new presenter", () => {
-      const model = new Model(prepareData());
+    test("new presenter", () => {
+      const model = new Model(defaultProps);
       const view = new View();
       const presenter = new Presenter(model, view);
       expect(presenter).toBeInstanceOf(Presenter);
     });
-    test("check subscribe, publish presenter", () => {
-      const className = "slider__wrapper7";
-      $("body").append(`<div class="${className}"/>`);
-      const $parent = $(`.${className}`);
-      const model = new Model(prepareData());
+
+    test("initHandlesView, initHandlesModel, setPropsForView, handleViewMouseDown", () => {
+      const model = new Model(defaultProps);
       const view = new View();
       const presenter = new Presenter(model, view);
-      view.render($parent);
-      view.publish("setPropsModel", [18]);
-      let props = model.getProps();
-      expect(props).toEqual(
+      const setPropsForView = jest.fn((options?: DefaultPropsView): void => {});
+      model.subscribe("setPropsForView", setPropsForView);
+      view.publish("handleViewMouseDown", { index: 5 });
+      expect(setPropsForView.mock.calls.length).toBe(1);
+      expect(setPropsForView.mock.calls[0][0]).toEqual(
         expect.objectContaining({
-          values: expect.arrayContaining([18]),
+          currentHandleIndex: 5,
         })
       );
+    });
 
-      expect(props.values.length).toBe(1);
-
-      view.publish("setPropsModel", [42, 14]);
-      props = model.getProps();
-      expect(props).toEqual(
-        expect.objectContaining({
-          values: expect.arrayContaining([14, 42]),
-        })
-      );
-      expect(props.values.length).toBe(2);
-
-      model.publish("setPropsView", {
+    test("handleWindowMouseUp", () => {
+      const handleWindowMouseUp = jest.fn((): void => {});
+      const handleModelAfterChange = jest.fn((values: number[]): void => {});
+      const model = new Model({
         ...defaultProps,
-        values: [50],
-        step: 10,
-        dot: { on: true },
+        values: [10, 20],
+        onAfterChange: handleModelAfterChange,
       });
-      const $dot = $(`.${defaultProps.prefixCls}__dot`, $parent);
-      expect($dot.length).toBe(11);
-
-      const $handle = $(`.${defaultProps.prefixCls}__handle`, $parent);
-      expect($handle.length).toBe(1);
-    });
-
-    test("onMouseDown presenter", () => {
-      const mockCallback = jest.fn((values?: number[]): void => {});
-      let props: DefaultProps = {
-        ...defaultProps,
-        onBeforeChange: mockCallback,
-      };
-      const model = new Model(props);
       const view = new View();
       const presenter = new Presenter(model, view);
-      presenter.onMouseDown();
-      expect(mockCallback.mock.calls.length).toBe(0);
-      presenter.onMouseDown([10, 20]);
-      expect(mockCallback.mock.calls.length).toBe(1);
-      expect(mockCallback.mock.calls[0][0]).toStrictEqual([10, 20]);
+      view.publish("handleWindowMouseUp");
+      expect(handleModelAfterChange.mock.calls.length).toBe(1);
+      expect(handleModelAfterChange.mock.calls[0][0]).toStrictEqual([10, 20]);
     });
 
-    test("onMouseUp presenter", () => {
-      const mockCallback = jest.fn((values?: number[]): void => {});
-      let props: DefaultProps = {
+    test("handleViewClick", () => {
+      const handleViewClick = jest.fn(
+        (options: {
+          index: number;
+          event: MouseEvent;
+          value?: number;
+          length: number;
+          start: number;
+        }): void => {}
+      );
+      const model = new Model({
         ...defaultProps,
-        onAfterChange: mockCallback,
-      };
-      const model = new Model(props);
+      });
       const view = new View();
       const presenter = new Presenter(model, view);
-      presenter.onMouseUp();
-      expect(mockCallback.mock.calls.length).toBe(0);
-      presenter.onMouseUp([10, 20]);
-      expect(mockCallback.mock.calls.length).toBe(1);
-      expect(mockCallback.mock.calls[0][0]).toStrictEqual([10, 20]);
+      const event = new MouseEvent("click");
+      model.subscribe("handleViewClick", handleViewClick);
+      view.publish("handleViewClick", {
+        index: 10,
+        start: 0,
+        length: 100,
+        event,
+      });
+      expect(handleViewClick.mock.calls.length).toBe(1);
+      expect(handleViewClick.mock.calls[0][0]).toStrictEqual({
+        index: 10,
+        start: 0,
+        length: 100,
+        event,
+      });
+    });
+
+    test("handleWindowMouseMove", () => {
+      const handleWindowMouseMove = jest.fn(
+        (options: {
+          event: MouseEvent;
+          length: number;
+          start: number;
+        }): void => {}
+      );
+      const model = new Model({
+        ...defaultProps,
+      });
+      const view = new View();
+      const presenter = new Presenter(model, view);
+      const event = new MouseEvent("mousemove");
+      model.subscribe("handleWindowMouseMove", handleWindowMouseMove);
+      view.publish("handleWindowMouseMove", {
+        start: 0,
+        length: 100,
+        event,
+      });
+      expect(handleWindowMouseMove.mock.calls.length).toBe(1);
+      expect(handleWindowMouseMove.mock.calls[0][0]).toStrictEqual({
+        start: 0,
+        length: 100,
+        event,
+      });
     });
   });
 });

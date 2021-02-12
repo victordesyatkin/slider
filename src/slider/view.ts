@@ -105,10 +105,6 @@ class View extends PubSub implements IView {
   @bind
   private handleViewMouseDown(index: number, event: MouseEvent): void {
     event.preventDefault();
-    const disabled = get(this.props, ["disabled"]);
-    if (disabled) {
-      return;
-    }
     window.addEventListener("mousemove", this.handleWindowMouseMove);
     window.addEventListener("mouseup", this.handleWindowMouseUp);
     this.publish("handleViewMouseDown", { index });
