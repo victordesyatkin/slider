@@ -33,9 +33,10 @@ class Model extends PubSub implements IModel {
   }
 
   private initHandles(): void {
-    this.subscribe("setPropsModel", this.setPropsForView);
-    this.subscribe("handleViewMouseDown", this.handleModelBeforeChange);
-    this.subscribe("handleWindowMouseUp", this.handleModelAfterChange);
+    this.subscribe("handleViewMouseDown", this.handleViewMouseDown);
+    this.subscribe("handleWindowMouseUp", this.handleWindowMouseUp);
+    this.subscribe("handleViewClick", this.handleViewClick);
+    this.subscribe("handleWindowMouseMove", this.handleWindowMouseMove);
   }
 
   private handleModelChange(values?: number[]): void {
@@ -47,20 +48,7 @@ class Model extends PubSub implements IModel {
   }
 
   @bind
-  private handleModelBeforeChange({ index }: { index: number }): void {
-    const { disabled, values } = this.props;
-    if (disabled) {
-      return;
-    }
-    this.currentHandleIndex = index;
-    const handleModelBeforeChange:
-      | ((values: number[]) => void)
-      | undefined = get(this.props, ["onBeforeChange"]);
-    values && handleModelBeforeChange && handleModelBeforeChange(values);
-  }
-
-  @bind
-  private handleModelAfterChange({
+  private handleViewClick({
     index,
     event,
     value,
@@ -116,18 +104,73 @@ class Model extends PubSub implements IModel {
       values[this.currentHandleIndex] = newValue;
     }
     if (values) {
-      this.setProps(merge({}, this.getProps(), { values }));
-      const handleModelAfterChange:
-        | ((values: number[]) => void)
-        | undefined = get(this.props, ["onAfterChange"]);
-      values && handleModelAfterChange && handleModelAfterChange(values);
+      this.setProps(merge({}, this.props, { values }));
+      this.handleWindowMouseUp();
     }
   }
 
   @bind
-  private setPropsForView(props: Props): void {
-    this.handleModelChange(get(props, ["values"]));
-    this.setProps(props);
+  private handleViewMouseDown({ index }: { index: number }): void {
+    const { disabled } = this.props;
+    if (disabled) {
+      return;
+    }
+    this.currentHandleIndex = index;
+    this.publish(
+      "setPropsView",
+      merge({}, this.props, { currentHandleIndex: this.currentHandleIndex })
+    );
+    const { values } = this.props;
+    if (values) {
+      const handleModelBeforeChange:
+        | ((values: number[]) => void)
+        | undefined = get(this.props, ["onBeforeChange"]);
+      handleModelBeforeChange && handleModelBeforeChange(values);
+    }
+  }
+
+  @bind
+  private handleWindowMouseUp(): void {
+    const { disabled } = this.props;
+    if (disabled) {
+      return;
+    }
+    const { values } = this.props;
+    if (values) {
+      const handleModelAfterChange:
+        | ((values: number[]) => void)
+        | undefined = get(this.props, ["onAfterChange"]);
+      handleModelAfterChange && handleModelAfterChange(values);
+    }
+  }
+
+  @bind
+  private handleWindowMouseMove(options: {
+    event: MouseEvent;
+    start: number;
+    length: number;
+  }): void {
+    const { event, start, length } = options;
+    if (!isUndefined(this.currentHandleIndex)) {
+      const index = this.currentHandleIndex;
+      const { vertical, values: prevValues } = this.props;
+      const prevValue = prevValues[index];
+
+      const position = getMousePosition(vertical, event);
+      const nextValue = calcValueByPos({
+        position,
+        start,
+        length,
+        props: this.props,
+        index,
+      });
+      if (prevValue !== nextValue) {
+        const nextValues = [...prevValues];
+        nextValues[index] = nextValue;
+        this.setProps(merge({}, this.props, { values: nextValues }));
+        this.handleModelChange(nextValues);
+      }
+    }
   }
 }
 

@@ -1,7 +1,6 @@
-import merge from "lodash/merge";
 import bind from "bind-decorator";
 
-import { DefaultProps } from "../types";
+import { DefaultPropsView } from "../types";
 import { IModel, IView, IPresenter } from "./interface";
 
 export default class Presenter implements IPresenter {
@@ -17,14 +16,19 @@ export default class Presenter implements IPresenter {
   }
 
   private initHandlesView(): void {
-    this.view.subscribe("setPropsModel", this.setPropsModel);
     this.view.subscribe("handleViewMouseDown", this.handleViewMouseDown);
     this.view.subscribe("handleWindowMouseUp", this.handleWindowMouseUp);
     this.view.subscribe("handleViewClick", this.handleViewClick);
+    this.view.subscribe("handleWindowMouseMove", this.handleWindowMouseMove);
   }
 
   private initHandlesModel(): void {
     this.model.subscribe("setPropsView", this.setPropsView);
+  }
+
+  @bind
+  private handleWindowMouseMove(options: { event: MouseEvent }): void {
+    this.model.publish("handleWindowMouseMove", options);
   }
 
   @bind
@@ -33,8 +37,8 @@ export default class Presenter implements IPresenter {
   }
 
   @bind
-  private handleWindowMouseUp(values?: number[]): void {
-    this.model.publish("handleWindowMouseUp", values);
+  private handleWindowMouseUp(): void {
+    this.model.publish("handleWindowMouseUp");
   }
 
   @bind
@@ -49,12 +53,7 @@ export default class Presenter implements IPresenter {
   }
 
   @bind
-  private setPropsModel(values: number[]): void {
-    this.model.setProps(merge({}, this.model.getProps(), { values }));
-  }
-
-  @bind
-  private setPropsView(props: DefaultProps): void {
+  private setPropsView(props: DefaultPropsView): void {
     this.view.setProps(props);
   }
 }

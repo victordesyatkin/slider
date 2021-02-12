@@ -32,6 +32,7 @@ type DefaultProps = {
   values: number[];
   min: number;
   max: number;
+  precision: number;
   classNames?: string[];
   style?: style;
   mark?: Mark;
@@ -46,7 +47,32 @@ type DefaultProps = {
   startPoint?: number;
   tooltip?: Tooltip;
   indent?: number;
+};
+
+type DefaultPropsView = {
+  prefixCls: string;
+  vertical: boolean;
+  reverse: boolean;
+  disabled: boolean;
+  values: number[];
+  min: number;
+  max: number;
   precision: number;
+  classNames?: string[];
+  style?: style;
+  mark?: Mark;
+  step?: number;
+  onChange?: (value: number[]) => void;
+  onBeforeChange?: (value: number[]) => void;
+  onAfterChange?: (value: number[]) => void;
+  track?: Track;
+  handle?: Handle;
+  dot?: Dot;
+  rail?: Rail;
+  startPoint?: number;
+  tooltip?: Tooltip;
+  indent?: number;
+  currentHandleIndex?: number;
 };
 
 type KeyDefaultProps = keyof DefaultProps;
@@ -130,6 +156,7 @@ export {
   Addition,
   KeyDefaultProps,
   DefaultProps,
+  DefaultPropsView,
   Props,
   style,
   render,

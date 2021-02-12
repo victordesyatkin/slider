@@ -2,13 +2,10 @@ import $ from "jquery";
 import bind from "bind-decorator";
 import classnames from "classnames";
 import get from "lodash/get";
-import isUndefined from "lodash/isUndefined";
 
 import {
   objectToString,
-  getMousePosition,
   getCount,
-  calcValueByPos,
   getSliderStart,
   getSliderLength,
 } from "../helpers/utils";
@@ -18,10 +15,10 @@ import HandleView from "../components/handle/view";
 import TrackView from "../components/track/view";
 import DotsView from "../components/dots/view";
 import MarksView from "../components/marks/view";
-import { DefaultProps, Addition } from "../types";
+import { DefaultPropsView, Addition } from "../types";
 import { IView, ISubView } from "./interface";
 class View extends PubSub implements IView {
-  props?: DefaultProps;
+  props?: DefaultPropsView;
   view?: JQuery<HTMLElement>;
   rails: ISubView[] = [];
   tracks: ISubView[] = [];
@@ -35,7 +32,7 @@ class View extends PubSub implements IView {
     super();
   }
 
-  public setProps(props: DefaultProps): void {
+  public setProps(props: DefaultPropsView): void {
     this.props = props;
     this.updateView();
     this.createOrUpdateSubViews();
@@ -120,35 +117,18 @@ class View extends PubSub implements IView {
   @bind
   private handleWindowMouseUp(event: MouseEvent): void {
     event.preventDefault();
-    const disabled = get(this.props, ["disabled"]);
-    if (disabled) {
-      return;
-    }
     window.removeEventListener("mousemove", this.handleWindowMouseMove);
     window.removeEventListener("mouseup", this.handleWindowMouseUp);
     this.publish("handleWindowMouseUp");
   }
 
   @bind
-  private handleWindowMouseMove(e: MouseEvent): void {
-    if (this.props && !isUndefined(this.currentHandleIndex) && this.view) {
-      const index = this.currentHandleIndex;
-      const { vertical, values } = this.props;
-      const prevValue = values[index];
-
-      const position = getMousePosition(vertical, e);
-      const nextValue = calcValueByPos({
-        position,
-        view: this.view,
-        props: this.props,
-        index,
-      });
-      if (prevValue !== nextValue) {
-        const v = [...values];
-        v[index] = nextValue;
-        this.publish("setPropsModel", v);
-      }
-    }
+  private handleWindowMouseMove(event: MouseEvent): void {
+    this.publish("handleWindowMouseMove", {
+      event,
+      start: getSliderStart({ props: this.props, view: this.view }),
+      length: getSliderLength({ props: this.props, view: this.view }),
+    });
   }
 
   private createOrUpdateSubViews(): void {
@@ -191,7 +171,7 @@ class View extends PubSub implements IView {
       }
       for (let index = 0; index < count; index += 1) {
         if (subView.name === "HandleView") {
-          active = index === this.currentHandleIndex;
+          active = index === this.props.currentHandleIndex;
         }
 
         if (views[index]) {
