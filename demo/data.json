@@ -265,7 +265,7 @@
                 }
               },
               {
-                "label": {
+                "link": {
                   "content": "Styles (json)",
                   "href": "https://github.com/victordesyatkin/slider/blob/master/README.md#api",
                   "title": "readme",
@@ -553,10 +553,11 @@
                 }
               },
               {
-                "label": {
+                "link": {
                   "content": "Render function value",
                   "href": "https://github.com/victordesyatkin/slider/blob/master/README.md#api",
-                  "title": "readme"
+                  "title": "readme",
+                  "target": "_blank"
                 },
                 "value": "",
                 "type": "text",
@@ -793,22 +794,6 @@
                 "data": {
                   "type": "disabled",
                   "property": "disabled"
-                }
-              }
-            ]
-          },
-          {
-            "caption": {
-              "content": "AllowCross",
-              "theme": "section"
-            },
-            "items": [
-              {
-                "value": 0,
-                "type": "checkbox",
-                "data": {
-                  "type": "allowCross",
-                  "property": "allowCross"
                 }
               }
             ]
@@ -1331,22 +1316,6 @@
                 "data": {
                   "type": "disabled",
                   "property": "disabled"
-                }
-              }
-            ]
-          },
-          {
-            "caption": {
-              "content": "AllowCross",
-              "theme": "section"
-            },
-            "items": [
-              {
-                "value": 0,
-                "type": "checkbox",
-                "data": {
-                  "type": "allowCross",
-                  "property": "allowCross"
                 }
               }
             ]
@@ -1884,22 +1853,6 @@
                 "data": {
                   "type": "disabled",
                   "property": "disabled"
-                }
-              }
-            ]
-          },
-          {
-            "caption": {
-              "content": "AllowCross",
-              "theme": "section"
-            },
-            "items": [
-              {
-                "value": 0,
-                "type": "checkbox",
-                "data": {
-                  "type": "allowCross",
-                  "property": "allowCross"
                 }
               }
             ]
