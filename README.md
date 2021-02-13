@@ -25,9 +25,9 @@
     </p>
     <h4>UML Diagram</h4>
     <ul>
-        <li><a href="./docs/uml_diagram_bind.png" target="_blank" rel="noopener">UML Diagram Bind</a></li>
-        <li><a href="./docs/uml_diagram_interfaces.png" target="_blank" rel="noopener">UML Diagram Interface</a></li>
-        <li><a href="./docs/uml_diagram_types.png" target="_blank" rel="noopener">UML Diagram Data Types</a></li>
+        <li><a href="./docs/uml_diagram_bind.jpg" target="_blank" rel="noopener">UML Diagram Bind</a></li>
+        <li><a href="./docs/uml_diagram_interfaces.jpg" target="_blank" rel="noopener">UML Diagram Interface</a></li>
+        <li><a href="./docs/uml_diagram_types.jpg" target="_blank" rel="noopener">UML Diagram Data Types</a></li>
     </ul>
     <h4>Тестирование</h4>
     <p>
