@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "jest",
-    "publish": "git checkout master && git merge development && npm run build && git commit -am 'Deploy' && git push origin && git checkout @{-1}",
+    "publish": "git checkout master && git merge development && npm run build && git add . && git commit -am 'Deploy' && git push origin && git checkout @{-1}",
     "start": "webpack --mode=development --env mode=development serve",
     "build": "webpack --mode=production",
     "build:dev": "webpack --env mode=development --mode=development",
