@@ -1,18 +1,22 @@
-import $ from "jquery";
-import classnames from "classnames";
-import bind from "bind-decorator";
-import get from "lodash/get";
+import $ from 'jquery';
+import classnames from 'classnames';
+import bind from 'bind-decorator';
+import get from 'lodash/get';
 
-import { ISubView } from "../../slider/interface";
-import PubSub from "../../helpers/pubsub";
-import { objectToString } from "../../helpers/utils";
-import { DefaultProps, Addition } from "../../types";
+import { ISubView } from '../../slider/interface';
+import PubSub from '../../helpers/pubsub';
+import { objectToString } from '../../helpers/utils';
+import { DefaultProps, Addition } from '../../types';
 
 export default class RailView extends PubSub implements ISubView {
   private props?: DefaultProps;
+
   private view?: JQuery<HTMLElement>;
+
   private addition: Addition;
-  private isRendered: boolean = false;
+
+  private isRendered = false;
+
   private parent?: JQuery<HTMLElement>;
 
   constructor(addition: Addition) {
@@ -31,9 +35,11 @@ export default class RailView extends PubSub implements ISubView {
     if (parent) {
       this.parent = parent;
     }
-    if (!this.isRendered && this.parent && this.view) {
-      this.parent.append(this.view);
-      this.isRendered = true;
+    if (!this.isRendered) {
+      if (this.parent && this.view) {
+        this.parent.append(this.view);
+        this.isRendered = true;
+      }
     }
   }
 
@@ -55,9 +61,9 @@ export default class RailView extends PubSub implements ISubView {
 
   private createView(): void {
     if (this.props) {
-      const on = get(this.props, ["rail", "on"]);
+      const on = this.props?.rail?.on;
       if (on) {
-        this.view = $("<div/>", this.prepareAttr());
+        this.view = $('<div/>', this.prepareAttr());
       }
     }
   }
@@ -74,13 +80,13 @@ export default class RailView extends PubSub implements ISubView {
   }
 
   private prepareClassName(): string {
-    const prefixCls = get(this.props, ["prefixCls"], "");
-    const className = get(this.props, ["rail", "className"], "");
+    const prefixCls = get(this.props, ['prefixCls'], '');
+    const className = this.props?.rail?.className || '';
     return classnames(`${prefixCls}__rail`, className);
   }
 
   private prepareStyle(): string | undefined {
-    const style = get(this.props, ["rail", "style"], {});
+    const style = this.props?.rail?.style || {};
     return objectToString({
       ...style,
     });
@@ -88,7 +94,7 @@ export default class RailView extends PubSub implements ISubView {
 
   private updateView(): void {
     if (this.view) {
-      if (get(this.props, ["rail", "on"])) {
+      if (get(this.props, ['rail', 'on'])) {
         this.view.attr(this.prepareAttr());
       } else {
         this.remove();
@@ -99,10 +105,10 @@ export default class RailView extends PubSub implements ISubView {
   }
 
   @bind
-  private handleViewClick(event: any): void {
+  private handleViewClick(event: JQuery.Event): void {
     if (this.view && this.props) {
       const { handles, index = 0 } = this.addition;
-      const handleViewClick = get(handles, ["handleViewClick"]);
+      const handleViewClick = get(handles, ['handleViewClick']);
       if (handleViewClick) {
         handleViewClick(index, event);
       }
@@ -111,8 +117,8 @@ export default class RailView extends PubSub implements ISubView {
 
   private initHandles(): void {
     if (this.view) {
-      this.view.off("click", this.handleViewClick);
-      this.view.on("click", this.handleViewClick);
+      this.view.off('click', this.handleViewClick);
+      this.view.on('click', this.handleViewClick);
     }
   }
 }

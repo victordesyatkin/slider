@@ -1,10 +1,16 @@
 {
-  "singleQuote": false,
+  "singleQuote": true,
   "overrides": [
     {
       "files": "*.scss",
       "options": {
         "singleQuote": true
+      }
+    },
+    {
+      "files": "*.pug",
+      "options": {
+        "pugSingleQuote": false
       }
     }
   ]

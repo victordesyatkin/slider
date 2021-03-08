@@ -1,8 +1,9 @@
-import { IPubSub } from "../helpers/interface";
-import { Addition, DefaultProps, Props } from "../types";
+import { IPubSub } from '../helpers/interface';
+import { Addition, DefaultProps, Props } from '../types';
+
 interface IModel extends IPubSub {
   getProps(): DefaultProps;
-  setProps(props: Props): void;
+  setProps(props?: Props): void;
 }
 interface IView extends IPubSub {
   setProps(props: DefaultProps): void;
@@ -14,6 +15,9 @@ interface ISubView extends IView {
   setAddition(addition: Addition): void;
 }
 
-interface IPresenter {}
+interface IPresenter {
+  getProps(): DefaultProps;
+  setProps(props?: Props): void;
+}
 
 export { IPresenter, ISubView, IView, IModel };

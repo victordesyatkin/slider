@@ -1,22 +1,28 @@
-import $ from "jquery";
-import classnames from "classnames";
-import get from "lodash/get";
-import isArray from "lodash/isArray";
-import uniq from "lodash/uniq";
-import orderBy from "lodash/orderBy";
-import isUndefined from "lodash/isUndefined";
+import $ from 'jquery';
+import classnames from 'classnames';
+import bind from 'bind-decorator';
+import get from 'lodash/get';
+import isArray from 'lodash/isArray';
+import uniq from 'lodash/uniq';
+import orderBy from 'lodash/orderBy';
+import isUndefined from 'lodash/isUndefined';
 
-import PubSub from "../../helpers/pubsub";
-import { ISubView } from "../../slider/interface";
-import { DefaultProps, Addition } from "../../types";
-import MarkView from "../mark/view";
+import PubSub from '../../helpers/pubsub';
+import { ISubView } from '../../slider/interface';
+import { DefaultProps, Addition } from '../../types';
+import MarkView from '../mark/view';
 
 export default class MarksView extends PubSub implements ISubView {
   private props?: DefaultProps;
+
   private view?: JQuery<HTMLElement>;
+
   private addition: Addition;
+
   private marks: MarkView[] = [];
-  private isRendered: boolean = false;
+
+  private isRendered = false;
+
   private parent?: JQuery<HTMLElement>;
 
   constructor(addition: Addition) {
@@ -36,9 +42,11 @@ export default class MarksView extends PubSub implements ISubView {
     if (parent) {
       this.parent = parent;
     }
-    if (!this.isRendered && this.parent && this.view) {
-      this.parent.append(this.view);
-      this.isRendered = true;
+    if (!this.isRendered) {
+      if (this.parent && this.view) {
+        this.parent.append(this.view);
+        this.isRendered = true;
+      }
     }
   }
 
@@ -48,6 +56,18 @@ export default class MarksView extends PubSub implements ISubView {
       this.view = undefined;
       this.marks = [];
       this.isRendered = false;
+    }
+  }
+
+  private static cleanSubView(views: ISubView[], count: number): void {
+    const { length } = views;
+    if (length > count) {
+      for (let i = count; i < length; i += 1) {
+        if (views[i]) {
+          views[i].remove();
+        }
+      }
+      views.splice(count);
     }
   }
 
@@ -61,9 +81,9 @@ export default class MarksView extends PubSub implements ISubView {
 
   private createView(): void {
     if (this.props) {
-      const on = get(this.props, ["mark", "on"]);
+      const on = this.props?.mark?.on;
       if (on) {
-        this.view = $("<div/>", this.prepareAttr());
+        this.view = $('<div/>', this.prepareAttr());
       }
     }
   }
@@ -80,18 +100,22 @@ export default class MarksView extends PubSub implements ISubView {
   }
 
   private prepareClassName(): string {
-    const prefixCls = get(this.props, ["prefixCls"], "");
-    const className = get(this.props, ["mark", "wrapClassName"]);
+    const prefixCls = get(this.props, ['prefixCls'], '');
+    const className = this.props?.mark?.wrapClassName;
     return classnames(`${prefixCls}__marks`, className);
   }
 
   private prepareStyle(): string | undefined {
-    return;
+    let readyStyle: string | undefined;
+    if (this.props) {
+      readyStyle = '';
+    }
+    return readyStyle;
   }
 
   private updateView(): void {
     if (this.view) {
-      if (get(this.props, ["mark", "on"])) {
+      if (get(this.props, ['mark', 'on'])) {
         this.view.attr(this.prepareAttr());
       } else {
         this.remove();
@@ -107,12 +131,12 @@ export default class MarksView extends PubSub implements ISubView {
 
   private createOrUpdateSubView<T extends ISubView>(
     views: ISubView[],
-    c: { new (addition: Addition): T }
+    SubView: { new (addition: Addition): T }
   ): void {
     if (this.props && this.view) {
       const { min, max, step, reverse } = this.props;
       let values: number[] = [];
-      const markValues = get(this.props, ["mark", "values"]);
+      const markValues = this.props?.mark?.values;
       if (isArray(markValues)) {
         values = [...markValues];
       }
@@ -121,55 +145,41 @@ export default class MarksView extends PubSub implements ISubView {
           values.push(i);
         }
       }
-      values = orderBy(uniq(values), [], reverse ? "desc" : "asc");
-      const length = values.length;
-      const handles = this.addition.handles;
+      values = orderBy(uniq(values), [], reverse ? 'desc' : 'asc');
+      const { length } = values;
+      const { handles } = this.addition;
+      const readyViews = [...views];
       for (let i = 0; i < length; i += 1) {
         if (!isUndefined(views[i])) {
-          views[i].setAddition({
+          readyViews[i].setAddition({
             index: i,
             handles,
             value: values[i],
           });
-          views[i].setProps(this.props);
+          readyViews[i].setProps(this.props);
         } else {
-          views[i] = new c({
+          readyViews[i] = new SubView({
             index: i,
             handles,
             value: values[i],
           });
-          views[i].setProps(this.props);
+          readyViews[i].setProps(this.props);
         }
       }
-      this.cleanSubView(views, values.length);
+      MarksView.cleanSubView(readyViews, values.length);
     }
-  }
-
-  private cleanSubView(views: ISubView[], count: number): void {
-    const length = views.length;
-    if (length > count) {
-      for (let i = count; i < length; i += 1) {
-        if (views[i]) {
-          views[i].remove();
-        }
-      }
-      views.splice(count);
-    }
-    return;
   }
 
   private appendSubViews(): void {
     if (this.view) {
-      this.appendSubView(this.marks);
+      this.marks.forEach(this.appendSubView);
     }
-    return;
   }
 
-  private appendSubView(subViews: ISubView[]): void {
+  @bind
+  private appendSubView(subView: ISubView): void {
     if (this.view) {
-      for (const subView of subViews) {
-        subView.render(this.view);
-      }
+      subView.render(this.view);
     }
   }
 }

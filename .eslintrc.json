@@ -2,25 +2,35 @@
   "env": {
     "browser": true,
     "es6": true,
-    "es2021": true,
-    "esnext": true
+    "es2021": true
   },
   "parser": "@typescript-eslint/parser",
   "extends": [
-    "airbnb-typescript",
+    "airbnb-typescript/base",
     "plugin:@typescript-eslint/recommended",
     "plugin:@typescript-eslint/recommended-requiring-type-checking",
     "plugin:fsd/all",
     "plugin:eslint-comments/recommended",
     "plugin:jest/recommended",
-    "prettier/@typescript-eslint"
+    "prettier"
   ],
   "parserOptions": {
     "project": "tsconfig.json",
     "tsconfigRootDir": "."
   },
-  "plugins": ["@typescript-eslint", "fsd"],
+  "plugins": [
+    "@typescript-eslint",
+    "fsd",
+    "json",
+    "i18n-json",
+    "prettier",
+    "pug"
+  ],
+  "globals": {
+    "$": true
+  },
   "rules": {
+    "@typescript-eslint/unbound-method": 0,
     "fsd/hof-name-prefix": "error",
     "fsd/no-heavy-constructor": "error",
     "fsd/jq-cache-dom-elements": "error",

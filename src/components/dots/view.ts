@@ -1,22 +1,28 @@
-import $ from "jquery";
-import classnames from "classnames";
-import get from "lodash/get";
-import uniq from "lodash/uniq";
-import orderBy from "lodash/orderBy";
-import isArray from "lodash/isArray";
+import $ from 'jquery';
+import classnames from 'classnames';
+import bind from 'bind-decorator';
+import get from 'lodash/get';
+import uniq from 'lodash/uniq';
+import orderBy from 'lodash/orderBy';
+import isArray from 'lodash/isArray';
 
-import PubSub from "../../helpers/pubsub";
-import { ISubView, IView } from "../../slider/interface";
-import { DefaultProps, Addition } from "../../types";
-import DotView from "../dot/view";
+import PubSub from '../../helpers/pubsub';
+import { ISubView, IView } from '../../slider/interface';
+import { DefaultProps, Addition } from '../../types';
+import DotView from '../dot/view';
 
 export default class DotsView extends PubSub implements ISubView {
   private props?: DefaultProps;
+
   private view?: JQuery<HTMLElement>;
+
   private addition: Addition;
+
   private dots: ISubView[] = [];
+
   private parent?: JQuery<HTMLElement>;
-  private isRendered: boolean = false;
+
+  private isRendered = false;
 
   constructor(addition: Addition) {
     super();
@@ -27,9 +33,11 @@ export default class DotsView extends PubSub implements ISubView {
     if (parent) {
       this.parent = parent;
     }
-    if (!this.isRendered && this.parent && this.view) {
-      this.parent.append(this.view);
-      this.isRendered = true;
+    if (!this.isRendered) {
+      if (this.parent && this.view) {
+        this.parent.append(this.view);
+        this.isRendered = true;
+      }
     }
   }
 
@@ -58,11 +66,23 @@ export default class DotsView extends PubSub implements ISubView {
     this.addition = addition;
   }
 
+  private static cleanSubView(views: IView[], count: number): void {
+    const { length } = views;
+    if (length > count) {
+      for (let i = count; i < length; i += 1) {
+        if (views[i]) {
+          views[i].remove();
+        }
+      }
+      views.splice(count);
+    }
+  }
+
   private createView(): void {
     if (this.props) {
-      const on = get(this.props, ["dot", "on"]);
+      const on = this.props?.dot?.on;
       if (on) {
-        this.view = $("<div/>", this.prepareAttr());
+        this.view = $('<div/>', this.prepareAttr());
       }
     }
   }
@@ -79,21 +99,25 @@ export default class DotsView extends PubSub implements ISubView {
   }
 
   private prepareClassName(): string {
-    const prefixCls = get(this.props, ["prefixCls"], "");
-    const className = get(this.props, ["dot", "wrapClassName"]);
-    const vertical = get(this.props, ["vertical"]);
+    const prefixCls = get(this.props, ['prefixCls'], '');
+    const className = this.props?.dot?.wrapClassName;
+    const vertical = get(this.props, ['vertical']);
     return classnames(`${prefixCls}__dots`, className, {
       [`${prefixCls}__dots_vertical`]: vertical,
     });
   }
 
   private prepareStyle(): string | undefined {
-    return;
+    let readyStyle: string | undefined;
+    if (this.props) {
+      readyStyle = '';
+    }
+    return readyStyle;
   }
 
   private updateView(): void {
     if (this.view) {
-      if (get(this.props, ["dot", "on"])) {
+      if (get(this.props, ['dot', 'on'])) {
         this.view.attr(this.prepareAttr());
       } else {
         this.remove();
@@ -109,14 +133,14 @@ export default class DotsView extends PubSub implements ISubView {
 
   private createOrUpdateSubView<T extends ISubView>(
     views: ISubView[],
-    subView: { new (addition: Addition): T }
+    SubView: { new (addition: Addition): T }
   ): void {
     if (this.props && this.view) {
       const { min, max, step, reverse } = this.props;
       let values: number[] = [];
-      const on = get(this.props, ["mark", "dot"]);
+      const on = this.props?.mark?.dot;
       if (on) {
-        const markValues = get(this.props, ["mark", "values"]);
+        const markValues = this.props?.mark?.values;
         if (isArray(markValues)) {
           values = [...markValues];
         }
@@ -126,47 +150,34 @@ export default class DotsView extends PubSub implements ISubView {
           values.push(i);
         }
       }
-      const handles = this.addition.handles;
-      values = orderBy(uniq(values), [], reverse ? "desc" : "asc");
-      const length = values.length;
+      const { handles } = this.addition;
+      values = orderBy(uniq(values), [], reverse ? 'desc' : 'asc');
+      const { length } = values;
+      const readyViews = [...views];
       for (let i = 0; i < length; i += 1) {
-        if (views[i]) {
-          views[i].setAddition({ index: i, handles, value: values[i] });
-          views[i].setProps(this.props);
+        if (readyViews[i]) {
+          readyViews[i].setAddition({ index: i, handles, value: values[i] });
+          readyViews[i].setProps(this.props);
         } else {
-          views[i] = new subView({ index: i, handles, value: values[i] });
-          views[i].setProps(this.props);
+          readyViews[i] = new SubView({ index: i, handles, value: values[i] });
+          readyViews[i].setProps(this.props);
         }
       }
-      this.cleanSubView(views, values.length);
+      DotsView.cleanSubView(readyViews, values.length);
     }
-  }
-
-  private cleanSubView(views: IView[], count: number): void {
-    const length = views.length;
-    if (length > count) {
-      for (let i = count; i < length; i += 1) {
-        if (views[i]) {
-          views[i].remove();
-        }
-      }
-      views.splice(count);
-    }
-    return;
   }
 
   private appendSubViews(): void {
     if (this.view) {
-      this.appendSubView(this.dots);
+      // eslint-disable-next-line @typescript-eslint/unbound-method
+      this.dots.forEach(this.appendSubView);
     }
-    return;
   }
 
-  private appendSubView(subViews: IView[]): void {
+  @bind
+  private appendSubView(subView: IView): void {
     if (this.view) {
-      for (const subView of subViews) {
-        subView.render(this.view);
-      }
+      subView.render(this.view);
     }
   }
 }

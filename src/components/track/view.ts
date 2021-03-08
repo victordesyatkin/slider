@@ -1,18 +1,22 @@
-import $ from "jquery";
-import classnames from "classnames";
-import get from "lodash/get";
-import isUndefined from "lodash/isUndefined";
+import $ from 'jquery';
+import classnames from 'classnames';
+import get from 'lodash/get';
+import isUndefined from 'lodash/isUndefined';
 
-import { objectToString, calcOffset } from "../../helpers/utils";
-import PubSub from "../../helpers/pubsub";
-import { ISubView } from "../../slider/interface";
-import { DefaultProps, Addition } from "../../types";
+import { objectToString, calcOffset } from '../../helpers/utils';
+import PubSub from '../../helpers/pubsub';
+import { ISubView } from '../../slider/interface';
+import { DefaultProps, Addition } from '../../types';
 
 export default class TrackView extends PubSub implements ISubView {
   private props?: DefaultProps;
+
   private view?: JQuery<HTMLElement>;
+
   private addition: Addition;
-  private isRendered: boolean = false;
+
+  private isRendered = false;
+
   private parent?: JQuery<HTMLElement>;
 
   constructor(addition: Addition) {
@@ -30,9 +34,11 @@ export default class TrackView extends PubSub implements ISubView {
     if (parent) {
       this.parent = parent;
     }
-    if (!this.isRendered && this.parent && this.view) {
-      this.parent.append(this.view);
-      this.isRendered = true;
+    if (!this.isRendered) {
+      if (this.parent && this.view) {
+        this.parent.append(this.view);
+        this.isRendered = true;
+      }
     }
   }
 
@@ -53,10 +59,10 @@ export default class TrackView extends PubSub implements ISubView {
   }
 
   private createView(): void {
-    if (this.props && !isUndefined(get(this.addition, ["index"]))) {
-      const on = get(this.props, ["track", "on"]);
+    if (this.props && !isUndefined(get(this.addition, ['index']))) {
+      const on = this.props?.track?.on;
       if (on) {
-        this.view = $("<div/>", this.prepareAttr());
+        this.view = $('<div/>', this.prepareAttr());
       }
     }
   }
@@ -73,9 +79,9 @@ export default class TrackView extends PubSub implements ISubView {
   }
 
   private prepareClassName(): string {
-    const prefixCls = get(this.props, ["prefixCls"], "");
-    const index = get(this.addition, ["index"]);
-    const className = get(this.props, ["track", "classNames", index], "");
+    const prefixCls = get(this.props, ['prefixCls'], '');
+    const index = get(this.addition, ['index']);
+    const className = this.props?.track?.classNames || '';
     return classnames(
       `${prefixCls}__track`,
       { [`${prefixCls}__track-${index}`]: true },
@@ -84,21 +90,23 @@ export default class TrackView extends PubSub implements ISubView {
   }
 
   private prepareStyle(): string | undefined {
+    let readyStyle: string | undefined;
     if (this.props) {
-      const index = get(this.addition, ["index"]);
-      const style = get(this.props, ["track", "styles", index], {});
+      const index = get(this.addition, ['index']);
+      const style = this.props?.track?.styles?.[index] || {};
       const { vertical, min, max } = this.props;
-      let { reverse, values, startPoint } = this.props;
-      let hoffset = calcOffset(values[index], min, max);
-      let offset = hoffset;
+      let { reverse } = this.props;
+      const { values, startPoint } = this.props;
+      const readyOffset = calcOffset(values[index], min, max);
+      let offset = readyOffset;
       let length;
       if (values.length > 1) {
-        length = calcOffset(values[index + 1], min, max) - hoffset;
+        length = calcOffset(values[index + 1], min, max) - readyOffset;
       } else {
         const trackOffset =
           startPoint !== undefined ? calcOffset(startPoint, min, max) : 0;
         offset = trackOffset;
-        length = hoffset - trackOffset;
+        length = readyOffset - trackOffset;
       }
       if (length < 0) {
         reverse = !reverse;
@@ -107,25 +115,26 @@ export default class TrackView extends PubSub implements ISubView {
       }
       const positionStyle = vertical
         ? {
-            [reverse ? "top" : "bottom"]: `${offset}%`,
-            [reverse ? "bottom" : "top"]: "auto",
+            [reverse ? 'top' : 'bottom']: `${offset}%`,
+            [reverse ? 'bottom' : 'top']: 'auto',
             height: `${length}%`,
           }
         : {
-            [reverse ? "right" : "left"]: `${offset}%`,
-            [reverse ? "left" : "right"]: "auto",
+            [reverse ? 'right' : 'left']: `${offset}%`,
+            [reverse ? 'left' : 'right']: 'auto',
             width: `${length}%`,
           };
-      return objectToString({
+      readyStyle = objectToString({
         ...positionStyle,
         ...style,
       });
     }
+    return readyStyle;
   }
 
   private updateView(): void {
     if (this.view) {
-      if (get(this.props, ["track", "on"])) {
+      if (get(this.props, ['track', 'on'])) {
         this.view.attr(this.prepareAttr());
       } else {
         this.remove();

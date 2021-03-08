@@ -1,25 +1,33 @@
-import $ from "jquery";
-import classnames from "classnames";
-import bind from "bind-decorator";
-import get from "lodash/get";
-import isUndefined from "lodash/isUndefined";
-import orderBy from "lodash/orderBy";
+import $ from 'jquery';
+import classnames from 'classnames';
+import bind from 'bind-decorator';
+import get from 'lodash/get';
+import isUndefined from 'lodash/isUndefined';
+import orderBy from 'lodash/orderBy';
 
-import PubSub from "../../helpers/pubsub";
-import { objectToString, calcOffset } from "../../helpers/utils";
-import { ISubView } from "../../slider/interface";
-import { DefaultProps, Addition } from "../../types";
+import PubSub from '../../helpers/pubsub';
+import { objectToString, calcOffset } from '../../helpers/utils';
+import { ISubView } from '../../slider/interface';
+import { DefaultProps, Addition } from '../../types';
 
 class DotView extends PubSub implements ISubView {
   private props?: DefaultProps;
+
   private view?: JQuery<HTMLElement>;
+
   private addition: Addition;
+
   private parent?: JQuery<HTMLElement>;
-  private isRendered: boolean = false;
+
+  private isRendered = false;
 
   constructor(addition: Addition) {
     super();
     this.addition = addition;
+  }
+
+  public static isActive(): boolean {
+    return false;
   }
 
   public setProps(props: DefaultProps): void {
@@ -32,9 +40,11 @@ class DotView extends PubSub implements ISubView {
     if (parent) {
       this.parent = parent;
     }
-    if (!this.isRendered && this.parent && this.view) {
-      this.parent.append(this.view);
-      this.isRendered = true;
+    if (!this.isRendered) {
+      if (this.parent && this.view) {
+        this.parent.append(this.view);
+        this.isRendered = true;
+      }
     }
   }
 
@@ -55,8 +65,8 @@ class DotView extends PubSub implements ISubView {
   }
 
   private createView(): void {
-    if (this.props && !isUndefined(get(this.addition, ["value"]))) {
-      this.view = $("<div/>", this.prepareAttr());
+    if (this.props && !isUndefined(get(this.addition, ['value']))) {
+      this.view = $('<div/>', this.prepareAttr());
       this.initHandles();
     }
   }
@@ -73,10 +83,10 @@ class DotView extends PubSub implements ISubView {
   }
 
   private prepareClassName(): string {
-    const prefixCls = get(this.props, ["prefixCls"], "");
-    const className = get(this.props, ["dot", "className"], "");
-    const value = get(this.addition, ["value"]);
-    let values = get(this.props, ["values"]);
+    const prefixCls = get(this.props, ['prefixCls'], '');
+    const className = this.props?.dot?.className || '';
+    const value = get(this.addition, ['value']);
+    let values = get(this.props, ['values']);
     let active = false;
     if (!isUndefined(values) && !isUndefined(value)) {
       if (values.length === 1) {
@@ -91,32 +101,34 @@ class DotView extends PubSub implements ISubView {
         [`${prefixCls}__dot_active`]: active,
       });
     }
-    return "";
+    return '';
   }
 
   private prepareStyle(): string | undefined {
-    if (!this.props) {
-      return;
+    let readyStyle: string | undefined;
+    if (this.props) {
+      const value = get(this.addition, ['value'], 0);
+      const style = this.props?.dot?.style || {};
+      const { vertical, min, max, reverse } = this.props;
+      const offset = calcOffset(value, min, max);
+      const positionStyle = vertical
+        ? {
+            [reverse ? 'top' : 'bottom']: `${offset}%`,
+            [reverse ? 'bottom' : 'top']: 'auto',
+            transform: reverse ? 'none' : `translateY(+50%)`,
+          }
+        : {
+            [reverse ? 'right' : 'left']: `${offset}%`,
+            [reverse ? 'left' : 'right']: 'auto',
+            transform: `translateX(${reverse ? '+' : '-'}50%)`,
+          };
+      readyStyle = objectToString({
+        ...style,
+        ...positionStyle,
+      });
+      return readyStyle;
     }
-    const value = get(this.addition, ["value"], 0);
-    const style = get(this.props, ["dot", "style"], {});
-    const { vertical, min, max, reverse } = this.props;
-    const offset = calcOffset(value, min, max);
-    const positionStyle = vertical
-      ? {
-          [reverse ? "top" : "bottom"]: `${offset}%`,
-          [reverse ? "bottom" : "top"]: "auto",
-          transform: reverse ? "none" : `translateY(+50%)`,
-        }
-      : {
-          [reverse ? "right" : "left"]: `${offset}%`,
-          [reverse ? "left" : "right"]: "auto",
-          transform: `translateX(${reverse ? "+" : "-"}50%)`,
-        };
-    return objectToString({
-      ...style,
-      ...positionStyle,
-    });
+    return readyStyle;
   }
 
   private updateView(): void {
@@ -128,10 +140,10 @@ class DotView extends PubSub implements ISubView {
   }
 
   @bind
-  private handleViewClick(event: any): void {
+  private handleViewClick(event: JQuery.Event): void {
     if (this.view && this.props) {
       const { value, handles, index = 0 } = this.addition;
-      const handleViewClick = get(handles, ["handleViewClick"]);
+      const handleViewClick = get(handles, ['handleViewClick']);
       if (!isUndefined(value) && handleViewClick) {
         handleViewClick(index, event, value);
       }
@@ -140,8 +152,8 @@ class DotView extends PubSub implements ISubView {
 
   private initHandles(): void {
     if (this.view) {
-      this.view.off("click", this.handleViewClick);
-      this.view.on("click", this.handleViewClick);
+      this.view.off('click', this.handleViewClick);
+      this.view.on('click', this.handleViewClick);
     }
   }
 }

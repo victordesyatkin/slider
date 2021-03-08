@@ -7,7 +7,7 @@ type Props = {
   min?: number;
   max?: number;
   classNames?: string[];
-  style?: style;
+  style?: Style;
   mark?: Mark;
   dot?: Dot;
   step?: number;
@@ -34,7 +34,7 @@ type DefaultProps = {
   max: number;
   precision: number;
   classNames?: string[];
-  style?: style;
+  style?: Style;
   mark?: Mark;
   step?: number;
   onChange?: (value: number[]) => void;
@@ -59,7 +59,7 @@ type DefaultPropsView = {
   max: number;
   precision: number;
   classNames?: string[];
-  style?: style;
+  style?: Style;
   mark?: Mark;
   step?: number;
   onChange?: (value: number[]) => void;
@@ -89,32 +89,32 @@ type Handler = (i: number, e: any, value?: number) => void;
 
 type Handle = {
   classNames?: string[];
-  styles: style[];
+  styles: Style[];
 };
 
 type Track = {
   classNames?: string[];
-  styles?: style[];
+  styles?: Style[];
   on?: boolean;
 };
 
 type Rail = {
   className?: string;
-  style?: style;
+  style?: Style;
   on?: boolean;
 };
 
 type Dot = {
   wrapClassName?: string;
   className?: string;
-  style?: style;
+  style?: Style;
   on?: boolean;
 };
 
 type Tooltip = {
   className?: string[];
-  style?: style;
-  render?: render;
+  style?: Style;
+  render?: Render;
   on?: boolean;
   always?: boolean;
 };
@@ -122,8 +122,8 @@ type Tooltip = {
 type Mark = {
   wrapClassName?: string;
   className?: string;
-  style?: style;
-  render?: render;
+  style?: Style;
+  render?: Render;
 
   values?: number[];
   on?: boolean;
@@ -132,9 +132,9 @@ type Mark = {
 
 type Callback = (data: any) => void;
 
-type style = { [key: string]: string };
+type Style = { [key: string]: string };
 
-type render = (
+type Render = (
   value: number
 ) =>
   | string
@@ -158,7 +158,7 @@ export {
   DefaultProps,
   DefaultPropsView,
   Props,
-  style,
-  render,
+  Style,
+  Render,
   KeyProps,
 };

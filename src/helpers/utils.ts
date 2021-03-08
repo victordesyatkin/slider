@@ -1,20 +1,33 @@
-import get from "lodash/get";
-import orderBy from "lodash/orderBy";
-import merge from "lodash/merge";
-import uniq from "lodash/uniq";
-import isUndefined from "lodash/isUndefined";
+import get from 'lodash/get';
+import orderBy from 'lodash/orderBy';
+import merge from 'lodash/merge';
+import uniq from 'lodash/uniq';
+import isUndefined from 'lodash/isUndefined';
 
-import { defaultProps } from "../slider/index";
-import { DefaultProps, Props } from "../types";
+import { DefaultProps, Props } from '../types';
+
+const defaultProps: DefaultProps = {
+  prefixCls: 'fsd-slider',
+  values: [0],
+  min: 0,
+  max: 100,
+  disabled: false,
+  track: { on: true },
+  rail: { on: true },
+  vertical: false,
+  reverse: false,
+  precision: 0,
+  mark: { values: [] },
+};
 
 function objectToString(style?: { [key: string]: string }): string {
   if (!style) {
-    return "";
+    return '';
   }
-  const lines = Object.keys(style).map((property: string): string => {
-    return `${property}: ${style[property]};`;
-  });
-  return lines.join("");
+  const lines = Object.keys(style).map(
+    (property: string): string => `${property}: ${style[property]};`
+  );
+  return lines.join('');
 }
 
 function calcOffset(
@@ -57,8 +70,8 @@ function getMousePosition(vertical: boolean, event: MouseEvent): number {
 function getPrecision(step: number): number {
   const stepString = step.toString();
   let precision = 0;
-  if (stepString.indexOf(".") >= 0) {
-    precision = stepString.length - 1 - stepString.indexOf(".");
+  if (stepString.indexOf('.') >= 0) {
+    precision = stepString.length - 1 - stepString.indexOf('.');
   }
   return precision;
 }
@@ -69,7 +82,7 @@ function getClosestPoint(
   props: DefaultProps
 ): number {
   if (step) {
-    let points: number[] = [...get(props, ["mark", "values"], [])];
+    let points: number[] = [...(props?.mark?.values || [])];
     const baseNum = 10 ** getPrecision(step);
     const maxSteps = Math.floor(
       (max * baseNum - min * baseNum) / (step * baseNum)
@@ -80,14 +93,13 @@ function getClosestPoint(
     points = uniq(points);
     const diffs = points.map((point) => Math.abs(value - point));
     return points[diffs.indexOf(Math.min(...diffs))];
-  } else {
-    return value;
   }
+  return value;
 }
 
 function ensureValuePrecision(value: number, props: DefaultProps): number {
   const { step, min, max } = props;
-  const closestPoint = isFinite(
+  const closestPoint = Number.isFinite(
     getClosestPoint(value, { step, min, max }, props)
   )
     ? getClosestPoint(value, { step, min, max }, props)
@@ -97,20 +109,62 @@ function ensureValuePrecision(value: number, props: DefaultProps): number {
     : parseFloat(closestPoint.toFixed(getPrecision(step)));
 }
 
+function checkNeighbors(value: number[]): boolean {
+  return value.length > 1;
+}
+
+function ensureValueCorrectNeighbors(options: {
+  value: number;
+  props: DefaultProps;
+  index: number;
+}): number {
+  const { props, index } = options;
+  const { indent, values } = props;
+  let { min, max } = props;
+  const { value } = options;
+  if (checkNeighbors(values)) {
+    const prevValue = get(values, [index - 1]);
+    const nextValue = get(values, [index + 1]);
+    if (!isUndefined(prevValue)) {
+      min = indent ? prevValue + indent : prevValue;
+    }
+    if (!isUndefined(nextValue)) {
+      max = indent ? nextValue - indent : nextValue;
+    }
+  }
+  return ensureValueInRange(value, {
+    min,
+    max,
+  });
+}
+
+function calcValueWithEnsure(options: {
+  value: number;
+  props: DefaultProps;
+  index: number;
+}): number {
+  const { props } = options;
+  let { value } = options;
+  value = ensureValuePrecision(value, props);
+  value = ensureValueCorrectNeighbors({ ...options, value });
+  return value;
+}
+
 function prepareValues(props: DefaultProps): DefaultProps {
-  let { values, mark } = props;
-  values = orderBy(values).map((value, index) => {
-    return calcValueWithEnsure({ value, props, index });
-  });
-  let markValues: number[] = (mark?.values || []).map((value) => {
-    return ensureValueInRange(value, { min: props.min, max: props.max });
-  });
-  markValues = orderBy(uniq(markValues), [], ["asc"]);
+  let { values } = props;
+  const { mark } = props;
+  values = orderBy(values).map((value, index) =>
+    calcValueWithEnsure({ value, props, index })
+  );
+  let markValues: number[] = (mark?.values || []).map((value) =>
+    ensureValueInRange(value, { min: props.min, max: props.max })
+  );
+  markValues = orderBy(uniq(markValues), [], ['asc']);
   return { ...props, values, mark: { ...mark, values: markValues } };
 }
 
 function getCount(props?: DefaultProps): number {
-  return get(props, ["values"], []).length;
+  return get(props, ['values'], []).length;
 }
 
 function getSliderStart(options: {
@@ -176,47 +230,6 @@ function calcValueByPos(options: {
   return value;
 }
 
-function checkNeighbors(value: number[]) {
-  return value.length > 1;
-}
-
-function ensureValueCorrectNeighbors(options: {
-  value: number;
-  props: DefaultProps;
-  index: number;
-}): number {
-  const { props, index } = options;
-  const { indent, values } = props;
-  let { min, max } = props;
-  let { value } = options;
-  if (checkNeighbors(values)) {
-    let prevValue = get(values, [index - 1]);
-    let nextValue = get(values, [index + 1]);
-    if (!isUndefined(prevValue)) {
-      min = indent ? prevValue + indent : prevValue;
-    }
-    if (!isUndefined(nextValue)) {
-      max = indent ? nextValue - indent : nextValue;
-    }
-  }
-  return ensureValueInRange(value, {
-    min,
-    max,
-  });
-}
-
-function calcValueWithEnsure(options: {
-  value: number;
-  props: DefaultProps;
-  index: number;
-}): number {
-  const { props } = options;
-  let { value } = options;
-  value = ensureValuePrecision(value, props);
-  value = ensureValueCorrectNeighbors({ ...options, value });
-  return value;
-}
-
 function setFunctionGetBoundingClientRectHTMLElement(
   style?: Partial<{
     width: number;
@@ -226,7 +239,7 @@ function setFunctionGetBoundingClientRectHTMLElement(
     marginLeft: number;
     marginRight: number;
   }>
-) {
+): void {
   const defaultStyle = {
     width: 0,
     height: 0,
@@ -240,7 +253,7 @@ function setFunctionGetBoundingClientRectHTMLElement(
     ...style,
   };
 
-  window.HTMLElement.prototype.getBoundingClientRect = function () {
+  window.HTMLElement.prototype.getBoundingClientRect = function getBoundingClientRect() {
     const domRect: DOMRect = {
       width: parseFloat(this.style.width) || width || 0,
       height: parseFloat(this.style.height) || height || 0,
@@ -263,7 +276,7 @@ function prepareData(props?: Props, prevProps?: DefaultProps): DefaultProps {
     props?.mark?.values ||
     prevProps?.mark?.values ||
     defaultProps?.mark?.values;
-  let mergeProps: DefaultProps = merge({}, defaultProps, prevProps, props);
+  const mergeProps: DefaultProps = merge({}, defaultProps, prevProps, props);
   return prepareValues({
     ...mergeProps,
     values,
@@ -271,7 +284,7 @@ function prepareData(props?: Props, prevProps?: DefaultProps): DefaultProps {
   });
 }
 
-function uniqId() {
+function uniqId(): string {
   return Math.random().toString(16).substr(2);
 }
 
@@ -296,4 +309,5 @@ export {
   ensureValueInRange,
   calcOffset,
   getHandleCenterPosition,
+  defaultProps,
 };

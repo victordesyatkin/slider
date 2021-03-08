@@ -1,10 +1,11 @@
-import bind from "bind-decorator";
+import bind from 'bind-decorator';
 
-import { DefaultPropsView } from "../types";
-import { IModel, IView, IPresenter } from "./interface";
+import { DefaultPropsView, Props, DefaultProps } from '../types';
+import { IModel, IView, IPresenter } from './interface';
 
 export default class Presenter implements IPresenter {
   private model: IModel;
+
   private view: IView;
 
   constructor(model: IModel, view: IView) {
@@ -15,15 +16,23 @@ export default class Presenter implements IPresenter {
     this.initHandlesModel();
   }
 
+  public getProps(): DefaultProps {
+    return this.model.getProps();
+  }
+
+  public setProps(props?: Props): void {
+    this.model.setProps(props);
+  }
+
   private initHandlesView(): void {
-    this.view.subscribe("handleViewClick", this.handleViewClick);
-    this.view.subscribe("handleViewMouseDown", this.handleViewMouseDown);
-    this.view.subscribe("handleWindowMouseUp", this.handleWindowMouseUp);
-    this.view.subscribe("handleWindowMouseMove", this.handleWindowMouseMove);
+    this.view.subscribe('handleViewClick', this.handleViewClick);
+    this.view.subscribe('handleViewMouseDown', this.handleViewMouseDown);
+    this.view.subscribe('handleWindowMouseUp', this.handleWindowMouseUp);
+    this.view.subscribe('handleWindowMouseMove', this.handleWindowMouseMove);
   }
 
   private initHandlesModel(): void {
-    this.model.subscribe("setPropsForView", this.setPropsForView);
+    this.model.subscribe('setPropsForView', this.setPropsForView);
   }
 
   @bind
@@ -32,17 +41,17 @@ export default class Presenter implements IPresenter {
     start: number;
     length: number;
   }): void {
-    this.model.publish("handleWindowMouseMove", options);
+    this.model.publish('handleWindowMouseMove', options);
   }
 
   @bind
   private handleViewMouseDown(options: { index: number }): void {
-    this.model.publish("handleViewMouseDown", options);
+    this.model.publish('handleViewMouseDown', options);
   }
 
   @bind
   private handleWindowMouseUp(): void {
-    this.model.publish("handleWindowMouseUp");
+    this.model.publish('handleWindowMouseUp');
   }
 
   @bind
@@ -52,8 +61,8 @@ export default class Presenter implements IPresenter {
     value?: number;
     length: number;
     start: number;
-  }) {
-    this.model.publish("handleViewClick", options);
+  }): void {
+    this.model.publish('handleViewClick', options);
   }
 
   @bind

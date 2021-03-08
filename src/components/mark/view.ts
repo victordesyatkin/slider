@@ -1,19 +1,23 @@
-import $ from "jquery";
-import classnames from "classnames";
-import bind from "bind-decorator";
-import get from "lodash/get";
-import isUndefined from "lodash/isUndefined";
+import $ from 'jquery';
+import classnames from 'classnames';
+import bind from 'bind-decorator';
+import get from 'lodash/get';
+import isUndefined from 'lodash/isUndefined';
 
-import PubSub from "../../helpers/pubsub";
-import { objectToString, calcOffset } from "../../helpers/utils";
-import { ISubView } from "../../slider/interface";
-import { DefaultProps, Addition } from "../../types";
+import PubSub from '../../helpers/pubsub';
+import { objectToString, calcOffset } from '../../helpers/utils';
+import { ISubView } from '../../slider/interface';
+import { DefaultProps, Addition } from '../../types';
 
 class MarkView extends PubSub implements ISubView {
   private props?: DefaultProps;
+
   private view?: JQuery<HTMLElement>;
+
   private addition: Addition;
-  private isRendered: boolean = false;
+
+  private isRendered = false;
+
   private parent?: JQuery<HTMLElement>;
 
   constructor(addition: Addition) {
@@ -33,8 +37,10 @@ class MarkView extends PubSub implements ISubView {
     if (parent) {
       this.parent = parent;
     }
-    if (!this.isRendered && this.parent && this.view) {
-      this.parent.append(this.view);
+    if (!this.isRendered) {
+      if (this.parent && this.view) {
+        this.parent.append(this.view);
+      }
       this.isRendered = true;
     }
   }
@@ -56,8 +62,8 @@ class MarkView extends PubSub implements ISubView {
   }
 
   private createView(): void {
-    if (this.props && !isUndefined(get(this.addition, ["value"]))) {
-      this.view = $("<div/>", this.prepareAttr());
+    if (this.props && !isUndefined(get(this.addition, ['value']))) {
+      this.view = $('<div/>', this.prepareAttr());
     }
   }
 
@@ -73,42 +79,49 @@ class MarkView extends PubSub implements ISubView {
   }
 
   private prepareClassName(): string {
-    const prefixCls = get(this.props, ["prefixCls"], "");
-    const className = get(this.props, ["mark", "className"], "");
+    const prefixCls = get(this.props, ['prefixCls'], '');
+    const className = this.props?.mark?.className || '';
     return classnames(`${prefixCls}__mark`, className);
   }
 
   private prepareStyle(): string | undefined {
+    let readyStyle: string | undefined;
     if (this.props) {
-      const value = get(this.addition, ["value"], 0);
-      const style = get(this.props, ["mark", "style"], {});
+      const value = get(this.addition, ['value'], 0);
+      const style = this.props?.mark?.style || {};
       const { vertical, min, max, reverse } = this.props;
       const offset = calcOffset(value, min, max);
       const positionStyle = vertical
         ? {
-            [reverse ? "top" : "bottom"]: `${offset}%`,
-            [reverse ? "bottom" : "top"]: "auto",
-            transform: reverse ? "translateY(-25%)" : `translateY(+50%)`,
+            [reverse ? 'top' : 'bottom']: `${offset}%`,
+            [reverse ? 'bottom' : 'top']: 'auto',
+            transform: reverse ? 'translateY(-25%)' : `translateY(+50%)`,
           }
         : {
-            [reverse ? "right" : "left"]: `${offset}%`,
-            [reverse ? "left" : "right"]: "auto",
-            transform: `translateX(${reverse ? "+" : "-"}50%)`,
+            [reverse ? 'right' : 'left']: `${offset}%`,
+            [reverse ? 'left' : 'right']: 'auto',
+            transform: `translateX(${reverse ? '+' : '-'}50%)`,
           };
-      return objectToString({
+      readyStyle = objectToString({
         ...style,
         ...positionStyle,
       });
     }
-    return;
+    return readyStyle;
   }
 
   private prepareContent(): void {
     if (this.view) {
       const { value } = this.addition;
       if (!isUndefined(value)) {
-        const render = get(this.props, ["mark", "render"]);
-        let content = `${value}`;
+        const render = this.props?.mark?.render;
+        let content:
+          | string
+          | HTMLElement
+          | JQuery<HTMLElement>
+          | JQuery<HTMLElement>[]
+          | HTMLElement[]
+          | undefined = `${value}`;
         if (render) {
           content = render(value);
         }
@@ -120,10 +133,10 @@ class MarkView extends PubSub implements ISubView {
   }
 
   @bind
-  private handleViewClick(event: any): void {
+  private handleViewClick(event: JQuery.Event): void {
     if (this.view && this.props) {
       const { value, handles, index = 0 } = this.addition;
-      const handleViewClick = get(handles, ["handleViewClick"]);
+      const handleViewClick = get(handles, ['handleViewClick']);
       if (!isUndefined(value) && handleViewClick) {
         handleViewClick(index, event, value);
       }
@@ -132,8 +145,8 @@ class MarkView extends PubSub implements ISubView {
 
   private initHandles(): void {
     if (this.view) {
-      this.view.off("click", this.handleViewClick);
-      this.view.on("click", this.handleViewClick);
+      this.view.off('click', this.handleViewClick);
+      this.view.on('click', this.handleViewClick);
     }
   }
 
