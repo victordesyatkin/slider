@@ -281,7 +281,8 @@ class Example {
     if (!(element instanceof HTMLElement) || !trim(property)) {
       return;
     }
-    value = $('input', element).val();
+    const $input = $('input', element);
+    value = $input.val();
     if (isUndefined(value)) {
       return;
     }
@@ -307,8 +308,8 @@ class Example {
       case 'on':
       case 'dot':
       case 'always': {
-        value = $('input', element).prop('checked');
-        return Boolean(value);
+        value = Boolean($input.prop('checked') as string);
+        return value;
       }
       case 'classNames':
       case 'styles': {
