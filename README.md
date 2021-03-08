@@ -19,15 +19,15 @@
     <h4>Архитектура приложения:</h4>
     <p>
         В приложении использовался архитектурный шаблон проектирования MVP.
-        Чтобы отвязать слои <a href="./docs/uml_diagram_bind.png" target="_blank" rel="noopener">View</a>, <a href="./docs/uml_diagram_bind.png" target="_blank" rel="noopener" target="_blank">Model</a> от внешних зависимостей использовался поведенческий шаблон проектирования Pub/Sub.
-        Передача данных между <a href="./docs/uml_diagram_bind.png" target="_blank" rel="noopener">View</a> и <a href="./docs/uml_diagram_bind.png" target="_blank" rel="noopener" target="_blank">Model</a> осуществляется при помощи слоя <a href="./docs/uml_diagram_bind.png" target="_blank" rel="noopener" target="_blank">Presenter</a>
-        Все свойства передаются от <a href="./docs/uml_diagram_bind.png" target="_blank" rel="noopener">Model</a> к <a href="./docs/uml_diagram_bind.png" target="_blank" rel="noopener">View</a>, а затем все свойства и обработчики в <a href="./docs/uml_diagram_bind.png" target="_blank" rel="noopener">SubView</a>. 
+        Чтобы отвязать слои <a href="./docs/uml_diagram_bind.jpg" target="_blank" rel="noopener">View</a>, <a href="./docs/uml_diagram_bind.jpg" target="_blank" rel="noopener" target="_blank">Model</a> от внешних зависимостей использовался поведенческий шаблон проектирования Pub/Sub.
+        Передача данных между <a href="./docs/uml_diagram_bind.jpg" target="_blank" rel="noopener">View</a> и <a href="./docs/uml_diagram_bind.jpg" target="_blank" rel="noopener" target="_blank">Model</a> осуществляется при помощи слоя <a href="./docs/uml_diagram_bind.jpg" target="_blank" rel="noopener" target="_blank">Presenter</a>
+        Все свойства передаются от <a href="./docs/uml_diagram_bind.jpg" target="_blank" rel="noopener">Model</a> к <a href="./docs/uml_diagram_bind.jpg" target="_blank" rel="noopener">View</a>, а затем все свойства и обработчики в <a href="./docs/uml_diagram_bind.jpg" target="_blank" rel="noopener">SubView</a>. 
     </p>
     <h4>UML Diagram</h4>
     <ul>
-        <li><a href="./docs/uml_diagram_bind.png" target="_blank" rel="noopener">UML Diagram Bind</a></li>
-        <li><a href="./docs/uml_diagram_interfaces.png" target="_blank" rel="noopener">UML Diagram Interface</a></li>
-        <li><a href="./docs/uml_diagram_types.png" target="_blank" rel="noopener">UML Diagram Data Types</a></li>
+        <li><a href="./docs/uml_diagram_bind.jpg" target="_blank" rel="noopener">UML Diagram Bind</a></li>
+        <li><a href="./docs/uml_diagram_interfaces.jpg" target="_blank" rel="noopener">UML Diagram Interface</a></li>
+        <li><a href="./docs/uml_diagram_types.jpg" target="_blank" rel="noopener">UML Diagram Data Types</a></li>
     </ul>
     <h4>Тестирование</h4>
     <p>
