@@ -64,7 +64,8 @@ function ensureValueInRange(
 }
 
 function getMousePosition(vertical: boolean, event: MouseEvent): number {
-  return vertical ? event.clientY || 0 : event.pageX || 0;
+  const { clientY = 0, pageX = 0 } = event || {};
+  return vertical ? clientY : pageX;
 }
 
 function getPrecision(step: number): number {
@@ -288,6 +289,18 @@ function uniqId(): string {
   return Math.random().toString(16).substr(2);
 }
 
+function getPosition({
+  vertical = false,
+  coordinateX = 0,
+  coordinateY = 0,
+}: {
+  vertical: boolean;
+  coordinateX: number;
+  coordinateY: number;
+}): number {
+  return vertical ? coordinateY : coordinateX;
+}
+
 export {
   objectToString,
   uniqId,
@@ -309,5 +322,6 @@ export {
   ensureValueInRange,
   calcOffset,
   getHandleCenterPosition,
+  getPosition,
   defaultProps,
 };

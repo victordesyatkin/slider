@@ -8,6 +8,7 @@ import {
   getCount,
   getSliderStart,
   getSliderLength,
+  getMousePosition,
 } from '../helpers/utils';
 import PubSub from '../helpers/pubsub';
 import RailView from '../components/rail/view';
@@ -19,23 +20,23 @@ import { DefaultPropsView, Addition } from '../types';
 import { IView, ISubView } from './interface';
 
 class View extends PubSub implements IView {
-  props?: DefaultPropsView;
+  private props?: DefaultPropsView;
 
-  view?: JQuery<HTMLElement>;
+  private view?: JQuery<HTMLElement>;
 
-  rails: ISubView[] = [];
+  private rails: ISubView[] = [];
 
-  tracks: ISubView[] = [];
+  private tracks: ISubView[] = [];
 
-  handles: ISubView[] = [];
+  private handles: ISubView[] = [];
 
-  dots: ISubView[] = [];
+  private dots: ISubView[] = [];
 
-  marks: ISubView[] = [];
+  private marks: ISubView[] = [];
 
-  parent?: JQuery<HTMLElement>;
+  private parent?: JQuery<HTMLElement>;
 
-  isRendered = false;
+  private isRendered = false;
 
   public setProps(props: DefaultPropsView): void {
     this.props = props;
@@ -46,7 +47,6 @@ class View extends PubSub implements IView {
   }
 
   public render(parent?: JQuery<HTMLElement>): void {
-    // console.log('View render parent : ', parent);
     if (parent) {
       this.parent = parent;
     }
@@ -83,7 +83,6 @@ class View extends PubSub implements IView {
   }
 
   private updateView(): void {
-    // console.log('View updateView this.view: ', this.view);
     if (!this.view) {
       this.createView();
     } else {
@@ -114,16 +113,12 @@ class View extends PubSub implements IView {
   }
 
   @bind
-  private handleViewClick(
-    index: number,
-    event: MouseEvent,
-    value?: number
-  ): void {
+  private handleViewClick(index: number, event: MouseEvent): void {
     event.preventDefault();
-    this.publish('handleViewClick', {
-      index,
-      event,
-      value,
+    const { clientY: coordinateY, pageX: coordinateX } = event || {};
+    this.publish('onChange', {
+      coordinateX,
+      coordinateY,
       start: getSliderStart({ props: this.props, view: this.view }),
       length: getSliderLength({ props: this.props, view: this.view }),
     });
@@ -134,7 +129,7 @@ class View extends PubSub implements IView {
     event.preventDefault();
     window.addEventListener('mousemove', this.handleWindowMouseMove);
     window.addEventListener('mouseup', this.handleWindowMouseUp);
-    this.publish('handleViewMouseDown', { index });
+    this.publish('onBeforeChange', { index });
   }
 
   @bind
@@ -142,13 +137,16 @@ class View extends PubSub implements IView {
     event.preventDefault();
     window.removeEventListener('mousemove', this.handleWindowMouseMove);
     window.removeEventListener('mouseup', this.handleWindowMouseUp);
-    this.publish('handleWindowMouseUp');
+    this.publish('onAfterChange');
   }
 
   @bind
   private handleWindowMouseMove(event: MouseEvent): void {
-    this.publish('handleWindowMouseMove', {
-      event,
+    event.preventDefault();
+    const { clientY: coordinateY, pageX: coordinateX } = event || {};
+    this.publish('onChange', {
+      coordinateX,
+      coordinateY,
       start: getSliderStart({ props: this.props, view: this.view }),
       length: getSliderLength({ props: this.props, view: this.view }),
     });
@@ -208,7 +206,6 @@ class View extends PubSub implements IView {
           };
         }
       }
-      /// / console.log('View createOrUpdateSubView SubView.name: ', SubView.name);
       for (let index = 0; index < count; index += 1) {
         if (SubView.name === 'HandleView') {
           active = index === this.props.currentHandleIndex;
@@ -230,8 +227,6 @@ class View extends PubSub implements IView {
 
   private appendSubViews(): void {
     if (this.view) {
-      // console.log('View appendSubViews this.view: ', this.view);
-      // console.log('View appendSubViews this.rails: ', this.rails);
       this.rails.forEach(this.appendSubView);
       this.marks.forEach(this.appendSubView);
       this.dots.forEach(this.appendSubView);
@@ -242,7 +237,6 @@ class View extends PubSub implements IView {
 
   @bind
   private appendSubView(subView: IView): void {
-    // console.log('View appendSubView subView: ', subView);
     if (this.view) {
       subView.render(this.view);
     }

@@ -7,7 +7,7 @@ import {
 } from '../../helpers/utils';
 import { DefaultProps, Addition } from '../../types';
 
-describe('rail', () => {
+describe('tooltip', () => {
   describe('view', () => {
     test('create tooltip view', () => {
       const addition = { index: 0 };

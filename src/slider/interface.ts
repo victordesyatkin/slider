@@ -4,23 +4,11 @@ import { Addition, DefaultProps, Props } from '../types';
 interface IModel extends IPubSub {
   getProps(): DefaultProps;
   setProps(props?: Props): void;
-  handleViewClick({
-    index,
-    event,
-    value,
-    length,
-    start,
-  }: {
-    index: number;
-    event: MouseEvent;
-    value?: number;
-    length: number;
-    start: number;
-  }): void;
-  handleViewMouseDown({ index }: { index: number }): void;
-  handleWindowMouseUp(): void;
-  handleWindowMouseMove(options: {
-    event: MouseEvent;
+  onBeforeChange({ index }: { index: number }): void;
+  onAfterChange(): void;
+  onChange(options: {
+    coordinateX: number;
+    coordinateY: number;
     start: number;
     length: number;
   }): void;

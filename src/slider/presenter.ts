@@ -25,10 +25,9 @@ export default class Presenter implements IPresenter {
   }
 
   private initHandlesView(): void {
-    this.view.subscribe('handleViewClick', this.handleViewClick);
-    this.view.subscribe('handleViewMouseDown', this.handleViewMouseDown);
-    this.view.subscribe('handleWindowMouseUp', this.handleWindowMouseUp);
-    this.view.subscribe('handleWindowMouseMove', this.handleWindowMouseMove);
+    this.view.subscribe('onBeforeChange', this.onBeforeChange);
+    this.view.subscribe('onAfterChange', this.onAfterChange);
+    this.view.subscribe('onChange', this.onChange);
   }
 
   private initHandlesModel(): void {
@@ -36,33 +35,23 @@ export default class Presenter implements IPresenter {
   }
 
   @bind
-  private handleWindowMouseMove(options: {
-    event: MouseEvent;
+  private onChange(options: {
+    coordinateX: number;
+    coordinateY: number;
     start: number;
     length: number;
   }): void {
-    this.model.handleWindowMouseMove(options);
+    this.model.onChange(options);
   }
 
   @bind
-  private handleViewMouseDown(options: { index: number }): void {
-    this.model.handleViewMouseDown(options);
+  private onAfterChange(): void {
+    this.model.onAfterChange();
   }
 
   @bind
-  private handleWindowMouseUp(): void {
-    this.model.handleWindowMouseUp();
-  }
-
-  @bind
-  handleViewClick(options: {
-    index: number;
-    event: MouseEvent;
-    value?: number;
-    length: number;
-    start: number;
-  }): void {
-    this.model.handleViewClick(options);
+  private onBeforeChange(options: { index: number }): void {
+    this.model.onBeforeChange(options);
   }
 
   @bind

@@ -32,7 +32,6 @@ class Example {
     this.$parent = $(parent);
     this.$sliderWrapper = $('.js-slider__dummy', this.$parent);
     this.$sections = $('.js-section', this.$parent);
-    // // console.log('Example constructor this.$sections : ', this.$sections);
     this.init();
   }
 
@@ -123,13 +122,11 @@ class Example {
   }
 
   private initHandlers() {
-    // // console.log('Example initHandlers this.$sections : ', this.$sections);
     this.$sections.each(this.initHandler);
   }
 
   @bind
   private initHandler(index: number, element: HTMLElement) {
-    // // console.log('Example initHandler element : ', element);
     $(element).on('click', this.handleSectionClick);
     $(element).on('input', this.handleSectionInput);
     $(element).on('focusout', this.handleSectionFocusout);
@@ -199,8 +196,6 @@ class Example {
   private handleSectionClick(event: JQuery.Event): void {
     const target = get(event, ['target']) as HTMLElement;
     const currentTarget = get(event, ['currentTarget']) as HTMLElement;
-    // console.log('Example handleSectionClick target : ', target);
-    // console.log('Example handleSectionClick currentTarget : ', currentTarget);
     if (target) {
       this.removeHandle(target, currentTarget);
       this.addHandle(target, currentTarget);
