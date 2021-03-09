@@ -26,10 +26,6 @@ class DotView extends PubSub implements ISubView {
     this.addition = addition;
   }
 
-  public static isActive(): boolean {
-    return false;
-  }
-
   public setProps(props: DefaultProps): void {
     this.props = props;
     this.updateView();
