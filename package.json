@@ -10,7 +10,8 @@
     "build": "webpack --mode=production",
     "build:dev": "webpack --env mode=development --mode=development",
     "lint": "eslint src/ --ext .ts,.js",
-    "eslint:dump": "eslint --print-config ./.eslintrc.json"
+    "eslint:dump": "eslint --print-config ./.eslintrc.json",
+    "deploy": "gh-pages -d dist"
   },
   "author": "",
   "license": "ISC",
