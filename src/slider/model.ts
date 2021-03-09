@@ -1,7 +1,7 @@
 import get from 'lodash/get';
 import isUndefined from 'lodash/isUndefined';
 import merge from 'lodash/merge';
-import bind from 'bind-decorator';
+// import bind from 'bind-decorator';
 
 import PubSub from '../helpers/pubsub';
 import {
@@ -21,7 +21,6 @@ class Model extends PubSub implements IModel {
   constructor(props: DefaultProps) {
     super();
     this.props = props;
-    this.initHandles();
   }
 
   public getProps(): DefaultProps {
@@ -34,37 +33,7 @@ class Model extends PubSub implements IModel {
     this.publish('setPropsForView', this.props);
   }
 
-  private initHandles(): void {
-    // eslint-disable-next-line @typescript-eslint/unbound-method
-    this.subscribe('handleViewClick', this.handleViewClick);
-    // eslint-disable-next-line @typescript-eslint/unbound-method
-    this.subscribe('handleViewMouseDown', this.handleViewMouseDown);
-    // eslint-disable-next-line @typescript-eslint/unbound-method
-    this.subscribe('handleWindowMouseUp', this.handleWindowMouseUp);
-    // eslint-disable-next-line @typescript-eslint/unbound-method
-    this.subscribe('handleWindowMouseMove', this.handleWindowMouseMove);
-  }
-
-  private isUpdateProps(newValue: number): boolean {
-    return (
-      this.props.values.length > 1 &&
-      !isUndefined(this.currentHandleIndex) &&
-      this.props.values[this.currentHandleIndex] !== newValue
-    );
-  }
-
-  private handleModelChange(values?: number[]): void {
-    const handleModelChange: ((values: number[]) => void) | undefined = get(
-      this.props,
-      ['onChange']
-    );
-    if (values && handleModelChange) {
-      handleModelChange(values);
-    }
-  }
-
-  @bind
-  private handleViewClick({
+  public handleViewClick({
     index,
     event,
     value,
@@ -124,8 +93,7 @@ class Model extends PubSub implements IModel {
     }
   }
 
-  @bind
-  private handleViewMouseDown({ index }: { index: number }): void {
+  public handleViewMouseDown({ index }: { index: number }): void {
     const { disabled } = this.props;
     if (disabled) {
       return;
@@ -144,8 +112,7 @@ class Model extends PubSub implements IModel {
     }
   }
 
-  @bind
-  private handleWindowMouseUp(): void {
+  public handleWindowMouseUp(): void {
     const { disabled } = this.props;
     if (disabled) {
       return;
@@ -159,8 +126,7 @@ class Model extends PubSub implements IModel {
     }
   }
 
-  @bind
-  private handleWindowMouseMove(options: {
+  public handleWindowMouseMove(options: {
     event: MouseEvent;
     start: number;
     length: number;
@@ -187,6 +153,24 @@ class Model extends PubSub implements IModel {
         this.handleModelChange(nextValues);
       }
     }
+  }
+
+  private handleModelChange(values?: number[]): void {
+    const handleModelChange: ((values: number[]) => void) | undefined = get(
+      this.props,
+      ['onChange']
+    );
+    if (values && handleModelChange) {
+      handleModelChange(values);
+    }
+  }
+
+  private isUpdateProps(newValue: number): boolean {
+    return (
+      this.props.values.length > 1 &&
+      !isUndefined(this.currentHandleIndex) &&
+      this.props.values[this.currentHandleIndex] !== newValue
+    );
   }
 }
 

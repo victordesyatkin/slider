@@ -41,17 +41,17 @@ export default class Presenter implements IPresenter {
     start: number;
     length: number;
   }): void {
-    this.model.publish('handleWindowMouseMove', options);
+    this.model.handleWindowMouseMove(options);
   }
 
   @bind
   private handleViewMouseDown(options: { index: number }): void {
-    this.model.publish('handleViewMouseDown', options);
+    this.model.handleViewMouseDown(options);
   }
 
   @bind
   private handleWindowMouseUp(): void {
-    this.model.publish('handleWindowMouseUp');
+    this.model.handleWindowMouseUp();
   }
 
   @bind
@@ -62,7 +62,7 @@ export default class Presenter implements IPresenter {
     length: number;
     start: number;
   }): void {
-    this.model.publish('handleViewClick', options);
+    this.model.handleViewClick(options);
   }
 
   @bind
