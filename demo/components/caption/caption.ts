@@ -1,1 +1,1 @@
-import "./caption.scss";
+import './caption.scss';

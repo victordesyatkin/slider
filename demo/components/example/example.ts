@@ -1,4 +1,4 @@
-import "../caption/caption";
-import "../panel/panel";
-import "../slider/slider";
-import "./example.scss";
+import '../caption/caption';
+import '../panel/panel';
+import '../slider/slider';
+import './example.scss';

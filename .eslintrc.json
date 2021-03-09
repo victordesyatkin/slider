@@ -9,10 +9,11 @@
     "airbnb-typescript/base",
     "plugin:@typescript-eslint/recommended",
     "plugin:@typescript-eslint/recommended-requiring-type-checking",
-    "plugin:fsd/all",
     "plugin:eslint-comments/recommended",
     "plugin:jest/recommended",
-    "prettier"
+    "prettier",
+    "plugin:prettier/recommended",
+    "plugin:fsd/all"
   ],
   "parserOptions": {
     "project": "tsconfig.json",

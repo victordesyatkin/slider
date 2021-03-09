@@ -1,3 +1,3 @@
-import "../link/link";
-import "../section/section";
-import "./panel.scss";
+import '../link/link';
+import '../section/section';
+import './panel.scss';

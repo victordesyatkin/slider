@@ -29,6 +29,7 @@ class Model extends PubSub implements IModel {
   }
 
   public setProps(props?: Props): void {
+    // console.log('Model setProps props : ', props);
     this.props = prepareData(props, this.getProps());
     this.publish('setPropsForView', this.props);
   }

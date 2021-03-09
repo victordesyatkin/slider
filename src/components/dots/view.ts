@@ -128,13 +128,14 @@ export default class DotsView extends PubSub implements ISubView {
   }
 
   private createOrUpdateSubViews(): void {
-    this.createOrUpdateSubView<DotView>(this.dots, DotView);
+    this.dots = this.createOrUpdateSubView<DotView>(this.dots, DotView);
   }
 
   private createOrUpdateSubView<T extends ISubView>(
     views: ISubView[],
     SubView: { new (addition: Addition): T }
-  ): void {
+  ): ISubView[] {
+    const readyViews = [...views];
     if (this.props && this.view) {
       const { min, max, step, reverse } = this.props;
       let values: number[] = [];
@@ -153,7 +154,6 @@ export default class DotsView extends PubSub implements ISubView {
       const { handles } = this.addition;
       values = orderBy(uniq(values), [], reverse ? 'desc' : 'asc');
       const { length } = values;
-      const readyViews = [...views];
       for (let i = 0; i < length; i += 1) {
         if (readyViews[i]) {
           readyViews[i].setAddition({ index: i, handles, value: values[i] });
@@ -165,6 +165,7 @@ export default class DotsView extends PubSub implements ISubView {
       }
       DotsView.cleanSubView(readyViews, values.length);
     }
+    return readyViews;
   }
 
   private appendSubViews(): void {

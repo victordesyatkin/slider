@@ -1,21 +1,24 @@
-import { Callback } from "../types";
-import { IPubSub } from "./interface";
+import { Callback } from '../types';
+import { IPubSub } from './interface';
 
 class PubSub implements IPubSub {
   private subscribers: { [key: string]: Callback[] } = {};
 
+  // eslint-disable-next-line fsd/hof-name-prefix
   public subscribe(
     eventName?: string,
     callback?: Callback
   ): (() => void) | undefined {
     if (!eventName || !callback) {
-      return;
+      return undefined;
     }
     if (!this.subscribers[eventName]) {
       this.subscribers[eventName] = [];
     }
     const index = this.subscribers[eventName].push(callback) - 1;
-    return () => this.subscribers[eventName].splice(index, 1);
+    const additionalUnsubscribe = () =>
+      this.subscribers[eventName].splice(index, 1);
+    return additionalUnsubscribe;
   }
 
   public unsubscribe(eventName?: string): void {

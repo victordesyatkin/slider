@@ -3,6 +3,7 @@ $parent: 'caption';
 .#{$parent} {
   text-align: center;
   font-weight: bold;
+  font-size: 0.875rem;
 
   &.#{$parent}_theme_section {
     font-weight: normal;

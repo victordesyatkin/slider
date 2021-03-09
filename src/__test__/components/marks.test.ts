@@ -1,12 +1,14 @@
-import $ from "jquery";
+import $ from 'jquery';
 
-import MarksView from "../../components/marks/view";
-import { defaultProps } from "../../slider/index";
-import { setFunctionGetBoundingClientRectHTMLElement } from "../../helpers/utils";
+import MarksView from '../../components/marks/view';
+import {
+  setFunctionGetBoundingClientRectHTMLElement,
+  defaultProps,
+} from '../../helpers/utils';
 
-describe("rail", () => {
-  describe("view", () => {
-    test("create marks view", () => {
+describe('rail', () => {
+  describe('view', () => {
+    test('create marks view', () => {
       const view = new MarksView({ index: 0 });
       expect(view).toBeInstanceOf(MarksView);
 
@@ -19,11 +21,11 @@ describe("rail", () => {
       );
     });
 
-    test("render marks view", () => {
+    test('render marks view', () => {
       setFunctionGetBoundingClientRectHTMLElement();
-      $("body").append('<div class="slider__wrapper7"/>');
+      $('body').append('<div class="slider__wrapper7"/>');
       const view = new MarksView({ index: 0 });
-      const $parent = $(".slider__wrapper7");
+      const $parent = $('.slider__wrapper7');
       view.render($parent);
       let $element = $(`.${defaultProps.prefixCls}__marks`, $parent);
       expect($element.length).toBe(0);
@@ -51,9 +53,9 @@ describe("rail", () => {
       $element = $(`.${defaultProps.prefixCls}__mark`, $parent);
       expect($element.length).toBe(12);
     });
-    test("updateView marks", () => {
-      const className = "slider__wrapper-10";
-      $("body").append(`<div class="${className}"/>`);
+    test('updateView marks', () => {
+      const className = 'slider__wrapper-10';
+      $('body').append(`<div class="${className}"/>`);
       let addition = { index: 0 };
       const view = new MarksView(addition);
       const $parent = $(`.${className}`);

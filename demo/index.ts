@@ -1,4 +1,5 @@
 import $ from 'jquery';
+import bind from 'bind-decorator';
 import get from 'lodash/get';
 import set from 'lodash/set';
 import isArray from 'lodash/isArray';
@@ -30,58 +31,141 @@ class Example {
   constructor(parent: HTMLElement) {
     this.$parent = $(parent);
     this.$sliderWrapper = $('.js-slider__dummy', this.$parent);
-    this.$sections = $('.section', this.$parent);
+    this.$sections = $('.js-section', this.$parent);
+    // // console.log('Example constructor this.$sections : ', this.$sections);
     this.init();
   }
 
-  private init = (): void => {
+  private static prepareFunction(string?: unknown): undefined | Render {
+    let result: undefined | Render;
+    if (!isString(string) || !trim(string)) {
+      return result;
+    }
+    try {
+      // eslint-disable-next-line @typescript-eslint/no-implied-eval
+      result = new Function('v', string) as Render;
+      result(0);
+    } catch (error) {
+      result = undefined;
+    }
+    if (isFunction(result)) {
+      return result;
+    }
+    return result;
+  }
+
+  private static prepareArray(string?: unknown): undefined | string[] {
+    const result = Example.prepareJSON(string);
+    if (isArray(result)) {
+      return result;
+    }
+    return undefined;
+  }
+
+  private static isResult(
+    result: string[] | Render | Style | undefined
+  ): boolean {
+    return isObject(result) && !isArray(result) && !isFunction(result);
+  }
+
+  private static prepareObject(
+    string?: unknown
+  ): string[] | Style | Render | undefined {
+    const result = Example.prepareJSON(string);
+    if (Example.isResult(result)) {
+      return result;
+    }
+    return undefined;
+  }
+
+  private static prepareJSON(
+    json?: unknown
+  ): undefined | Style | string[] | Render {
+    let result: undefined | Style | string[] | Render;
+    if (!isString(json) || !trim(json)) {
+      return result;
+    }
+    if (json) {
+      try {
+        result = JSON.parse(json) as undefined;
+      } catch (error) {
+        result = undefined;
+      }
+    }
+    return result;
+  }
+
+  private static updateHandle(index: number, element: HTMLElement) {
+    const $element = $(element);
+    const $inputControl = $('.js-input', $element);
+    if (index === 0) {
+      $element.addClass(['section__item_first', 'js-section__item_first']);
+      $inputControl.addClass(['input_first', 'js-input_first']);
+    } else {
+      $element.removeClass(['section__item_first', 'js-section__item_first']);
+      $inputControl.removeClass(['input_first', 'js-input_first']);
+    }
+    $inputControl.attr({ 'data-key': index });
+    const $span = $('.js-input__section-key', $element);
+    $span.text(`${index + 1}:`);
+  }
+
+  private static updateHandles(currentTarget: HTMLElement) {
+    $('.js-section__item_control', currentTarget).each(Example.updateHandle);
+  }
+
+  private init(): void {
     this.slider = this.$sliderWrapper
       .slider({ onAfterChange: this.onAfterChange })
       .data(Slider.PLUGIN_NAME) as Slider;
     this.initHandlers();
     this.updateProps();
-  };
+  }
 
-  private initHandlers = () => {
+  private initHandlers() {
+    // // console.log('Example initHandlers this.$sections : ', this.$sections);
     this.$sections.each(this.initHandler);
-  };
+  }
 
-  private initHandler = (index: number, element: HTMLElement) => {
+  @bind
+  private initHandler(index: number, element: HTMLElement) {
+    // // console.log('Example initHandler element : ', element);
     $(element).on('click', this.handleSectionClick);
     $(element).on('input', this.handleSectionInput);
     $(element).on('focusout', this.handleSectionFocusout);
-  };
+  }
 
-  private getProps = (): Props => {
+  private getProps(): Props {
     this.props = {};
     this.$sections.each(this.processingSection);
     return this.props;
-  };
+  }
 
-  private setProps = (): void => {
+  private setProps(): void {
     if (this.props && this.slider) {
       this.slider.setProps(this.props);
     }
-  };
+  }
 
-  private updateProps = (): void => {
+  private updateProps(): void {
     const props = merge({}, this.props);
     this.getProps();
     if (this.checkNeedUpdate(props)) {
       this.setProps();
     }
-  };
+  }
 
-  private checkNeedUpdate = (props?: Props): boolean => {
+  private checkNeedUpdate(props?: Props): boolean {
     const prev = JSON.stringify(props);
     const next = JSON.stringify(this.props);
     if (prev !== next) {
       return true;
     }
     return false;
-  };
+  }
 
-  private onAfterChange = (values?: number[]): void => {
+  @bind
+  private onAfterChange(values?: number[]): void {
     if (!values || !this.props) {
       return;
     }
@@ -109,25 +193,30 @@ class Example {
         }
       }
     );
-  };
+  }
 
-  private handleSectionClick = (event: JQuery.Event): void => {
+  @bind
+  private handleSectionClick(event: JQuery.Event): void {
     const target = get(event, ['target']) as HTMLElement;
     const currentTarget = get(event, ['currentTarget']) as HTMLElement;
+    // console.log('Example handleSectionClick target : ', target);
+    // console.log('Example handleSectionClick currentTarget : ', currentTarget);
     if (target) {
       this.removeHandle(target, currentTarget);
       this.addHandle(target, currentTarget);
     }
-  };
+  }
 
-  private handleSectionInput = (event: JQuery.Event) => {
+  @bind
+  private handleSectionInput(event: JQuery.Event) {
     const target: HTMLElement = get(event, ['target']) as HTMLElement;
     if (target && $(target).attr('type') === 'checkbox') {
       this.updateProps();
     }
-  };
+  }
 
-  private handleSectionFocusout = (event: JQuery.Event) => {
+  @bind
+  private handleSectionFocusout(event: JQuery.Event) {
     const target: HTMLElement = get(event, ['target']) as HTMLElement;
     if (
       target &&
@@ -135,15 +224,12 @@ class Example {
     ) {
       this.updateProps();
     }
-  };
+  }
 
   private getSectionItems = (currentTarget: HTMLElement): JQuery<HTMLElement> =>
     $('.js-section__item_control', currentTarget);
 
-  private addHandle = (
-    target: HTMLElement,
-    currentTarget: HTMLElement
-  ): void => {
+  private addHandle(target: HTMLElement, currentTarget: HTMLElement): void {
     if ($(target).closest('.js-button_add').length) {
       const $items = this.getSectionItems(currentTarget);
       if ($items.length > 0) {
@@ -171,62 +257,42 @@ class Example {
         this.updateProps();
       }
     }
-  };
+  }
 
-  private updateHandles = (currentTarget: HTMLElement) => {
-    $('.js-section__item_control', currentTarget).each(this.updateHandle);
-  };
-
-  private updateHandle = (index: number, element: HTMLElement) => {
-    const $element = $(element);
-    const $inputControl = $('.js-input', $element);
-    if (index === 0) {
-      $element.addClass(['section__item_first', 'js-section__item_first']);
-      $inputControl.addClass(['input_first', 'js-input_first']);
-    } else {
-      $element.removeClass(['section__item_first', 'js-section__item_first']);
-      $inputControl.removeClass(['input_first', 'js-input_first']);
-    }
-    $inputControl.attr({ 'data-key': index });
-    const $span = $('.js-input__section-key', $element);
-    $span.text(`${index + 1}:`);
-  };
-
-  private removeHandle = (
-    target: HTMLElement,
-    currentTarget: HTMLElement
-  ): void => {
+  private removeHandle(target: HTMLElement, currentTarget: HTMLElement): void {
     if ($(target).closest('.js-button_remove').length) {
       const $items = this.getSectionItems(currentTarget);
       if ($items.length > 1) {
         const $item = $(target).closest('.js-section__item_control');
         if ($item.length) {
           $item.remove();
-          this.updateHandles(currentTarget);
+          Example.updateHandles(currentTarget);
           this.updateProps();
         }
       }
     }
-  };
+  }
 
-  private processingSection = (index: number, element: HTMLElement): void => {
+  @bind
+  private processingSection(index: number, element: HTMLElement): void {
     $('.js-input', element).each(this.processingInput);
-  };
+  }
 
-  private processingInput = (index: number, element: HTMLElement): void => {
+  @bind
+  private processingInput(index: number, element: HTMLElement): void {
     const { property, type } = (get($(element).data(), ['data']) || {}) as {
       property?: string | undefined;
       type?: keyof Props;
     };
-    const value = this.prepareValue(element, property);
+    const value = Example.prepareValue(element, property);
     this.prepareProp(value, type, property);
-  };
+  }
 
-  private prepareProp = (
+  private prepareProp(
     value?: unknown,
     type?: KeyProps,
     property?: string
-  ): undefined => {
+  ): undefined {
     if (!type || !property) {
       return;
     }
@@ -271,20 +337,20 @@ class Example {
         },
       };
     }
-  };
+  }
 
-  private prepareValue = (
+  private static prepareValue(
     element?: HTMLElement,
     property?: string
-  ): unknown => {
+  ): unknown {
     let value;
     if (!(element instanceof HTMLElement) || !trim(property)) {
-      return;
+      return undefined;
     }
     const $input = $('input', element);
     value = $input.val();
     if (isUndefined(value)) {
-      return;
+      return undefined;
     }
     switch (property) {
       case 'values':
@@ -297,7 +363,7 @@ class Example {
           Number.isNaN(Number(value)) ||
           Number.isNaN(parseFloat(String(value)))
         ) {
-          return;
+          return undefined;
         }
         return parseFloat(String(value));
       }
@@ -313,74 +379,31 @@ class Example {
       }
       case 'classNames':
       case 'styles': {
-        return this.prepareArray(value);
+        return Example.prepareArray(value);
       }
       case 'className':
       case 'wrapClassName': {
         if (!isString(value) || !trim(value)) {
-          return;
+          return undefined;
         }
         return trim(value);
       }
       case 'style': {
-        return this.prepareObject(value);
+        return Example.prepareObject(value);
       }
       case 'render': {
-        return this.prepareFunction(value);
+        return Example.prepareFunction(value);
       }
       default: {
+        return undefined;
       }
     }
-  };
-
-  private prepareArray = (string?: unknown): undefined | string[] => {
-    const result = this.prepareJSON(string);
-    if (isArray(result)) {
-      return result;
-    }
-  };
-
-  private prepareObject = (string?: unknown): undefined | style => {
-    const result = this.prepareJSON(string);
-    if (isObject(result) && !isArray(result) && !isFunction(result)) {
-      return result;
-    }
-  };
-
-  private prepareFunction = (string?: unknown): undefined | Render => {
-    let result;
-    if (!isString(string) || !trim(string)) {
-      return result;
-    }
-    try {
-      result = new Function('v', string);
-      result(0);
-    } catch (error) {
-      return;
-    }
-    if (isFunction(result)) {
-      return result;
-    }
-  };
-
-  private prepareJSON = (
-    json?: unknown
-  ): undefined | Style | string[] | Render => {
-    let result;
-    if (!isString(json) || !trim(json)) {
-      return result;
-    }
-    if (json) {
-      try {
-        result = JSON.parse(json);
-      } catch (error) {}
-    }
-    return result;
-  };
+  }
 }
 
-function renderExample(this: HTMLElement): void {
-  new Example(this);
+function renderExample(this: HTMLElement): false | void {
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const example = new Example(this);
 }
 
 function renderComponent() {

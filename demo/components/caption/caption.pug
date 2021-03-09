@@ -1,16 +1,12 @@
 mixin caption(props)
-    if props
-        -
-            let { content, theme } = props;
-            let className = 'caption';
-            let classNames = `${className}`;
-            let themes = {
-                section: 'section',
-            };
-            classNames += themes[theme] ? ` ${className}_theme_${themes[theme]}` : '';
-        div(
-            class=classNames
-        )
-            span(
-                class=`${className}__content`
-            )=content
+  if props
+    -
+      let { content, theme } = props;
+      let className = 'caption';
+      let classNames = `${className}`;
+      let themes = {
+          section: 'section',
+      };
+      classNames += themes[theme] ? ` ${className}_theme_${themes[theme]}` : '';
+    h3(class=classNames)
+      span(class=`${className}__content`)= content

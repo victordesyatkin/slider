@@ -1,13 +1,15 @@
-import $ from "jquery";
-import merge from "lodash/merge";
+import $ from 'jquery';
+import merge from 'lodash/merge';
 
-import DotView from "../../components/dot/view";
-import { defaultProps } from "../../slider/index";
-import { setFunctionGetBoundingClientRectHTMLElement } from "../../helpers/utils";
+import DotView from '../../components/dot/view';
+import {
+  setFunctionGetBoundingClientRectHTMLElement,
+  defaultProps,
+} from '../../helpers/utils';
 
-describe("rail", () => {
-  describe("view", () => {
-    test("create dot view", () => {
+describe('rail', () => {
+  describe('view', () => {
+    test('create dot view', () => {
       const addition = { index: 0 };
       const view = new DotView(addition);
       expect(view).toBeInstanceOf(DotView);
@@ -20,11 +22,11 @@ describe("rail", () => {
       );
     });
 
-    test("render dot view", () => {
+    test('render dot view', () => {
       setFunctionGetBoundingClientRectHTMLElement();
-      $("body").append('<div class="slider__wrapper"/>');
+      $('body').append('<div class="slider__wrapper"/>');
       const view = new DotView({ index: 0 });
-      const $parent = $(".slider__wrapper");
+      const $parent = $('.slider__wrapper');
       view.render($parent);
       let $element = $(`.${defaultProps.prefixCls}__dot`, $parent);
       expect($element.length).toBe(0);
@@ -74,36 +76,36 @@ describe("rail", () => {
       view.setProps({ ...defaultProps, vertical: true, reverse: false });
       $element = $(`.${defaultProps.prefixCls}__dot`, $parent);
       expect($element.length).toBe(1);
-      expect($element[0].style.bottom).toBe("40%");
-      expect($element[0].style.top).toBe("");
-      expect($element[0].style.transform).toBe("translateY(+50%)");
+      expect($element[0].style.bottom).toBe('40%');
+      expect($element[0].style.top).toBe('');
+      expect($element[0].style.transform).toBe('translateY(+50%)');
 
       view.setAddition({ index: 0, value: 40 });
       view.setProps({ ...defaultProps, vertical: true, reverse: true });
       $element = $(`.${defaultProps.prefixCls}__dot`, $parent);
       expect($element.length).toBe(1);
-      expect($element[0].style.top).toBe("40%");
-      expect($element[0].style.bottom).toBe("");
-      expect($element[0].style.transform).toBe("none");
+      expect($element[0].style.top).toBe('40%');
+      expect($element[0].style.bottom).toBe('');
+      expect($element[0].style.transform).toBe('none');
 
       view.setAddition({ index: 0, value: 40 });
       view.setProps({ ...defaultProps, vertical: false, reverse: true });
       $element = $(`.${defaultProps.prefixCls}__dot`, $parent);
       expect($element.length).toBe(1);
-      expect($element[0].style.right).toBe("40%");
-      expect($element[0].style.left).toBe("");
-      expect($element[0].style.transform).toBe("translateX(+50%)");
+      expect($element[0].style.right).toBe('40%');
+      expect($element[0].style.left).toBe('');
+      expect($element[0].style.transform).toBe('translateX(+50%)');
 
       view.setAddition({ index: 0, value: 40 });
       view.setProps({ ...defaultProps, vertical: false, reverse: false });
       $element = $(`.${defaultProps.prefixCls}__dot`, $parent);
       expect($element.length).toBe(1);
-      expect($element[0].style.left).toBe("40%");
-      expect($element[0].style.right).toBe("");
-      expect($element[0].style.transform).toBe("translateX(-50%)");
+      expect($element[0].style.left).toBe('40%');
+      expect($element[0].style.right).toBe('');
+      expect($element[0].style.transform).toBe('translateX(-50%)');
     });
 
-    test("view dot prepareClassName", () => {
+    test('view dot prepareClassName', () => {
       const view = new DotView({ index: 0, value: 70 });
       let addition = { index: 0, value: 40 };
       view.setAddition(addition);
@@ -114,8 +116,8 @@ describe("rail", () => {
         values: [10, 80],
       };
       view.setProps(props);
-      $("body").append('<div class="slider__wrapper12"/>');
-      const $parent = $(".slider__wrapper12");
+      $('body').append('<div class="slider__wrapper12"/>');
+      const $parent = $('.slider__wrapper12');
       view.render($parent);
       let $element = $(`.${defaultProps.prefixCls}__dot_active`, $parent);
       expect($element.length).toBe(1);
@@ -125,8 +127,8 @@ describe("rail", () => {
       expect(addition.value).toBeLessThanOrEqual(props.values[1]);
       expect($element.length).toBe(1);
 
-      expect($element.attr("class")).toBe(
-        "fsd-slider__dot fsd-slider__dot_active"
+      expect($element.attr('class')).toBe(
+        'fsd-slider__dot fsd-slider__dot_active'
       );
       props = { ...props, values: [20] };
       view.setProps(props);
@@ -134,14 +136,14 @@ describe("rail", () => {
       expect(addition.value).toBeGreaterThanOrEqual(props.values[0]);
       expect($element.length).toBe(1);
 
-      expect($element.attr("class")).toBe(
-        "fsd-slider__dot fsd-slider__dot_active"
+      expect($element.attr('class')).toBe(
+        'fsd-slider__dot fsd-slider__dot_active'
       );
 
       view.setAddition({ index: 0, value: 0 });
       view.setProps(props);
       $element = $(`.${defaultProps.prefixCls}__dot`, $parent);
-      expect($element.attr("class")).toBe("fsd-slider__dot");
+      expect($element.attr('class')).toBe('fsd-slider__dot');
 
       view.setAddition({ index: 0, value: 20 });
       view.setProps({
@@ -151,8 +153,8 @@ describe("rail", () => {
         values: [10],
       });
       $element = $(`.${defaultProps.prefixCls}__dot`, $parent);
-      expect($element.attr("class")).toBe(
-        "fsd-slider__dot fsd-slider__dot_active"
+      expect($element.attr('class')).toBe(
+        'fsd-slider__dot fsd-slider__dot_active'
       );
 
       view.setAddition({ index: 0, value: 0 });
@@ -163,33 +165,33 @@ describe("rail", () => {
         values: [10],
       });
       $element = $(`.${defaultProps.prefixCls}__dot`, $parent);
-      expect($element.attr("class")).toBe("fsd-slider__dot");
+      expect($element.attr('class')).toBe('fsd-slider__dot');
     });
 
-    test("view dot prepareStyle", () => {
+    test('view dot prepareStyle', () => {
       const view = new DotView({ index: 0, value: 70 });
-      $("body").append('<div class="slider__wrapper121"/>');
-      const $parent = $(".slider__wrapper121");
+      $('body').append('<div class="slider__wrapper121"/>');
+      const $parent = $('.slider__wrapper121');
       view.render($parent);
       let $element = $(`.${defaultProps.prefixCls}__dot`, $parent);
-      expect($element.css("color")).toBeUndefined();
+      expect($element.css('color')).toBeUndefined();
     });
 
-    test("view dot handleViewClick", () => {
+    test('view dot handleViewClick', () => {
       const view = new DotView({ index: 0, value: 70 });
-      $("body").append('<div class="slider__wrapper122"/>');
-      const $parent = $(".slider__wrapper122");
+      $('body').append('<div class="slider__wrapper122"/>');
+      const $parent = $('.slider__wrapper122');
       view.render($parent);
       const handleViewClick = jest.fn(
         (index: number, event: MouseEvent, value?: number): void => {}
       );
       let $element = $(`.${defaultProps.prefixCls}__dot`, $parent);
-      $element.trigger("click");
+      $element.trigger('click');
       expect(handleViewClick.mock.calls.length).toBe(0);
 
       view.setProps(merge({}, { ...defaultProps }));
       $element = $(`.${defaultProps.prefixCls}__dot`, $parent);
-      $element.trigger("click");
+      $element.trigger('click');
       expect(handleViewClick.mock.calls.length).toBe(0);
 
       view.setAddition({
@@ -197,18 +199,18 @@ describe("rail", () => {
         handles: { handleViewClick },
       });
       $element = $(`.${defaultProps.prefixCls}__dot`, $parent);
-      $element.trigger("click");
+      $element.trigger('click');
       expect(handleViewClick.mock.calls.length).toBe(1);
       expect(handleViewClick.mock.calls[0][0]).toBe(0);
       expect(handleViewClick.mock.calls[0][2]).toBe(70);
     });
 
-    test("view dot remove", () => {
-      $("body").append('<div class="slider__wrapper11"/>');
+    test('view dot remove', () => {
+      $('body').append('<div class="slider__wrapper11"/>');
       const view = new DotView({ index: 0 });
       view.setAddition({ index: 0, value: 40 });
       view.setProps({ ...defaultProps, dot: { on: true }, step: 10 });
-      const $parent = $(".slider__wrapper11");
+      const $parent = $('.slider__wrapper11');
       view.render($parent);
       let $element = $(`.${defaultProps.prefixCls}__dot`, $parent);
       expect($element.length).toBe(1);
@@ -217,7 +219,7 @@ describe("rail", () => {
       expect($element.length).toBe(0);
     });
 
-    test("view dot initHandlers", () => {
+    test('view dot initHandlers', () => {
       const handleViewClick = jest.fn(
         (index: number, e: any, value?: number): void => {}
       );
@@ -228,12 +230,12 @@ describe("rail", () => {
       };
       const view = new DotView(addition);
       view.setProps(defaultProps);
-      $("body").append('<div class="slider__wrapper13"/>');
-      const $parent = $(".slider__wrapper13");
+      $('body').append('<div class="slider__wrapper13"/>');
+      const $parent = $('.slider__wrapper13');
       view.render($parent);
       let $element = $(`.${defaultProps.prefixCls}__dot`, $parent);
       expect($element.length).toBe(1);
-      $element.trigger("click");
+      $element.trigger('click');
       expect(handleViewClick.mock.calls.length).toBe(1);
     });
   });

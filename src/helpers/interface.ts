@@ -1,4 +1,4 @@
-import { Callback } from "../types";
+import { Callback } from '../types';
 
 export interface IPubSub {
   subscribe(eventName?: string, callback?: Callback): (() => void) | undefined;

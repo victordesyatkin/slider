@@ -1,10 +1,10 @@
-import { defaultProps } from "../../slider/index";
-import Model from "../../slider/model";
-import { DefaultProps } from "../../types";
+import { defaultProps } from '../../slider/index';
+import Model from '../../slider/model';
+import { DefaultProps } from '../../types';
 
-describe("slider", () => {
-  describe("model", () => {
-    test("defaultProps -> new model -> model ", () => {
+describe('slider', () => {
+  describe('model', () => {
+    test('defaultProps -> new model -> model ', () => {
       const model = new Model(defaultProps);
       expect(model).toBeInstanceOf(Model);
       expect(model).toEqual(
@@ -15,7 +15,7 @@ describe("slider", () => {
       );
     });
 
-    test("{values:[20,80], min: 10,} -> setProps-> getProps -> {values: [20: 80], min: 10}", () => {
+    test('{values:[20,80], min: 10,} -> setProps-> getProps -> {values: [20: 80], min: 10}', () => {
       const model = new Model(defaultProps);
       model.setProps({ ...defaultProps, values: [20, 80], min: 10 });
       let props = model.getProps();
@@ -27,32 +27,32 @@ describe("slider", () => {
       expect(props.min).toBe(10);
     });
 
-    test("initHandles", () => {
+    test('initHandles', () => {
       const model = new Model(defaultProps);
       const mockCallback = jest.fn((): void => {});
-      model.subscribe("handleWindowMouseUp", mockCallback);
-      model.publish("handleWindowMouseUp");
+      model.subscribe('handleWindowMouseUp', mockCallback);
+      model.publish('handleWindowMouseUp');
       expect(mockCallback.mock.calls.length).toBe(1);
     });
 
-    test("handleWindowMouseUp", () => {
+    test('handleWindowMouseUp', () => {
       const handleModelAfterChange = jest.fn((values?: number[]): void => {});
       const model = new Model({
         ...defaultProps,
         onAfterChange: handleModelAfterChange,
       });
       const handleWindowMouseUp = jest.fn((): void => {});
-      model.subscribe("handleWindowMouseUp", handleWindowMouseUp);
-      model.publish("handleWindowMouseUp");
+      model.subscribe('handleWindowMouseUp', handleWindowMouseUp);
+      model.publish('handleWindowMouseUp');
       expect(handleWindowMouseUp.mock.calls.length).toBe(1);
       expect(handleModelAfterChange.mock.calls.length).toBe(1);
 
       model.setProps({ ...defaultProps, disabled: true });
-      model.publish("handleWindowMouseUp");
+      model.publish('handleWindowMouseUp');
       expect(handleModelAfterChange.mock.calls.length).toBe(1);
     });
 
-    test("handleWindowMouseDown", () => {
+    test('handleWindowMouseDown', () => {
       const handleModelBeforeChange = jest.fn((values?: number[]): void => {});
       const model = new Model({
         ...defaultProps,
@@ -61,8 +61,8 @@ describe("slider", () => {
       const handleWindowMouseDown = jest.fn(
         (options: { index: number }): void => {}
       );
-      model.subscribe("handleViewMouseDown", handleWindowMouseDown);
-      model.publish("handleViewMouseDown", { index: 0 });
+      model.subscribe('handleViewMouseDown', handleWindowMouseDown);
+      model.publish('handleViewMouseDown', { index: 0 });
       expect(handleWindowMouseDown.mock.calls.length).toBe(1);
       expect(handleWindowMouseDown.mock.calls[0][0]).toStrictEqual({
         index: 0,
@@ -71,11 +71,11 @@ describe("slider", () => {
       expect(handleModelBeforeChange.mock.calls[0][0]).toStrictEqual([0]);
 
       model.setProps({ ...defaultProps, disabled: true });
-      model.publish("handleViewMouseDown", { index: 0 });
+      model.publish('handleViewMouseDown', { index: 0 });
       expect(handleModelBeforeChange.mock.calls.length).toBe(1);
     });
 
-    test("handleViewClick", () => {
+    test('handleViewClick', () => {
       const model = new Model(defaultProps);
       const handleViewClick = jest.fn(
         (options: {
@@ -86,9 +86,9 @@ describe("slider", () => {
           start: number;
         }): void => {}
       );
-      model.subscribe("handleViewClick", handleViewClick);
-      const event = new MouseEvent("click");
-      model.publish("handleViewClick", {
+      model.subscribe('handleViewClick', handleViewClick);
+      const event = new MouseEvent('click');
+      model.publish('handleViewClick', {
         event,
         index: 0,
         value: 0,
@@ -105,7 +105,7 @@ describe("slider", () => {
       });
       let props = model.getProps();
       expect(props.values).toStrictEqual([0]);
-      model.publish("handleViewClick", {
+      model.publish('handleViewClick', {
         event,
         index: 0,
         value: 50,
@@ -124,7 +124,7 @@ describe("slider", () => {
       expect(props.values).toStrictEqual([50]);
 
       model.setProps({ ...defaultProps, disabled: true });
-      model.publish("handleViewClick", {
+      model.publish('handleViewClick', {
         event,
         index: 0,
         value: 10,
@@ -135,7 +135,7 @@ describe("slider", () => {
       expect(props.values).toStrictEqual([0]);
     });
 
-    test("handleWindowMouseMove", () => {
+    test('handleWindowMouseMove', () => {
       const model = new Model(defaultProps);
       const handleWindowMouseMove = jest.fn(
         (options: {
@@ -144,9 +144,9 @@ describe("slider", () => {
           start: number;
         }): void => {}
       );
-      model.subscribe("handleWindowMouseMove", handleWindowMouseMove);
-      const event = new MouseEvent("mousemove");
-      model.publish("handleWindowMouseMove", {
+      model.subscribe('handleWindowMouseMove', handleWindowMouseMove);
+      const event = new MouseEvent('mousemove');
+      model.publish('handleWindowMouseMove', {
         event,
         length: 100,
         start: 0,
@@ -159,16 +159,16 @@ describe("slider", () => {
       });
     });
 
-    test("handleModelChange", () => {
+    test('handleModelChange', () => {
       const handleModelChange = jest.fn((values: number[]): void => {});
       const model = new Model({
         ...defaultProps,
         onChange: handleModelChange,
         vertical: true,
       });
-      const event = new MouseEvent("mousemove", { clientY: 15 });
-      model.publish("handleViewMouseDown", { index: 0 });
-      model.publish("handleWindowMouseMove", {
+      const event = new MouseEvent('mousemove', { clientY: 15 });
+      model.publish('handleViewMouseDown', { index: 0 });
+      model.publish('handleWindowMouseMove', {
         event,
         start: 0,
         length: 100,

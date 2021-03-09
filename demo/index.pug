@@ -2,32 +2,18 @@ include ./components/example/example
 
 doctype html
 -
-    let { examples = [], meta = [], links = [], title, lang } = htmlWebpackPlugin.options.getData();
+  let { examples = [], meta = [], links = [], title, lang } = htmlWebpackPlugin.options.getData();
 html(lang=lang)
-    head
-        meta(
-            charset="utf-8"
-        )
-        meta(
-            name="viewport"
-            content="width=device-width, initial-scale=1"
-        )
-        each item in meta
-            - let { name, content, charset } = item || {};
-            meta(
-                name=name,
-                content=content
-                charset=charset
-            )
-        each link in links
-            - let { rel, href, sizes, type } = link || {};
-            link(
-                rel=rel,
-                href=href,
-                sizes=sizes,
-                type=type
-            )
-        title=title
-    body
-        each example in examples            
-            +example(example)
+  head
+    meta(charset="utf-8")
+    meta(name="viewport", content="width=device-width, initial-scale=1")
+    each item in meta
+      - let { name, content, charset } = item || {};
+      meta(name=name, content=content, charset=charset)
+    each link in links
+      - let { rel, href, sizes, type } = link || {};
+      link(rel=rel, href=href, sizes=sizes, type=type)
+    title= title
+  body
+    each example in examples            
+      +example(example)

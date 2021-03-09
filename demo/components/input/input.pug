@@ -3,43 +3,36 @@ include ../label/label
 include ../button/button
 
 mixin input(props)
-    if props
-        -
-            let { label, type = 'number', content, value, key, isControl, data = {}, link, isFirst, buttonRemove } = props;
-            let isChecked = value && type === "checkbox" ? true : false;
-            let className = 'input';
-            let classNames = `${className} js-${className}`;
-            classNames += isControl ? ` ${className}_control js-${className}_control` : '';
-            classNames += isFirst ? ` ${className}_first js-${className}_first` : '';
-            let id = Math.random().toString(16).substr(2);
-            if (label) {
-                label = { ...label, id };
-            }
-        div(
-            class=classNames
-            data-data=data
-            data-key=key
-        )
-            if link
-                div(
-                    class=`${className}__link`
-                )
-                    +link(link)
+  if props
+    -
+      let { label, type = 'number', content, value, key, isControl, data = {}, link, isFirst, buttonRemove } = props;
+      let isChecked = value && type === "checkbox" ? true : false;
+      let className = 'input';
+      let classNames = `${className} js-${className}`;
+      classNames += isControl ? ` ${className}_control js-${className}_control` : '';
+      classNames += isFirst ? ` ${className}_first js-${className}_first` : '';
+      let id = Math.random().toString(16).substr(2);
+      if (label) {
+          label = { ...label, id };
+      }
+    div(class=classNames, data-data=data, data-key=key)
+      if link
+        div(class=`${className}__link`)
+          +link(link)
 
-            if label
-                div(
-                    class=`${className}__label`
-                )
-                    +label(label)
-            .input__section
-                if key >= 0 && isControl
-                    span.input__section-key.js-input__section-key #{key + 1}:
-                input.input__input.js-input__input(
-                    type=type
-                    id=id
-                    checked=isChecked
-                    value=value
-                    )
-                if isControl
-                    .input__button-control
-                        +button(buttonRemove)
+      if label
+        div(class=`${className}__label`)
+          +label(label)
+      div(class=`${className}__section`) 
+        if key >= 0 && isControl
+          span(class=`${className}__section-key js-${className}__section-key`) #{key + 1}:
+        input(
+          type=type,
+          id=id,
+          checked=isChecked,
+          value=value,
+          class=`${className}__input js-${className}__input`
+        )
+        if isControl
+          div(class=`${className}__button-control js-${className}__button-control`)
+            +button(buttonRemove)

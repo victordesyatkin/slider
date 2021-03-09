@@ -1,12 +1,14 @@
-import $ from "jquery";
+import $ from 'jquery';
 
-import DotsView from "../../components/dots/view";
-import { defaultProps } from "../../slider/index";
-import { setFunctionGetBoundingClientRectHTMLElement } from "../../helpers/utils";
+import DotsView from '../../components/dots/view';
+import {
+  setFunctionGetBoundingClientRectHTMLElement,
+  defaultProps,
+} from '../../helpers/utils';
 
-describe("dots", () => {
-  describe("view", () => {
-    test("create dots view", () => {
+describe('dots', () => {
+  describe('view', () => {
+    test('create dots view', () => {
       const view = new DotsView({ index: 0 });
       expect(view).toBeInstanceOf(DotsView);
 
@@ -19,11 +21,11 @@ describe("dots", () => {
       );
     });
 
-    test("render dots view", () => {
+    test('render dots view', () => {
       setFunctionGetBoundingClientRectHTMLElement();
-      $("body").append('<div class="slider__wrapper-8"/>');
+      $('body').append('<div class="slider__wrapper-8"/>');
       const view = new DotsView({ index: 0 });
-      const $parent = $(".slider__wrapper-8");
+      const $parent = $('.slider__wrapper-8');
       view.render($parent);
       let $element = $(`.${defaultProps.prefixCls}__dots`, $parent);
       expect($element.length).toBe(0);
@@ -71,9 +73,9 @@ describe("dots", () => {
       expect($element.length).toBe(13);
     });
 
-    test("updateView dots view", () => {
-      const className = "slider__wrapper-9";
-      $("body").append(`<div class="${className}"/>`);
+    test('updateView dots view', () => {
+      const className = 'slider__wrapper-9';
+      $('body').append(`<div class="${className}"/>`);
       let addition = { index: 0 };
       const view = new DotsView(addition);
       const $parent = $(`.${className}`);
@@ -87,9 +89,9 @@ describe("dots", () => {
       expect($element.length).toBe(0);
     });
 
-    test("createView dots view", () => {
-      const className = "slider__wrapper-10";
-      $("body").append(`<div class="${className}"/>`);
+    test('createView dots view', () => {
+      const className = 'slider__wrapper-10';
+      $('body').append(`<div class="${className}"/>`);
       let addition = { index: 0 };
       const view = new DotsView(addition);
       const $parent = $(`.${className}`);

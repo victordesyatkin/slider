@@ -46,6 +46,7 @@ class View extends PubSub implements IView {
   }
 
   public render(parent?: JQuery<HTMLElement>): void {
+    // console.log('View render parent : ', parent);
     if (parent) {
       this.parent = parent;
     }
@@ -82,6 +83,7 @@ class View extends PubSub implements IView {
   }
 
   private updateView(): void {
+    // console.log('View updateView this.view: ', this.view);
     if (!this.view) {
       this.createView();
     } else {
@@ -154,15 +156,30 @@ class View extends PubSub implements IView {
 
   private createOrUpdateSubViews(): void {
     const count = getCount(this.props);
-    this.createOrUpdateSubView<RailView>(this.rails, 1, RailView, 'click');
-    this.createOrUpdateSubView<TrackView>(
+    this.rails = this.createOrUpdateSubView<RailView>(
+      this.rails,
+      1,
+      RailView,
+      'click'
+    );
+    this.tracks = this.createOrUpdateSubView<TrackView>(
       this.tracks,
       count - 1 || 1,
       TrackView
     );
-    this.createOrUpdateSubView<DotsView>(this.dots, 1, DotsView, 'click');
-    this.createOrUpdateSubView<MarksView>(this.marks, 1, MarksView, 'click');
-    this.createOrUpdateSubView<HandleView>(
+    this.dots = this.createOrUpdateSubView<DotsView>(
+      this.dots,
+      1,
+      DotsView,
+      'click'
+    );
+    this.marks = this.createOrUpdateSubView<MarksView>(
+      this.marks,
+      1,
+      MarksView,
+      'click'
+    );
+    this.handles = this.createOrUpdateSubView<HandleView>(
       this.handles,
       count,
       HandleView,
@@ -175,7 +192,8 @@ class View extends PubSub implements IView {
     count: number,
     SubView: { new (addition: Addition): T },
     action?: string
-  ): void {
+  ): ISubView[] {
+    const readyViews = [...views];
     if (this.props) {
       let handles;
       let active;
@@ -190,7 +208,7 @@ class View extends PubSub implements IView {
           };
         }
       }
-      const readyViews = [...views];
+      /// / console.log('View createOrUpdateSubView SubView.name: ', SubView.name);
       for (let index = 0; index < count; index += 1) {
         if (SubView.name === 'HandleView') {
           active = index === this.props.currentHandleIndex;
@@ -202,15 +220,18 @@ class View extends PubSub implements IView {
           readyViews[index].setProps(this.props);
         } else {
           readyViews[index] = new SubView({ index, handles, active });
-          views[index].setProps(this.props);
+          readyViews[index].setProps(this.props);
         }
       }
       View.cleanSubView(readyViews, count);
     }
+    return readyViews;
   }
 
   private appendSubViews(): void {
     if (this.view) {
+      // console.log('View appendSubViews this.view: ', this.view);
+      // console.log('View appendSubViews this.rails: ', this.rails);
       this.rails.forEach(this.appendSubView);
       this.marks.forEach(this.appendSubView);
       this.dots.forEach(this.appendSubView);
@@ -219,7 +240,9 @@ class View extends PubSub implements IView {
     }
   }
 
+  @bind
   private appendSubView(subView: IView): void {
+    // console.log('View appendSubView subView: ', subView);
     if (this.view) {
       subView.render(this.view);
     }

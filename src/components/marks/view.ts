@@ -19,7 +19,7 @@ export default class MarksView extends PubSub implements ISubView {
 
   private addition: Addition;
 
-  private marks: MarkView[] = [];
+  private marks: ISubView[] = [];
 
   private isRendered = false;
 
@@ -126,13 +126,14 @@ export default class MarksView extends PubSub implements ISubView {
   }
 
   private createOrUpdateSubViews(): void {
-    this.createOrUpdateSubView<MarkView>(this.marks, MarkView);
+    this.marks = this.createOrUpdateSubView<MarkView>(this.marks, MarkView);
   }
 
   private createOrUpdateSubView<T extends ISubView>(
     views: ISubView[],
     SubView: { new (addition: Addition): T }
-  ): void {
+  ): ISubView[] {
+    const readyViews = [...views];
     if (this.props && this.view) {
       const { min, max, step, reverse } = this.props;
       let values: number[] = [];
@@ -148,7 +149,6 @@ export default class MarksView extends PubSub implements ISubView {
       values = orderBy(uniq(values), [], reverse ? 'desc' : 'asc');
       const { length } = values;
       const { handles } = this.addition;
-      const readyViews = [...views];
       for (let i = 0; i < length; i += 1) {
         if (!isUndefined(views[i])) {
           readyViews[i].setAddition({
@@ -168,6 +168,7 @@ export default class MarksView extends PubSub implements ISubView {
       }
       MarksView.cleanSubView(readyViews, values.length);
     }
+    return readyViews;
   }
 
   private appendSubViews(): void {

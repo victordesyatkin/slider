@@ -1,13 +1,13 @@
-import $ from "jquery";
+import $ from 'jquery';
 
-import { setFunctionGetBoundingClientRectHTMLElement } from "../../helpers/utils";
-import View from "../../slider/view";
-import { defaultProps } from "../../slider/index";
-import { Dot, Mark, Tooltip, DefaultPropsView } from "../../types";
+import { setFunctionGetBoundingClientRectHTMLElement } from '../../helpers/utils';
+import View from '../../slider/view';
+import { defaultProps } from '../../slider/index';
+import { Dot, Mark, Tooltip, DefaultPropsView } from '../../types';
 
-describe("slider", () => {
-  describe("view", () => {
-    test("create view", () => {
+describe('slider', () => {
+  describe('view', () => {
+    test('create view', () => {
       const view = new View();
       expect(view).toBeInstanceOf(View);
 
@@ -20,11 +20,11 @@ describe("slider", () => {
       );
     });
 
-    test("render view", () => {
+    test('render view', () => {
       setFunctionGetBoundingClientRectHTMLElement();
-      $("body").append('<div class="slider__wrapper"/>');
+      $('body').append('<div class="slider__wrapper"/>');
       const view = new View();
-      const $parent = $(".slider__wrapper");
+      const $parent = $('.slider__wrapper');
       view.render($parent);
       let $slider = $(`.${defaultProps.prefixCls}`, $parent);
       expect($slider.length).toBe(0);
@@ -34,11 +34,11 @@ describe("slider", () => {
       expect($slider.length).toBe(1);
     });
 
-    test("render view check count handle", () => {
+    test('render view check count handle', () => {
       setFunctionGetBoundingClientRectHTMLElement();
-      $("body").append('<div class="slider__wrapper1"/>');
+      $('body').append('<div class="slider__wrapper1"/>');
       const view = new View();
-      const $parent = $(".slider__wrapper1");
+      const $parent = $('.slider__wrapper1');
       view.setProps(defaultProps);
       view.render($parent);
       let $handle = $(`.${defaultProps.prefixCls}__handle`, $parent);
@@ -57,11 +57,11 @@ describe("slider", () => {
       expect($handle.length).toBe(1);
     });
 
-    test("render view check count track", () => {
+    test('render view check count track', () => {
       setFunctionGetBoundingClientRectHTMLElement();
-      $("body").append('<div class="slider__wrapper2"/>');
+      $('body').append('<div class="slider__wrapper2"/>');
       const view = new View();
-      const $parent = $(".slider__wrapper2");
+      const $parent = $('.slider__wrapper2');
       view.setProps(defaultProps);
       view.render($parent);
       let $tracks = $(`.${defaultProps.prefixCls}__track`, $parent);
@@ -90,11 +90,11 @@ describe("slider", () => {
       );
     });
 
-    test("render view check count dots", () => {
+    test('render view check count dots', () => {
       setFunctionGetBoundingClientRectHTMLElement();
-      $("body").append('<div class="slider__wrapper3"/>');
+      $('body').append('<div class="slider__wrapper3"/>');
       const view = new View();
-      const $parent = $(".slider__wrapper3");
+      const $parent = $('.slider__wrapper3');
       let dot: Dot = { on: true };
       let props = { ...defaultProps };
       view.setProps(props);
@@ -142,11 +142,11 @@ describe("slider", () => {
       expect($dot.length).toBe(4);
     });
 
-    test("render view check count marks", () => {
+    test('render view check count marks', () => {
       setFunctionGetBoundingClientRectHTMLElement();
-      $("body").append('<div class="slider__wrapper4"/>');
+      $('body').append('<div class="slider__wrapper4"/>');
       const view = new View();
-      const $parent = $(".slider__wrapper4");
+      const $parent = $('.slider__wrapper4');
       let mark: Mark = { on: true };
       view.setProps({ ...defaultProps });
       view.render($parent);
@@ -174,11 +174,11 @@ describe("slider", () => {
       expect($mark.length).toBe(7);
     });
 
-    test("render view check count tooltip", () => {
+    test('render view check count tooltip', () => {
       setFunctionGetBoundingClientRectHTMLElement();
-      const className = "slider__wrapper5";
+      const className = 'slider__wrapper5';
       const findClassName = `.${defaultProps.prefixCls}__tooltip`;
-      $("body").append(`<div class="${className}"/>`);
+      $('body').append(`<div class="${className}"/>`);
       const view = new View();
       const $parent = $(`.${className}`);
       let tooltip: Tooltip = { on: true };
@@ -212,27 +212,27 @@ describe("slider", () => {
       expect($mark.length).toBe(1);
     });
 
-    test("view check subscribe, publish", () => {
+    test('view check subscribe, publish', () => {
       setFunctionGetBoundingClientRectHTMLElement();
-      const className = "slider__wrapper6";
-      $("body").append(`<div class="${className}"/>`);
+      const className = 'slider__wrapper6';
+      $('body').append(`<div class="${className}"/>`);
       const view = new View();
       const mockCallback = jest.fn((data: any): void => {});
-      view.subscribe("setPropsModel", mockCallback);
+      view.subscribe('setPropsModel', mockCallback);
       const $parent = $(`.${className}`);
       view.setProps({ ...defaultProps });
       view.render($parent);
-      view.publish("setPropsModel", 5);
+      view.publish('setPropsModel', 5);
       expect(mockCallback.mock.calls.length).toBe(1);
 
       expect(mockCallback.mock.calls[0][0]).toBe(5);
     });
 
-    test("handleViewClick", () => {
+    test('handleViewClick', () => {
       setFunctionGetBoundingClientRectHTMLElement({ width: 100, height: 100 });
-      $("body").append('<div class="slider__wrapper7"/>');
+      $('body').append('<div class="slider__wrapper7"/>');
       const view = new View();
-      const $parent = $(".slider__wrapper7");
+      const $parent = $('.slider__wrapper7');
       view.setProps(defaultProps);
       view.render($parent);
       let mockCallback = jest.fn(
@@ -244,54 +244,54 @@ describe("slider", () => {
           start: number;
         }): void => {}
       );
-      view.subscribe("handleViewClick", mockCallback);
+      view.subscribe('handleViewClick', mockCallback);
       let $rail = $(`.${defaultProps.prefixCls}__rail`, $parent);
-      $rail.trigger("click");
+      $rail.trigger('click');
       expect(mockCallback.mock.calls.length).toBe(1);
     });
 
-    test("handleViewMouseDown slider view", () => {
+    test('handleViewMouseDown slider view', () => {
       setFunctionGetBoundingClientRectHTMLElement({ width: 100, height: 100 });
-      $("body").append('<div class="slider__wrapper8"/>');
+      $('body').append('<div class="slider__wrapper8"/>');
       const view = new View();
-      const $parent = $(".slider__wrapper8");
+      const $parent = $('.slider__wrapper8');
       view.setProps({ ...defaultProps, dot: { on: true } });
       view.render($parent);
       let mockCallback = jest.fn((options: { index: number }): void => {});
-      view.subscribe("handleViewMouseDown", mockCallback);
+      view.subscribe('handleViewMouseDown', mockCallback);
       const $handle = $(`.${defaultProps.prefixCls}__handle`, $parent);
-      $handle.trigger("mousedown");
+      $handle.trigger('mousedown');
       expect(mockCallback.mock.calls.length).toBe(1);
       expect(mockCallback.mock.calls[0][0]).toStrictEqual({ index: 0 });
     });
 
-    test("handleWindowMouseUp slider view", () => {
+    test('handleWindowMouseUp slider view', () => {
       setFunctionGetBoundingClientRectHTMLElement({
         width: 100,
         height: 100,
       });
-      $("body").append('<div class="slider__wrapper9"/>');
-      const $parent = $(".slider__wrapper9");
+      $('body').append('<div class="slider__wrapper9"/>');
+      const $parent = $('.slider__wrapper9');
       const view = new View();
       view.render($parent);
       view.setProps(defaultProps);
       let mockCallback = jest.fn((): void => {});
-      view.subscribe("handleWindowMouseUp", mockCallback);
-      window.dispatchEvent(new Event("mouseup"));
+      view.subscribe('handleWindowMouseUp', mockCallback);
+      window.dispatchEvent(new Event('mouseup'));
       expect(mockCallback.mock.calls.length).toBe(0);
       const $handle = $(`.${defaultProps.prefixCls}__handle`, $parent);
-      $handle.trigger("mousedown");
-      window.dispatchEvent(new Event("mouseup"));
+      $handle.trigger('mousedown');
+      window.dispatchEvent(new Event('mouseup'));
       expect(mockCallback.mock.calls.length).toBe(1);
     });
 
-    test("handleWindowMouseMove slider view", () => {
+    test('handleWindowMouseMove slider view', () => {
       setFunctionGetBoundingClientRectHTMLElement({
         width: 100,
         height: 100,
       });
-      $("body").append('<div class="slider__wrapper10"/>');
-      const $parent = $(".slider__wrapper10");
+      $('body').append('<div class="slider__wrapper10"/>');
+      const $parent = $('.slider__wrapper10');
       const view = new View();
       view.render($parent);
       view.setProps(defaultProps);
@@ -302,11 +302,11 @@ describe("slider", () => {
           length: number;
         }): void => {}
       );
-      view.subscribe("handleWindowMouseMove", mockCallback);
+      view.subscribe('handleWindowMouseMove', mockCallback);
       expect(mockCallback.mock.calls.length).toBe(0);
       const $handle = $(`.${defaultProps.prefixCls}__handle`, $parent);
-      $handle.trigger("mousedown");
-      let event = new MouseEvent("mousemove");
+      $handle.trigger('mousedown');
+      let event = new MouseEvent('mousemove');
       window.dispatchEvent(event);
       expect(mockCallback.mock.calls.length).toBe(1);
       expect(mockCallback.mock.calls[0][0]).toStrictEqual({

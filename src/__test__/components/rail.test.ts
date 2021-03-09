@@ -1,13 +1,15 @@
-import $ from "jquery";
+import $ from 'jquery';
 
-import RailView from "../../components/rail/view";
-import { defaultProps } from "../../slider/index";
-import { setFunctionGetBoundingClientRectHTMLElement } from "../../helpers/utils";
-import { DefaultProps, Addition } from "../../types";
+import RailView from '../../components/rail/view';
+import {
+  setFunctionGetBoundingClientRectHTMLElement,
+  defaultProps,
+} from '../../helpers/utils';
+import { DefaultProps, Addition } from '../../types';
 
-describe("rail", () => {
-  describe("view", () => {
-    test("create rail view", () => {
+describe('rail', () => {
+  describe('view', () => {
+    test('create rail view', () => {
       const addition = { index: 0 };
       const view = new RailView(addition);
       expect(view).toBeInstanceOf(RailView);
@@ -21,12 +23,12 @@ describe("rail", () => {
       );
     });
 
-    test("render rail view", () => {
+    test('render rail view', () => {
       setFunctionGetBoundingClientRectHTMLElement();
-      $("body").append('<div class="slider__wrapper"/>');
+      $('body').append('<div class="slider__wrapper"/>');
       const addition = { index: 0 };
       const view = new RailView(addition);
-      const $parent = $(".slider__wrapper");
+      const $parent = $('.slider__wrapper');
       view.render($parent);
       let $element = $(`.${defaultProps.prefixCls}__rail`, $parent);
       expect($element.length).toBe(0);
@@ -36,11 +38,11 @@ describe("rail", () => {
       expect($element.length).toBe(1);
     });
 
-    test("updateView rail view", () => {
+    test('updateView rail view', () => {
       let addition = { index: 0 };
       const view = new RailView(addition);
-      const className = "slider__wrapper-11";
-      $("body").append(`<div class="${className}"/>`);
+      const className = 'slider__wrapper-11';
+      $('body').append(`<div class="${className}"/>`);
       const $parent = $(`.${className}`);
       let props = { ...defaultProps };
       view.setAddition(addition);
@@ -54,9 +56,9 @@ describe("rail", () => {
       expect($element.length).toBe(0);
     });
 
-    test("handleViewClick rail view", () => {
-      let className = "slider__wrapper-13";
-      $("body").append(`<div class="${className}"/>`);
+    test('handleViewClick rail view', () => {
+      let className = 'slider__wrapper-13';
+      $('body').append(`<div class="${className}"/>`);
       const $parent = $(`.${className}`);
       let handleViewClick = jest.fn((value: number): string => {
         return `${value}%`;
@@ -71,13 +73,13 @@ describe("rail", () => {
       view.render($parent);
       view.setProps(props);
       let $view = $(`.${defaultProps.prefixCls}__rail`, $parent);
-      $view.trigger("click");
+      $view.trigger('click');
       expect(handleViewClick.mock.calls.length).toBe(0);
       addition = { index: 0, handles: { handleViewClick } };
       view.setAddition(addition);
       view.setProps(props);
       $view = $(`.${defaultProps.prefixCls}__rail`, $parent);
-      $view.trigger("click");
+      $view.trigger('click');
       expect(handleViewClick.mock.calls.length).toBe(1);
     });
   });

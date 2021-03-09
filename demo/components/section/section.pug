@@ -3,43 +3,38 @@ include ../input/input
 include ../button/button
 
 mixin section(props = {})
-    -
-        let { items = [], caption, buttonAdd, buttonRemove } = props;
-        let className = 'section';
-        let classNames = `${className}`;
-    div(
-        class=classNames
-    )   
-        .section__caption
-            +caption(caption)
-        .section__items.js-section__items
-            - let index = 0;
-            each item in items
-                -
-                    
-                    let { isControl } = item || {};
-                    let sectionItemClass = 'section__item';
-                    let sectionItemClasses = `${sectionItemClass}`;
-                    let isFirst = false;
-                    if (isControl) {
-                        item.key = index;
-                        isFirst = index === 0;
-                        sectionItemClasses += ` ${sectionItemClass}_control js-${sectionItemClass}_control`;
-                        sectionItemClasses += isFirst ? ` ${sectionItemClass}_first js-${sectionItemClass}_first` : ''
-                        index += 1;
-                    }
-                div(
-                    class=sectionItemClasses
-                )
-                    if isControl
-                        .section__button-control
-                            +button(buttonAdd)
-                    -
-                        if (isFirst) {
-                            item = { ...item, isFirst };
-                        }
-                        if (isControl) {
-                            item = { ...item, buttonRemove };
-                        }
-                    .section__input
-                        +input(item)
+  -
+    let { items = [], caption, buttonAdd, buttonRemove } = props;
+    let className = 'section';
+    let classNames = `${className} js-${className}`;
+  section(class=classNames) 
+    div(class=`${className}__caption`)
+      +caption(caption)
+    div(class=`${className}__items js-${className}__items`)
+      - let index = 0;
+      each item in items
+        -
+          let { isControl } = item || {};
+          let sectionItemClass = `${className}__item`;
+          let sectionItemClasses = `${sectionItemClass} js-${sectionItemClass}`;
+          let isFirst = false;
+          if (isControl) {
+              item.key = index;
+              isFirst = index === 0;
+              sectionItemClasses += ` ${sectionItemClass}_control js-${sectionItemClass}_control`;
+              sectionItemClasses += isFirst ? ` ${sectionItemClass}_first js-${sectionItemClass}_first` : ''
+              index += 1;
+          }
+        div(class=sectionItemClasses)
+          if isControl
+            .section__button-control
+              +button(buttonAdd)
+          -
+            if (isFirst) {
+                item = { ...item, isFirst };
+            }
+            if (isControl) {
+                item = { ...item, buttonRemove };
+            }
+          div(class=`${className}__input js-${className}__input`)
+            +input(item)

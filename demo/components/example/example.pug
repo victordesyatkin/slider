@@ -3,15 +3,13 @@ include ../panel/panel
 include ../slider/slider
 
 mixin example(props = {})
-    -
-        let { caption, panel, slider } = props;
-    .example.js-example
-        .example__head
-            +caption(caption)
-        .example__body    
-            +panel(panel)
-            +slider(slider)
-        
-        
-        
-
+  -
+    let { caption, panel, slider } = props;
+    let className = 'example';
+    let classNames = `${className} js-${className}`;
+  section(class=classNames)
+    div(class=`${className}__head`)
+      +caption(caption)
+    div(class=`${className}__body `)
+      +panel(panel)
+      +slider(slider)

@@ -18,6 +18,7 @@
     "@babel/plugin-proposal-class-properties": "^7.12.13",
     "@babel/plugin-proposal-decorators": "^7.12.13",
     "@babel/plugin-proposal-optional-chaining": "^7.12.13",
+    "@prettier/plugin-pug": "^1.13.5",
     "@types/classnames": "^2.2.11",
     "@types/jest": "^26.0.18",
     "@types/jquery": "^3.5.4",

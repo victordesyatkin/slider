@@ -1,1 +1,1 @@
-import "./label.scss";
+import './label.scss';

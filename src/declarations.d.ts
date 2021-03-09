@@ -1,4 +1,4 @@
-import { Props } from "./types";
+import { Props } from './types';
 
 declare global {
   interface JQuery {
@@ -6,4 +6,4 @@ declare global {
   }
 }
 
-declare module "*.scss";
+declare module '*.scss';

@@ -2,16 +2,13 @@ include ../link/link
 include ../section/section
 
 mixin panel(props = {})
-    -
-        let { sections = [], link } = props;
-        let className = 'panel';
-        let classNames = `${className}`;
-    div(
-        class=classNames
-    )
-        .panel__head
-            +link(link)
-        .panel__sections
-            each section in sections
-                +section(section)
-
+  -
+    let { sections = [], link } = props;
+    let className = 'panel';
+    let classNames = `${className}`;
+  section(class=classNames)
+    div(class=`${className}__head`)
+      +link(link)
+    div(class=`${className}__sections`)
+      each section in sections
+        +section(section)

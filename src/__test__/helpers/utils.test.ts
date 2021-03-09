@@ -1,25 +1,25 @@
-import $ from "jquery";
-import merge from "lodash/merge";
+import $ from 'jquery';
+import merge from 'lodash/merge';
 
-import * as utils from "../../helpers/utils";
-import { defaultProps } from "../../slider/index";
+import * as utils from '../../helpers/utils';
+import { defaultProps } from '../../slider/index';
 
-const className1 = "class1";
-const className2 = "class2";
+const className1 = 'class1';
+const className2 = 'class2';
 
-describe("helpers", () => {
-  describe("utils", () => {
+describe('helpers', () => {
+  describe('utils', () => {
     test('style: undefined -> objectToString -> "" ', () => {
-      expect(utils.objectToString()).toBe("");
+      expect(utils.objectToString()).toBe('');
     });
 
     test('style: { width: "100%", height: "100%" } -> objectToString -> width: 100%;height: 100%;', () => {
-      expect(utils.objectToString({ width: "100%", height: "100%" })).toBe(
-        "width: 100%;height: 100%;"
+      expect(utils.objectToString({ width: '100%', height: '100%' })).toBe(
+        'width: 100%;height: 100%;'
       );
     });
 
-    test("value, min, max, precision? = 0 -> calcOffset -> number", () => {
+    test('value, min, max, precision? = 0 -> calcOffset -> number', () => {
       expect(utils.calcOffset(5, 0, 100)).toBe(5);
       expect(utils.calcOffset(25, 0, 100)).toBe(25);
       expect(utils.calcOffset(-5, 0, 100)).toBe(0);
@@ -27,42 +27,42 @@ describe("helpers", () => {
       expect(utils.calcOffset(0, -100, 100)).toBe(50);
     });
 
-    test("vertical, HTMLElement -> getHandleCenterPosition -> number", () => {
+    test('vertical, HTMLElement -> getHandleCenterPosition -> number', () => {
       utils.setFunctionGetBoundingClientRectHTMLElement();
       document.body.innerHTML = `<div class="${className1}" style="width:100px;height:100px;">hello world!</div>`;
       let el = $(`.${className1}`).get(0);
       expect(utils.getHandleCenterPosition(false, el)).toBe(50);
-      document.body.innerHTML = "";
+      document.body.innerHTML = '';
       document.body.innerHTML = `<div class="${className2}" style="width:50px;height:200px;">hello world!</div>`;
       el = $(`.${className2}`).get(0);
       expect(utils.getHandleCenterPosition(true, el)).toBe(100);
     });
-    test("val: number, { max, min }: { max: number; min: number } -> ensureValueInRange -> number", () => {
+    test('val: number, { max, min }: { max: number; min: number } -> ensureValueInRange -> number', () => {
       expect(utils.ensureValueInRange(4, { min: -70, max: 30 })).toBe(4);
       expect(utils.ensureValueInRange(100, { min: -70, max: 30 })).toBe(30);
       expect(utils.ensureValueInRange(-200, { min: -70, max: 30 })).toBe(-70);
       expect(utils.ensureValueInRange(16, { min: 0, max: 4 })).toBe(4);
     });
-    test("(vertical: boolean, e: MouseEvent): number -> getMousePosition -> number", () => {
-      let e = new MouseEvent("mousemove", {
+    test('(vertical: boolean, e: MouseEvent): number -> getMousePosition -> number', () => {
+      let e = new MouseEvent('mousemove', {
         screenX: 4,
         screenY: 16,
         clientY: 22,
       });
       expect(utils.getMousePosition(true, e)).toBe(22);
-      e = new MouseEvent("click", {
+      e = new MouseEvent('click', {
         screenX: 4,
         screenY: 40,
         clientY: 22,
       });
       expect(utils.getMousePosition(false, e)).toBe(0);
     });
-    test("(step: number): number -> getPrecision -> number", () => {
+    test('(step: number): number -> getPrecision -> number', () => {
       expect(utils.getPrecision(1.2452)).toBe(4);
       expect(utils.getPrecision(5.25)).toBe(2);
       expect(utils.getPrecision(25)).toBe(0);
     });
-    test("v: number, props: tDefaultProps:number -> ensureValuePrecision -> number", () => {
+    test('v: number, props: tDefaultProps:number -> ensureValuePrecision -> number', () => {
       expect(utils.ensureValuePrecision(14, defaultProps)).toBe(14);
       expect(
         utils.ensureValuePrecision(14, merge({}, defaultProps, { step: 25 }))
@@ -74,7 +74,7 @@ describe("helpers", () => {
         )
       ).toBe(16);
     });
-    test("14, { step: undefined, min: 16, max: 100 }, props: tDefaultProps -> getClosestPoint -> 16", () => {
+    test('14, { step: undefined, min: 16, max: 100 }, props: tDefaultProps -> getClosestPoint -> 16', () => {
       expect(
         utils.getClosestPoint(
           14,
@@ -83,12 +83,12 @@ describe("helpers", () => {
         )
       ).toBe(14);
     });
-    test("20, { step: 25, min: 16, max: 100 }, tDefaultProps -> getClosestPoint -> 16", () => {
+    test('20, { step: 25, min: 16, max: 100 }, tDefaultProps -> getClosestPoint -> 16', () => {
       expect(
         utils.getClosestPoint(20, { step: 25, min: 16, max: 100 }, defaultProps)
       ).toBe(16);
     });
-    test("38, { step: 25, min: 0, max: 100 }, tDefaultProps -> getClosestPoint -> 30", () => {
+    test('38, { step: 25, min: 0, max: 100 }, tDefaultProps -> getClosestPoint -> 30', () => {
       expect(
         utils.getClosestPoint(
           38,
@@ -97,7 +97,7 @@ describe("helpers", () => {
         )
       ).toBe(30);
     });
-    test("(props: tDefaultProps): tDefaultProps, props: tDefaultProps -> prepareValues -> tDefaultProps", () => {
+    test('(props: tDefaultProps): tDefaultProps, props: tDefaultProps -> prepareValues -> tDefaultProps', () => {
       let input = merge({}, defaultProps, { values: [65, 35] });
       let output = { ...defaultProps, values: [35, 65] };
       expect(utils.prepareValues(input)).toEqual(output);
@@ -117,13 +117,13 @@ describe("helpers", () => {
       expect((r?.mark?.values || []).length).toBe(2);
       expect(r.mark?.values).toEqual(expect.arrayContaining([40, 50]));
     });
-    test("undefined -> getCount -> 0", () => {
+    test('undefined -> getCount -> 0', () => {
       expect(utils.getCount()).toBe(0);
     });
-    test("values: [10, 48, 14] -> getCount -> 3", () => {
+    test('values: [10, 48, 14] -> getCount -> 3', () => {
       expect(utils.getCount({ ...defaultProps, values: [10, 48, 14] })).toBe(3);
     });
-    test("getSliderStart", () => {
+    test('getSliderStart', () => {
       expect(utils.getSliderStart({})).toBe(0);
       expect(utils.getSliderStart({ props: { ...defaultProps } })).toBe(0);
       document.body.innerHTML = `<div class="${className1}" style="width:100px;height:100px;">hello world!</div>`;
@@ -158,7 +158,7 @@ describe("helpers", () => {
         })
       ).toBe(40);
     });
-    test("getSliderLength", () => {
+    test('getSliderLength', () => {
       utils.setFunctionGetBoundingClientRectHTMLElement({
         width: 200,
         height: 100,
@@ -176,7 +176,7 @@ describe("helpers", () => {
       ).toBe(100);
     });
 
-    test("calcValue", () => {
+    test('calcValue', () => {
       utils.setFunctionGetBoundingClientRectHTMLElement({
         width: 200,
         height: 100,
@@ -200,7 +200,7 @@ describe("helpers", () => {
         })
       ).toBe(50);
     });
-    test("calcValueByPos", () => {
+    test('calcValueByPos', () => {
       utils.setFunctionGetBoundingClientRectHTMLElement({
         width: 200,
         height: 100,
@@ -226,11 +226,11 @@ describe("helpers", () => {
         })
       ).toBe(50);
     });
-    test("checkNeighbors", () => {
+    test('checkNeighbors', () => {
       expect(utils.checkNeighbors([20, 40])).toBeTruthy();
       expect(utils.checkNeighbors([20])).toBeFalsy();
     });
-    test("ensureValueCorrectNeighbors", () => {
+    test('ensureValueCorrectNeighbors', () => {
       expect(
         utils.ensureValueCorrectNeighbors({
           value: 20,
@@ -246,7 +246,7 @@ describe("helpers", () => {
         })
       ).toBe(50);
     });
-    test("calcValueWithEnsure", () => {
+    test('calcValueWithEnsure', () => {
       expect(
         utils.calcValueWithEnsure({
           value: 20,
@@ -261,7 +261,7 @@ describe("helpers", () => {
       });
       expect(v).toBe(50);
     });
-    test("prepareData", () => {
+    test('prepareData', () => {
       expect(utils.prepareData()).toEqual(
         expect.objectContaining(defaultProps)
       );
@@ -273,7 +273,7 @@ describe("helpers", () => {
       );
       expect(props.values).toEqual(expect.arrayContaining([14, 25]));
     });
-    test("uniqId", () => {
+    test('uniqId', () => {
       const id1 = utils.uniqId();
       const id2 = utils.uniqId();
       expect(id1).toEqual(expect.any(String));

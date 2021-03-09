@@ -1,12 +1,14 @@
-import $ from "jquery";
+import $ from 'jquery';
 
-import TrackView from "../../components/track/view";
-import { defaultProps } from "../../slider/index";
-import { setFunctionGetBoundingClientRectHTMLElement } from "../../helpers/utils";
+import TrackView from '../../components/track/view';
+import {
+  setFunctionGetBoundingClientRectHTMLElement,
+  defaultProps,
+} from '../../helpers/utils';
 
-describe("rail", () => {
-  describe("view", () => {
-    test("create track view", () => {
+describe('rail', () => {
+  describe('view', () => {
+    test('create track view', () => {
       const addition = { index: 0 };
       const view = new TrackView(addition);
       expect(view).toBeInstanceOf(TrackView);
@@ -20,12 +22,12 @@ describe("rail", () => {
       );
     });
 
-    test("render track view", () => {
+    test('render track view', () => {
       setFunctionGetBoundingClientRectHTMLElement();
-      $("body").append('<div class="slider__wrapper"/>');
+      $('body').append('<div class="slider__wrapper"/>');
       const addition = { index: 0 };
       const view = new TrackView(addition);
-      const $parent = $(".slider__wrapper");
+      const $parent = $('.slider__wrapper');
       view.render($parent);
       let $element = $(`.${defaultProps.prefixCls}__track`, $parent);
       expect($element.length).toBe(0);

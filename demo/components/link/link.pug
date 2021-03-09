@@ -1,22 +1,16 @@
 mixin link(props)
-    if props
-        -
-            let { content, href, title, target, theme } = props;
-            let rel = "";
-            let themes = {
-                section: 'section',
-                panel: 'panel',
-            };
-            if (target === '_blank') {
-                rel = "noopener";
-            }
-            let className = 'link';
-            let classNames = `${className}`;
-            classNames += themes[theme] ? ` ${className}_theme_${themes[theme]}` : ''; 
-        a(
-            href=href
-            title=title
-            target=target
-            rel=rel
-            class=classNames
-        )=content
+  if props
+    -
+      let { content, href, title, target, theme } = props;
+      let rel = "";
+      let themes = {
+          section: 'section',
+          panel: 'panel',
+      };
+      if (target === '_blank') {
+          rel = "noopener";
+      }
+      let className = 'link';
+      let classNames = `${className}`;
+      classNames += themes[theme] ? ` ${className}_theme_${themes[theme]}` : ''; 
+    a(href=href, title=title, target=target, rel=rel, class=classNames)= content

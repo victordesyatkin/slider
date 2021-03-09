@@ -45,7 +45,7 @@ function createSlider($element: JQuery<HTMLElement>, props?: Props): JQuery {
     const $this = JQuery(this);
     if (!$this.data(Slider.PLUGIN_NAME)) {
       $this.data(Slider.PLUGIN_NAME, new Slider($this, props));
-    } else if ($this.data(Slider.PLUGIN_NAME) instanceof Slider) {
+    } else if ($this.data(Slider.PLUGIN_NAME)) {
       const slider: Slider = $this.data(Slider.PLUGIN_NAME) as Slider;
       if (slider) {
         slider.setProps(props);
