@@ -57,12 +57,14 @@ describe('slider', () => {
 
     test('onChange', () => {
       const onChange = jest.fn((values?: number[]): void => {});
-      const model = new Model({ ...defaultProps, onChange });
+      const onBeforeChange = jest.fn((values?: number[]): void => {});
+      const model = new Model({ ...defaultProps, onChange, onBeforeChange });
       model.onChange({
         coordinateX: 43,
         coordinateY: 80,
         length: 100,
         start: 0,
+        action: 'onChange',
       });
       expect(onChange.mock.calls.length).toBe(1);
       expect(onChange.mock.calls[0][0]).toStrictEqual([43]);
@@ -78,6 +80,17 @@ describe('slider', () => {
       values = model.getProps()?.values;
       expect(values).toStrictEqual([0]);
       expect(onChange.mock.calls.length).toBe(1);
+      model.setProps({ ...defaultProps, disabled: false });
+      model.onChange({
+        coordinateX: 86,
+        coordinateY: 80,
+        length: 100,
+        start: 0,
+        action: 'onBeforeChange',
+      });
+      expect(onChange.mock.calls.length).toBe(1);
+      expect(onBeforeChange.mock.calls.length).toBe(1);
+      expect(onBeforeChange.mock.calls[0][0]).toStrictEqual([86]);
     });
     test('setIndex', () => {
       const model = new Model({

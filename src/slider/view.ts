@@ -129,12 +129,13 @@ class View extends PubSub implements IView {
   private handleViewClick(index: number, event: MouseEvent): void {
     $(window).off({ mouseup: this.handleWindowMouseUpForHandleFocusout });
     $(window).on({ mouseup: this.handleWindowMouseUpForHandleFocusout });
-    const { clientY: coordinateY, pageX: coordinateX } = event || {};
+    const { clientY: coordinateY = 0, pageX: coordinateX = 0 } = event || {};
     this.publish('onChange', {
       coordinateX,
       coordinateY,
       start: getSliderStart({ props: this.props, view: this.view }),
       length: getSliderLength({ props: this.props, view: this.view }),
+      action: 'onAfterChange',
     });
   }
 
@@ -156,7 +157,7 @@ class View extends PubSub implements IView {
 
   @bind
   private handleWindowMouseMove(event: MouseEvent): void {
-    const { clientY: coordinateY, pageX: coordinateX } = event || {};
+    const { clientY: coordinateY = 0, pageX: coordinateX = 0 } = event || {};
     this.publish('onChange', {
       coordinateX,
       coordinateY,

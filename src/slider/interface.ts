@@ -11,6 +11,7 @@ interface IModel extends IPubSub {
     coordinateY: number;
     start: number;
     length: number;
+    action?: string;
   }): void;
   setIndex(options: { index?: number }): void;
 }

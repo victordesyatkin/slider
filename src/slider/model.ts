@@ -33,12 +33,19 @@ class Model extends PubSub implements IModel {
     coordinateY: number;
     start: number;
     length: number;
+    action?: string;
   }): void {
     const { disabled, vertical } = this.props;
     if (disabled) {
       return;
     }
-    const { coordinateX, coordinateY, start, length } = options;
+    const {
+      coordinateX,
+      coordinateY,
+      start,
+      length,
+      action = 'onChange',
+    } = options;
     const { index } = this.props;
     let readyIndex = index;
     if (isUndefined(readyIndex) || readyIndex < 0) {
@@ -69,10 +76,18 @@ class Model extends PubSub implements IModel {
       const nextValues = [...previousValues];
       nextValues[readyIndex] = nextValue;
       this.setProps(merge({}, this.props, { values: nextValues }));
-      const onChange: ((values: number[]) => void) | undefined = this.props
-        ?.onChange;
-      if (nextValues && onChange) {
-        onChange(nextValues);
+      if (this.props && action in this.props) {
+        let onAction: ((values: number[]) => void) | undefined;
+        if (action === 'onChange') {
+          onAction = this.props?.[action];
+        } else if (action === 'onBeforeChange') {
+          onAction = this.props?.[action];
+        } else if (action === 'onAfterChange') {
+          onAction = this.props?.[action];
+        }
+        if (nextValues && onAction) {
+          onAction(nextValues);
+        }
       }
     }
   }
