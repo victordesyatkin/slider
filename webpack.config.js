@@ -126,7 +126,7 @@ module.exports = (env = {}) => {
     plugins: getPlugins(),
 
     output: {
-      filename: "[name].[fullhash:8].js",
+      filename: "index.js",
       path: path.resolve(__dirname, "dist"),
       chunkFilename: "[id].[chunkhash].js",
     },

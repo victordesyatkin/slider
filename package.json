@@ -1,8 +1,8 @@
 {
-  "name": "jquery-range-slider",
+  "name": "air-range-slider",
   "version": "1.0.0",
-  "description": "jquery range slider",
-  "main": "index.js",
+  "description": "jQuery range slider",
+  "main": "/dist/index.js",
   "scripts": {
     "test": "jest",
     "publish": "git checkout master && git merge development && npm run build && git add . && git commit -am 'Deploy' && git push origin && git checkout @{-1}",
@@ -13,8 +13,13 @@
     "eslint:dump": "eslint --print-config ./.eslintrc.json",
     "deploy": "gh-pages -d dist"
   },
-  "author": "https://github.com/victordesyatkin/slider",
+  "homepage": "https://victordesyatkin.github.io/slider/index.html",
+  "author": "https://github.com/victordesyatkin",
   "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/victordesyatkin/slider"
+  },
   "devDependencies": {
     "@babel/plugin-proposal-class-properties": "^7.12.13",
     "@babel/plugin-proposal-decorators": "^7.12.13",
