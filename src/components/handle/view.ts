@@ -35,6 +35,10 @@ export default class HandleView extends PubSub implements ISubView {
     this.render();
   }
 
+  public getProps(): DefaultProps | undefined {
+    return this.props;
+  }
+
   public render(parent?: JQuery<HTMLElement>): void {
     if (parent) {
       this.parent = parent;
@@ -175,11 +179,9 @@ export default class HandleView extends PubSub implements ISubView {
   private initHandles(): void {
     if (this.view) {
       this.view.off({
-        // eslint-disable-next-line @typescript-eslint/unbound-method
         mousedown: this.handleViewMouseDown,
       });
       this.view.on({
-        // eslint-disable-next-line @typescript-eslint/unbound-method
         mousedown: this.handleViewMouseDown,
       });
     }

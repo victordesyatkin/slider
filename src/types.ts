@@ -47,6 +47,7 @@ type DefaultProps = {
   startPoint?: number;
   tooltip?: Tooltip;
   indent?: number;
+  index?: number;
 };
 
 type DefaultPropsView = {
@@ -72,7 +73,7 @@ type DefaultPropsView = {
   startPoint?: number;
   tooltip?: Tooltip;
   indent?: number;
-  currentHandleIndex?: number;
+  index?: number;
 };
 
 type KeyDefaultProps = keyof DefaultProps;

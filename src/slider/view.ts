@@ -8,7 +8,6 @@ import {
   getCount,
   getSliderStart,
   getSliderLength,
-  getMousePosition,
 } from '../helpers/utils';
 import PubSub from '../helpers/pubsub';
 import RailView from '../components/rail/view';
@@ -69,9 +68,9 @@ class View extends PubSub implements IView {
   private static cleanSubView(views: IView[], count: number): void {
     const { length } = views;
     if (length > count) {
-      for (let i = count; i < length; i += 1) {
-        if (views[i]) {
-          views[i].remove();
+      for (let index = count; index < length; index += 1) {
+        if (views[index]) {
+          views[index].remove();
         }
       }
       views.splice(count);
@@ -113,8 +112,23 @@ class View extends PubSub implements IView {
   }
 
   @bind
+  private handleWindowMouseUpForHandleFocusout(event: MouseEvent) {
+    const { target } = event;
+    if (target && this.view) {
+      const $target = $(target);
+      if (!$target.closest(this.view).length) {
+        this.publish('setIndex', { index: -1 });
+        $(window).off({
+          mouseup: this.handleWindowMouseUpForHandleFocusout,
+        });
+      }
+    }
+  }
+
+  @bind
   private handleViewClick(index: number, event: MouseEvent): void {
-    event.preventDefault();
+    $(window).off({ mouseup: this.handleWindowMouseUpForHandleFocusout });
+    $(window).on({ mouseup: this.handleWindowMouseUpForHandleFocusout });
     const { clientY: coordinateY, pageX: coordinateX } = event || {};
     this.publish('onChange', {
       coordinateX,
@@ -125,24 +139,23 @@ class View extends PubSub implements IView {
   }
 
   @bind
-  private handleViewMouseDown(index: number, event: MouseEvent): void {
-    event.preventDefault();
-    window.addEventListener('mousemove', this.handleWindowMouseMove);
-    window.addEventListener('mouseup', this.handleWindowMouseUp);
+  private handleViewMouseDown(index: number): void {
+    $(window).on({ mousemove: this.handleWindowMouseMove });
+    $(window).on({ mouseup: this.handleWindowMouseUp });
+    $(window).off({ mouseup: this.handleWindowMouseUpForHandleFocusout });
     this.publish('onBeforeChange', { index });
   }
 
   @bind
-  private handleWindowMouseUp(event: MouseEvent): void {
-    event.preventDefault();
-    window.removeEventListener('mousemove', this.handleWindowMouseMove);
-    window.removeEventListener('mouseup', this.handleWindowMouseUp);
+  private handleWindowMouseUp(): void {
+    $(window).off({ mousemove: this.handleWindowMouseMove });
+    $(window).off({ mouseup: this.handleWindowMouseUp });
+    $(window).on({ mouseup: this.handleWindowMouseUpForHandleFocusout });
     this.publish('onAfterChange');
   }
 
   @bind
   private handleWindowMouseMove(event: MouseEvent): void {
-    event.preventDefault();
     const { clientY: coordinateY, pageX: coordinateX } = event || {};
     this.publish('onChange', {
       coordinateX,
@@ -195,12 +208,13 @@ class View extends PubSub implements IView {
     if (this.props) {
       let handles;
       let active;
+      const { index: readyIndex } = this.props;
       if (action === 'mousedown') {
         handles = {
           handleViewMouseDown: this.handleViewMouseDown,
         };
       } else if (action === 'click') {
-        if (this.props.values.length > 0) {
+        if (getCount(this.props) > 0) {
           handles = {
             handleViewClick: this.handleViewClick,
           };
@@ -208,7 +222,7 @@ class View extends PubSub implements IView {
       }
       for (let index = 0; index < count; index += 1) {
         if (SubView.name === 'HandleView') {
-          active = index === this.props.currentHandleIndex;
+          active = index === readyIndex;
         }
         if (readyViews[index]) {
           let addition = readyViews[index].getAddition();

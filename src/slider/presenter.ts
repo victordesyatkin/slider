@@ -28,6 +28,7 @@ export default class Presenter implements IPresenter {
     this.view.subscribe('onBeforeChange', this.onBeforeChange);
     this.view.subscribe('onAfterChange', this.onAfterChange);
     this.view.subscribe('onChange', this.onChange);
+    this.view.subscribe('setIndex', this.setIndex);
   }
 
   private initHandlesModel(): void {
@@ -57,5 +58,10 @@ export default class Presenter implements IPresenter {
   @bind
   private setPropsForView(props: DefaultPropsView): void {
     this.view.setProps(props);
+  }
+
+  @bind
+  private setIndex(options: { index?: number }) {
+    this.model.setIndex(options);
   }
 }

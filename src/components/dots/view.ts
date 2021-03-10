@@ -69,9 +69,9 @@ export default class DotsView extends PubSub implements ISubView {
   private static cleanSubView(views: IView[], count: number): void {
     const { length } = views;
     if (length > count) {
-      for (let i = count; i < length; i += 1) {
-        if (views[i]) {
-          views[i].remove();
+      for (let index = count; index < length; index += 1) {
+        if (views[index]) {
+          views[index].remove();
         }
       }
       views.splice(count);
@@ -147,20 +147,28 @@ export default class DotsView extends PubSub implements ISubView {
         }
       }
       if (step) {
-        for (let i = min; i <= max; i += step) {
-          values.push(i);
+        for (let index = min; index <= max; index += step) {
+          values.push(index);
         }
       }
       const { handles } = this.addition;
       values = orderBy(uniq(values), [], reverse ? 'desc' : 'asc');
       const { length } = values;
-      for (let i = 0; i < length; i += 1) {
-        if (readyViews[i]) {
-          readyViews[i].setAddition({ index: i, handles, value: values[i] });
-          readyViews[i].setProps(this.props);
+      for (let index = 0; index < length; index += 1) {
+        if (readyViews[index]) {
+          readyViews[index].setAddition({
+            index,
+            handles,
+            value: values[index],
+          });
+          readyViews[index].setProps(this.props);
         } else {
-          readyViews[i] = new SubView({ index: i, handles, value: values[i] });
-          readyViews[i].setProps(this.props);
+          readyViews[index] = new SubView({
+            index,
+            handles,
+            value: values[index],
+          });
+          readyViews[index].setProps(this.props);
         }
       }
       DotsView.cleanSubView(readyViews, values.length);

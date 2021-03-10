@@ -1,8 +1,13 @@
-import { defaultProps } from '../../helpers/utils';
+import $ from 'jquery';
+
+import {
+  defaultProps,
+  setFunctionGetBoundingClientRectHTMLElement,
+  uniqId,
+} from '../../helpers/utils';
 import Model from '../../slider/model';
 import View from '../../slider/view';
 import Presenter from '../../slider/presenter';
-import { DefaultPropsView } from '../../types';
 
 describe('slider', () => {
   describe('presenter', () => {
@@ -13,19 +18,30 @@ describe('slider', () => {
       expect(presenter).toBeInstanceOf(Presenter);
     });
 
-    test('initHandlesView, initHandlesModel, setPropsForView, onBeforeChange', () => {
+    test('initHandlesView, initHandlesModel, onBeforeChange', () => {
       const model = new Model(defaultProps);
       const view = new View();
       const presenter = new Presenter(model, view);
-      const setPropsForView = jest.fn((options?: DefaultPropsView): void => {});
-      model.subscribe('setPropsForView', setPropsForView);
       view.publish('onBeforeChange', { index: 5 });
-      expect(setPropsForView.mock.calls.length).toBe(1);
-      expect(setPropsForView.mock.calls[0][0]).toEqual(
+      const props = presenter.getProps();
+      expect(props).toEqual(
         expect.objectContaining({
-          currentHandleIndex: 5,
+          index: 5,
         })
       );
+      setFunctionGetBoundingClientRectHTMLElement();
+      const className = `slider__wrapper-${uniqId()}`;
+      $('body').append(`<div class="${className}"/>`);
+      const $parent = $(`.${className}`);
+      view.render($parent);
+      let $handle = $(`.${defaultProps.prefixCls}__handle`, $parent);
+      expect($handle.length).toEqual(1);
+      model.publish('setPropsForView', {
+        ...defaultProps,
+        values: [10, 20],
+      });
+      $handle = $(`.${defaultProps.prefixCls}__handle`, $parent);
+      expect($handle.length).toEqual(2);
     });
 
     test('onAfterChange', () => {
@@ -57,11 +73,9 @@ describe('slider', () => {
         coordinateY: 100,
       };
       view.publish('onChange', options);
-      expect(onChange.mock.calls.length).toBe(0);
-      view.publish('onBeforeChange', { index: 0 });
-      view.publish('onChange', options);
       expect(onChange.mock.calls.length).toBe(1);
       expect(onChange.mock.calls[0][0]).toStrictEqual([20]);
+      expect(onChange.mock.calls.length).toBe(1);
     });
 
     test('getProps', () => {
@@ -72,6 +86,7 @@ describe('slider', () => {
       const presenter = new Presenter(model, view);
       expect(defaultProps).toStrictEqual(presenter.getProps());
     });
+
     test('setProps', () => {
       const model = new Model({
         ...defaultProps,
@@ -81,6 +96,21 @@ describe('slider', () => {
       const props = { ...defaultProps, values: [5] };
       presenter.setProps(props);
       expect(props).toStrictEqual(presenter.getProps());
+    });
+
+    test('setIndex', () => {
+      const model = new Model({
+        ...defaultProps,
+      });
+      const view = new View();
+      const presenter = new Presenter(model, view);
+      const props = { ...defaultProps };
+      presenter.setProps(props);
+      let index = presenter.getProps()?.index;
+      expect(index).toEqual(undefined);
+      view.publish('setIndex', { index: 1 });
+      index = presenter.getProps()?.index;
+      expect(index).toEqual(1);
     });
   });
 });

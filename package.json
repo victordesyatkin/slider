@@ -1,7 +1,7 @@
 {
-  "name": "slider",
+  "name": "jquery-range-slider",
   "version": "1.0.0",
-  "description": "",
+  "description": "jquery range slider",
   "main": "index.js",
   "scripts": {
     "test": "jest",
@@ -13,8 +13,8 @@
     "eslint:dump": "eslint --print-config ./.eslintrc.json",
     "deploy": "gh-pages -d dist"
   },
-  "author": "",
-  "license": "ISC",
+  "author": "https://github.com/victordesyatkin/slider",
+  "license": "MIT",
   "devDependencies": {
     "@babel/plugin-proposal-class-properties": "^7.12.13",
     "@babel/plugin-proposal-decorators": "^7.12.13",

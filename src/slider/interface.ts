@@ -12,6 +12,7 @@ interface IModel extends IPubSub {
     start: number;
     length: number;
   }): void;
+  setIndex(options: { index?: number }): void;
 }
 interface IView extends IPubSub {
   setProps(props: DefaultProps): void;

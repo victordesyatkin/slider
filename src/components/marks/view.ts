@@ -62,9 +62,9 @@ export default class MarksView extends PubSub implements ISubView {
   private static cleanSubView(views: ISubView[], count: number): void {
     const { length } = views;
     if (length > count) {
-      for (let i = count; i < length; i += 1) {
-        if (views[i]) {
-          views[i].remove();
+      for (let index = count; index < length; index += 1) {
+        if (views[index]) {
+          views[index].remove();
         }
       }
       views.splice(count);
@@ -142,28 +142,28 @@ export default class MarksView extends PubSub implements ISubView {
         values = [...markValues];
       }
       if (step) {
-        for (let i = min; i <= max; i += step) {
-          values.push(i);
+        for (let index = min; index <= max; index += step) {
+          values.push(index);
         }
       }
       values = orderBy(uniq(values), [], reverse ? 'desc' : 'asc');
       const { length } = values;
       const { handles } = this.addition;
-      for (let i = 0; i < length; i += 1) {
-        if (!isUndefined(views[i])) {
-          readyViews[i].setAddition({
-            index: i,
+      for (let index = 0; index < length; index += 1) {
+        if (!isUndefined(readyViews[index])) {
+          readyViews[index].setAddition({
+            index,
             handles,
-            value: values[i],
+            value: values[index],
           });
-          readyViews[i].setProps(this.props);
+          readyViews[index].setProps(this.props);
         } else {
-          readyViews[i] = new SubView({
-            index: i,
+          readyViews[index] = new SubView({
+            index,
             handles,
-            value: values[i],
+            value: values[index],
           });
-          readyViews[i].setProps(this.props);
+          readyViews[index].setProps(this.props);
         }
       }
       MarksView.cleanSubView(readyViews, values.length);

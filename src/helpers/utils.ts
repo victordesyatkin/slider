@@ -201,7 +201,6 @@ function calcValue(options: {
   offset: number;
   length: number;
   props: DefaultProps;
-  index: number;
 }): number {
   const { offset, length, props } = options;
   const { vertical, min, max, precision } = props;
@@ -301,6 +300,50 @@ function getPosition({
   return vertical ? coordinateY : coordinateX;
 }
 
+function getNearest({
+  value,
+  values,
+}: {
+  value: number;
+  values: number[];
+}): {
+  index: number;
+  value: number;
+} {
+  let readyIndex = 0;
+  let readyValue = values[0];
+  let readyDifferent = Number.MAX_SAFE_INTEGER;
+  values.forEach((item, index) => {
+    const different = Math.abs(value - item);
+    if (readyDifferent > different) {
+      readyDifferent = different;
+      readyIndex = index;
+      readyValue = item;
+    }
+  });
+  return { index: readyIndex, value: readyValue };
+}
+
+function getNearestIndex(options: {
+  coordinateX: number;
+  coordinateY: number;
+  start: number;
+  props: DefaultProps;
+  length: number;
+}): number {
+  const { coordinateX, coordinateY, props, start } = options;
+  const { reverse, min, max, values, vertical } = props;
+  const position = getPosition({ vertical, coordinateX, coordinateY });
+  const sign = reverse ? -1 : +1;
+  const offset = sign * (position - start);
+  const value = ensureValueInRange(calcValue({ ...options, offset }), {
+    min,
+    max,
+  });
+  const { index } = getNearest({ value, values });
+  return index;
+}
+
 export {
   objectToString,
   uniqId,
@@ -323,5 +366,7 @@ export {
   calcOffset,
   getHandleCenterPosition,
   getPosition,
+  getNearestIndex,
+  getNearest,
   defaultProps,
 };

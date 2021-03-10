@@ -40,8 +40,8 @@ class MarkView extends PubSub implements ISubView {
     if (!this.isRendered) {
       if (this.parent && this.view) {
         this.parent.append(this.view);
+        this.isRendered = true;
       }
-      this.isRendered = true;
     }
   }
 
