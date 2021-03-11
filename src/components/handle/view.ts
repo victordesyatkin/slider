@@ -75,7 +75,7 @@ export default class HandleView extends PubSub implements ISubView {
   }
 
   @bind
-  private handleViewMouseDown(event: MouseEvent): void {
+  private handleViewMouseDown(event: JQuery.Event): void {
     const handleViewMouseDown = this.addition?.handles?.handleViewMouseDown;
     const index = get(this.addition, ['index']);
     if (!isUndefined(index) && handleViewMouseDown) {

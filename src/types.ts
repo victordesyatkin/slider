@@ -86,7 +86,7 @@ type Addition = {
   active?: boolean;
 };
 
-type Handler = (index: number, event: any, value?: number) => void;
+type Handler = (index: number, event: JQuery.Event, value?: number) => void;
 
 type Handle = {
   classNames?: string[];

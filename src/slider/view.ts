@@ -126,7 +126,7 @@ class View extends PubSub implements IView {
   }
 
   @bind
-  private handleViewClick(index: number, event: MouseEvent): void {
+  private handleViewClick(index: number, event: JQuery.Event): void {
     $(window).off({ mouseup: this.handleWindowMouseUpForHandleFocusout });
     $(window).on({ mouseup: this.handleWindowMouseUpForHandleFocusout });
     const { clientY: coordinateY = 0, pageX: coordinateX = 0 } = event || {};
@@ -195,7 +195,8 @@ class View extends PubSub implements IView {
       this.handles,
       count,
       HandleView,
-      'mousedown'
+      'mousedown',
+      true
     );
   }
 
@@ -203,7 +204,8 @@ class View extends PubSub implements IView {
     views: ISubView[],
     count: number,
     SubView: { new (addition: Addition): T },
-    action?: string
+    action?: string,
+    withActive?: boolean
   ): ISubView[] {
     const readyViews = [...views];
     if (this.props) {
@@ -222,7 +224,7 @@ class View extends PubSub implements IView {
         }
       }
       for (let index = 0; index < count; index += 1) {
-        if (SubView.name === 'HandleView') {
+        if (withActive) {
           active = index === readyIndex;
         }
         if (readyViews[index]) {
