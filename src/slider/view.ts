@@ -112,7 +112,7 @@ class View extends PubSub implements IView {
   }
 
   @bind
-  private handleWindowMouseUpForHandleFocusout(event: MouseEvent) {
+  private handleWindowMouseUpForHandleFocusout(event: MouseEvent): void {
     const { target } = event;
     if (target && this.view) {
       const $target = $(target);

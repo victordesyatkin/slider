@@ -61,7 +61,7 @@ export default class Presenter implements IPresenter {
   }
 
   @bind
-  private setIndex(options: { index?: number }) {
+  private setIndex(options: { index?: number }): void {
     this.model.setIndex(options);
   }
 }
