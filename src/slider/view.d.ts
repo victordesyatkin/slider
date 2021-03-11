@@ -1,0 +1,33 @@
+import PubSub from '../helpers/pubsub';
+import { DefaultPropsView } from '../types';
+import { IView } from './interface';
+declare class View extends PubSub implements IView {
+    private props?;
+    private view?;
+    private rails;
+    private tracks;
+    private handles;
+    private dots;
+    private marks;
+    private parent?;
+    private isRendered;
+    setProps(props: DefaultPropsView): void;
+    render(parent?: JQuery<HTMLElement>): void;
+    remove(): void;
+    private static cleanSubView;
+    private createView;
+    private updateView;
+    private prepareAttr;
+    private prepareClassName;
+    private prepareStyle;
+    private handleWindowMouseUpForHandleFocusout;
+    private handleViewClick;
+    private handleViewMouseDown;
+    private handleWindowMouseUp;
+    private handleWindowMouseMove;
+    private createOrUpdateSubViews;
+    private createOrUpdateSubView;
+    private appendSubViews;
+    private appendSubView;
+}
+export default View;

@@ -5,11 +5,10 @@
   "main": "/dist/index.js",
   "scripts": {
     "test": "jest",
-    "publish": "git checkout master && git merge development && npm run build && git add . && git commit -am 'Deploy' && git push origin && git checkout @{-1}",
     "start": "webpack --mode=development --env mode=development serve",
     "build": "webpack --mode=production",
     "build:dev": "webpack --env mode=development --mode=development",
-    "lint": "eslint src/ --ext .ts,.js",
+    "lint": "eslint src/ --ext .ts",
     "eslint:dump": "eslint --print-config ./.eslintrc.json",
     "deploy": "gh-pages -d dist"
   },
@@ -20,6 +19,12 @@
     "type": "git",
     "url": "https://github.com/victordesyatkin/slider"
   },
+  "keywords": [
+    "range-slider",
+    "plugin",
+    "customizable",
+    "powerful"
+  ],
   "devDependencies": {
     "@babel/plugin-proposal-class-properties": "^7.12.13",
     "@babel/plugin-proposal-decorators": "^7.12.13",
