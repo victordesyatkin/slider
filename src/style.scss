@@ -3,22 +3,13 @@
 }
 
 @mixin linear-gradient($degrees, $top-color, $bottom-color, $opacity) {
-  background: -moz-linear-gradient(
-    $degrees,
-    rgba($top-color, $opacity) 0%,
-    rgba($bottom-color, $opacity) 100%
-  ); /* FF3.6-15 */
-  background: -webkit-linear-gradient(
-    $degrees,
-    rgba($top-color, $opacity) 0%,
-    rgba($bottom-color, $opacity) 100%
-  ); /* Chrome10-25,Safari5.1-6 */
   background: linear-gradient(
     $degrees,
     rgba($top-color, $opacity) 0%,
     rgba($bottom-color, $opacity) 100%
-  ); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
-  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#{rgba($top-color, $opacity)}', endColorstr='#{rgba($bottom-color, $opacity)}',GradientType=0 ); /* IE6-9 */
+  );
+
+  filter: progid:dximagetransform.microsoft.gradient(startColorstr='#{rgba($top-color, $opacity)}', endColorstr='#{rgba($bottom-color, $opacity)}', GradientType=0); /* IE6-9 */
 }
 
 $dark: rgba(31, 32, 65, 1);
@@ -58,63 +49,63 @@ $ease-in-quint: cubic-bezier(0.755, 0.05, 0.855, 0.06);
 }
 
 .#{$prefixClass} {
-  position: relative;
+  @include borderBox();
+
+  border-radius: $border-radius-base;
+  font-family: Helvetica, Arial, sans-serif;
+  font-size: 14px;
   height: 14px;
   padding: 5px 0;
-  width: 100%;
-  border-radius: $border-radius-base;
+  position: relative;
   touch-action: none;
-  font-size: 14px;
+  user-select: none;
+  user-select: none;
+  user-select: none;
+  user-select: none;
+  user-select: none;
+  width: 100%;
+
   * {
     outline: none;
   }
 
-  font-family: Helvetica, Arial, sans-serif;
-
-  -webkit-user-select: none;
-  -khtml-user-select: none;
-  -moz-user-select: none;
-  -o-user-select: none;
-  user-select: none;
-
-  @include borderBox();
-
   &__rail {
-    position: absolute;
-    width: 100%;
-    height: 6px;
     background-color: #e9e9e9;
     border: 1px solid $dark25;
-    box-sizing: border-box;
     border-radius: $border-radius-base;
+    box-sizing: border-box;
+    height: 6px;
+    position: absolute;
+    width: 100%;
     z-index: 0;
   }
 
   &__track {
-    position: absolute;
-    left: 0;
-    height: 6px;
-    border-radius: $border-radius-base;
     @include linear-gradient(180deg, $primary-color, $second-color, 60);
+
+    border-radius: $border-radius-base;
+    height: 6px;
+    left: 0;
     pointer-events: none;
+    position: absolute;
     z-index: 1;
   }
 
   &__handle {
-    position: absolute;
-    width: 14px;
+    background: $primary-gradient;
+    border: 2px solid #fff;
+    border-radius: 50%;
+    cursor: pointer;
     height: 14px;
     margin-top: -4px;
-    border-radius: 50%;
-    background: $primary-gradient;
-    border: 2px solid #ffffff;
+    position: absolute;
     touch-action: pan-x;
+    width: 14px;
     z-index: 2;
-    cursor: pointer;
 
     &.#{$prefixClass}__handle_active {
-      z-index: 100 !important;
       border-color: transparent;
+      z-index: 100 !important;
 
       .#{$prefixClass}__tooltip {
         z-index: 100;
@@ -129,16 +120,16 @@ $ease-in-quint: cubic-bezier(0.755, 0.05, 0.855, 0.06);
   }
 
   &__tooltip {
-    pointer-events: none;
-    transform: translateX(-50%);
-    bottom: 150%;
-    left: 50%;
-    position: absolute;
-    padding: 5px;
     background-color: #e4e4e4;
     border-radius: 4px;
+    bottom: 150%;
     color: #4c4c4c;
     display: none;
+    left: 50%;
+    padding: 5px;
+    pointer-events: none;
+    position: absolute;
+    transform: translateX(-50%);
     white-space: nowrap;
 
     span {
@@ -152,46 +143,45 @@ $ease-in-quint: cubic-bezier(0.755, 0.05, 0.855, 0.06);
   }
 
   &__marks {
-    position: absolute;
     background: transparent;
-    z-index: 2;
-
-    width: 100%;
-    top: 15px;
     pointer-events: none;
+    position: absolute;
+    top: 15px;
+    width: 100%;
+    z-index: 2;
   }
 
   &__mark {
-    position: absolute;
     background: transparent;
-    cursor: pointer;
-    vertical-align: middle;
-    font-size: 13px;
     color: #6b6b6b;
-    white-space: nowrap;
+    cursor: pointer;
+    font-size: 13px;
     pointer-events: initial;
+    position: absolute;
+    vertical-align: middle;
+    white-space: nowrap;
   }
 
   &__dots {
+    background: transparent;
+    height: 5px;
+    pointer-events: none;
     position: absolute;
     width: 100%;
-    height: 5px;
-    background: transparent;
-    pointer-events: none;
     z-index: 1;
   }
 
   &__dot {
-    position: absolute;
-    bottom: -2px;
-    width: 8px;
-    height: 8px;
     background-color: #fff;
     border: 2px solid $fifth-color;
-    cursor: pointer;
     border-radius: 50%;
-    vertical-align: middle;
+    bottom: -2px;
+    cursor: pointer;
+    height: 8px;
     pointer-events: initial;
+    position: absolute;
+    vertical-align: middle;
+    width: 8px;
   }
 
   &__dot_active {
@@ -209,13 +199,13 @@ $ease-in-quint: cubic-bezier(0.755, 0.05, 0.855, 0.06);
 
     .#{$prefixClass}__handle,
     .#{$prefixClass}__dot {
+      background: #fff;
       border-color: $disabledColor;
       box-shadow: none;
-      background: #fff;
       cursor: not-allowed;
     }
 
-    .#{$prefixClass}__mark-text,
+    .#{$prefixClass}__mark,
     .#{$prefixClass}__dot {
       cursor: not-allowed !important;
     }
@@ -223,9 +213,9 @@ $ease-in-quint: cubic-bezier(0.755, 0.05, 0.855, 0.06);
 }
 
 .#{$prefixClass}_vertical {
-  width: 14px;
   height: 100%;
   padding: 0 5px;
+  width: 14px;
 
   .#{$prefixClass} {
     &__rail {
@@ -234,8 +224,8 @@ $ease-in-quint: cubic-bezier(0.755, 0.05, 0.855, 0.06);
     }
 
     &__track {
-      left: 5px;
       bottom: 0;
+      left: 5px;
       width: 6px;
     }
 
@@ -245,8 +235,8 @@ $ease-in-quint: cubic-bezier(0.755, 0.05, 0.855, 0.06);
     }
 
     &__mark {
-      top: 0;
       left: 18px;
+      top: 0;
     }
 
     &__step {
@@ -256,12 +246,14 @@ $ease-in-quint: cubic-bezier(0.755, 0.05, 0.855, 0.06);
 
     &__dot {
       left: -1px;
-      margin-bottom: 0px;
+      margin-bottom: 0;
+
       &:first-child {
-        margin-bottom: 0px;
+        margin-bottom: 0;
       }
+
       &:last-child {
-        margin-bottom: 0px;
+        margin-bottom: 0;
       }
     }
 
@@ -276,9 +268,9 @@ $ease-in-quint: cubic-bezier(0.755, 0.05, 0.855, 0.06);
     }
 
     &__tooltip {
-      transform: translate(-125%, -25%);
-      left: 0;
       bottom: initial;
+      left: 0;
+      transform: translate(-125%, -25%);
     }
   }
 }

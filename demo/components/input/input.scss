@@ -1,25 +1,25 @@
 $parent: 'input';
 
 .#{$parent} {
-  padding: 0.4rem 0;
+  cursor: pointer;
   display: flex;
   flex-direction: column;
   flex-grow: 1;
   flex-shrink: 1;
-  cursor: pointer;
+  padding: 0.4rem 0;
 
   &_control {
     flex-direction: row;
   }
 
   &__section {
-    width: 100%;
+    align-items: center;
     display: flex;
+    flex-direction: row;
     flex-grow: 1;
     flex-shrink: 1;
-    flex-direction: row;
-    align-items: center;
     justify-content: flex-start;
+    width: 100%;
   }
 
   &__section-key {
@@ -34,8 +34,8 @@ $parent: 'input';
   &_control {
     .#{$parent}__label,
     .#{$parent}__link {
-      margin-bottom: 0;
       display: none;
+      margin-bottom: 0;
     }
   }
 
@@ -44,8 +44,8 @@ $parent: 'input';
 
     .#{$parent}__label,
     .#{$parent}__link {
-      margin-bottom: 0.4rem;
       display: inherit;
+      margin-bottom: 0.4rem;
     }
   }
 
@@ -54,9 +54,9 @@ $parent: 'input';
   }
 
   &__input {
-    width: 100%;
-    padding: 0.2rem;
     cursor: pointer;
+    padding: 0.2rem;
+    width: 100%;
   }
 
   &__input[type='checkbox'] {

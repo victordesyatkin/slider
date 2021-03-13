@@ -11,9 +11,10 @@
     "eslint": "eslint --ext .ts src/",
     "eslint:fix": "eslint --fix --ext .ts, src/",
     "stylelint": "stylelint --config .stylelintrc.json \"./**/*.scss\"",
+    "stylelint:fix": "stylelint --fix --config .stylelintrc.json \"./**/*.scss\"",
     "pugLint": "pug-lint --config .pug-lintrc.json demo/",
     "lint": "npm run eslint && npm run pugLint && npm run stylelint",
-    "lint:fix": "npm run eslint:fix && npm run pugLint && npm run stylelint",
+    "lint:fix": "npm run eslint:fix && npm run pugLint && npm run stylelint:fix",
     "test": "jest",
     "test:coverage": "jest --coverage",
     "deploy": "gh-pages -d dist"

@@ -1,15 +1,14 @@
 .panel {
-  width: 100%;
-  display: flex;
-  flex-grow: 1;
-  flex-basis: 100%;
-  flex-direction: column;
-
-  flex-shrink: 0;
-  max-width: 400px;
   border: 1px solid #e4e4e4;
   border-radius: 4px;
+  display: flex;
+  flex-basis: 100%;
+  flex-direction: column;
+  flex-grow: 1;
+  flex-shrink: 0;
+  max-width: 400px;
   padding: 1rem;
+  width: 100%;
 
   &__head {
     text-align: center;

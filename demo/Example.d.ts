@@ -1,0 +1,36 @@
+import './components/example/example';
+import './index.scss';
+declare class Example {
+    private $parent;
+    private $sliderWrapper;
+    private $sections;
+    private slider?;
+    private props?;
+    constructor(parent: HTMLElement);
+    private static prepareFunction;
+    private static prepareArray;
+    private static isResult;
+    private static prepareObject;
+    private static prepareJSON;
+    private static updateHandle;
+    private static updateHandles;
+    private init;
+    private initHandlers;
+    private initHandler;
+    private getProps;
+    private setProps;
+    private updateProps;
+    private checkNeedUpdate;
+    private onAfterChange;
+    private handleSectionClick;
+    private handleSectionInput;
+    private handleSectionFocusout;
+    private getSectionItems;
+    private addHandle;
+    private removeHandle;
+    private processingSection;
+    private processingInput;
+    private prepareProp;
+    private static prepareValue;
+}
+export default Example;
