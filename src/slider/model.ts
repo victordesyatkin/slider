@@ -1,5 +1,5 @@
-import isUndefined from 'lodash/isUndefined';
-import merge from 'lodash/merge';
+import merge from 'lodash.merge';
+import isUndefined from 'lodash.isundefined';
 
 import PubSub from '../helpers/pubsub';
 import {

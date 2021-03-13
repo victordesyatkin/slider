@@ -1,7 +1,6 @@
 import $ from 'jquery';
 import classnames from 'classnames';
-import get from 'lodash/get';
-import isUndefined from 'lodash/isUndefined';
+import isUndefined from 'lodash.isundefined';
 
 import { objectToString, calcOffset } from '../../helpers/utils';
 import PubSub from '../../helpers/pubsub';
@@ -59,7 +58,7 @@ export default class TrackView extends PubSub implements ISubView {
   }
 
   private createView(): void {
-    if (this.props && !isUndefined(get(this.addition, ['index']))) {
+    if (this.props && !isUndefined(this.addition?.index)) {
       const on = this.props?.track?.on;
       if (on) {
         this.view = $('<div/>', this.prepareAttr());
@@ -79,8 +78,8 @@ export default class TrackView extends PubSub implements ISubView {
   }
 
   private prepareClassName(): string {
-    const prefixCls = get(this.props, ['prefixCls'], '');
-    const index = get(this.addition, ['index']);
+    const prefixCls = this.props?.prefixCls || '';
+    const index = this.addition?.index;
     const className = this.props?.track?.classNames || '';
     return classnames(
       `${prefixCls}__track`,
@@ -92,7 +91,7 @@ export default class TrackView extends PubSub implements ISubView {
   private prepareStyle(): string | undefined {
     let readyStyle: string | undefined;
     if (this.props) {
-      const index = get(this.addition, ['index']);
+      const index = this.addition?.index;
       const style = this.props?.track?.styles?.[index] || {};
       const { vertical, min, max } = this.props;
       let { reverse } = this.props;
@@ -134,7 +133,7 @@ export default class TrackView extends PubSub implements ISubView {
 
   private updateView(): void {
     if (this.view) {
-      if (get(this.props, ['track', 'on'])) {
+      if (this.props?.track?.on) {
         this.view.attr(this.prepareAttr());
       } else {
         this.remove();

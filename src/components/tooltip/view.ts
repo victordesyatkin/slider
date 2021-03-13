@@ -1,7 +1,6 @@
 import $ from 'jquery';
 import classnames from 'classnames';
-import get from 'lodash/get';
-import isUndefined from 'lodash/isUndefined';
+import isUndefined from 'lodash.isundefined';
 
 import PubSub from '../../helpers/pubsub';
 import { objectToString } from '../../helpers/utils';
@@ -60,7 +59,7 @@ export default class TooltipView extends PubSub implements ISubView {
   }
 
   private createView(): void {
-    if (this.props && !isUndefined(get(this.addition, ['value']))) {
+    if (this.props && !isUndefined(this.addition?.value)) {
       this.view = $('<div/>', this.prepareAttr());
     }
   }
@@ -77,7 +76,7 @@ export default class TooltipView extends PubSub implements ISubView {
   }
 
   private prepareClassName(): string {
-    const prefixCls = get(this.props, ['prefixCls'], '');
+    const prefixCls = this.props?.prefixCls || '';
     const className = this.props?.tooltip?.className || '';
     const always = this.props?.tooltip?.always;
 
@@ -123,7 +122,7 @@ export default class TooltipView extends PubSub implements ISubView {
 
   private updateView(): void {
     if (this.view) {
-      if (get(this.props, ['tooltip', 'on'])) {
+      if (this.props?.tooltip?.on) {
         this.view.attr(this.prepareAttr());
       } else {
         this.remove();

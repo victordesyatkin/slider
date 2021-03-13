@@ -1,8 +1,7 @@
 import $ from 'jquery';
 import classnames from 'classnames';
 import bind from 'bind-decorator';
-import get from 'lodash/get';
-import isUndefined from 'lodash/isUndefined';
+import isUndefined from 'lodash.isundefined';
 
 import PubSub from '../../helpers/pubsub';
 import { calcOffset, objectToString } from '../../helpers/utils';
@@ -77,7 +76,7 @@ export default class HandleView extends PubSub implements ISubView {
   @bind
   private handleViewMouseDown(event: JQuery.Event): void {
     const handleViewMouseDown = this.addition?.handles?.handleViewMouseDown;
-    const index = get(this.addition, ['index']);
+    const index = this.addition?.index;
     if (!isUndefined(index) && handleViewMouseDown) {
       handleViewMouseDown(index, event);
     }
@@ -101,10 +100,10 @@ export default class HandleView extends PubSub implements ISubView {
   }
 
   private prepareClassName(): string {
-    const prefixCls = get(this.props, ['prefixCls'], '');
-    const index = get(this.addition, ['index']);
+    const prefixCls = this.props?.prefixCls || '';
+    const index = this.addition?.index;
     const className = this.props?.handle?.classNames?.[index] || '';
-    const active = get(this.addition, ['active']);
+    const active = this.addition?.active;
     return classnames(`${prefixCls}__handle`, className, {
       [`${prefixCls}__handle_active`]: active,
     });
@@ -113,7 +112,7 @@ export default class HandleView extends PubSub implements ISubView {
   private prepareStyle(): string | undefined {
     let readyStyle: string | undefined;
     if (this.props) {
-      const index = get(this.addition, ['index']);
+      const index = this.addition?.index;
       const style = this.props?.handle?.styles?.[index] || {};
       const { values, min, max, vertical, reverse } = this.props;
       const value = values[index];
@@ -145,8 +144,8 @@ export default class HandleView extends PubSub implements ISubView {
   private appendTooltip(): void {
     const on = this.props?.tooltip?.on;
     if (on && this.isProps()) {
-      const index = get(this.addition, ['index']);
-      const value = get(this.props, ['values', index]);
+      const index = this.addition?.index;
+      const value = this.props?.values?.[index];
       if (!isUndefined(value)) {
         if (this.tooltip) {
           this.tooltip.setAddition({ value, index });

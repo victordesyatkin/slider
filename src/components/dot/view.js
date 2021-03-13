@@ -17,7 +17,7 @@ const classnames_1 = __importDefault(require("classnames"));
 const bind_decorator_1 = __importDefault(require("bind-decorator"));
 const get_1 = __importDefault(require("lodash/get"));
 const isUndefined_1 = __importDefault(require("lodash/isUndefined"));
-const orderBy_1 = __importDefault(require("lodash/orderBy"));
+const orderBy_1 = __importDefault(require("lodash.orderby"));
 const pubsub_1 = __importDefault(require("../../helpers/pubsub"));
 const utils_1 = require("../../helpers/utils");
 class DotView extends pubsub_1.default {

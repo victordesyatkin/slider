@@ -1,10 +1,8 @@
 import $ from 'jquery';
 import classnames from 'classnames';
 import bind from 'bind-decorator';
-import get from 'lodash/get';
-import uniq from 'lodash/uniq';
-import orderBy from 'lodash/orderBy';
-import isArray from 'lodash/isArray';
+import uniq from 'lodash.uniq';
+import orderBy from 'lodash.orderby';
 
 import PubSub from '../../helpers/pubsub';
 import { ISubView, IView } from '../../slider/interface';
@@ -99,9 +97,8 @@ export default class DotsView extends PubSub implements ISubView {
   }
 
   private prepareClassName(): string {
-    const prefixCls = get(this.props, ['prefixCls'], '');
+    const { prefixCls = '', vertical } = this.props || {};
     const className = this.props?.dot?.wrapClassName;
-    const vertical = get(this.props, ['vertical']);
     return classnames(`${prefixCls}__dots`, className, {
       [`${prefixCls}__dots_vertical`]: vertical,
     });
@@ -117,7 +114,7 @@ export default class DotsView extends PubSub implements ISubView {
 
   private updateView(): void {
     if (this.view) {
-      if (get(this.props, ['dot', 'on'])) {
+      if (this.props?.dot?.on) {
         this.view.attr(this.prepareAttr());
       } else {
         this.remove();
@@ -142,7 +139,7 @@ export default class DotsView extends PubSub implements ISubView {
       const on = this.props?.mark?.dot;
       if (on) {
         const markValues = this.props?.mark?.values;
-        if (isArray(markValues)) {
+        if (Array.isArray(markValues)) {
           values = [...markValues];
         }
       }

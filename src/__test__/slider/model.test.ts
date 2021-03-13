@@ -1,6 +1,5 @@
 import { defaultProps } from '../../helpers/utils';
 import Model from '../../slider/model';
-import { DefaultProps } from '../../types';
 
 describe('slider', () => {
   describe('model', () => {

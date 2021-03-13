@@ -1,5 +1,5 @@
 import JQuery from 'jquery';
-import pick from 'lodash/pick';
+import pick from 'lodash.pick';
 
 import { prepareData } from '../helpers/utils';
 import { Props, DefaultProps, KeyDefaultProps } from '../types';

@@ -1,5 +1,5 @@
 import $ from 'jquery';
-import merge from 'lodash/merge';
+import merge from 'lodash.merge';
 
 import * as utils from '../../helpers/utils';
 

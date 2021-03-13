@@ -1,8 +1,7 @@
 import $ from 'jquery';
 import classnames from 'classnames';
 import bind from 'bind-decorator';
-import get from 'lodash/get';
-import isUndefined from 'lodash/isUndefined';
+import isUndefined from 'lodash.isundefined';
 
 import PubSub from '../../helpers/pubsub';
 import { objectToString, calcOffset } from '../../helpers/utils';
@@ -62,7 +61,7 @@ class MarkView extends PubSub implements ISubView {
   }
 
   private createView(): void {
-    if (this.props && !isUndefined(get(this.addition, ['value']))) {
+    if (this.props && !isUndefined(this.addition?.value)) {
       this.view = $('<div/>', this.prepareAttr());
     }
   }
@@ -79,7 +78,7 @@ class MarkView extends PubSub implements ISubView {
   }
 
   private prepareClassName(): string {
-    const prefixCls = get(this.props, ['prefixCls'], '');
+    const prefixCls = this.props?.prefixCls || '';
     const className = this.props?.mark?.className || '';
     return classnames(`${prefixCls}__mark`, className);
   }
@@ -87,7 +86,7 @@ class MarkView extends PubSub implements ISubView {
   private prepareStyle(): string | undefined {
     let readyStyle: string | undefined;
     if (this.props) {
-      const value = get(this.addition, ['value'], 0);
+      const value = this.addition?.value || 0;
       const style = this.props?.mark?.style || {};
       const { vertical, min, max, reverse } = this.props;
       const offset = calcOffset(value, min, max);
@@ -136,7 +135,7 @@ class MarkView extends PubSub implements ISubView {
   private handleViewClick(event: JQuery.Event): void {
     if (this.view && this.props) {
       const { value, handles, index = 0 } = this.addition;
-      const handleViewClick = get(handles, ['handleViewClick']);
+      const handleViewClick = handles?.handleViewClick;
       if (!isUndefined(value) && handleViewClick) {
         handleViewClick(index, event, value);
       }

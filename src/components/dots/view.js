@@ -16,9 +16,9 @@ const jquery_1 = __importDefault(require("jquery"));
 const classnames_1 = __importDefault(require("classnames"));
 const bind_decorator_1 = __importDefault(require("bind-decorator"));
 const get_1 = __importDefault(require("lodash/get"));
-const uniq_1 = __importDefault(require("lodash/uniq"));
-const orderBy_1 = __importDefault(require("lodash/orderBy"));
-const isArray_1 = __importDefault(require("lodash/isArray"));
+const uniq_1 = __importDefault(require("lodash.uniq"));
+const orderBy_1 = __importDefault(require("lodash.orderby"));
+const isArray_1 = __importDefault(require("lodash.isarray"));
 const pubsub_1 = __importDefault(require("../../helpers/pubsub"));
 const view_1 = __importDefault(require("../dot/view"));
 class DotsView extends pubsub_1.default {

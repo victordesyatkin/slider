@@ -1,7 +1,6 @@
 import $ from 'jquery';
 import bind from 'bind-decorator';
 import classnames from 'classnames';
-import get from 'lodash/get';
 
 import {
   objectToString,
@@ -108,7 +107,7 @@ class View extends PubSub implements IView {
   }
 
   private prepareStyle(): string {
-    return objectToString({ ...get(this.props, ['style']) });
+    return objectToString({ ...this.props?.style });
   }
 
   @bind

@@ -1,9 +1,8 @@
 import $ from 'jquery';
 import classnames from 'classnames';
 import bind from 'bind-decorator';
-import get from 'lodash/get';
-import isUndefined from 'lodash/isUndefined';
-import orderBy from 'lodash/orderBy';
+import orderBy from 'lodash.orderby';
+import isUndefined from 'lodash.isundefined';
 
 import PubSub from '../../helpers/pubsub';
 import { objectToString, calcOffset } from '../../helpers/utils';
@@ -61,7 +60,7 @@ class DotView extends PubSub implements ISubView {
   }
 
   private createView(): void {
-    if (this.props && !isUndefined(get(this.addition, ['value']))) {
+    if (this.props && !isUndefined(this.addition?.value)) {
       this.view = $('<div/>', this.prepareAttr());
       this.initHandles();
     }
@@ -79,10 +78,10 @@ class DotView extends PubSub implements ISubView {
   }
 
   private prepareClassName(): string {
-    const prefixCls = get(this.props, ['prefixCls'], '');
+    const prefixCls = this.props?.prefixCls || '';
     const className = this.props?.dot?.className || '';
-    const value = get(this.addition, ['value']);
-    let values = get(this.props, ['values']);
+    const { value } = this.addition;
+    let values = this.props?.values;
     let active = false;
     if (!isUndefined(values) && !isUndefined(value)) {
       if (values.length === 1) {
@@ -103,7 +102,7 @@ class DotView extends PubSub implements ISubView {
   private prepareStyle(): string | undefined {
     let readyStyle: string | undefined;
     if (this.props) {
-      const value = get(this.addition, ['value'], 0);
+      const value = this.addition?.value || 0;
       const style = this.props?.dot?.style || {};
       const { vertical, min, max, reverse } = this.props;
       const offset = calcOffset(value, min, max);
@@ -139,7 +138,7 @@ class DotView extends PubSub implements ISubView {
   private handleViewClick(event: JQuery.Event): void {
     if (this.view && this.props) {
       const { value, handles, index = 0 } = this.addition;
-      const handleViewClick = get(handles, ['handleViewClick']);
+      const handleViewClick = handles?.handleViewClick;
       if (!isUndefined(value) && handleViewClick) {
         handleViewClick(index, event, value);
       }

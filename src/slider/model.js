@@ -4,7 +4,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const isUndefined_1 = __importDefault(require("lodash/isUndefined"));
-const merge_1 = __importDefault(require("lodash/merge"));
+const merge_1 = __importDefault(require("lodash.merge"));
 const pubsub_1 = __importDefault(require("../helpers/pubsub"));
 const utils_1 = require("../helpers/utils");
 class Model extends pubsub_1.default {

@@ -1,5 +1,5 @@
 import $ from 'jquery';
-import merge from 'lodash/merge';
+import merge from 'lodash.merge';
 
 import DotView from '../../components/dot/view';
 import {
@@ -183,7 +183,7 @@ describe('rail', () => {
       const $parent = $('.slider__wrapper122');
       view.render($parent);
       const handleViewClick = jest.fn(
-        (index: number, event: MouseEvent, value?: number): void => {}
+        (index: number, event: JQuery.Event, value?: number): void => {}
       );
       let $element = $(`.${defaultProps.prefixCls}__dot`, $parent);
       $element.trigger('click');

@@ -1,7 +1,6 @@
 import $ from 'jquery';
 import classnames from 'classnames';
 import bind from 'bind-decorator';
-import get from 'lodash/get';
 
 import { ISubView } from '../../slider/interface';
 import PubSub from '../../helpers/pubsub';
@@ -80,7 +79,7 @@ export default class RailView extends PubSub implements ISubView {
   }
 
   private prepareClassName(): string {
-    const prefixCls = get(this.props, ['prefixCls'], '');
+    const prefixCls = this.props?.prefixCls || '';
     const className = this.props?.rail?.className || '';
     return classnames(`${prefixCls}__rail`, className);
   }
@@ -94,7 +93,7 @@ export default class RailView extends PubSub implements ISubView {
 
   private updateView(): void {
     if (this.view) {
-      if (get(this.props, ['rail', 'on'])) {
+      if (this.props?.rail?.on) {
         this.view.attr(this.prepareAttr());
       } else {
         this.remove();
@@ -108,7 +107,7 @@ export default class RailView extends PubSub implements ISubView {
   private handleViewClick(event: JQuery.Event): void {
     if (this.view && this.props) {
       const { handles, index = 0 } = this.addition;
-      const handleViewClick = get(handles, ['handleViewClick']);
+      const handleViewClick = handles?.handleViewClick;
       if (handleViewClick) {
         handleViewClick(index, event);
       }

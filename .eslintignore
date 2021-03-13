@@ -4,3 +4,4 @@ webpack.config.js
 .vscode
 assets
 src/__test__
+*.d.ts

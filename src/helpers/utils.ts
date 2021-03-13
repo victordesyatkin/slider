@@ -1,8 +1,7 @@
-import get from 'lodash/get';
-import orderBy from 'lodash/orderBy';
-import merge from 'lodash/merge';
-import uniq from 'lodash/uniq';
-import isUndefined from 'lodash/isUndefined';
+import orderBy from 'lodash.orderby';
+import merge from 'lodash.merge';
+import uniq from 'lodash.uniq';
+import isUndefined from 'lodash.isundefined';
 
 import { DefaultProps, Props } from '../types';
 
@@ -99,7 +98,7 @@ function getClosestPoint(
 }
 
 function ensureValuePrecision(value: number, props: DefaultProps): number {
-  const { step, min, max } = props;
+  const { step = 0, min, max } = props;
   const closestPoint = Number.isFinite(
     getClosestPoint(value, { step, min, max }, props)
   )
@@ -124,8 +123,8 @@ function ensureValueCorrectNeighbors(options: {
   let { min, max } = props;
   const { value } = options;
   if (checkNeighbors(values)) {
-    const prevValue = get(values, [index - 1]);
-    const nextValue = get(values, [index + 1]);
+    const prevValue = values?.[index - 1];
+    const nextValue = values?.[index + 1];
     if (!isUndefined(prevValue)) {
       min = indent ? prevValue + indent : prevValue;
     }
@@ -165,7 +164,7 @@ function prepareValues(props: DefaultProps): DefaultProps {
 }
 
 function getCount(props?: DefaultProps): number {
-  return get(props, ['values'], []).length;
+  return (props?.values || []).length;
 }
 
 function getSliderStart(options: {

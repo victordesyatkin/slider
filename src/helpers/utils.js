@@ -5,9 +5,9 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.defaultProps = exports.getNearest = exports.getNearestIndex = exports.getPosition = exports.getHandleCenterPosition = exports.calcOffset = exports.ensureValueInRange = exports.getMousePosition = exports.getPrecision = exports.getClosestPoint = exports.ensureValuePrecision = exports.prepareValues = exports.getCount = exports.getSliderStart = exports.getSliderLength = exports.calcValue = exports.calcValueByPos = exports.checkNeighbors = exports.ensureValueCorrectNeighbors = exports.calcValueWithEnsure = exports.setFunctionGetBoundingClientRectHTMLElement = exports.prepareData = exports.uniqId = exports.objectToString = void 0;
 const get_1 = __importDefault(require("lodash/get"));
-const orderBy_1 = __importDefault(require("lodash/orderBy"));
-const merge_1 = __importDefault(require("lodash/merge"));
-const uniq_1 = __importDefault(require("lodash/uniq"));
+const orderBy_1 = __importDefault(require("lodash.orderby"));
+const merge_1 = __importDefault(require("lodash.merge"));
+const uniq_1 = __importDefault(require("lodash.uniq"));
 const isUndefined_1 = __importDefault(require("lodash/isUndefined"));
 const defaultProps = {
     prefixCls: 'fsd-slider',

@@ -9,16 +9,16 @@ const webpack = require("webpack");
 
 module.exports = (env = {}) => {
   const { mode = "development" } = env;
-
-  const isProd = mode === "production";
-  const isDev = mode === "development";
+  
+  const isProduction = mode === "production";
+  const isDevelopment = mode === 'development';
 
   const getStyleLoaders = () => {
     return [
-      isProd ? MiniCssExtractPlugin.loader : "style-loader",
+      isProduction ? MiniCssExtractPlugin.loader : "style-loader",
       {
         loader: "css-loader",
-        options: { sourceMap: isDev },
+        options: { sourceMap: isDevelopment },
       },
     ];
   };
@@ -26,13 +26,18 @@ module.exports = (env = {}) => {
   const getPlugins = () => {
     const plugins = [
       new CleanWebpackPlugin(),
+      new webpack.ProgressPlugin(),
+      new webpack.ProvidePlugin({
+        $: 'jquery',
+        jQuery: 'jquery',
+      }),
       new HtmlWebpackPlugin({
         getData: () => {
           try {
             return JSON.parse(
               fs.readFileSync(
-                `${path.resolve(__dirname, "demo")}/data.json`,
-                "utf8"
+                `${path.resolve(__dirname, 'demo')}/data.json`,
+                'utf8'
               )
             );
           } catch (e) {
@@ -40,35 +45,32 @@ module.exports = (env = {}) => {
             return {};
           }
         },
-        template: "./demo/index.pug",
-        filename: "index.html",
+        template: './demo/index.pug',
+        filename: 'index.html',
         alwaysWriteToDisk: true,
         inject: true,
         hash: true,
         alwaysWriteToDisk: true,
         meta: {
-          "msapplication-TileColor": "#da532c",
-          "theme-color": "#ffffff",
+          'msapplication-TileColor': '#da532c',
+          'theme-color': '#ffffff',
         },
       }),
       new CopyWebpackPlugin({
         patterns: [
           {
-            from: "assets/favicon",
-            to: "assets/favicon",
+            from: 'assets/favicon',
+            to: 'assets/favicon',
           },
         ],
       }),
       new webpack.HotModuleReplacementPlugin(),
     ];
-    if (isProd) {
+    if (isProduction) {
       plugins.push(
         new MiniCssExtractPlugin({
-          filename: isDev ? "[name].css" : "[name].[hash].css",
-          chunkFilename: isDev ? "[id].css" : "[id].[hash].css",
-          insertAt: {
-            after: "title",
-          },
+          filename: "[name].[hash].css",
+          chunkFilename: "[id].[hash].css",
         })
       );
     }
@@ -77,8 +79,8 @@ module.exports = (env = {}) => {
 
   return {
     entry: "./demo/index.ts",
-    mode: isProd ? "production" : isDev && "development",
-    devtool: isDev && "source-map",
+    mode: isProduction ? "production" : isDevelopment && "development",
+    devtool: isDevelopment && "source-map",
 
     module: {
       rules: [
