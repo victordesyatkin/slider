@@ -6,7 +6,7 @@ import isUndefined from 'lodash.isundefined';
 
 import PubSub from '../../helpers/pubsub';
 import { objectToString, calcOffset } from '../../helpers/utils';
-import { ISubView } from '../../slider/interface';
+import { ISubView } from '../../Slider/interface';
 import { DefaultProps, Addition } from '../../types';
 
 class DotView extends PubSub implements ISubView {

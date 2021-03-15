@@ -4,7 +4,7 @@ import isUndefined from 'lodash.isundefined';
 
 import { objectToString, calcOffset } from '../../helpers/utils';
 import PubSub from '../../helpers/pubsub';
-import { ISubView } from '../../slider/interface';
+import { ISubView } from '../../Slider/interface';
 import { DefaultProps, Addition } from '../../types';
 
 export default class TrackView extends PubSub implements ISubView {

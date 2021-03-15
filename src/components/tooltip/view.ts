@@ -4,7 +4,7 @@ import isUndefined from 'lodash.isundefined';
 
 import PubSub from '../../helpers/pubsub';
 import { objectToString } from '../../helpers/utils';
-import { ISubView } from '../../slider/interface';
+import { ISubView } from '../../Slider/interface';
 import { DefaultProps, Addition } from '../../types';
 
 export default class TooltipView extends PubSub implements ISubView {

@@ -1,9 +1,9 @@
 import bind from 'bind-decorator';
 
 import { DefaultPropsView, Props, DefaultProps } from '../types';
-import { IModel, IView, IPresenter } from './interface';
+import { IModel, IView, IPresenter } from '../Slider/interface';
 
-export default class Presenter implements IPresenter {
+class Presenter implements IPresenter {
   private model: IModel;
 
   private view: IView;
@@ -65,3 +65,5 @@ export default class Presenter implements IPresenter {
     this.model.setIndex(options);
   }
 }
+
+export default Presenter;

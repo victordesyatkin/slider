@@ -5,7 +5,7 @@ import uniq from 'lodash.uniq';
 import orderBy from 'lodash.orderby';
 
 import PubSub from '../../helpers/pubsub';
-import { ISubView, IView } from '../../slider/interface';
+import { ISubView, IView } from '../../Slider/interface';
 import { DefaultProps, Addition } from '../../types';
 import DotView from '../dot/view';
 

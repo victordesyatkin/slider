@@ -2,7 +2,7 @@ import $ from 'jquery';
 import classnames from 'classnames';
 import bind from 'bind-decorator';
 
-import { ISubView } from '../../slider/interface';
+import { ISubView } from '../../Slider/interface';
 import PubSub from '../../helpers/pubsub';
 import { objectToString } from '../../helpers/utils';
 import { DefaultProps, Addition } from '../../types';

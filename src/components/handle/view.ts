@@ -5,7 +5,7 @@ import isUndefined from 'lodash.isundefined';
 
 import PubSub from '../../helpers/pubsub';
 import { calcOffset, objectToString } from '../../helpers/utils';
-import { ISubView } from '../../slider/interface';
+import { ISubView } from '../../Slider/interface';
 import { DefaultProps, Addition } from '../../types';
 import TooltipView from '../tooltip/view';
 

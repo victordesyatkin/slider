@@ -5,7 +5,7 @@ import { prepareData } from '../helpers/utils';
 import { Props, DefaultProps, KeyDefaultProps } from '../types';
 import { IModel, IPresenter, IView } from './interface';
 import Model from './model';
-import View from './view';
+import View from '../View/View';
 import Presenter from './presenter';
 
 class Slider {
@@ -16,6 +16,20 @@ class Slider {
   private view: IView;
 
   private presenter: IPresenter;
+
+  static createSlider($element: JQuery<HTMLElement>, props?: Props): JQuery {
+    return $element.each(function each() {
+      const $this = JQuery(this);
+      if (!$this.data(Slider.PLUGIN_NAME)) {
+        $this.data(Slider.PLUGIN_NAME, new Slider($this, props));
+      } else if ($this.data(Slider.PLUGIN_NAME)) {
+        const slider: Slider = $this.data(Slider.PLUGIN_NAME) as Slider;
+        if (slider) {
+          slider.setProps(props);
+        }
+      }
+    });
+  }
 
   constructor(element: JQuery<HTMLElement>, props?: Props) {
     this.model = new Model(prepareData(props));
@@ -40,18 +54,4 @@ class Slider {
   }
 }
 
-function createSlider($element: JQuery<HTMLElement>, props?: Props): JQuery {
-  return $element.each(function each() {
-    const $this = JQuery(this);
-    if (!$this.data(Slider.PLUGIN_NAME)) {
-      $this.data(Slider.PLUGIN_NAME, new Slider($this, props));
-    } else if ($this.data(Slider.PLUGIN_NAME)) {
-      const slider: Slider = $this.data(Slider.PLUGIN_NAME) as Slider;
-      if (slider) {
-        slider.setProps(props);
-      }
-    }
-  });
-}
-
-export { Slider, createSlider };
+export default Slider;

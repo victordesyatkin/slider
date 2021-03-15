@@ -1,5 +1,8 @@
 {
-  "extends": ["stylelint-config-sass-guidelines"],
+  "extends": [
+    "stylelint-config-sass-guidelines",
+    "stylelint-selector-bem-pattern"
+  ],
   "rules": {
     "max-nesting-depth": null,
     "scss/at-mixin-pattern": null,

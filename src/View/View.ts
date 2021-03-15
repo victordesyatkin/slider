@@ -15,7 +15,7 @@ import TrackView from '../components/track/view';
 import DotsView from '../components/dots/view';
 import MarksView from '../components/marks/view';
 import { DefaultPropsView, Addition } from '../types';
-import { IView, ISubView } from './interface';
+import { IView, ISubView } from '../Slider/interface';
 
 class View extends PubSub implements IView {
   private props?: DefaultPropsView;

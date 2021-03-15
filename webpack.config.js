@@ -5,6 +5,8 @@ const HtmlWebpackPlugin = require("html-webpack-plugin");
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const CopyWebpackPlugin = require("copy-webpack-plugin");
 const { CleanWebpackPlugin } = require("clean-webpack-plugin");
+const StylelintPlugin = require('stylelint-webpack-plugin');
+const CssnanoPlugin = require('cssnano-webpack-plugin');
 const webpack = require("webpack");
 
 module.exports = (env = {}) => {
@@ -22,7 +24,8 @@ module.exports = (env = {}) => {
       },
     ];
   };
-
+  console.log('mode : ', mode);
+  console.log('isProduction : ', isProduction);
   const getPlugins = () => {
     const plugins = [
       new CleanWebpackPlugin(),
@@ -56,6 +59,12 @@ module.exports = (env = {}) => {
           'theme-color': '#ffffff',
         },
       }),
+      new StylelintPlugin({
+        configFile: path.resolve(__dirname, '.stylelintrc.json'),
+        context: path.resolve(__dirname),
+        files: 'src/**/*.(s(c|a)ss|css)',
+        fix: true,
+      }),
       new CopyWebpackPlugin({
         patterns: [
           {
@@ -69,8 +78,11 @@ module.exports = (env = {}) => {
     if (isProduction) {
       plugins.push(
         new MiniCssExtractPlugin({
-          filename: "[name].[hash].css",
-          chunkFilename: "[id].[hash].css",
+          filename: '[name].[contenthash].css',
+          chunkFilename: '[id].[contenthash].css',
+        }),
+        new CssnanoPlugin({
+          sourceMap: true,
         })
       );
     }
@@ -78,35 +90,22 @@ module.exports = (env = {}) => {
   };
 
   return {
-    entry: "./demo/index.ts",
-    mode: isProduction ? "production" : isDevelopment && "development",
-    devtool: isDevelopment && "source-map",
+    entry: './demo/index.ts',
+    mode: isProduction ? 'production' : isDevelopment && 'development',
+    devtool: isDevelopment && 'source-map',
 
     module: {
       rules: [
         {
           test: /\.ts?$/,
-          use: "ts-loader",
+          use: 'ts-loader',
           exclude: /node_modules/,
-        },
-        {
-          test: /\.(png|jpg|jpeg|gif|ico|svg)$/,
-          use: [
-            {
-              loader: "file-loader",
-              options: {
-                outputPath: "./images/",
-                publicPath: "./images",
-                name: "[sha1:hash:7]-[sha1:hash:7].[ext]",
-              },
-            },
-          ],
         },
         {
           test: /\.pug$/,
           use: [
             {
-              loader: "pug-loader",
+              loader: 'pug-loader',
               options: {
                 pretty: true,
               },
@@ -121,16 +120,28 @@ module.exports = (env = {}) => {
 
         {
           test: /\.(s[ca]ss)$/,
-          use: [...getStyleLoaders(), "resolve-url-loader", "sass-loader"],
+          use: [
+            ...getStyleLoaders(),
+            'resolve-url-loader',
+            {
+              loader: 'postcss-loader',
+              options: {
+                postcssOptions: {
+                  plugins: ['autoprefixer', 'postcss-preset-env'],
+                },
+              },
+            },
+            'sass-loader',
+          ],
         },
       ],
     },
     plugins: getPlugins(),
 
     output: {
-      filename: "index.js",
-      path: path.resolve(__dirname, "dist"),
-      chunkFilename: "[id].[chunkhash].js",
+      filename: 'index.js',
+      path: path.resolve(__dirname, 'dist'),
+      chunkFilename: '[id].[contenthash].js',
     },
 
     devServer: {
@@ -140,8 +151,8 @@ module.exports = (env = {}) => {
     },
 
     resolve: {
-      extensions: [".ts", ".js", ".css", ".scss"],
-      modules: ["src", "node_modules"],
+      extensions: ['.ts', '.js', '.css', '.scss'],
+      modules: ['src', 'node_modules'],
     },
   };
 };

@@ -1,13 +1,13 @@
 import jQuery from 'jquery';
 
 import { Props } from './types';
-import { Slider, createSlider } from './slider/index';
+import Slider from './Slider';
 import './style.scss';
 
 (function makeSlider($: JQueryStatic) {
   // eslint-disable-next-line no-param-reassign
   $.fn.slider = function makeCreateSlider(props?: Props): JQuery {
-    return createSlider(this, props);
+    return Slider.createSlider(this, props);
   };
 })(jQuery);
 

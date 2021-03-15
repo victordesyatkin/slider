@@ -6,7 +6,7 @@ import orderBy from 'lodash.orderby';
 import isUndefined from 'lodash.isundefined';
 
 import PubSub from '../../helpers/pubsub';
-import { ISubView } from '../../slider/interface';
+import { ISubView } from '../../Slider/interface';
 import { DefaultProps, Addition } from '../../types';
 import MarkView from '../mark/view';
 

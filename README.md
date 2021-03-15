@@ -44,9 +44,19 @@
     </ul>
     <h4>JavaScript-библиотеки</h4>
     <ul>
-        <li><a href="https://www.npmjs.com/package/jquery" target="_blank" rel="noopener">jquery</a></li>
-        <li><a href="https://www.npmjs.com/package/lodash" target="_blank" rel="noopener">lodash</a></li>
+        <li><a href="https://www.npmjs.com/package/jquery" target="_blank" rel="noopener">jquery 3.5.1</a></li>
+        <li><a href="https://www.npmjs.com/package/bind-decorator" target="_blank" rel="noopener">bind-decorator</a></li>
         <li><a href="https://www.npmjs.com/package/classnames" target="_blank" rel="noopener">classnames</a></li>
+        <li><a href="https://www.npmjs.com/package/lodash.isfunction" target="_blank" rel="noopener">lodash.isfunction</a></li>
+        <li><a href="https://www.npmjs.com/package/lodash.isobject" target="_blank" rel="noopener">lodash.isobject</a></li>
+        <li><a href="https://www.npmjs.com/package/lodash.isstring" target="_blank" rel="noopener">lodash.isstring</a></li>
+        <li><a href="https://www.npmjs.com/package/lodash.isundefined" target="_blank" rel="noopener">lodash.isundefined</a></li>
+        <li><a href="https://www.npmjs.com/package/lodash.merge" target="_blank" rel="noopener">lodash.merge</a></li>
+        <li><a href="https://www.npmjs.com/package/lodash.orderby" target="_blank" rel="noopener">lodash.orderby</a></li>
+        <li><a href="https://www.npmjs.com/package/lodash.pick" target="_blank" rel="noopener">lodash.pick</a></li>
+        <li><a href="https://www.npmjs.com/package/lodash.set" target="_blank" rel="noopener">lodash.set</a></li>
+        <li><a href="https://www.npmjs.com/package/lodash.trim" target="_blank" rel="noopener">lodash.trim</a></li>
+        <li><a href="https://www.npmjs.com/package/lodash.uniq" target="_blank" rel="noopener">lodash.uniq</a></li>
     </ul>
     <h4>Установка</h4>
         <h5>1. Клонированить репозиторий</h5>
@@ -60,9 +70,9 @@
             <code>npm t</code>
     <h4>Ручная Инициализация</h4>
         <h5>Инициализация</h5>
-            <code>$(<span style="color: #df5000;">'#my-element'</span>).slider([options])</code>
+            <code>$(<span style="color: #df5000;">'.my-selector'</span>).slider([options])</code>
         <h5>Доступ к экземпляру объекта</h5>
-            <code>$(<span style="color: #df5000;">'#my-element'</span>).data(<span style="color: #df5000;">'slider'</span>)</code>
+            <code>$(<span style="color: #df5000;">'.my-selector'</span>).data(<span style="color: #df5000;">'slider'</span>)</code>
     <h4 id="api">API</h4>
     <table>
         <tr>
