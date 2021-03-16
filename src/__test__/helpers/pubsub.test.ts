@@ -1,4 +1,4 @@
-import PubSub from '../../helpers/pubsub';
+import PubSub from '../../Pubsub';
 
 describe('helpers', () => {
   describe('pubsub', () => {

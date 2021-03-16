@@ -1,6 +1,6 @@
 import $ from 'jquery';
 
-import TrackView from '../../components/track/view';
+import TrackView from '../../components/TrackView';
 import {
   setFunctionGetBoundingClientRectHTMLElement,
   defaultProps,

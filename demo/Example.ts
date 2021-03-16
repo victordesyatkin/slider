@@ -69,7 +69,7 @@ class Example {
       if (isFunction(result)) {
         return false;
       }
-      return result.toString() === '[object Object]';
+      return isObject(result);
     }
     return false;
   }

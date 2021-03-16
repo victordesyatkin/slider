@@ -8,14 +8,14 @@ import {
   getSliderStart,
   getSliderLength,
 } from '../helpers/utils';
-import PubSub from '../helpers/pubsub';
-import RailView from '../components/rail/view';
-import HandleView from '../components/handle/view';
-import TrackView from '../components/track/view';
-import DotsView from '../components/dots/view';
-import MarksView from '../components/marks/view';
+import PubSub from '../Pubsub';
+import RailView from '../components/RailView';
+import HandleView from '../components/HandleView';
+import TrackView from '../components/TrackView';
+import DotsView from '../components/DotsView';
+import MarksView from '../components/MarksView';
 import { DefaultPropsView, Addition } from '../types';
-import { IView, ISubView } from '../Slider/interface';
+import { IView, ISubView } from '../interfaces';
 
 class View extends PubSub implements IView {
   private props?: DefaultPropsView;

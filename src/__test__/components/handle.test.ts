@@ -1,7 +1,7 @@
 import $ from 'jquery';
 
 import { defaultProps } from '../../helpers/utils';
-import HandleView from '../../components/handle/view';
+import HandleView from '../../components/HandleView';
 
 describe('handle', () => {
   test('handleViewMouseDown handle view', () => {

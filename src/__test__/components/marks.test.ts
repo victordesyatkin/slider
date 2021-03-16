@@ -1,6 +1,6 @@
 import $ from 'jquery';
 
-import MarksView from '../../components/marks/view';
+import MarksView from '../../components/MarksView';
 import {
   setFunctionGetBoundingClientRectHTMLElement,
   defaultProps,

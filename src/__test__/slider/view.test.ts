@@ -5,7 +5,7 @@ import {
   defaultProps,
   uniqId,
 } from '../../helpers/utils';
-import View from '../../slider/view';
+import View from '../../View';
 import { Dot, Mark, Tooltip } from '../../types';
 
 describe('slider', () => {

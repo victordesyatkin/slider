@@ -5,9 +5,9 @@ import {
   setFunctionGetBoundingClientRectHTMLElement,
   uniqId,
 } from '../../helpers/utils';
-import Model from '../../slider/model';
-import View from '../../slider/view';
-import Presenter from '../../slider/presenter';
+import Model from '../../Model';
+import View from '../../View';
+import Presenter from '../../Presenter';
 
 describe('slider', () => {
   describe('presenter', () => {

@@ -1,7 +1,7 @@
 import bind from 'bind-decorator';
 
 import { DefaultPropsView, Props, DefaultProps } from '../types';
-import { IModel, IView, IPresenter } from '../Slider/interface';
+import { IModel, IView, IPresenter } from '../interfaces';
 
 class Presenter implements IPresenter {
   private model: IModel;

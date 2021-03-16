@@ -1,31 +1,30 @@
-"use strict";
-const path = require("path");
-const fs = require("fs");
-const HtmlWebpackPlugin = require("html-webpack-plugin");
-const MiniCssExtractPlugin = require("mini-css-extract-plugin");
-const CopyWebpackPlugin = require("copy-webpack-plugin");
-const { CleanWebpackPlugin } = require("clean-webpack-plugin");
+'use strict';
+const path = require('path');
+const fs = require('fs');
+const HtmlWebpackPlugin = require('html-webpack-plugin');
+const MiniCssExtractPlugin = require('mini-css-extract-plugin');
+const CopyWebpackPlugin = require('copy-webpack-plugin');
+const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const StylelintPlugin = require('stylelint-webpack-plugin');
-const CssnanoPlugin = require('cssnano-webpack-plugin');
-const webpack = require("webpack");
+const CssMinimizerPlugin = require('css-minimizer-webpack-plugin');
+const HtmlMinimizerPlugin = require('html-minimizer-webpack-plugin');
+const webpack = require('webpack');
 
 module.exports = (env = {}) => {
-  const { mode = "development" } = env;
+  const { mode = 'development' } = env;
   
-  const isProduction = mode === "production";
+  const isProduction = mode === 'production';
   const isDevelopment = mode === 'development';
 
   const getStyleLoaders = () => {
     return [
-      isProduction ? MiniCssExtractPlugin.loader : "style-loader",
+      isProduction ? MiniCssExtractPlugin.loader : 'style-loader',
       {
-        loader: "css-loader",
+        loader: 'css-loader',
         options: { sourceMap: isDevelopment },
       },
     ];
   };
-  console.log('mode : ', mode);
-  console.log('isProduction : ', isProduction);
   const getPlugins = () => {
     const plugins = [
       new CleanWebpackPlugin(),
@@ -80,9 +79,6 @@ module.exports = (env = {}) => {
         new MiniCssExtractPlugin({
           filename: '[name].[contenthash].css',
           chunkFilename: '[id].[contenthash].css',
-        }),
-        new CssnanoPlugin({
-          sourceMap: true,
         })
       );
     }
@@ -91,9 +87,13 @@ module.exports = (env = {}) => {
 
   return {
     entry: './demo/index.ts',
-    mode: isProduction ? 'production' : isDevelopment && 'development',
-    devtool: isDevelopment && 'source-map',
-
+    output: {
+      filename: 'index.js',
+      path: path.resolve(__dirname, 'dist'),
+      chunkFilename: '[id].[contenthash].js',
+    },
+    mode: isProduction ? 'production' : 'development',
+    devtool: isDevelopment ? 'source-map' : undefined,
     module: {
       rules: [
         {
@@ -136,20 +136,16 @@ module.exports = (env = {}) => {
         },
       ],
     },
-    plugins: getPlugins(),
-
-    output: {
-      filename: 'index.js',
-      path: path.resolve(__dirname, 'dist'),
-      chunkFilename: '[id].[contenthash].js',
+    optimization: {
+      minimize: isProduction,
+      minimizer: [new CssMinimizerPlugin(), new HtmlMinimizerPlugin(), '...'],
     },
-
+    plugins: getPlugins(),
     devServer: {
       hot: true,
       open: true,
       watchContentBase: true,
     },
-
     resolve: {
       extensions: ['.ts', '.js', '.css', '.scss'],
       modules: ['src', 'node_modules'],

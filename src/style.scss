@@ -3,11 +3,9 @@
 }
 
 @mixin linear-gradient($degrees, $top-color, $bottom-color, $opacity) {
-  background: linear-gradient(
-    $degrees,
-    rgba($top-color, $opacity) 0%,
-    rgba($bottom-color, $opacity) 100%
-  );
+  background: linear-gradient($degrees,
+  rgba($top-color, $opacity) 0%,
+  rgba($bottom-color, $opacity) 100%);
 
   filter: progid:dximagetransform.microsoft.gradient(startColorstr='#{rgba($top-color, $opacity)}', endColorstr='#{rgba($bottom-color, $opacity)}', GradientType=0); /* IE6-9 */
 }
