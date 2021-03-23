@@ -10,8 +10,8 @@ const CssMinimizerPlugin = require('css-minimizer-webpack-plugin');
 const HtmlMinimizerPlugin = require('html-minimizer-webpack-plugin');
 const webpack = require('webpack');
 
-module.exports = (env = {}) => {
-  const { mode = 'development' } = env;
+module.exports = (env, args = {}) => {
+  const { mode = 'development' } = args;
   
   const isProduction = mode === 'production';
   const isDevelopment = mode === 'development';
@@ -55,7 +55,6 @@ module.exports = (env = {}) => {
         alwaysWriteToDisk: true,
         meta: {
           'msapplication-TileColor': '#da532c',
-          'theme-color': '#ffffff',
         },
       }),
       new StylelintPlugin({

@@ -5,9 +5,9 @@
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "scripts": {
-    "start": "webpack --env mode=development serve",
-    "build": "webpack --env mode=production",
-    "build:dev": "webpack --env mode=development",
+    "start": "webpack serve --mode=development",
+    "build": "webpack --mode=production",
+    "build:dev": "webpack --mode=development",
     "eslint": "eslint --ext .ts src/",
     "eslint:fix": "eslint --fix --ext .ts, src/",
     "stylelint": "stylelint --config .stylelintrc.json \"./**/*.scss\"",
