@@ -6,60 +6,42 @@
   background: linear-gradient($degrees,
   rgba($top-color, $opacity) 0%,
   rgba($bottom-color, $opacity) 100%);
-
   filter: progid:dximagetransform.microsoft.gradient(startColorstr='#{rgba($top-color, $opacity)}', endColorstr='#{rgba($bottom-color, $opacity)}', GradientType=0); /* IE6-9 */
 }
 
-$dark: rgba(31, 32, 65, 1);
-$dark25: rgba(31, 32, 65, 0.25);
-$green-light: #6fcf97;
-$blue-light: #66d2ea;
-
-$prefixClass: 'fsd-slider';
-
-$disabledColor: #ccc;
-$border-radius-base: 6px;
-
-$primary-gradient: linear-gradient(180deg, $green-light 0%, $blue-light 100%);
-
-$primary-color: $green-light;
-$second-color: $blue-light;
-$third-color: $dark;
-$fourth-color: $dark25;
-$fifth-color: #6ad0c4;
-
-$tooltip-color: #fff;
-$tooltip-bg: tint(#666, 4%);
-$tooltip-arrow-width: 4px;
-$tooltip-distance: $tooltip-arrow-width + 4;
-$tooltip-arrow-color: $tooltip-bg;
-$ease-out-quint: cubic-bezier(0.23, 1, 0.32, 1);
-$ease-in-quint: cubic-bezier(0.755, 0.05, 0.855, 0.06);
-
 @mixin borderBox() {
   box-sizing: border-box;
-  -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+  -webkit-tap-highlight-color: rgba($color-black, 0);
 
   * {
     box-sizing: border-box;
-    -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+    -webkit-tap-highlight-color: rgba($color-black, 0);
   }
 }
+
+$prefixClass: 'fsd-slider';
+$border-radius-common: 6px;
+
+$color-dark: rgba(31, 32, 65, 1);
+$color-dark-opacity-25: rgba(31, 32, 65, 0.25);
+$color-green-light: #6fcf97;
+$color-blue-light: #66d2ea;
+$color-blue-green: #6ad0c4;
+$color-grey-light: #e9e9e9;
+$color-grey: #6b6b6b;
+$color-white: #fff;
+$color-black: #000;
 
 .#{$prefixClass} {
   @include borderBox();
 
-  border-radius: $border-radius-base;
+  border-radius: $border-radius-common;
   font-family: Helvetica, Arial, sans-serif;
   font-size: 14px;
   height: 14px;
   padding: 5px 0;
   position: relative;
   touch-action: none;
-  user-select: none;
-  user-select: none;
-  user-select: none;
-  user-select: none;
   user-select: none;
   width: 100%;
 
@@ -68,9 +50,9 @@ $ease-in-quint: cubic-bezier(0.755, 0.05, 0.855, 0.06);
   }
 
   &__rail {
-    background-color: #e9e9e9;
-    border: 1px solid $dark25;
-    border-radius: $border-radius-base;
+    background-color: $color-grey-light;
+    border: 1px solid $color-dark-opacity-25;
+    border-radius: $border-radius-common;
     box-sizing: border-box;
     height: 6px;
     position: absolute;
@@ -79,9 +61,9 @@ $ease-in-quint: cubic-bezier(0.755, 0.05, 0.855, 0.06);
   }
 
   &__track {
-    @include linear-gradient(180deg, $primary-color, $second-color, 60);
+    @include linear-gradient(180deg, $color-green-light, $color-blue-light, 60);
 
-    border-radius: $border-radius-base;
+    border-radius: $border-radius-common;
     height: 6px;
     left: 0;
     pointer-events: none;
@@ -90,8 +72,10 @@ $ease-in-quint: cubic-bezier(0.755, 0.05, 0.855, 0.06);
   }
 
   &__handle {
-    background: $primary-gradient;
-    border: 2px solid #fff;
+    background: linear-gradient(180deg,
+    $color-green-light 0%,
+    $color-blue-light 100%);
+    border: 2px solid $color-white;
     border-radius: 50%;
     cursor: pointer;
     height: 14px;
@@ -118,10 +102,10 @@ $ease-in-quint: cubic-bezier(0.755, 0.05, 0.855, 0.06);
   }
 
   &__tooltip {
-    background-color: #e4e4e4;
+    background-color: $color-grey-light;
     border-radius: 4px;
     bottom: 150%;
-    color: #4c4c4c;
+    color: $color-grey;
     display: none;
     left: 50%;
     padding: 5px;
@@ -151,7 +135,7 @@ $ease-in-quint: cubic-bezier(0.755, 0.05, 0.855, 0.06);
 
   &__mark {
     background: transparent;
-    color: #6b6b6b;
+    color: $color-grey;
     cursor: pointer;
     font-size: 13px;
     pointer-events: initial;
@@ -170,8 +154,8 @@ $ease-in-quint: cubic-bezier(0.755, 0.05, 0.855, 0.06);
   }
 
   &__dot {
-    background-color: #fff;
-    border: 2px solid $fifth-color;
+    background-color: $color-white;
+    border: 2px solid $color-blue-green;
     border-radius: 50%;
     bottom: -2px;
     cursor: pointer;
@@ -183,7 +167,7 @@ $ease-in-quint: cubic-bezier(0.755, 0.05, 0.855, 0.06);
   }
 
   &__dot_active {
-    background-color: $fifth-color;
+    background-color: $color-blue-green;
   }
 
   &__dot_reverse {
@@ -192,13 +176,13 @@ $ease-in-quint: cubic-bezier(0.755, 0.05, 0.855, 0.06);
 
   &_disabled {
     .#{$prefixClass}__track {
-      background: $disabledColor;
+      background: $color-grey-light;
     }
 
     .#{$prefixClass}__handle,
     .#{$prefixClass}__dot {
-      background: #fff;
-      border-color: $disabledColor;
+      background: $color-white;
+      border-color: $color-grey-light;
       box-shadow: none;
       cursor: not-allowed;
     }

@@ -27,7 +27,9 @@ module.exports = (env, args = {}) => {
   };
   const getPlugins = () => {
     const plugins = [
-      new CleanWebpackPlugin(),
+      new CleanWebpackPlugin({
+        dangerouslyAllowCleanPatternsOutsideProject: true,
+      }),
       new webpack.ProgressPlugin(),
       new webpack.ProvidePlugin({
         $: 'jquery',
@@ -130,7 +132,16 @@ module.exports = (env, args = {}) => {
                 },
               },
             },
-            'sass-loader',
+            {
+              loader: 'sass-loader',
+              options: {
+                sourceMap: isDevelopment,
+                additionalData: '@import "theme/variables.scss";',
+                sassOptions: {
+                  includePaths: [path.join(__dirname, 'demo')],
+                },
+              },
+            },
           ],
         },
       ],

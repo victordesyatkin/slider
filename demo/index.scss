@@ -5,11 +5,9 @@ body {
 }
 
 body {
-  color: #7f7f7f;
-  font-family: -apple-system, Helvetica Neue, Helvetica, Arial, sans-serif;
-  font-feature-settings: 'tnum', 'tnum';
+  color: $color-grey-dark;
+  font-family: Helvetica, Arial, sans-serif;
   font-size: 14px;
-  font-variant: tabular-nums;
 }
 
 *,

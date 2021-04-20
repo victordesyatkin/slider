@@ -2,15 +2,15 @@ $parent: 'button';
 
 .#{$parent} {
   cursor: pointer;
-  height: 25px;
-  min-height: 25px;
-  min-width: 25px;
-  width: 25px;
+  height: 1.785rem;
+  min-height: 1.785rem;
+  min-width: 1.785rem;
+  width: 1.785rem;
 
   &__content {
     align-items: center;
     display: inline-flex;
-    font-size: 12px;
+    font-size: 0.857rem;
     height: 100%;
     justify-content: center;
     margin: 0;
