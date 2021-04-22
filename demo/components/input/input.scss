@@ -1,15 +1,28 @@
 $parent: 'input';
 
 .#{$parent} {
-  cursor: pointer;
   display: flex;
   flex-direction: column;
-  flex-grow: 1;
-  flex-shrink: 1;
+  width: 100%;
   padding: 0.4rem 0;
 
   &_control {
     flex-direction: row;
+    .#{$parent}__label,
+    .#{$parent}__link {
+      display: none;
+      margin-bottom: 0;
+    }
+  }
+
+  &_first {
+    flex-direction: column;
+
+    .#{$parent}__label,
+    .#{$parent}__link {
+      display: inherit;
+      margin-bottom: 0.4rem;
+    }
   }
 
   &__section {
@@ -31,37 +44,20 @@ $parent: 'input';
     margin-bottom: 0.4rem;
   }
 
-  &_control {
-    .#{$parent}__label,
-    .#{$parent}__link {
-      display: none;
-      margin-bottom: 0;
-    }
-  }
-
-  &_first {
-    flex-direction: column;
-
-    .#{$parent}__label,
-    .#{$parent}__link {
-      display: inherit;
-      margin-bottom: 0.4rem;
-    }
-  }
-
-  &__input:focus {
-    outline: none;
-  }
-
   &__input {
     cursor: pointer;
     padding: 0.2rem;
     width: 100%;
-  }
+    cursor: pointer;
 
-  &__input[type='checkbox'] {
-    margin: 0;
-    width: auto;
+    &[type='checkbox'] {
+      margin: 0;
+      width: auto;
+    }
+
+    &:focus {
+      outline: none;
+    }
   }
 
   &__button-control {

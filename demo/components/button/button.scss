@@ -7,18 +7,18 @@ $parent: 'button';
   min-width: 1.785rem;
   width: 1.785rem;
 
+  &_control {
+    display: flex;
+  }
+
   &__content {
     align-items: center;
     display: inline-flex;
-    font-size: 0.857rem;
+    font-size: 0.7rem;
     height: 100%;
     justify-content: center;
     margin: 0;
     padding: 0;
     width: 100%;
-  }
-
-  &_control {
-    display: flex;
   }
 }
