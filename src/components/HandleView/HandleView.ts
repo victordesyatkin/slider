@@ -114,9 +114,9 @@ export default class HandleView extends PubSub implements ISubView {
     if (this.props) {
       const index = this.addition?.index;
       const style = this.props?.handle?.styles?.[index] || {};
-      const { values, min, max, vertical, reverse } = this.props;
+      const { values, min, max, vertical, reverse, precision } = this.props;
       const value = values[index];
-      const offset = calcOffset(value, min, max);
+      const offset = calcOffset(value, min, max, precision);
       const positionStyle = vertical
         ? {
             [reverse ? 'top' : 'bottom']: `${offset}%`,

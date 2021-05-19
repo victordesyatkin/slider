@@ -33,7 +33,7 @@ function calcOffset(
   value: number,
   min: number,
   max: number,
-  precision?: 0
+  precision = 0
 ): number {
   const ratio = (value - min) / (max - min);
   return Number(Math.max(0, ratio * 100).toFixed(precision));
@@ -104,6 +104,7 @@ function ensureValuePrecision(value: number, props: DefaultProps): number {
   )
     ? getClosestPoint(value, { step, min, max }, props)
     : 0;
+  console.log('ensureValuePrecision : ', closestPoint);
   return isUndefined(step)
     ? closestPoint
     : parseFloat(closestPoint.toFixed(getPrecision(step)));

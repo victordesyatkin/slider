@@ -17,11 +17,26 @@
         <li>Навыки автоматического unit-тестирования (включая TDD).</li>
     </ul>
     <h4>Архитектура приложения:</h4>
+    <p>В приложении использовался архитектурный шаблон проектирования MVP.</p>
     <p>
-        В приложении использовался архитектурный шаблон проектирования MVP.
-        Чтобы отвязать слои <a href="./docs/uml_diagram_bind.jpg" target="_blank" rel="noopener">View</a>, <a href="./docs/uml_diagram_bind.jpg" target="_blank" rel="noopener" target="_blank">Model</a> от внешних зависимостей использовался поведенческий шаблон проектирования Pub/Sub.
-        Передача данных между <a href="./docs/uml_diagram_bind.jpg" target="_blank" rel="noopener">View</a> и <a href="./docs/uml_diagram_bind.jpg" target="_blank" rel="noopener" target="_blank">Model</a> осуществляется при помощи слоя <a href="./docs/uml_diagram_bind.jpg" target="_blank" rel="noopener" target="_blank">Presenter</a>
-        Все свойства передаются от <a href="./docs/uml_diagram_bind.jpg" target="_blank" rel="noopener">Model</a> к <a href="./docs/uml_diagram_bind.jpg" target="_blank" rel="noopener">View</a>, а затем все свойства и обработчики в <a href="./docs/uml_diagram_bind.jpg" target="_blank" rel="noopener">SubView</a>. 
+        <strong><a href="./docs/uml_diagram_bind.jpg" target="_blank" rel="noopener">View</a></strong> - 
+        Вид (Представление) строит интерфейс, добавляет в него данные из Модели и отрисовет его в DOM.
+        Пользователь видит информацию и взаимодействует с интерфейсом, в частности с помощью событий мыши.
+        Вид перехватывает эти события, обрабатывает их с учетом среды выполнениня кода (браузер) и передаёт (делегирует) их 
+        Представителю, публикуя одно из событий: onChange, onBeforeChange или onAfterChange.
+    </p>
+    <p>
+        <strong><a href="./docs/uml_diagram_bind.jpg" target="_blank" rel="noopener" target="_blank">Presenter</a></strong> - 
+        Представитель посредник между Видом (Представлением) и Моделью. Подписывается на события onBeforeChange, onAfterChange, 
+        onChange, setIndex ожидаемые от Вида и setPropsForView ожидаемое от Модели. 
+        При публикации одного из событий Вида (onBeforeChange, onAfterChange, onChange, 
+        setIndex) происходит вызов одноименного метода Модели. При публикации события Модели (setPropsForView) 
+        происходит вызов метода setProps Вида.
+    </p>
+    <p>
+        <strong><a href="./docs/uml_diagram_bind.jpg" target="_blank" rel="noopener" target="_blank">Model</a></strong>
+        - Модель хранит, обрабатывает и обновляет данные. Метод onChange пересчитывает, обновляет данные модели и публикует 
+        их через событие setPropsForView. Метод onBeforeChange, onAfterChange вызывают одноименные функции, если они присутсвуют среди данных.
     </p>
     <h4>UML Diagram</h4>
     <ul>
@@ -34,13 +49,10 @@
         Тестирование осуществляется с помощью фреймворка для тестирования JavaScript <a href="https://jestjs.io/Jest" target="_blank" rel="noopener">Jest</a>
     </p>
     <h4>Заметки:</h4>
-    <p>
-        <i>Для демонстрации надо сверстать демо-страницу, где будет одновременно подключено больше трёх слайдеров, каждый с разными параметрами.</i>
-    </p>
     <ul>
+        <li>Для демонстрации надо сверстать демо-страницу, где будет одновременно подключено больше трёх слайдеров, каждый с разными параметрами.</li>
         <li>Рядом с каждым слайдером разместить панель конфигурирования, чтобы можно было на лету менять параметры. </li>
         <li>Рядом с каждым слайдером разместить инпут, в котором всегда будет синхронизировано значение слайдера — <strong>при изменении инпута на анфокус слайдер тоже меняет значение. И наоборот, при изменении слайдера, в инпут устанавливается сразу значение.</strong></li>
-        <li></li>
     </ul>
     <h4>JavaScript-библиотеки</h4>
     <ul>
@@ -59,15 +71,13 @@
         <li><a href="https://www.npmjs.com/package/lodash.uniq" target="_blank" rel="noopener">lodash.uniq</a></li>
     </ul>
     <h4>Установка</h4>
-        <h5>1. Клонированить репозиторий</h5>
-            <code>git clone git@github.com:victordesyatkin/slider.git</code>
-        <h5>2. Установить зависимости</h5>
-            <code>npm i</code>
-        <h5>3. Запуск демо</h5>
-            <code>npm run start</code>
-            <span>and then go to <a href="http://localhost:8080/" target="_blank" rel="noopener">http://localhost:8080/</a></span>
-        <h5>3. Запуск тестов</h5>
-            <code>npm t</code>
+        <ol>
+            <li>Установить совместимую версию Node.js v14.x (например v14.17.0 LTS)</li>
+            <li>Клонированить репозиторий <code>git clone git@github.com:victordesyatkin/slider.git</code></li>
+            <li>Установить зависимости <code>npm i</code></li>
+            <li>Запуск демо <code>npm run start</code>, затем перейте по адресу в браузере <a href="http://localhost:8080/" target="_blank" rel="noopener">http://localhost:8080/</a></li>
+            <li>Запуск тестов <code>npm t</code></li>            
+        </ol>
     <h4>Ручная Инициализация</h4>
         <h5>Инициализация</h5>
             <code>$(<span style="color: #df5000;">'.my-selector'</span>).slider([options])</code>
@@ -122,6 +132,12 @@
             <td>boolean</td>
             <td>false</td>
             <td>Направление компонентов слайдера если reverse true, то компоненты отображаются реверсивно</td>
+        </tr>
+        <tr>
+            <td>precision</td>
+            <td>number</td>
+            <td>0</td>
+            <td>Порядок точности для расчета положений handle, mark, dot, track, значений ближайшых узлов</td>
         </tr>
         <tr>
             <td>disabled</td>
@@ -225,5 +241,6 @@
             </td>
         </tr>
     </table>
+
 </body>
 </html>
