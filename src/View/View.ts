@@ -125,9 +125,11 @@ class View extends PubSub implements IView {
   }
 
   @bind
-  private handleViewClick(index: number, event: JQuery.Event): void {
+  private handleViewClick(_: number, event: JQuery.Event): void {
     $(window).off({ mouseup: this.handleWindowMouseUpForHandleFocusout });
-    $(window).on({ mouseup: this.handleWindowMouseUpForHandleFocusout });
+    if (this.props?.isFocused) {
+      $(window).on({ mouseup: this.handleWindowMouseUpForHandleFocusout });
+    }
     const { clientY: coordinateY = 0, pageX: coordinateX = 0 } = event || {};
     this.publish('onChange', {
       coordinateX,
@@ -150,7 +152,11 @@ class View extends PubSub implements IView {
   private handleWindowMouseUp(): void {
     $(window).off({ mousemove: this.handleWindowMouseMove });
     $(window).off({ mouseup: this.handleWindowMouseUp });
-    $(window).on({ mouseup: this.handleWindowMouseUpForHandleFocusout });
+    if (this.props?.isFocused) {
+      $(window).on({ mouseup: this.handleWindowMouseUpForHandleFocusout });
+    } else {
+      this.publish('setIndex', { index: -1 });
+    }
     this.publish('onAfterChange');
   }
 
@@ -210,7 +216,7 @@ class View extends PubSub implements IView {
     if (this.props) {
       let handles;
       let active;
-      const { index: readyIndex } = this.props;
+      const { index: readyIndex, isFocused } = this.props;
       if (action === 'mousedown') {
         handles = {
           handleViewMouseDown: this.handleViewMouseDown,
@@ -223,7 +229,7 @@ class View extends PubSub implements IView {
         }
       }
       for (let index = 0; index < count; index += 1) {
-        if (withActive) {
+        if (withActive && isFocused) {
           active = index === readyIndex;
         }
         if (readyViews[index]) {

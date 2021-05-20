@@ -95,6 +95,15 @@
                   "type": "values",
                   "property": "values"
                 }
+              },
+              {
+                "value": 3.5,
+                "type": "number",
+                "isControl": true,
+                "data": {
+                  "type": "values",
+                  "property": "values"
+                }
               }
             ]
           },
@@ -222,6 +231,22 @@
                 "data": {
                   "type": "disabled",
                   "property": "disabled"
+                }
+              }
+            ]
+          },
+          {
+            "caption": {
+              "content": "Use is focused",
+              "theme": "section"
+            },
+            "items": [
+              {
+                "value": 0,
+                "type": "checkbox",
+                "data": {
+                  "type": "isFocused",
+                  "property": "isFocused"
                 }
               }
             ]

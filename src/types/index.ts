@@ -3,6 +3,7 @@ type Props = {
   vertical?: boolean;
   reverse?: boolean;
   disabled?: boolean;
+  isFocused?: boolean;
   values?: number[];
   min?: number;
   max?: number;
@@ -29,6 +30,7 @@ type DefaultProps = {
   vertical: boolean;
   reverse: boolean;
   disabled: boolean;
+  isFocused?: boolean;
   values: number[];
   min: number;
   max: number;
@@ -55,6 +57,7 @@ type DefaultPropsView = {
   vertical: boolean;
   reverse: boolean;
   disabled: boolean;
+  isFocused: boolean;
   values: number[];
   min: number;
   max: number;

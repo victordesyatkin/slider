@@ -4,7 +4,11 @@ import bind from 'bind-decorator';
 import isUndefined from 'lodash.isundefined';
 
 import PubSub from '../../../Pubsub';
-import { objectToString, calcOffset } from '../../../helpers/utils';
+import {
+  objectToString,
+  calcOffset,
+  getPrecision,
+} from '../../../helpers/utils';
 import { ISubView } from '../../../interfaces';
 import { DefaultProps, Addition } from '../../../types';
 
@@ -114,13 +118,15 @@ class MarkView extends PubSub implements ISubView {
       const { value } = this.addition;
       if (!isUndefined(value)) {
         const render = this.props?.mark?.render;
+        const { step, precision } = this.props || {};
+        const readyPrecision = step ? getPrecision(step) : precision;
         let content:
           | string
           | HTMLElement
           | JQuery<HTMLElement>
           | JQuery<HTMLElement>[]
           | HTMLElement[]
-          | undefined = `${value}`;
+          | undefined = `${value.toFixed(readyPrecision)}`;
         if (render) {
           content = render(value);
         }

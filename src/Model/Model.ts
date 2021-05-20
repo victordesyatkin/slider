@@ -7,6 +7,7 @@ import {
   getPosition,
   calcValueByPos,
   getNearestIndex,
+  getCorrectIndex,
 } from '../helpers/utils';
 import { IModel } from '../interfaces';
 import { DefaultProps, Props } from '../types';
@@ -47,17 +48,16 @@ class Model extends PubSub implements IModel {
       action = 'onChange',
     } = options;
     const { index } = this.props;
-    let readyIndex = index;
-    if (isUndefined(readyIndex) || readyIndex < 0) {
-      readyIndex = getNearestIndex({
-        coordinateX,
-        coordinateY,
-        start,
-        length,
-        props: this.props,
-      });
-      this.setIndex({ index: readyIndex });
-    }
+    const { index: readyIndex, isCorrect } = getCorrectIndex({
+      index,
+      coordinateX,
+      coordinateY,
+      start,
+      length,
+      props: this.props,
+    });
+    // console.log('index : ', readyIndex);
+    // console.log('isCorrect : ', isCorrect);
     const position: number = getPosition({
       vertical,
       coordinateX,
@@ -76,7 +76,9 @@ class Model extends PubSub implements IModel {
     if (previousValue !== nextValue) {
       const nextValues = [...previousValues];
       nextValues[readyIndex] = nextValue;
-      this.setProps(merge({}, this.props, { values: nextValues }));
+      this.setProps(
+        merge({}, this.props, { values: nextValues, index: readyIndex })
+      );
       if (this.props && action in this.props) {
         let onAction: ((values: number[]) => void) | undefined;
         if (action === 'onChange') {
@@ -90,6 +92,8 @@ class Model extends PubSub implements IModel {
           onAction(nextValues);
         }
       }
+    } else if (isCorrect) {
+      this.setIndex({ index: readyIndex });
     }
   }
 

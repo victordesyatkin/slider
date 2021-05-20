@@ -26,6 +26,8 @@ class Example {
 
   private props?: Props;
 
+  private cache: Record<string, JQuery<HTMLElement>> = {};
+
   constructor(parent: HTMLElement) {
     this.$parent = $(parent);
     this.$sliderWrapper = $('.js-slider__dummy', this.$parent);
@@ -122,14 +124,41 @@ class Example {
 
   private init(): void {
     this.slider = this.$sliderWrapper
-      .slider({ onAfterChange: this.onAfterChange })
+      .slider({
+        onAfterChange: this.onAfterChange,
+        onChange: this.onAfterChange,
+      })
       .data(Slider.PLUGIN_NAME) as Slider;
     this.initHandlers();
+    this.initCache();
     this.updateProps();
+    this.cache = {};
   }
 
   private initHandlers() {
     this.$sections.each(this.initHandler);
+  }
+
+  private initCache() {
+    this.cache = {};
+    let index = 0;
+    $('.js-input').each((_: number, element: HTMLElement) => {
+      const $element = $(element);
+      const data = $element.data('data') as
+        | {
+            type: string;
+            property: string;
+          }
+        | undefined;
+      if (data) {
+        const type = data?.type as keyof Omit<Props, 'values'>;
+        const property = data?.property;
+        this.cache[`${type}-${property}-${index}`] = $element;
+        if (property === 'values') {
+          index += 1;
+        }
+      }
+    });
   }
 
   @bind
@@ -148,6 +177,8 @@ class Example {
   private setProps(): void {
     if (this.props && this.slider) {
       this.slider.setProps(this.props);
+      const props = this.slider.getProps();
+      this.updateSections(props);
     }
   }
 
@@ -168,6 +199,92 @@ class Example {
     return false;
   }
 
+  private updateSections(props: Props): void {
+    if (this.checkNeedUpdate(props)) {
+      this.props = props;
+      const { values, ...other } = props;
+      Object.keys(this.cache).forEach((key) => {
+        this.updateSection({ key, props: other });
+      });
+      if (values) {
+        $('.js-input_control', this.$sections).each(
+          (index, element: HTMLElement) => {
+            if ($(element) && $(element).data) {
+              if ($(element).data('data')) {
+                const data = $(element).data('data') as {
+                  type: string | undefined;
+                };
+                const type = data?.type as string;
+                if (type === 'values') {
+                  $('.js-input__input', element).val(values[index]);
+                }
+              }
+            }
+          }
+        );
+      }
+    }
+  }
+
+  @bind
+  private updateSection(options: {
+    key: string;
+    props: Omit<Props, 'values'>;
+  }) {
+    const { key, props } = options;
+    const parts = key.split('-');
+    const [type, property, index] = parts;
+    if (type && property) {
+      const readyType = type as keyof Omit<Props, 'values'>;
+      const values = props[readyType];
+      if (values) {
+        console.log('values : ', values);
+        const $item = this.cache[key];
+        const $input = $('.js-input__input', $item);
+        const value = this.extractValue();
+
+        if (!isUndefined(value)) {
+          switch (property) {
+            case 'min':
+            case 'max':
+            case 'step':
+            case 'precision':
+            case 'indent': {
+              $input.val(Number(value));
+              break;
+            }
+            case 'disabled':
+            case 'vertical':
+            case 'reverse':
+            case 'isFocused':
+            case 'on':
+            case 'dot':
+            case 'always': {
+              value = Number(value);
+              $input.val(value);
+              $input.prop('checked', Boolean(value));
+              break;
+            }
+            default: {
+              break;
+            }
+          }
+        }
+      }
+    }
+  }
+
+  private extractValue<T>(options: { values: T }) {
+    const isCorrect =
+      isObject(values) && !Array.isArray(values) && !isFunction(values);
+    if (isCorrect) {
+      const readyProperty = property;
+      const value = values[readyProperty];
+    } else {
+      value = 0;
+    }
+  }
+
   @bind
   private onAfterChange(values?: number[]): void {
     if (!values || !this.props) {
@@ -175,26 +292,12 @@ class Example {
     }
     const prev = JSON.stringify(orderBy(this.props?.values || [], [], ['asc']));
     const next = JSON.stringify(orderBy(values || [], [], ['asc']));
-
     if (next === prev) {
       return;
     }
-    set(this.props, ['values'], values);
-    $('.js-input_control', this.$sections).each(
-      (index, element: HTMLElement) => {
-        if ($(element) && $(element).data) {
-          if ($(element).data('data')) {
-            const data = $(element).data('data') as {
-              type: string | undefined;
-            };
-            const type = data?.type as string;
-            if (type === 'values') {
-              $('.js-input__input', element).val(values[index]);
-            }
-          }
-        }
-      }
-    );
+    const props = merge({}, this.props);
+    set(props, ['values'], values);
+    this.updateSections(props);
   }
 
   @bind
@@ -244,7 +347,7 @@ class Example {
         const $span = $('.js-input__section-key', $last);
         $span.text(`${key + 1}:`);
         const $input = $('.js-input__input', $last);
-        $input.attr({ id: uniqId });
+        $input.attr({ id: uniqId() });
         const max = this.props?.max || 0;
         const min = this.props?.min || 0;
         const value =
@@ -274,12 +377,12 @@ class Example {
   }
 
   @bind
-  private processingSection(index: number, element: HTMLElement): void {
+  private processingSection(_: number, element: HTMLElement): void {
     $('.js-input', element).each(this.processingInput);
   }
 
   @bind
-  private processingInput(index: number, element: HTMLElement): void {
+  private processingInput(_: number, element: HTMLElement): void {
     const { property, type } = ($(element).data()?.data || {}) as {
       property?: string | undefined;
       type?: keyof Props;
@@ -319,9 +422,9 @@ class Example {
         'disabled',
         'vertical',
         'reverse',
-        'push',
         'precision',
         'indent',
+        'isFocused',
       ].indexOf(property) !== -1
     ) {
       this.props = {
@@ -370,7 +473,7 @@ class Example {
       case 'disabled':
       case 'vertical':
       case 'reverse':
-      case 'push':
+      case 'isFocused':
       case 'on':
       case 'dot':
       case 'always': {

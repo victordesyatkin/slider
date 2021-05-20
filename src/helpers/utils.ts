@@ -17,6 +17,7 @@ const defaultProps: DefaultProps = {
   reverse: false,
   precision: 0,
   mark: { values: [] },
+  isFocused: false,
 };
 
 function objectToString(style?: { [key: string]: string }): string {
@@ -286,7 +287,10 @@ function prepareData(props?: Props, prevProps?: DefaultProps): DefaultProps {
     props?.mark?.values ||
     prevProps?.mark?.values ||
     defaultProps?.mark?.values;
-  const mergeProps: DefaultProps = merge({}, defaultProps, prevProps, props);
+  const step = props?.step ? Math.abs(props.step) : undefined;
+  const mergeProps: DefaultProps = merge({}, defaultProps, prevProps, props, {
+    step,
+  });
   return prepareValues({
     ...mergeProps,
     values,
@@ -310,12 +314,26 @@ function getPosition({
   return vertical ? coordinateY : coordinateX;
 }
 
+function isDirectionToMin(options: {
+  value: number;
+  props: DefaultProps;
+  item: number;
+}): boolean {
+  const { value, props, item } = options;
+  const { reverse } = props;
+  const sign = reverse ? -1 : +1;
+  const direction = (value - item) * sign;
+  return direction < 0;
+}
+
 function getNearest({
   value,
   values,
+  props,
 }: {
   value: number;
   values: number[];
+  props: DefaultProps;
 }): {
   index: number;
   value: number;
@@ -325,7 +343,13 @@ function getNearest({
   let readyDifferent = Number.MAX_SAFE_INTEGER;
   values.forEach((item, index) => {
     const different = Math.abs(value - item);
-    if (readyDifferent > different) {
+    if (isDirectionToMin({ value, props, item })) {
+      if (readyDifferent > different) {
+        readyDifferent = different;
+        readyIndex = index;
+        readyValue = item;
+      }
+    } else if (readyDifferent >= different) {
       readyDifferent = different;
       readyIndex = index;
       readyValue = item;
@@ -350,8 +374,42 @@ function getNearestIndex(options: {
     min,
     max,
   });
-  const { index } = getNearest({ value, values });
+  const { index } = getNearest({ value, values, props });
   return index;
+}
+
+function getCorrectIndex(options: {
+  coordinateX: number;
+  coordinateY: number;
+  start: number;
+  props: DefaultProps;
+  length: number;
+  index?: number;
+}): { isCorrect: boolean; index: number } {
+  const { index, ...other } = options;
+  let readyIndex: number = index || 0;
+  let isCorrect = false;
+  const isNotCorrectIndex = isUndefined(index) || index < 0;
+  if (isNotCorrectIndex) {
+    readyIndex = getNearestIndex(other);
+    isCorrect = true;
+  } else if (!isUndefined(index)) {
+    const { props } = other;
+    const { values } = props;
+    const currentValue = values[index];
+    const previousValue = values[index - 1];
+    const nextValue = values[index + 1];
+    readyIndex = index;
+    // console.log('currentValue : ', currentValue);
+    // console.log('previousValue : ', previousValue);
+    // console.log('nextValue : ', nextValue);
+    if (currentValue === previousValue || currentValue === nextValue) {
+      readyIndex = getNearestIndex(other);
+      // console.log('readyIndex : ', getNearestIndex(other));
+      isCorrect = true;
+    }
+  }
+  return { index: readyIndex, isCorrect };
 }
 
 export {
@@ -379,4 +437,5 @@ export {
   getNearestIndex,
   getNearest,
   defaultProps,
+  getCorrectIndex,
 };
