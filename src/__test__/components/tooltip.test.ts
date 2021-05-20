@@ -1,6 +1,6 @@
 import $ from 'jquery';
 
-import TooltipView from '../../components/TooltipView';
+import TooltipView from '../../View/TooltipView';
 import {
   setFunctionGetBoundingClientRectHTMLElement,
   defaultProps,

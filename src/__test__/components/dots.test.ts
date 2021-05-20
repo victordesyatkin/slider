@@ -1,6 +1,6 @@
 import $ from 'jquery';
 
-import DotsView from '../../components/DotsView';
+import DotsView from '../../View/DotsView';
 import {
   setFunctionGetBoundingClientRectHTMLElement,
   defaultProps,

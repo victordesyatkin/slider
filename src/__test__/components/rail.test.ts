@@ -1,6 +1,6 @@
 import $ from 'jquery';
 
-import RailView from '../../components/RailView';
+import RailView from '../../View/RailView';
 import {
   setFunctionGetBoundingClientRectHTMLElement,
   defaultProps,

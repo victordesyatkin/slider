@@ -4,10 +4,10 @@ import bind from 'bind-decorator';
 import orderBy from 'lodash.orderby';
 import isUndefined from 'lodash.isundefined';
 
-import PubSub from '../../Pubsub';
-import { objectToString, calcOffset } from '../../helpers/utils';
-import { ISubView } from '../../interfaces';
-import { DefaultProps, Addition } from '../../types';
+import PubSub from '../../../Pubsub';
+import { objectToString, calcOffset } from '../../../helpers/utils';
+import { ISubView } from '../../../interfaces';
+import { DefaultProps, Addition } from '../../../types';
 
 class DotView extends PubSub implements ISubView {
   private props?: DefaultProps;

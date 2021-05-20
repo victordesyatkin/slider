@@ -3,10 +3,10 @@ import classnames from 'classnames';
 import bind from 'bind-decorator';
 import isUndefined from 'lodash.isundefined';
 
-import PubSub from '../../Pubsub';
-import { objectToString, calcOffset } from '../../helpers/utils';
-import { ISubView } from '../../interfaces';
-import { DefaultProps, Addition } from '../../types';
+import PubSub from '../../../Pubsub';
+import { objectToString, calcOffset } from '../../../helpers/utils';
+import { ISubView } from '../../../interfaces';
+import { DefaultProps, Addition } from '../../../types';
 
 class MarkView extends PubSub implements ISubView {
   private props?: DefaultProps;

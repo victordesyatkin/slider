@@ -9,11 +9,11 @@ import {
   getSliderLength,
 } from '../helpers/utils';
 import PubSub from '../Pubsub';
-import RailView from '../components/RailView';
-import HandleView from '../components/HandleView';
-import TrackView from '../components/TrackView';
-import DotsView from '../components/DotsView';
-import MarksView from '../components/MarksView';
+import RailView from './RailView';
+import HandleView from './HandleView';
+import TrackView from './TrackView';
+import DotsView from './DotsView';
+import MarksView from './MarksView';
 import { DefaultPropsView, Addition } from '../types';
 import { IView, ISubView } from '../interfaces';
 

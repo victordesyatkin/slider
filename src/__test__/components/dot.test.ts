@@ -1,7 +1,7 @@
 import $ from 'jquery';
 import merge from 'lodash.merge';
 
-import DotView from '../../components/DotView';
+import DotView from '../../View/DotsView/DotView';
 import {
   setFunctionGetBoundingClientRectHTMLElement,
   defaultProps,

@@ -1,19 +1,12 @@
 import JQuery from 'jquery';
 import pick from 'lodash.pick';
 
-import { prepareData } from '../helpers/utils';
 import { Props, DefaultProps, KeyDefaultProps } from '../types';
-import { IModel, IPresenter, IView } from '../interfaces';
-import Model from '../Model';
-import View from '../View';
+import { IPresenter } from '../interfaces';
 import Presenter from '../Presenter';
 
 class Slider {
   static PLUGIN_NAME = 'slider';
-
-  private model: IModel;
-
-  private view: IView;
 
   private presenter: IPresenter;
 
@@ -32,10 +25,7 @@ class Slider {
   }
 
   constructor(element: JQuery<HTMLElement>, props?: Props) {
-    this.model = new Model(prepareData(props));
-    this.view = new View();
-    this.presenter = new Presenter(this.model, this.view);
-    this.view.render(element);
+    this.presenter = new Presenter(element, props);
   }
 
   public getProps(): DefaultProps {

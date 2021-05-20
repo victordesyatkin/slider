@@ -1,17 +1,21 @@
 import bind from 'bind-decorator';
 
+import { prepareData } from '../helpers/utils';
 import { DefaultPropsView, Props, DefaultProps } from '../types';
 import { IModel, IView, IPresenter } from '../interfaces';
+import Model from '../Model';
+import View from '../View';
 
 class Presenter implements IPresenter {
   private model: IModel;
 
   private view: IView;
 
-  constructor(model: IModel, view: IView) {
-    this.model = model;
-    this.view = view;
-    this.view.setProps(this.model.getProps());
+  constructor(element: JQuery<HTMLElement>, props?: Props) {
+    this.model = new Model(prepareData(props));
+    this.view = new View();
+    this.view.render(element);
+    this.view.setProps(this.getProps());
     this.initHandlesView();
     this.initHandlesModel();
   }
