@@ -87,8 +87,14 @@ function getClosestPoint(
     const maxSteps = Math.floor(
       (max * baseNum - min * baseNum) / (step * baseNum)
     );
+    // console.log('value : ', value);
     const steps = Math.min((value - min) / step, maxSteps);
     const closestStep = Math.round(steps) * step + min;
+    // console.log('baseNum : ', baseNum);
+    // console.log('maxSteps : ', maxSteps);
+    // console.log('step : ', step);
+    // console.log('steps : ', steps);
+    // console.log('closestStep : ', closestStep);
     points.push(closestStep);
     points = uniq(points);
     const diffs = points.map((point) => Math.abs(value - point));
@@ -104,10 +110,11 @@ function ensureValuePrecision(value: number, props: DefaultProps): number {
   )
     ? getClosestPoint(value, { step, min, max }, props)
     : 0;
-  console.log('ensureValuePrecision : ', closestPoint);
-  return isUndefined(step)
-    ? closestPoint
-    : parseFloat(closestPoint.toFixed(getPrecision(step)));
+  // console.log('ensureValuePrecision : ', closestPoint);
+  // console.log('ensureValuePrecision step: ', step);
+  return step
+    ? parseFloat(closestPoint.toFixed(getPrecision(step)))
+    : closestPoint;
 }
 
 function checkNeighbors(value: number[]): boolean {
@@ -203,12 +210,13 @@ function calcValue(options: {
   props: DefaultProps;
 }): number {
   const { offset, length, props } = options;
-  const { vertical, min, max, precision } = props;
+  const { vertical, min, max, precision, step } = props;
   const ratio = Math.abs(Math.max(offset, 0) / length);
   const value = vertical
     ? (1 - ratio) * (max - min) + min
     : ratio * (max - min) + min;
-  return Number(value.toFixed(precision));
+  const readyPrecision = step ? getPrecision(step) : precision;
+  return Number(value.toFixed(readyPrecision));
 }
 
 function calcValueByPos(options: {
@@ -226,7 +234,9 @@ function calcValueByPos(options: {
     min,
     max,
   });
+  // console.log('calcValueByPos ensureValueInRange : ', value);
   value = calcValueWithEnsure({ ...options, value });
+  // console.log('calcValueByPos calcValueWithEnsure : ', value);
   return value;
 }
 

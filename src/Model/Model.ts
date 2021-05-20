@@ -72,6 +72,7 @@ class Model extends PubSub implements IModel {
       props: this.props,
       index: readyIndex,
     });
+    // console.log('nextValue : ', nextValue);
     if (previousValue !== nextValue) {
       const nextValues = [...previousValues];
       nextValues[readyIndex] = nextValue;

@@ -137,7 +137,13 @@
             <td>precision</td>
             <td>number</td>
             <td>0</td>
-            <td>Порядок точности для расчета положений handle, mark, dot, track, значений ближайшых узлов</td>
+            <td>Порядок точности для расчета значений, если шаг отсутствует</td>
+        </tr>
+        <tr>
+            <td>indent</td>
+            <td>number</td>
+            <td>0</td>
+            <td>Отступ для handles</td>
         </tr>
         <tr>
             <td>disabled</td>
