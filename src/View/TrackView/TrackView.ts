@@ -93,20 +93,17 @@ export default class TrackView extends PubSub implements ISubView {
     if (this.props) {
       const index = this.addition?.index;
       const style = this.props?.track?.styles?.[index] || {};
-      const { vertical, min, max, precision } = this.props;
+      const { vertical, min, max } = this.props;
       let { reverse } = this.props;
       const { values, startPoint } = this.props;
-      const readyOffset = calcOffset(values[index], min, max, precision);
+      const readyOffset = calcOffset(values[index], min, max, 2);
       let offset = readyOffset;
       let length;
       if (values.length > 1) {
-        length =
-          calcOffset(values[index + 1], min, max, precision) - readyOffset;
+        length = calcOffset(values[index + 1], min, max, 2) - readyOffset;
       } else {
         const trackOffset =
-          startPoint !== undefined
-            ? calcOffset(startPoint, min, max, precision)
-            : 0;
+          startPoint !== undefined ? calcOffset(startPoint, min, max, 2) : 0;
         offset = trackOffset;
         length = readyOffset - trackOffset;
       }

@@ -41,7 +41,6 @@ class Example {
       return result;
     }
     try {
-      // eslint-disable-next-line @typescript-eslint/no-implied-eval
       result = new Function('v', string) as Render;
       result(0);
     } catch (error) {
@@ -122,6 +121,53 @@ class Example {
     $('.js-section__item_control', currentTarget).each(Example.updateHandle);
   }
 
+  private static extractFunctionBody(callback?: unknown): string | undefined {
+    let result: string | undefined;
+    if (isFunction(callback)) {
+      const entire = callback.toString();
+      return entire.slice(entire.indexOf('{') + 1, entire.lastIndexOf('}'));
+    }
+    return result;
+  }
+
+  private static extractValue(options: {
+    values: unknown;
+    property: string;
+    index: number;
+  }): string | number | undefined | boolean {
+    const { values, property, index } = options;
+    let value: string | number | undefined | boolean = '';
+    const isCorrectObject =
+      isObject(values) && !Array.isArray(values) && !isFunction(values);
+    const isCorrectType =
+      typeof values === 'string' ||
+      typeof values === 'boolean' ||
+      typeof values === 'number' ||
+      typeof values === 'undefined';
+    if (isCorrectObject && typeof values === 'object') {
+      const readyProperty = property as keyof typeof values;
+      const temp = values?.[readyProperty];
+      if (isObject(temp) || isFunction(temp)) {
+        if (Array.isArray(temp) && property === 'values') {
+          const readyIndex = index as keyof typeof temp;
+          value = temp[readyIndex];
+        } else if (isFunction(temp)) {
+          const readyTemp = temp as () => void;
+          value = Example.extractFunctionBody(readyTemp);
+        } else {
+          value = JSON.stringify(temp);
+        }
+      } else {
+        value = temp;
+      }
+    } else if (Array.isArray(values) || isFunction(values)) {
+      value = JSON.stringify(values);
+    } else if (isCorrectType) {
+      value = values as number;
+    }
+    return value;
+  }
+
   private init(): void {
     this.slider = this.$sliderWrapper
       .slider({
@@ -132,7 +178,6 @@ class Example {
     this.initHandlers();
     this.initCache();
     this.updateProps();
-    this.cache = {};
   }
 
   private initHandlers() {
@@ -153,12 +198,16 @@ class Example {
       if (data) {
         const type = data?.type as keyof Omit<Props, 'values'>;
         const property = data?.property;
+        if (property !== 'values') {
+          index = 0;
+        }
         this.cache[`${type}-${property}-${index}`] = $element;
         if (property === 'values') {
           index += 1;
         }
       }
     });
+    // console.log('this.cache : ', this.cache);
   }
 
   @bind
@@ -177,7 +226,9 @@ class Example {
   private setProps(): void {
     if (this.props && this.slider) {
       this.slider.setProps(this.props);
+      // console.log('set props : ', this.props);
       const props = this.slider.getProps();
+      // console.log('got props : ', props);
       this.updateSections(props);
     }
   }
@@ -203,6 +254,7 @@ class Example {
     if (this.checkNeedUpdate(props)) {
       this.props = props;
       const { values, ...other } = props;
+      // console.log('this.cache : ', this.cache);
       Object.keys(this.cache).forEach((key) => {
         this.updateSection({ key, props: other });
       });
@@ -237,51 +289,58 @@ class Example {
     if (type && property) {
       const readyType = type as keyof Omit<Props, 'values'>;
       const values = props[readyType];
-      if (values) {
-        console.log('values : ', values);
+      if (!isUndefined(values)) {
         const $item = this.cache[key];
         const $input = $('.js-input__input', $item);
-        const value = this.extractValue();
-
-        if (!isUndefined(value)) {
-          switch (property) {
-            case 'min':
-            case 'max':
-            case 'step':
-            case 'precision':
-            case 'indent': {
-              $input.val(Number(value));
-              break;
-            }
-            case 'disabled':
-            case 'vertical':
-            case 'reverse':
-            case 'isFocused':
-            case 'on':
-            case 'dot':
-            case 'always': {
-              value = Number(value);
-              $input.val(value);
-              $input.prop('checked', Boolean(value));
-              break;
-            }
-            default: {
-              break;
-            }
+        let value = Example.extractValue({
+          values,
+          property,
+          index: Number(index),
+        });
+        // console.log('type : ', type);
+        // console.log('values : ', values);
+        // console.log('property : ', property);
+        // console.log('value : ', value);
+        // console.log('$input : ', $input);
+        switch (property) {
+          case 'min':
+          case 'max':
+          case 'step':
+          case 'precision':
+          case 'indent': {
+            value = parseFloat(String(value)) || 0;
+            // console.log('value1 : ', value);
+            $input.val(value);
+            break;
+          }
+          case 'disabled':
+          case 'vertical':
+          case 'reverse':
+          case 'isFocused':
+          case 'on':
+          case 'dot':
+          case 'always':
+          case 'values': {
+            value = Number(value);
+            $input.val(value);
+            $input.prop('checked', Boolean(value));
+            break;
+          }
+          case 'classNames':
+          case 'styles':
+          case 'className':
+          case 'style':
+          case 'wrapClassName':
+          case 'render': {
+            value = isUndefined(value) ? '' : String(value);
+            $input.val(value);
+            break;
+          }
+          default: {
+            break;
           }
         }
       }
-    }
-  }
-
-  private extractValue<T>(options: { values: T }) {
-    const isCorrect =
-      isObject(values) && !Array.isArray(values) && !isFunction(values);
-    if (isCorrect) {
-      const readyProperty = property;
-      const value = values[readyProperty];
-    } else {
-      value = 0;
     }
   }
 

@@ -3,7 +3,7 @@ import classnames from 'classnames';
 import isUndefined from 'lodash.isundefined';
 
 import PubSub from '../../Pubsub';
-import { objectToString } from '../../helpers/utils';
+import { objectToString, getPrecision } from '../../helpers/utils';
 import { ISubView } from '../../interfaces';
 import { DefaultProps, Addition } from '../../types';
 
@@ -103,13 +103,15 @@ export default class TooltipView extends PubSub implements ISubView {
       const { value } = this.addition;
       if (!isUndefined(value)) {
         const render = this.props?.tooltip?.render;
+        const { step, precision } = this.props || {};
+        const readyPrecision = step ? getPrecision(step) : precision;
         let content:
           | string
           | HTMLElement
           | JQuery<HTMLElement>
           | JQuery<HTMLElement>[]
           | HTMLElement[]
-          | undefined = `${value}`;
+          | undefined = `${value.toFixed(readyPrecision)}`;
         if (render) {
           content = render(value);
         }

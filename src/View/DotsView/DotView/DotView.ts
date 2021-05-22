@@ -104,8 +104,8 @@ class DotView extends PubSub implements ISubView {
     if (this.props) {
       const value = this.addition?.value || 0;
       const style = this.props?.dot?.style || {};
-      const { vertical, min, max, reverse, precision } = this.props;
-      const offset = calcOffset(value, min, max, precision);
+      const { vertical, min, max, reverse } = this.props;
+      const offset = calcOffset(value, min, max, 2);
       const positionStyle = vertical
         ? {
             [reverse ? 'top' : 'bottom']: `${offset}%`,

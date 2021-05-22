@@ -34,6 +34,7 @@ module.exports = (env, args = {}) => {
       new webpack.ProvidePlugin({
         $: 'jquery',
         jQuery: 'jquery',
+        process: 'process/browser',
       }),
       new HtmlWebpackPlugin({
         getData: () => {

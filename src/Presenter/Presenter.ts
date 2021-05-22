@@ -1,7 +1,7 @@
 import bind from 'bind-decorator';
 
 import { prepareData } from '../helpers/utils';
-import { DefaultPropsView, Props, DefaultProps } from '../types';
+import { DefaultProps, Props } from '../types';
 import { IModel, IView, IPresenter } from '../interfaces';
 import Model from '../Model';
 import View from '../View';
@@ -60,7 +60,7 @@ class Presenter implements IPresenter {
   }
 
   @bind
-  private setPropsForView(props: DefaultPropsView): void {
+  private setPropsForView(props: DefaultProps): void {
     this.view.setProps(props);
   }
 

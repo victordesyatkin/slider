@@ -14,11 +14,11 @@ import HandleView from './HandleView';
 import TrackView from './TrackView';
 import DotsView from './DotsView';
 import MarksView from './MarksView';
-import { DefaultPropsView, Addition } from '../types';
+import { DefaultProps, Addition } from '../types';
 import { IView, ISubView } from '../interfaces';
 
 class View extends PubSub implements IView {
-  private props?: DefaultPropsView;
+  private props?: DefaultProps;
 
   private view?: JQuery<HTMLElement>;
 
@@ -36,7 +36,7 @@ class View extends PubSub implements IView {
 
   private isRendered = false;
 
-  public setProps(props: DefaultPropsView): void {
+  public setProps(props: DefaultProps): void {
     this.props = props;
     this.updateView();
     this.createOrUpdateSubViews();

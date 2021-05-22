@@ -6,7 +6,6 @@ import {
   prepareData,
   getPosition,
   calcValueByPos,
-  getNearestIndex,
   getCorrectIndex,
 } from '../helpers/utils';
 import { IModel } from '../interfaces';

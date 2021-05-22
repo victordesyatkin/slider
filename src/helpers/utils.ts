@@ -2,6 +2,9 @@ import orderBy from 'lodash.orderby';
 import merge from 'lodash.merge';
 import uniq from 'lodash.uniq';
 import isUndefined from 'lodash.isundefined';
+import isObject from 'lodash.isobject';
+import isString from 'lodash.isstring';
+import trim from 'lodash.trim';
 
 import { DefaultProps, Props } from '../types';
 
@@ -18,7 +21,13 @@ const defaultProps: DefaultProps = {
   precision: 0,
   mark: { values: [] },
   isFocused: false,
+  step: 0,
+  indent: 0,
 };
+
+function isReallyObject(value: unknown): boolean {
+  return Object.prototype.toString.call(value) === '[object Object]';
+}
 
 function objectToString(style?: { [key: string]: string }): string {
   if (!style) {
@@ -129,21 +138,32 @@ function ensureValueCorrectNeighbors(options: {
 }): number {
   const { props, index } = options;
   const { indent, values } = props;
-  let { min, max } = props;
-  const { value } = options;
+  const { min, max } = props;
+  let { value } = options;
+  let calculateMin = min;
+  let calculateMax = max;
   if (checkNeighbors(values)) {
     const prevValue = values?.[index - 1];
     const nextValue = values?.[index + 1];
     if (!isUndefined(prevValue)) {
-      min = indent ? prevValue + indent : prevValue;
+      calculateMin = indent ? prevValue + indent : prevValue;
     }
     if (!isUndefined(nextValue)) {
-      max = indent ? nextValue - indent : nextValue;
+      calculateMax = indent ? nextValue - indent : nextValue;
+    }
+    const icCorrect = indent && (prevValue || nextValue);
+    if (icCorrect) {
+      value = ensureValueInRange(value, {
+        min: calculateMin,
+        max: calculateMax,
+      });
+      calculateMin = min;
+      calculateMax = max;
     }
   }
   return ensureValueInRange(value, {
-    min,
-    max,
+    min: calculateMin,
+    max: calculateMax,
   });
 }
 
@@ -168,7 +188,7 @@ function prepareValues(props: DefaultProps): DefaultProps {
   let markValues: number[] = (mark?.values || []).map((value) =>
     ensureValueInRange(value, { min: props.min, max: props.max })
   );
-  markValues = orderBy(uniq(markValues), [], ['asc']);
+  markValues = orderBy(markValues, [], ['asc']);
   return { ...props, values, mark: { ...mark, values: markValues } };
 }
 
@@ -211,12 +231,12 @@ function calcValue(options: {
   props: DefaultProps;
 }): number {
   const { offset, length, props } = options;
-  const { vertical, min, max, precision, step } = props;
+  const { vertical, min, max, step } = props;
   const ratio = Math.abs(Math.max(offset, 0) / length);
   const value = vertical
     ? (1 - ratio) * (max - min) + min
     : ratio * (max - min) + min;
-  const readyPrecision = step ? getPrecision(step) : precision;
+  const readyPrecision = step ? getPrecision(step) : 2;
   return Number(value.toFixed(readyPrecision));
 }
 
@@ -235,9 +255,7 @@ function calcValueByPos(options: {
     min,
     max,
   });
-  // console.log('calcValueByPos ensureValueInRange : ', value);
   value = calcValueWithEnsure({ ...options, value });
-  // console.log('calcValueByPos calcValueWithEnsure : ', value);
   return value;
 }
 
@@ -280,22 +298,291 @@ function setFunctionGetBoundingClientRectHTMLElement(
   };
 }
 
+function parseJSON(json?: unknown): undefined | unknown {
+  let result: unknown;
+  if (!isString(json) || !trim(json)) {
+    return result;
+  }
+  if (json) {
+    try {
+      result = JSON.parse(json) as unknown;
+    } catch (error) {
+      result = undefined;
+    }
+  }
+  return result;
+}
+
+function correctMin(options: {
+  key: string;
+  props: DefaultProps;
+  values: unknown;
+}): void {
+  const { key, values, props } = options;
+  const { max } = props;
+  const readyKey = key as keyof typeof props;
+  const readyValues = parseFloat(String(values));
+  const isNeedCorrect = Number.isNaN(readyValues) || readyValues >= max;
+  if (isNeedCorrect && readyKey in props) {
+    let readyValue = -max;
+    if (!readyValue) {
+      readyValue = defaultProps.min;
+    }
+    props.min = -readyValue;
+  }
+}
+
+function correctMax(options: {
+  key: string;
+  props: DefaultProps;
+  values: unknown;
+}): void {
+  const { key, values, props } = options;
+  const { min } = props;
+  const readyKey = key as keyof typeof props;
+  const readyValues = parseFloat(String(values));
+  const isNeedCorrect = Number.isNaN(readyValues) || readyValues <= min;
+  if (isNeedCorrect && readyKey in props) {
+    let readyValue = 2 * Math.abs(min);
+    if (!readyValue) {
+      readyValue = defaultProps.max;
+    }
+    props.max = readyValue;
+  }
+}
+
+function correctStep(options: {
+  key: string;
+  props: DefaultProps;
+  values: unknown;
+}): void {
+  const { key, values, props } = options;
+  const { max } = props;
+  const readyKey = key as keyof typeof props;
+  const readyValues = parseFloat(String(values));
+  const isNeedCorrect =
+    Number.isNaN(readyValues) || readyValues < 0 || readyValues >= max;
+  if (isNeedCorrect && readyKey in props) {
+    props.step = defaultProps.step;
+  }
+}
+
+function correctPrecision(options: {
+  key: string;
+  props: DefaultProps;
+  values: unknown;
+}): void {
+  const { key, values, props } = options;
+  const readyKey = key as keyof typeof props;
+  const readyValues = parseFloat(String(values));
+  const isNeedCorrect =
+    Number.isNaN(readyValues) || readyValues < 0 || readyValues > 100;
+  if (isNeedCorrect && readyKey in props) {
+    props.precision = defaultProps.precision;
+  }
+}
+
+function correctIndent(options: {
+  key: string;
+  props: DefaultProps;
+  values: unknown;
+}): void {
+  const { key, values, props } = options;
+  const { values: currentValues, max } = props;
+  const readyKey = key as keyof typeof props;
+  const readyValues = parseFloat(String(values));
+  let isNeedCorrect = Number.isNaN(readyValues) || readyValues < 0;
+  if (!isNeedCorrect) {
+    const count = currentValues.length - 1;
+    if (count * readyValues > max) {
+      isNeedCorrect = true;
+    }
+  }
+  if (isNeedCorrect && readyKey in props) {
+    props.indent = defaultProps.indent;
+  }
+}
+
+function correctClassNames(options: {
+  values?: Record<string, unknown>;
+  key: string;
+  value?: unknown;
+}) {
+  const { values, value, key } = options;
+  let readyValue: string[] | undefined;
+  if (value && Array.isArray(value)) {
+    readyValue = value;
+  }
+  if (values && typeof values === 'object') {
+    values[key] = readyValue;
+  }
+}
+
+function isNeedCorrectStyle(style: unknown): boolean {
+  return !isReallyObject(style);
+}
+
+function correctStyles(options: {
+  values?: Record<string, unknown>;
+  key: string;
+  value?: unknown;
+}) {
+  const { values, value, key } = options;
+  let readyValue: Record<string, string>[] | undefined;
+  if (value && Array.isArray(value)) {
+    readyValue = value;
+    value.forEach((style, index) => {
+      if (isNeedCorrectStyle(style)) {
+        readyValue?.splice(index);
+      }
+    });
+  }
+  if (values && typeof values === 'object') {
+    values[key] = readyValue && readyValue?.length ? readyValue : undefined;
+  }
+}
+
+function correctStyle(options: {
+  values?: Record<string, unknown>;
+  key: string;
+  value?: unknown;
+}) {
+  const { values, value, key } = options;
+  let readyValue: Record<string, string> | undefined;
+  if (isReallyObject(value)) {
+    readyValue = value as Record<string, string>;
+  }
+  if (values && typeof values === 'object') {
+    values[key] = readyValue;
+  }
+}
+
+function correctClassName(options: {
+  values?: Record<string, unknown>;
+  key: string;
+  value?: unknown;
+}) {
+  const { values, value, key } = options;
+  let readyValue: string | undefined;
+  if (isString(value) && trim(value)) {
+    readyValue = value;
+  }
+  if (values && typeof values === 'object') {
+    values[key] = readyValue;
+  }
+}
+
+function correctValues(options: {
+  values?: Record<string, unknown>;
+  key: string;
+  props: DefaultProps;
+  value?: unknown;
+}) {
+  const { values, value, key, props } = options;
+  const { max, min } = props;
+  let readyValue: number[] | undefined;
+  if (Array.isArray(value) && value.length) {
+    readyValue = value;
+    value.forEach((temp, index) => {
+      const isNeedCorrect = temp > max || temp < min;
+      if (isNeedCorrect && Array.isArray(readyValue)) {
+        readyValue[index] = min;
+      }
+    });
+    readyValue = orderBy(readyValue, [], ['asc']);
+  }
+  if (values && typeof values === 'object') {
+    values[key] = readyValue;
+  }
+}
+
+function correctSet(options: {
+  key: string;
+  props: DefaultProps;
+  values: unknown;
+}) {
+  const { values, props } = options;
+  if (isObject(values) && isReallyObject(values)) {
+    Object.keys(values).forEach((key: string) => {
+      const readyKey = key as keyof typeof values;
+      const value = values[readyKey];
+      const readyValues = values as Record<string, string>;
+      switch (key) {
+        case 'classNames': {
+          correctClassNames({ values: readyValues, key, value });
+          break;
+        }
+        case 'styles': {
+          correctStyles({ values: readyValues, key, value });
+          break;
+        }
+        case 'style': {
+          correctStyle({ values: readyValues, key, value });
+          break;
+        }
+        case 'className':
+        case 'wrapClassName': {
+          correctClassName({ values: readyValues, key, value });
+          break;
+        }
+        case 'values': {
+          correctValues({ values: readyValues, key, value, props });
+          break;
+        }
+        default: {
+          break;
+        }
+      }
+    });
+  }
+}
+
+function correctData(props: DefaultProps): DefaultProps {
+  const result = merge({}, props);
+  Object.keys(result).forEach((key) => {
+    const readyKey = key as keyof typeof result;
+    const values = result[readyKey];
+    switch (readyKey) {
+      case 'min': {
+        correctMin({ key: readyKey, props: result, values });
+        break;
+      }
+      case 'max': {
+        correctMax({ key: readyKey, props: result, values });
+        break;
+      }
+      case 'step': {
+        correctStep({ key: readyKey, props: result, values });
+        break;
+      }
+      case 'precision': {
+        correctPrecision({ key: readyKey, props: result, values });
+        break;
+      }
+      case 'indent': {
+        correctIndent({ key: readyKey, props: result, values });
+        break;
+      }
+      default: {
+        correctSet({ key: readyKey, props: result, values });
+        break;
+      }
+    }
+  });
+  return result;
+}
+
 function prepareData(props?: Props, prevProps?: DefaultProps): DefaultProps {
   const values: number[] =
     props?.values || prevProps?.values || defaultProps.values;
-  const markValues: number[] | undefined =
-    props?.mark?.values ||
-    prevProps?.mark?.values ||
-    defaultProps?.mark?.values;
-  const step = props?.step ? Math.abs(props.step) : undefined;
-  const mergeProps: DefaultProps = merge({}, defaultProps, prevProps, props, {
-    step,
-  });
-  return prepareValues({
-    ...mergeProps,
+  const mergeProps: DefaultProps = merge({}, defaultProps, prevProps, props);
+  const correctedProps = correctData(mergeProps);
+  // console.log('correctedProps : ', correctedProps);
+  const readyProps = prepareValues({
+    ...correctedProps,
     values,
-    mark: { ...mergeProps?.mark, values: markValues },
   });
+  return readyProps;
 }
 
 function uniqId(): string {
