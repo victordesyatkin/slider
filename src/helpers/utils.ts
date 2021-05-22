@@ -161,6 +161,9 @@ function ensureValueCorrectNeighbors(options: {
       calculateMax = max;
     }
   }
+  // console.log('calculateMin : ', calculateMin);
+  // console.log('calculateMax : ', calculateMax);
+  // console.log('value : ', value);
   return ensureValueInRange(value, {
     min: calculateMin,
     max: calculateMax,
@@ -606,10 +609,8 @@ function isDirectionToMin(options: {
   props: DefaultProps;
   item: number;
 }): boolean {
-  const { value, props, item } = options;
-  const { reverse } = props;
-  const sign = reverse ? -1 : +1;
-  const direction = (value - item) * sign;
+  const { value, item } = options;
+  const direction = value - item;
   return direction < 0;
 }
 

@@ -207,7 +207,7 @@ class Example {
         }
       }
     });
-    console.log('this.cache : ', this.cache);
+    // console.log('this.cache : ', this.cache);
   }
 
   @bind
@@ -226,9 +226,9 @@ class Example {
   private setProps(): void {
     if (this.props && this.slider) {
       this.slider.setProps(this.props);
-      console.log('set props : ', this.props);
+      // console.log('set props : ', this.props);
       const props = this.slider.getProps();
-      console.log('got props : ', props);
+      // console.log('got props : ', props);
       this.updateSections(props);
     }
   }
