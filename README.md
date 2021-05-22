@@ -137,13 +137,19 @@
             <td>precision</td>
             <td>number</td>
             <td>0</td>
-            <td>Порядок точности для расчета значений, если шаг отсутствует</td>
+            <td>Порядок точности для значений tooltip, mark, если шаг отсутствует</td>
         </tr>
         <tr>
             <td>indent</td>
             <td>number</td>
             <td>0</td>
-            <td>Отступ для handles</td>
+            <td>Отступ между handles</td>
+        </tr>
+        <tr>
+            <td>index</td>
+            <td>number</td>
+            <td>0</td>
+            <td>Номер handle, который будет в фокусе при инициализации, если Use is focused используется (слева направо)</td>
         </tr>
         <tr>
             <td>disabled</td>
@@ -176,7 +182,7 @@
             <td>Ручка,<br/>
             {<br/>
                 classNames?: string[] = [] - имя класса для каждой ручки,<br/>
-                styles: style[] = [] стиль для каждой ручки,<br/>
+                styles: style[] = [] стиль для каждой ручки, где style: {"backgound": "red"},<br/>
             }
             </td>
         </tr>
@@ -187,7 +193,7 @@
             <td>Трек,<br/>
             {<br/>
                 classNames?: string[] = [] - имя класса для каждого трека,<br/>
-                styles: style[] = [] стиль для каждого трека,<br/>
+                styles: style[] = [] стиль для каждого трека, где style: {"backgound-color": "yellow"},<br/>
                 on?: boolean = true - вкл/выкл,<br/>
             }
             </td>
@@ -199,7 +205,7 @@
             <td>Рельс, <br/>
             {<br/>
                 className?: string = '' - имя класса рельсы,<br/>
-                styles: style[] = [] - стиль рельсы,<br/>
+                styles: style[] = [] - стиль рельсы, где style: {"backgound-color": "green"},<br/>
                 on?: boolean = true - вкл/выкл,<br/>
             }
             </td>

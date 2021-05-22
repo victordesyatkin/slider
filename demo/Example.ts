@@ -207,7 +207,7 @@ class Example {
         }
       }
     });
-    // console.log('this.cache : ', this.cache);
+    console.log('this.cache : ', this.cache);
   }
 
   @bind
@@ -226,9 +226,9 @@ class Example {
   private setProps(): void {
     if (this.props && this.slider) {
       this.slider.setProps(this.props);
-      // console.log('set props : ', this.props);
+      console.log('set props : ', this.props);
       const props = this.slider.getProps();
-      // console.log('got props : ', props);
+      console.log('got props : ', props);
       this.updateSections(props);
     }
   }
@@ -307,7 +307,8 @@ class Example {
           case 'max':
           case 'step':
           case 'precision':
-          case 'indent': {
+          case 'indent':
+          case 'values': {
             value = parseFloat(String(value)) || 0;
             // console.log('value1 : ', value);
             $input.val(value);
@@ -319,8 +320,7 @@ class Example {
           case 'isFocused':
           case 'on':
           case 'dot':
-          case 'always':
-          case 'values': {
+          case 'always': {
             value = Number(value);
             $input.val(value);
             $input.prop('checked', Boolean(value));
