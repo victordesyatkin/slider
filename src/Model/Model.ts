@@ -1,5 +1,5 @@
 import merge from 'lodash.merge';
-import isUndefined from 'lodash.isundefined';
+import orderBy from 'lodash.orderby';
 
 import PubSub from '../Pubsub';
 import {
@@ -24,6 +24,7 @@ class Model extends PubSub implements IModel {
   }
 
   public setProps(props?: Props): void {
+    // console.log('setProps');
     this.props = prepareData(props, this.getProps());
     this.publish('setPropsForView', this.props);
   }
@@ -73,8 +74,9 @@ class Model extends PubSub implements IModel {
     });
     // console.log('nextValue : ', nextValue);
     if (previousValue !== nextValue) {
-      const nextValues = [...previousValues];
+      let nextValues = [...previousValues];
       nextValues[readyIndex] = nextValue;
+      nextValues = orderBy(nextValues, [], ['asc']);
       this.setProps(
         merge({}, this.props, { values: nextValues, index: readyIndex })
       );

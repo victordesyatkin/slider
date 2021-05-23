@@ -225,8 +225,8 @@ class Example {
 
   private setProps(): void {
     if (this.props && this.slider) {
-      this.slider.setProps(this.props);
       // console.log('set props : ', this.props);
+      this.slider.setProps(this.props);
       const props = this.slider.getProps();
       // console.log('got props : ', props);
       this.updateSections(props);
@@ -356,6 +356,7 @@ class Example {
     }
     const props = merge({}, this.props);
     set(props, ['values'], values);
+    console.log('onAfterChange : ', values);
     this.updateSections(props);
   }
 

@@ -25,6 +25,7 @@ class Presenter implements IPresenter {
   }
 
   public setProps(props?: Props): void {
+    // console.log('Presenter setProps : ');
     this.model.setProps(props);
   }
 

@@ -69,6 +69,8 @@ function ensureValueInRange(
   if (value >= max) {
     return max;
   }
+  // console.log('ensureValueInRange max : ', max);
+  // console.log('ensureValueInRange value : ', value);
   return value;
 }
 
@@ -143,6 +145,7 @@ function ensureValueCorrectNeighbors(options: {
   let calculateMin = min;
   let calculateMax = max;
   if (checkNeighbors(values)) {
+    // console.log('ensureValueCorrectNeighbors index : ', index);
     const prevValue = values?.[index - 1];
     const nextValue = values?.[index + 1];
     if (!isUndefined(prevValue)) {
@@ -151,15 +154,15 @@ function ensureValueCorrectNeighbors(options: {
     if (!isUndefined(nextValue)) {
       calculateMax = indent ? nextValue - indent : nextValue;
     }
-    const icCorrect = indent && (prevValue || nextValue);
-    if (icCorrect) {
+    const isCorrect = prevValue || nextValue;
+    if (isCorrect) {
       value = ensureValueInRange(value, {
         min: calculateMin,
         max: calculateMax,
       });
-      calculateMin = min;
-      calculateMax = max;
     }
+    calculateMin = min;
+    calculateMax = max;
   }
   // console.log('calculateMin : ', calculateMin);
   // console.log('calculateMax : ', calculateMax);
@@ -188,6 +191,7 @@ function prepareValues(props: DefaultProps): DefaultProps {
   values = orderBy(values).map((value, index) =>
     calcValueWithEnsure({ value, props, index })
   );
+  // console.log('prepareValues values: ', values);
   let markValues: number[] = (mark?.values || []).map((value) =>
     ensureValueInRange(value, { min: props.min, max: props.max })
   );
@@ -254,6 +258,7 @@ function calcValueByPos(options: {
   const { reverse, min, max } = props;
   const sign = reverse ? -1 : +1;
   const offset = sign * (position - start);
+  // console.log('offset : ', offset);
   let value = ensureValueInRange(calcValue({ ...options, offset }), {
     min,
     max,
@@ -656,12 +661,14 @@ function getNearestIndex(options: {
   const { coordinateX, coordinateY, props, start } = options;
   const { reverse, min, max, values, vertical } = props;
   const position = getPosition({ vertical, coordinateX, coordinateY });
+  // console.log('getNearestIndex : ', position);
   const sign = reverse ? -1 : +1;
   const offset = sign * (position - start);
   const value = ensureValueInRange(calcValue({ ...options, offset }), {
     min,
     max,
   });
+  // console.log('getNearestIndex value : ', value);
   const { index } = getNearest({ value, values, props });
   return index;
 }
@@ -678,6 +685,7 @@ function getCorrectIndex(options: {
   let readyIndex: number = index || 0;
   let isCorrect = false;
   const isNotCorrectIndex = isUndefined(index) || index < 0;
+  // console.log('readyIndex 0 : ', readyIndex);
   if (isNotCorrectIndex) {
     readyIndex = getNearestIndex(other);
     isCorrect = true;
@@ -693,7 +701,7 @@ function getCorrectIndex(options: {
     // console.log('nextValue : ', nextValue);
     if (currentValue === previousValue || currentValue === nextValue) {
       readyIndex = getNearestIndex(other);
-      // console.log('readyIndex : ', getNearestIndex(other));
+      // console.log('readyIndex 1 : ', getNearestIndex(other));
       isCorrect = true;
     }
   }

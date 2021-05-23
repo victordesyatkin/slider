@@ -1,6 +1,7 @@
 import $ from 'jquery';
 import bind from 'bind-decorator';
 import classnames from 'classnames';
+import isUndefined from 'lodash.isundefined';
 
 import {
   objectToString,
@@ -131,6 +132,10 @@ class View extends PubSub implements IView {
       $(window).on({ mouseup: this.handleWindowMouseUpForHandleFocusout });
     }
     const { clientY: coordinateY = 0, pageX: coordinateX = 0 } = event || {};
+    if (!this.props?.isFocused) {
+      // console.log('setIndex: ');
+      this.publish('setIndex', { index: -1 });
+    }
     this.publish('onChange', {
       coordinateX,
       coordinateY,
