@@ -306,21 +306,6 @@ function setFunctionGetBoundingClientRectHTMLElement(
   };
 }
 
-function parseJSON(json?: unknown): undefined | unknown {
-  let result: unknown;
-  if (!isString(json) || !trim(json)) {
-    return result;
-  }
-  if (json) {
-    try {
-      result = JSON.parse(json) as unknown;
-    } catch (error) {
-      result = undefined;
-    }
-  }
-  return result;
-}
-
 function correctMin(options: {
   key: string;
   props: DefaultProps;
@@ -330,13 +315,14 @@ function correctMin(options: {
   const { max } = props;
   const readyKey = key as keyof typeof props;
   const readyValues = parseFloat(String(values));
-  const isNeedCorrect = Number.isNaN(readyValues) || readyValues >= max;
+  const isNeedCorrect =
+    isUndefined(readyValues) || Number.isNaN(readyValues) || readyValues >= max;
   if (isNeedCorrect && readyKey in props) {
-    let readyValue = -max;
+    let readyValue = -1 * max;
     if (!readyValue) {
       readyValue = defaultProps.min;
     }
-    props.min = -readyValue;
+    props.min = readyValue;
   }
 }
 
@@ -417,17 +403,25 @@ function correctClassNames(options: {
   value?: unknown;
 }) {
   const { values, value, key } = options;
-  let readyValue: string[] | undefined;
+  const readyValue: string[] | undefined = [];
   if (value && Array.isArray(value)) {
-    readyValue = value;
+    value.forEach((className) => {
+      const isNeedCorrect = !(isString(className) && trim(className));
+      if (!isNeedCorrect) {
+        readyValue.push(className);
+      }
+    });
   }
   if (values && typeof values === 'object') {
-    values[key] = readyValue;
+    values[key] = readyValue && readyValue.length ? readyValue : undefined;
   }
 }
 
 function isNeedCorrectStyle(style: unknown): boolean {
-  return !isReallyObject(style);
+  return (
+    !isReallyObject(style) ||
+    (isReallyObject(style) && isObject(style) && !Object.keys(style).length)
+  );
 }
 
 function correctStyles(options: {
@@ -436,12 +430,11 @@ function correctStyles(options: {
   value?: unknown;
 }) {
   const { values, value, key } = options;
-  let readyValue: Record<string, string>[] | undefined;
+  const readyValue: Record<string, string>[] | undefined = [];
   if (value && Array.isArray(value)) {
-    readyValue = value;
-    value.forEach((style, index) => {
-      if (isNeedCorrectStyle(style)) {
-        readyValue?.splice(index);
+    value.forEach((style) => {
+      if (!isNeedCorrectStyle(style)) {
+        readyValue.push(style);
       }
     });
   }
@@ -490,7 +483,7 @@ function correctValues(options: {
   const { max, min } = props;
   let readyValue: number[] | undefined;
   if (Array.isArray(value) && value.length) {
-    readyValue = value;
+    readyValue = value.slice();
     value.forEach((temp, index) => {
       const isNeedCorrect = temp > max || temp < min;
       if (isNeedCorrect && Array.isArray(readyValue)) {
@@ -504,37 +497,53 @@ function correctValues(options: {
   }
 }
 
+function correctIndex(options: {
+  values?: unknown;
+  key: string;
+  props: DefaultProps;
+}) {
+  const { values, props } = options;
+  const { values: items = [] } = props;
+  const readyValue: number | undefined = defaultProps.index;
+  const isNeedCorrect =
+    !isUndefined(values) &&
+    (Number(values) < 0 || Number(values) > items.length);
+  if (isNeedCorrect) {
+    props.index = readyValue;
+  }
+}
+
 function correctSet(options: {
   key: string;
   props: DefaultProps;
   values: unknown;
-}) {
+}): void {
   const { values, props } = options;
   if (isObject(values) && isReallyObject(values)) {
-    Object.keys(values).forEach((key: string) => {
-      const readyKey = key as keyof typeof values;
+    Object.keys(values).forEach((valuesKey: string) => {
+      const readyKey = valuesKey as keyof typeof values;
       const value = values[readyKey];
       const readyValues = values as Record<string, string>;
-      switch (key) {
+      switch (readyKey) {
         case 'classNames': {
-          correctClassNames({ values: readyValues, key, value });
+          correctClassNames({ values: readyValues, key: readyKey, value });
           break;
         }
         case 'styles': {
-          correctStyles({ values: readyValues, key, value });
+          correctStyles({ values: readyValues, key: readyKey, value });
           break;
         }
         case 'style': {
-          correctStyle({ values: readyValues, key, value });
+          correctStyle({ values: readyValues, key: readyKey, value });
           break;
         }
         case 'className':
         case 'wrapClassName': {
-          correctClassName({ values: readyValues, key, value });
+          correctClassName({ values: readyValues, key: readyKey, value });
           break;
         }
         case 'values': {
-          correctValues({ values: readyValues, key, value, props });
+          correctValues({ values: readyValues, key: readyKey, value, props });
           break;
         }
         default: {
@@ -569,6 +578,18 @@ function correctData(props: DefaultProps): DefaultProps {
       }
       case 'indent': {
         correctIndent({ key: readyKey, props: result, values });
+        break;
+      }
+      case 'index': {
+        correctIndex({ key: readyKey, props: result, values });
+        break;
+      }
+      case 'classNames': {
+        correctClassNames({ values: result, key, value: values });
+        break;
+      }
+      case 'style': {
+        correctStyle({ values: result, key, value: values });
         break;
       }
       default: {
@@ -734,4 +755,9 @@ export {
   getNearest,
   defaultProps,
   getCorrectIndex,
+  isDirectionToMin,
+  correctData,
+  correctSet,
+  correctMin,
+  correctMax,
 };

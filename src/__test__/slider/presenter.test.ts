@@ -12,105 +12,113 @@ import Presenter from '../../Presenter';
 describe('slider', () => {
   describe('presenter', () => {
     test('new presenter', () => {
-      const model = new Model(defaultProps);
-      const view = new View();
-      const presenter = new Presenter(model, view);
+      const className = `slider__wrapper-${uniqId()}`;
+      $('body').append(`<div class="${className}"/>`);
+      const $element = $(`.${className}`);
+      const presenter = new Presenter($element);
       expect(presenter).toBeInstanceOf(Presenter);
     });
 
     test('initHandlesView, initHandlesModel, onBeforeChange', () => {
-      const model = new Model(defaultProps);
-      const view = new View();
-      const presenter = new Presenter(model, view);
-      view.publish('onBeforeChange', { index: 5 });
-      const props = presenter.getProps();
-      expect(props).toEqual(
-        expect.objectContaining({
-          index: 5,
-        })
-      );
-      setFunctionGetBoundingClientRectHTMLElement();
       const className = `slider__wrapper-${uniqId()}`;
       $('body').append(`<div class="${className}"/>`);
-      const $parent = $(`.${className}`);
-      view.render($parent);
-      let $handle = $(`.${defaultProps.prefixCls}__handle`, $parent);
-      expect($handle.length).toEqual(1);
-      model.publish('setPropsForView', {
+      const $element = $(`.${className}`);
+      const presenter = new Presenter($element, {
         ...defaultProps,
-        values: [10, 20],
+        values: [0, 50],
+        isFocused: true,
       });
-      $handle = $(`.${defaultProps.prefixCls}__handle`, $parent);
+      let $handle = $(`.${defaultProps.prefixCls}__handle`, $element);
+      $($handle.get(1)).trigger('mousedown');
+      $($handle.get(1)).trigger('mouseup');
+      let props = presenter.getProps();
+      expect(props).toEqual(
+        expect.objectContaining({
+          index: 1,
+        })
+      );
       expect($handle.length).toEqual(2);
+      presenter.setProps({ ...defaultProps, values: [10] });
+      $handle = $(`.${defaultProps.prefixCls}__handle`, $element);
+      expect($handle.length).toEqual(1);
     });
 
     test('onAfterChange', () => {
       const onAfterChange = jest.fn((values: number[]): void => {});
-      const model = new Model({
+      const className = `slider__wrapper-${uniqId()}`;
+      $('body').append(`<div class="${className}"/>`);
+      const $element = $(`.${className}`);
+      const props = {
         ...defaultProps,
         values: [10, 20],
         onAfterChange: onAfterChange,
-      });
-      const view = new View();
-      const presenter = new Presenter(model, view);
-      view.publish('onAfterChange');
+      };
+      const _ = new Presenter($element, props);
+      const $handle = $(`.${defaultProps.prefixCls}__handle`, $element);
+      $($handle.get(1)).trigger('mousedown');
+      $($handle.get(1)).trigger('mouseup');
       expect(onAfterChange.mock.calls.length).toBe(1);
       expect(onAfterChange.mock.calls[0][0]).toStrictEqual([10, 20]);
     });
 
     test('onChange', () => {
       const onChange = jest.fn((value: number[]): void => {});
-      const model = new Model({
+      const className = `slider__wrapper-${uniqId()}`;
+      $('body').append(`<div class="${className}"/>`);
+      const $element = $(`.${className}`);
+      const props = {
         ...defaultProps,
         onChange,
-      });
-      const view = new View();
-      const presenter = new Presenter(model, view);
-      const options = {
-        start: 0,
-        length: 100,
-        coordinateX: 20,
-        coordinateY: 100,
       };
-      view.publish('onChange', options);
+      const _ = new Presenter($element, props);
+      const $handle = $(`.${defaultProps.prefixCls}__handle`, $element);
+      const event = $.Event('mousemove');
+      event.pageX = 20;
+      event.pageY = 100;
+      $($handle.get(0)).trigger('mousedown');
+      $($handle.get(0)).trigger(event);
+      $($handle.get(0)).trigger('mouseup');
       expect(onChange.mock.calls.length).toBe(1);
-      expect(onChange.mock.calls[0][0]).toStrictEqual([20]);
+      expect(onChange.mock.calls[0][0]).toStrictEqual([100]);
       expect(onChange.mock.calls.length).toBe(1);
     });
 
     test('getProps', () => {
-      const model = new Model({
-        ...defaultProps,
-      });
-      const view = new View();
-      const presenter = new Presenter(model, view);
+      const className = `slider__wrapper-${uniqId()}`;
+      $('body').append(`<div class="${className}"/>`);
+      const $element = $(`.${className}`);
+      const presenter = new Presenter($element);
       expect(defaultProps).toStrictEqual(presenter.getProps());
     });
 
     test('setProps', () => {
-      const model = new Model({
-        ...defaultProps,
-      });
-      const view = new View();
-      const presenter = new Presenter(model, view);
+      const className = `slider__wrapper-${uniqId()}`;
+      $('body').append(`<div class="${className}"/>`);
+      const $element = $(`.${className}`);
+      const presenter = new Presenter($element);
       const props = { ...defaultProps, values: [5] };
       presenter.setProps(props);
       expect(props).toStrictEqual(presenter.getProps());
     });
 
     test('setIndex', () => {
-      const model = new Model({
+      const className = `slider__wrapper-${uniqId()}`;
+      $('body').append(`<div class="${className}"/>`);
+      const $element = $(`.${className}`);
+      const presenter = new Presenter($element, {
         ...defaultProps,
+        values: [0, 50],
+        isFocused: true,
       });
-      const view = new View();
-      const presenter = new Presenter(model, view);
-      const props = { ...defaultProps };
-      presenter.setProps(props);
-      let index = presenter.getProps()?.index;
-      expect(index).toEqual(undefined);
-      view.publish('setIndex', { index: 1 });
-      index = presenter.getProps()?.index;
-      expect(index).toEqual(1);
+      let $handle = $(`.${defaultProps.prefixCls}__handle`, $element);
+      $($handle.get(1)).trigger('mousedown');
+      $($handle.get(1)).trigger('mouseup');
+      let props = presenter.getProps();
+      expect(props).toEqual(
+        expect.objectContaining({
+          index: 1,
+        })
+      );
     });
   });
 });

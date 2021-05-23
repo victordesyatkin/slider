@@ -291,10 +291,22 @@ describe('helpers', () => {
       expect(position1).toEqual(10);
       expect(position2).toEqual(40);
     });
-    test('getNearest', () => {
+    test('getNearest isDirectToMin', () => {
       const item = utils.getNearest({
         value: 65,
         values: [10, 30, 70, 100],
+        props: defaultProps,
+      });
+      expect(item).toStrictEqual({
+        index: 2,
+        value: 70,
+      });
+    });
+    test('getNearest isDirectToMax', () => {
+      const item = utils.getNearest({
+        value: 85,
+        values: [10, 30, 70, 100],
+        props: defaultProps,
       });
       expect(item).toStrictEqual({
         index: 2,
@@ -311,6 +323,306 @@ describe('helpers', () => {
       };
       const index = utils.getNearestIndex(options);
       expect(index).toEqual(1);
+    });
+    test('getCorrectIndex', () => {
+      const options = {
+        coordinateX: 80,
+        coordinateY: 10,
+        start: 0,
+        props: { ...defaultProps, values: [0, 100] },
+        length: 100,
+        index: undefined,
+      };
+      const { index: index0, isCorrect: isCorrect0 } = utils.getCorrectIndex(
+        options
+      );
+      expect(isCorrect0).toEqual(true);
+      expect(index0).toEqual(1);
+      let options1 = {
+        coordinateX: 80,
+        coordinateY: 10,
+        start: 0,
+        props: { ...defaultProps, values: [0, 100] },
+        index: 1,
+        length: 100,
+      };
+      const { index: index1, isCorrect: isCorrect1 } = utils.getCorrectIndex(
+        options1
+      );
+      expect(index1).toEqual(1);
+      expect(isCorrect1).toEqual(false);
+      options1 = {
+        coordinateX: 80,
+        coordinateY: 10,
+        start: 0,
+        props: { ...defaultProps, values: [45, 40] },
+        index: 1,
+        length: 100,
+      };
+      const { index: index2, isCorrect: isCorrect2 } = utils.getCorrectIndex(
+        options1
+      );
+      expect(index2).toEqual(1);
+      expect(isCorrect2).toEqual(false);
+      options1 = {
+        coordinateX: 35,
+        coordinateY: 10,
+        start: 0,
+        props: { ...defaultProps, values: [40, 40] },
+        index: 1,
+        length: 100,
+      };
+      const { index: index3, isCorrect: isCorrect3 } = utils.getCorrectIndex(
+        options1
+      );
+      expect(index3).toEqual(0);
+      expect(isCorrect3).toEqual(true);
+      options1 = {
+        coordinateX: 35,
+        coordinateY: 10,
+        start: 0,
+        props: { ...defaultProps, values: [40, 40] },
+        index: -1,
+        length: 100,
+      };
+      const { index: index4, isCorrect: isCorrect4 } = utils.getCorrectIndex(
+        options1
+      );
+      expect(index4).toEqual(0);
+      expect(isCorrect4).toEqual(true);
+      options1 = {
+        coordinateX: 80,
+        coordinateY: 10,
+        start: 0,
+        props: { ...defaultProps, values: [40, 45] },
+        index: -1,
+        length: 100,
+      };
+      const { index: index5, isCorrect: isCorrect5 } = utils.getCorrectIndex(
+        options1
+      );
+      expect(index5).toEqual(1);
+      expect(isCorrect5).toEqual(true);
+      options1 = {
+        coordinateX: 80,
+        coordinateY: 10,
+        start: 0,
+        props: { ...defaultProps, values: [40, 45] },
+        index: 0,
+        length: 100,
+      };
+      const { index: index6, isCorrect: isCorrect6 } = utils.getCorrectIndex(
+        options1
+      );
+      expect(index6).toEqual(0);
+      expect(isCorrect6).toEqual(false);
+    });
+    test('isDirectionToMin', () => {
+      expect(
+        utils.isDirectionToMin({
+          value: 30,
+          props: { ...defaultProps },
+          item: 60,
+        })
+      ).toEqual(true);
+      expect(
+        utils.isDirectionToMin({
+          value: 80,
+          props: { ...defaultProps },
+          item: 60,
+        })
+      ).toEqual(false);
+    });
+    test('correctData', () => {
+      let props = utils.correctData({
+        ...defaultProps,
+      });
+      expect(props).toEqual(
+        expect.objectContaining({
+          min: defaultProps.min,
+          max: defaultProps.max,
+          precision: defaultProps.precision,
+          step: defaultProps.step,
+          indent: defaultProps.indent,
+        })
+      );
+      props = utils.correctData({
+        ...defaultProps,
+        min: 105,
+        max: 100,
+        step: -3,
+        precision: -4,
+        indent: -5,
+        index: -6,
+        classNames: ['bbbbb', 'aaaa'],
+        style: { color: 'red' },
+        dot: {
+          className: '',
+          wrapClassName: '',
+          style: { 'background-color': 'yellow' },
+        },
+        mark: {
+          className: 'cccc',
+          wrapClassName: 'eeee',
+          style: { 'background-color': 'yellow' },
+        },
+        rail: {
+          className: 'cccc',
+          style: { 'background-color': 'yellow' },
+        },
+        track: {
+          classNames: ['cccc'],
+          styles: [
+            { 'background-color': 'yellow' },
+            { 'background-color': 'green' },
+          ],
+        },
+        handle: {
+          classNames: ['cccc'],
+          styles: [
+            { 'background-color': 'yellow' },
+            { 'background-color': 'green' },
+          ],
+        },
+      });
+      expect(props).toEqual(
+        expect.objectContaining({
+          min: -100,
+          max: 100,
+          precision: defaultProps.precision,
+          step: defaultProps.step,
+          indent: defaultProps.indent,
+          classNames: ['bbbbb', 'aaaa'],
+          style: { color: 'red' },
+          handle: {
+            classNames: ['cccc'],
+            styles: [
+              { 'background-color': 'yellow' },
+              { 'background-color': 'green' },
+            ],
+          },
+          track: {
+            classNames: ['cccc'],
+            styles: [
+              { 'background-color': 'yellow' },
+              { 'background-color': 'green' },
+            ],
+          },
+          dot: {
+            className: undefined,
+            wrapClassName: undefined,
+            style: { 'background-color': 'yellow' },
+          },
+          mark: {
+            className: 'cccc',
+            wrapClassName: 'eeee',
+            style: { 'background-color': 'yellow' },
+          },
+        })
+      );
+    });
+    test('correctSet', () => {
+      const mock = jest.fn((v: number) => `${v}`);
+      const props = {
+        handle: {
+          classNames: [{}, 4, [], false, true, 0, 'aaaa'],
+          styles: [{}, 4, [], false, true, 0, 'aaaa', { color: 'red' }],
+        },
+        rail: {
+          className: [],
+          styles: [{ color: 'red' }, 'aaaa', false, 0, true, 1, [], {}, 7],
+        },
+        dot: {
+          wrapClassName: [0, 4, false, true, 0, {}, 'aaaa-bbbb'],
+          style: false,
+          className: 'aaaa',
+        },
+        mark: {
+          wrapClassName: 'cccc',
+          style: { background: 'red' },
+          className: 'eeee',
+          render: mock,
+        },
+      };
+      utils.correctSet({
+        key: 'handle',
+        props: defaultProps,
+        values: props.handle,
+      });
+      expect(props.handle).toEqual(
+        expect.objectContaining({
+          classNames: ['aaaa'],
+          styles: [{ color: 'red' }],
+        })
+      );
+      utils.correctSet({
+        key: 'rail',
+        props: defaultProps,
+        values: props.rail,
+      });
+      expect(props.rail).toEqual(
+        expect.objectContaining({
+          className: undefined,
+          styles: [{ color: 'red' }],
+        })
+      );
+      utils.correctSet({
+        key: 'dot',
+        props: defaultProps,
+        values: props.dot,
+      });
+      expect(props.dot).toEqual(
+        expect.objectContaining({
+          wrapClassName: undefined,
+          style: undefined,
+          className: 'aaaa',
+        })
+      );
+      utils.correctSet({
+        key: 'mark',
+        props: defaultProps,
+        values: props.mark,
+      });
+      expect(props.mark).toEqual(
+        expect.objectContaining({
+          wrapClassName: 'cccc',
+          style: { background: 'red' },
+          className: 'eeee',
+          render: mock,
+        })
+      );
+    });
+    test('correctMin', () => {
+      let props = { ...defaultProps };
+      utils.correctMin({
+        key: 'min',
+        props,
+        values: 5,
+      });
+      expect(props.min).toEqual(0);
+      props = { ...defaultProps };
+      utils.correctMin({
+        key: 'min',
+        props,
+        values: 105,
+      });
+      expect(props.min).toEqual(-100);
+    });
+    test('correctMax', () => {
+      let props = { ...defaultProps };
+      utils.correctMax({
+        key: 'max',
+        props: props,
+        values: 5,
+      });
+      expect(props.max).toEqual(100);
+      props = { ...defaultProps };
+      utils.correctMax({
+        key: 'max',
+        props: props,
+        values: -5,
+      });
+      expect(props.max).toEqual(100);
     });
   });
 });

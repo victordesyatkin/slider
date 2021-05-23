@@ -106,5 +106,35 @@ describe('slider', () => {
       index = model.getProps()?.index;
       expect(index).toBe(7);
     });
+
+    test('isFocused', () => {
+      const model = new Model({
+        ...defaultProps,
+        values: [30, 40],
+      });
+      model.setIndex({ index: 7 });
+      let index = model.getProps()?.index;
+      expect(index).toBe(7);
+      model.onChange({
+        coordinateX: 45,
+        coordinateY: 80,
+        length: 100,
+        start: 0,
+        action: 'onBeforeChange',
+      });
+      index = model.getProps()?.index;
+      expect(index).toBe(1);
+      model.setProps({ ...defaultProps, values: [30, 40], isFocused: true });
+      model.setIndex({ index: 0 });
+      model.onChange({
+        coordinateX: 45,
+        coordinateY: 80,
+        length: 100,
+        start: 0,
+        action: 'onBeforeChange',
+      });
+      index = model.getProps()?.index;
+      expect(index).toBe(0);
+    });
   });
 });
