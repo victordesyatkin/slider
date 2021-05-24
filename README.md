@@ -98,12 +98,6 @@
             <td>Значение для каждого handle</td>
         </tr>
         <tr>
-            <td>className</td>
-            <td>string</td>
-            <td>''</td>
-            <td>Имя класса, которое добавляется к главному родительскому узлу слайдера</td>
-        </tr>
-        <tr>
             <td>min</td>
             <td>number</td>
             <td>0</td>
@@ -122,6 +116,18 @@
             <td>Шаг для хода handle слайдера, отображения dot, mark</td>
         </tr>
         <tr>
+            <td>style</td>
+            <td>object</td>
+            <td>{}</td>
+            <td>style: {"backgound": "red"} дополнительный стиль для корневого узла слайдера</td>
+        </tr>
+        <tr>
+            <td>classNames</td>
+            <td>string[]</td>
+            <td>[]</td>
+            <td>Имена классов, которые добавляются к корневому узлу слайдера</td>
+        </tr>
+        <tr>
             <td>vertical</td>
             <td>boolean</td>
             <td>false</td>
@@ -132,6 +138,12 @@
             <td>boolean</td>
             <td>false</td>
             <td>Направление компонентов слайдера если reverse true, то компоненты отображаются реверсивно</td>
+        </tr>
+        <tr>
+            <td>isFocused</td>
+            <td>boolean</td>
+            <td>false</td>
+            <td>Режим с фокусированием на handle, с которым уже производились действия (например если двигался handle ближе к min, то если фокус не был снят, то при клике ближе к max, то двигаться будет именно тот handle который в фокусе)</td>
         </tr>
         <tr>
             <td>precision</td>
@@ -149,7 +161,7 @@
             <td>index</td>
             <td>number</td>
             <td>0</td>
-            <td>Номер handle, который будет в фокусе при инициализации, если Use is focused используется (слева направо)</td>
+            <td>Номер handle, который будет в фокусе при инициализации, если isFocused используется (слева направо)</td>
         </tr>
         <tr>
             <td>disabled</td>
