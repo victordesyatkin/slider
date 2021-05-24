@@ -24,7 +24,6 @@ class Model extends PubSub implements IModel {
   }
 
   public setProps(props?: Props): void {
-    // console.log('setProps');
     this.props = prepareData(props, this.getProps());
     this.publish('setPropsForView', this.props);
   }
@@ -56,8 +55,6 @@ class Model extends PubSub implements IModel {
       length,
       props: this.props,
     });
-    // console.log('index : ', readyIndex);
-    // console.log('isCorrect : ', isCorrect);
     const position: number = getPosition({
       vertical,
       coordinateX,
@@ -72,7 +69,6 @@ class Model extends PubSub implements IModel {
       props: this.props,
       index: readyIndex,
     });
-    // console.log('nextValue : ', nextValue);
     if (previousValue !== nextValue) {
       let nextValues = [...previousValues];
       nextValues[readyIndex] = nextValue;

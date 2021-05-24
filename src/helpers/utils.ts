@@ -69,8 +69,6 @@ function ensureValueInRange(
   if (value >= max) {
     return max;
   }
-  // console.log('ensureValueInRange max : ', max);
-  // console.log('ensureValueInRange value : ', value);
   return value;
 }
 
@@ -99,14 +97,8 @@ function getClosestPoint(
     const maxSteps = Math.floor(
       (max * baseNum - min * baseNum) / (step * baseNum)
     );
-    // console.log('value : ', value);
     const steps = Math.min((value - min) / step, maxSteps);
     const closestStep = Math.round(steps) * step + min;
-    // console.log('baseNum : ', baseNum);
-    // console.log('maxSteps : ', maxSteps);
-    // console.log('step : ', step);
-    // console.log('steps : ', steps);
-    // console.log('closestStep : ', closestStep);
     points.push(closestStep);
     points = uniq(points);
     const diffs = points.map((point) => Math.abs(value - point));
@@ -122,8 +114,6 @@ function ensureValuePrecision(value: number, props: DefaultProps): number {
   )
     ? getClosestPoint(value, { step, min, max }, props)
     : 0;
-  // console.log('ensureValuePrecision : ', closestPoint);
-  // console.log('ensureValuePrecision step: ', step);
   return step
     ? parseFloat(closestPoint.toFixed(getPrecision(step)))
     : closestPoint;
@@ -145,7 +135,6 @@ function ensureValueCorrectNeighbors(options: {
   let calculateMin = min;
   let calculateMax = max;
   if (checkNeighbors(values)) {
-    // console.log('ensureValueCorrectNeighbors index : ', index);
     const prevValue = values?.[index - 1];
     const nextValue = values?.[index + 1];
     if (!isUndefined(prevValue)) {
@@ -164,9 +153,6 @@ function ensureValueCorrectNeighbors(options: {
     calculateMin = min;
     calculateMax = max;
   }
-  // console.log('calculateMin : ', calculateMin);
-  // console.log('calculateMax : ', calculateMax);
-  // console.log('value : ', value);
   return ensureValueInRange(value, {
     min: calculateMin,
     max: calculateMax,
@@ -191,7 +177,6 @@ function prepareValues(props: DefaultProps): DefaultProps {
   values = orderBy(values).map((value, index) =>
     calcValueWithEnsure({ value, props, index })
   );
-  // console.log('prepareValues values: ', values);
   let markValues: number[] = (mark?.values || []).map((value) =>
     ensureValueInRange(value, { min: props.min, max: props.max })
   );
@@ -258,7 +243,6 @@ function calcValueByPos(options: {
   const { reverse, min, max } = props;
   const sign = reverse ? -1 : +1;
   const offset = sign * (position - start);
-  // console.log('offset : ', offset);
   let value = ensureValueInRange(calcValue({ ...options, offset }), {
     min,
     max,
@@ -401,7 +385,7 @@ function correctClassNames(options: {
   values?: Record<string, unknown>;
   key: string;
   value?: unknown;
-}) {
+}): void {
   const { values, value, key } = options;
   const readyValue: string[] | undefined = [];
   if (value && Array.isArray(value)) {
@@ -428,7 +412,7 @@ function correctStyles(options: {
   values?: Record<string, unknown>;
   key: string;
   value?: unknown;
-}) {
+}): void {
   const { values, value, key } = options;
   const readyValue: Record<string, string>[] | undefined = [];
   if (value && Array.isArray(value)) {
@@ -438,7 +422,8 @@ function correctStyles(options: {
       }
     });
   }
-  if (values && typeof values === 'object') {
+  const isCorrect = values && key in values;
+  if (typeof values === 'object' && isCorrect) {
     values[key] = readyValue && readyValue?.length ? readyValue : undefined;
   }
 }
@@ -447,13 +432,16 @@ function correctStyle(options: {
   values?: Record<string, unknown>;
   key: string;
   value?: unknown;
-}) {
+}): void {
   const { values, value, key } = options;
   let readyValue: Record<string, string> | undefined;
-  if (isReallyObject(value)) {
+  const isCorrect =
+    isReallyObject(value) && isObject(value) && Object.keys(value).length;
+  if (isCorrect) {
     readyValue = value as Record<string, string>;
   }
-  if (values && typeof values === 'object') {
+  const isCorrectObject = values && key in values;
+  if (typeof values === 'object' && isCorrectObject) {
     values[key] = readyValue;
   }
 }
@@ -462,13 +450,14 @@ function correctClassName(options: {
   values?: Record<string, unknown>;
   key: string;
   value?: unknown;
-}) {
+}): void {
   const { values, value, key } = options;
   let readyValue: string | undefined;
   if (isString(value) && trim(value)) {
     readyValue = value;
   }
-  if (values && typeof values === 'object') {
+  const isCorrectObject = values && key in values;
+  if (isCorrectObject && typeof values === 'object') {
     values[key] = readyValue;
   }
 }
@@ -478,22 +467,24 @@ function correctValues(options: {
   key: string;
   props: DefaultProps;
   value?: unknown;
-}) {
+}): void {
   const { values, value, key, props } = options;
   const { max, min } = props;
-  let readyValue: number[] | undefined;
+  let readyValue: number[] | undefined = [];
   if (Array.isArray(value) && value.length) {
     readyValue = value.slice();
     value.forEach((temp, index) => {
-      const isNeedCorrect = temp > max || temp < min;
+      const isNeedCorrect =
+        temp > max || temp < min || Number.isNaN(parseFloat(String(temp)));
       if (isNeedCorrect && Array.isArray(readyValue)) {
         readyValue[index] = min;
       }
     });
     readyValue = orderBy(readyValue, [], ['asc']);
   }
-  if (values && typeof values === 'object') {
-    values[key] = readyValue;
+  const isCorrectObject = values && key in values;
+  if (isCorrectObject && typeof values === 'object') {
+    values[key] = readyValue?.length ? readyValue : undefined;
   }
 }
 
@@ -501,7 +492,7 @@ function correctIndex(options: {
   values?: unknown;
   key: string;
   props: DefaultProps;
-}) {
+}): void {
   const { values, props } = options;
   const { values: items = [] } = props;
   const readyValue: number | undefined = defaultProps.index;
@@ -604,9 +595,15 @@ function correctData(props: DefaultProps): DefaultProps {
 function prepareData(props?: Props, prevProps?: DefaultProps): DefaultProps {
   const values: number[] =
     props?.values || prevProps?.values || defaultProps.values;
+  const markValues: number[] | undefined =
+    props?.mark?.values ||
+    prevProps?.mark?.values ||
+    defaultProps?.mark?.values;
   const mergeProps: DefaultProps = merge({}, defaultProps, prevProps, props);
-  const correctedProps = correctData(mergeProps);
-  // console.log('correctedProps : ', correctedProps);
+  const correctedProps = correctData({
+    ...mergeProps,
+    mark: { ...mergeProps?.mark, values: markValues },
+  });
   const readyProps = prepareValues({
     ...correctedProps,
     values,
@@ -682,14 +679,12 @@ function getNearestIndex(options: {
   const { coordinateX, coordinateY, props, start } = options;
   const { reverse, min, max, values, vertical } = props;
   const position = getPosition({ vertical, coordinateX, coordinateY });
-  // console.log('getNearestIndex : ', position);
   const sign = reverse ? -1 : +1;
   const offset = sign * (position - start);
   const value = ensureValueInRange(calcValue({ ...options, offset }), {
     min,
     max,
   });
-  // console.log('getNearestIndex value : ', value);
   const { index } = getNearest({ value, values, props });
   return index;
 }
@@ -706,7 +701,6 @@ function getCorrectIndex(options: {
   let readyIndex: number = index || 0;
   let isCorrect = false;
   const isNotCorrectIndex = isUndefined(index) || index < 0;
-  // console.log('readyIndex 0 : ', readyIndex);
   if (isNotCorrectIndex) {
     readyIndex = getNearestIndex(other);
     isCorrect = true;
@@ -717,12 +711,8 @@ function getCorrectIndex(options: {
     const previousValue = values[index - 1];
     const nextValue = values[index + 1];
     readyIndex = index;
-    // console.log('currentValue : ', currentValue);
-    // console.log('previousValue : ', previousValue);
-    // console.log('nextValue : ', nextValue);
     if (currentValue === previousValue || currentValue === nextValue) {
       readyIndex = getNearestIndex(other);
-      // console.log('readyIndex 1 : ', getNearestIndex(other));
       isCorrect = true;
     }
   }
@@ -760,4 +750,14 @@ export {
   correctSet,
   correctMin,
   correctMax,
+  correctStep,
+  correctPrecision,
+  correctIndent,
+  correctClassNames,
+  isNeedCorrectStyle,
+  correctStyles,
+  correctStyle,
+  correctClassName,
+  correctValues,
+  correctIndex,
 };

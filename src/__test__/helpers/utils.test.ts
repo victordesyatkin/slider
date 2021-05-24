@@ -624,5 +624,318 @@ describe('helpers', () => {
       });
       expect(props.max).toEqual(100);
     });
+    test('correctStep', () => {
+      let props = { ...defaultProps };
+      utils.correctStep({
+        key: 'step',
+        props: props,
+        values: 5,
+      });
+      expect(props.step).toEqual(0);
+      props = { ...defaultProps };
+      utils.correctStep({
+        key: 'step',
+        props: props,
+        values: -5,
+      });
+      expect(props.step).toEqual(0);
+      props = { ...defaultProps, max: -10, min: -50 };
+      utils.correctStep({
+        key: 'step',
+        props: props,
+        values: -5,
+      });
+      expect(props.step).toEqual(0);
+    });
+    test('correctPrecision', () => {
+      let props = { ...defaultProps };
+      utils.correctPrecision({
+        key: 'precision',
+        props: props,
+        values: 4,
+      });
+      expect(props.precision).toEqual(0);
+      props = { ...defaultProps };
+      utils.correctPrecision({
+        key: 'precision',
+        props: props,
+        values: -5,
+      });
+      expect(props.precision).toEqual(0);
+    });
+    test('correctIndent', () => {
+      let props = { ...defaultProps };
+      utils.correctIndent({
+        key: 'indent',
+        props: props,
+        values: 4,
+      });
+      expect(props.precision).toEqual(0);
+      props = { ...defaultProps };
+      utils.correctIndent({
+        key: 'indent',
+        props: props,
+        values: -5,
+      });
+      expect(props.precision).toEqual(0);
+    });
+    test('correctClassNames', () => {
+      const values = {
+        classNames: ['aaaa', false, true, [], 'bbbb', 4, 7, 0, {}],
+      };
+      utils.correctClassNames({
+        key: 'classNames',
+        value: values.classNames,
+        values,
+      });
+      expect(values.classNames).toEqual(
+        expect.arrayContaining(['aaaa', 'bbbb'])
+      );
+      const values1 = {
+        classNames: false,
+      };
+      utils.correctClassNames({
+        key: 'classNames',
+        value: values1.classNames,
+        values,
+      });
+      expect(values.classNames).toEqual(undefined);
+    });
+    test('isNeedCorrectStyle', () => {
+      let isCorrect = utils.isNeedCorrectStyle({
+        color: 'green',
+      });
+      expect(isCorrect).toEqual(false);
+      isCorrect = utils.isNeedCorrectStyle([]);
+      expect(isCorrect).toEqual(true);
+      isCorrect = utils.isNeedCorrectStyle(4);
+      expect(isCorrect).toEqual(true);
+      isCorrect = utils.isNeedCorrectStyle(true);
+      expect(isCorrect).toEqual(true);
+      isCorrect = utils.isNeedCorrectStyle(false);
+      expect(isCorrect).toEqual(true);
+      isCorrect = utils.isNeedCorrectStyle({});
+      expect(isCorrect).toEqual(true);
+      isCorrect = utils.isNeedCorrectStyle('dddd');
+      expect(isCorrect).toEqual(true);
+    });
+
+    test('correctStyles', () => {
+      const values = {
+        styles: [
+          'aaaa',
+          false,
+          { 'font-size': '1rem' },
+          true,
+          [],
+          'bbbb',
+          4,
+          {},
+        ],
+      };
+      utils.correctStyles({
+        key: 'styles',
+        value: values.styles,
+        values,
+      });
+      expect(values.styles).toEqual(
+        expect.arrayContaining([{ 'font-size': '1rem' }])
+      );
+      const values1 = {
+        styles: [],
+      };
+      utils.correctStyles({
+        key: 'styles',
+        value: values1.styles,
+        values: values1,
+      });
+      expect(values1.styles).toEqual(undefined);
+      const values2 = {
+        styles: '',
+      };
+      utils.correctStyles({
+        key: 'styles',
+        value: values2.styles,
+        values: values2,
+      });
+      expect(values2.styles).toEqual(undefined);
+    });
+    test('correctStyle', () => {
+      const values = {
+        style: { 'font-size': '1rem' },
+      };
+      utils.correctStyle({
+        key: 'style',
+        value: values.style,
+        values,
+      });
+      expect(values.style).toEqual(
+        expect.objectContaining({ 'font-size': '1rem' })
+      );
+      const values1 = {
+        style: {},
+      };
+      utils.correctStyle({
+        key: 'style',
+        value: values1.style,
+        values: values1,
+      });
+      expect(values1.style).toEqual(undefined);
+      const values2 = {
+        style: '',
+      };
+      utils.correctStyles({
+        key: 'style',
+        value: values2.style,
+        values: values2,
+      });
+      const values3 = {
+        style: 'aaaa',
+      };
+      utils.correctStyles({
+        key: 'styles',
+        value: values3.style,
+        values: values3,
+      });
+      expect(values3.style).toEqual('aaaa');
+    });
+    test('correctClassName', () => {
+      const values = {
+        className: 'aaaa',
+      };
+      utils.correctClassName({
+        key: 'className',
+        value: values.className,
+        values,
+      });
+      expect(values.className).toEqual('aaaa');
+      const values1 = {
+        className: '',
+      };
+      utils.correctClassName({
+        key: 'className',
+        value: values1.className,
+        values: values1,
+      });
+      expect(values1.className).toEqual(undefined);
+      const values2 = {
+        className: {},
+      };
+      utils.correctClassName({
+        key: 'className',
+        value: values2.className,
+        values: values2,
+      });
+      expect(values2.className).toEqual(undefined);
+    });
+    test('correctValues', () => {
+      const values = {
+        values: 'aaaa',
+      };
+      utils.correctValues({
+        key: 'values',
+        value: values.values,
+        values,
+        props: { ...defaultProps },
+      });
+      expect(values.values).toEqual(undefined);
+      const values1 = {
+        values: ['aaaa'],
+      };
+      utils.correctValues({
+        key: 'values',
+        value: values1.values,
+        values: values1,
+        props: { ...defaultProps },
+      });
+      expect(values1.values).toEqual(expect.arrayContaining([0]));
+      const values2 = {
+        values: [-14],
+      };
+      utils.correctValues({
+        key: 'values',
+        value: values2.values,
+        values: values2,
+        props: { ...defaultProps },
+      });
+      expect(values2.values).toEqual(expect.arrayContaining([0]));
+      const values3 = {
+        values: [-14],
+      };
+      utils.correctValues({
+        key: 'values',
+        value: values3.values,
+        values: values3,
+        props: { ...defaultProps },
+      });
+      expect(values3.values).toEqual(expect.arrayContaining([0]));
+      const values4 = {
+        values: [-14],
+      };
+      utils.correctValues({
+        key: 'style',
+        value: values4.values,
+        values: values4,
+        props: { ...defaultProps },
+      });
+      expect(values4.values).toEqual(expect.arrayContaining([-14]));
+      const values5 = {
+        values: [7, false, 4],
+      };
+      utils.correctValues({
+        key: 'values',
+        value: values5.values,
+        values: values5,
+        props: { ...defaultProps },
+      });
+      expect(values5.values).toEqual(expect.arrayContaining([0, 4, 7]));
+    });
+    test('correctIndex', () => {
+      const options = {
+        key: 'index',
+        values: 'aaaa',
+        props: { ...defaultProps },
+      };
+      utils.correctIndex(options);
+      expect(options.props).toEqual(
+        expect.objectContaining({ ...defaultProps })
+      );
+      const options1 = {
+        key: 'index',
+        values: {},
+        props: { ...defaultProps },
+      };
+      utils.correctIndex(options1);
+      expect(options1.props).toEqual(
+        expect.objectContaining({ ...defaultProps })
+      );
+      const options2 = {
+        key: 'index',
+        values: 7,
+        props: { ...defaultProps },
+      };
+      utils.correctIndex(options2);
+      expect(options2.props).toEqual(
+        expect.objectContaining({ ...defaultProps })
+      );
+      const options3 = {
+        key: 'index',
+        values: -5,
+        props: { ...defaultProps },
+      };
+      utils.correctIndex(options3);
+      expect(options3.props).toEqual(
+        expect.objectContaining({ ...defaultProps })
+      );
+      const options4 = {
+        key: 'index',
+        values: 1,
+        props: { ...defaultProps, index: 1 },
+      };
+      utils.correctIndex(options4);
+      expect(options4.props).toEqual(
+        expect.objectContaining({ ...defaultProps, index: 1 })
+      );
+    });
   });
 });

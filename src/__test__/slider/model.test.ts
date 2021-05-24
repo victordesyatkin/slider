@@ -97,14 +97,18 @@ describe('slider', () => {
       });
       model.setIndex({ index: 7 });
       let index = model.getProps()?.index;
-      expect(index).toBe(7);
-      model.setIndex({ index: 7 });
-      index = model.getProps()?.index;
-      model.setIndex({ index: 7 });
+      expect(index).toBe(undefined);
       model.setProps({ ...defaultProps, disabled: true });
       model.setIndex({ index: 12 });
       index = model.getProps()?.index;
-      expect(index).toBe(7);
+      expect(index).toBe(undefined);
+      model.setIndex({ index: 1 });
+      index = model.getProps()?.index;
+      expect(index).toBe(undefined);
+      model.setProps({ ...defaultProps, disabled: false });
+      model.setIndex({ index: 1 });
+      index = model.getProps()?.index;
+      expect(index).toBe(1);
     });
 
     test('isFocused', () => {
@@ -114,7 +118,7 @@ describe('slider', () => {
       });
       model.setIndex({ index: 7 });
       let index = model.getProps()?.index;
-      expect(index).toBe(7);
+      expect(index).toBe(undefined);
       model.onChange({
         coordinateX: 45,
         coordinateY: 80,

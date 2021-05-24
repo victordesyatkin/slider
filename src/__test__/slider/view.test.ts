@@ -342,7 +342,7 @@ describe('slider', () => {
       const $parent = $(`.${className}`);
       const view = new View();
       view.render($parent);
-      view.setProps(defaultProps);
+      view.setProps({ ...defaultProps, isFocused: true });
       let mockCallback = jest.fn((options: { index: number }): void => {});
       view.subscribe('setIndex', mockCallback);
       const $handle = $(`.${defaultProps.prefixCls}__handle`, $parent);
@@ -363,6 +363,12 @@ describe('slider', () => {
       expect(mockCallback.mock.calls.length).toBe(1);
       window.dispatchEvent(event);
       expect(mockCallback.mock.calls.length).toBe(2);
+      view.setProps({ ...defaultProps });
+      $rail.trigger('click');
+      $rail.trigger('mouseup');
+      expect(mockCallback.mock.calls.length).toBe(3);
+      window.dispatchEvent(event);
+      expect(mockCallback.mock.calls.length).toBe(3);
     });
   });
 });

@@ -187,7 +187,7 @@ class Example {
   private initCache() {
     this.cache = {};
     let index = 0;
-    $('.js-input').each((_: number, element: HTMLElement) => {
+    $('.js-input', this.$parent).each((_: number, element: HTMLElement) => {
       const $element = $(element);
       const data = $element.data('data') as
         | {
@@ -207,7 +207,6 @@ class Example {
         }
       }
     });
-    // console.log('this.cache : ', this.cache);
   }
 
   @bind
@@ -225,10 +224,8 @@ class Example {
 
   private setProps(): void {
     if (this.props && this.slider) {
-      // console.log('set props : ', this.props);
       this.slider.setProps(this.props);
       const props = this.slider.getProps();
-      // console.log('got props : ', props);
       this.updateSections(props);
     }
   }
@@ -254,7 +251,6 @@ class Example {
     if (this.checkNeedUpdate(props)) {
       this.props = props;
       const { values, ...other } = props;
-      // console.log('this.cache : ', this.cache);
       Object.keys(this.cache).forEach((key) => {
         this.updateSection({ key, props: other });
       });
@@ -297,11 +293,6 @@ class Example {
           property,
           index: Number(index),
         });
-        // console.log('type : ', type);
-        // console.log('values : ', values);
-        // console.log('property : ', property);
-        // console.log('value : ', value);
-        // console.log('$input : ', $input);
         switch (property) {
           case 'min':
           case 'max':
@@ -310,7 +301,6 @@ class Example {
           case 'indent':
           case 'values': {
             value = parseFloat(String(value)) || 0;
-            // console.log('value1 : ', value);
             $input.val(value);
             break;
           }
@@ -356,7 +346,6 @@ class Example {
     }
     const props = merge({}, this.props);
     set(props, ['values'], values);
-    console.log('onAfterChange : ', values);
     this.updateSections(props);
   }
 

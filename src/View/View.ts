@@ -133,7 +133,6 @@ class View extends PubSub implements IView {
     }
     const { clientY: coordinateY = 0, pageX: coordinateX = 0 } = event || {};
     if (!this.props?.isFocused) {
-      // console.log('setIndex: ');
       this.publish('setIndex', { index: -1 });
     }
     this.publish('onChange', {
