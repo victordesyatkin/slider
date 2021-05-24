@@ -4,6 +4,7 @@ declare type Props = {
     vertical?: boolean;
     reverse?: boolean;
     disabled?: boolean;
+    isFocused?: boolean;
     values?: number[];
     min?: number;
     max?: number;
@@ -29,6 +30,7 @@ declare type DefaultProps = {
     vertical: boolean;
     reverse: boolean;
     disabled: boolean;
+    isFocused?: boolean;
     values: number[];
     min: number;
     max: number;
@@ -36,7 +38,7 @@ declare type DefaultProps = {
     classNames?: string[];
     style?: Style;
     mark?: Mark;
-    step?: number;
+    step: number;
     onChange?: (value: number[]) => void;
     onBeforeChange?: (value: number[]) => void;
     onAfterChange?: (value: number[]) => void;
@@ -46,32 +48,7 @@ declare type DefaultProps = {
     rail?: Rail;
     startPoint?: number;
     tooltip?: Tooltip;
-    indent?: number;
-    index?: number;
-};
-declare type DefaultPropsView = {
-    prefixCls: string;
-    vertical: boolean;
-    reverse: boolean;
-    disabled: boolean;
-    values: number[];
-    min: number;
-    max: number;
-    precision: number;
-    classNames?: string[];
-    style?: Style;
-    mark?: Mark;
-    step?: number;
-    onChange?: (value: number[]) => void;
-    onBeforeChange?: (value: number[]) => void;
-    onAfterChange?: (value: number[]) => void;
-    track?: Track;
-    handle?: Handle;
-    dot?: Dot;
-    rail?: Rail;
-    startPoint?: number;
-    tooltip?: Tooltip;
-    indent?: number;
+    indent: number;
     index?: number;
 };
 declare type KeyDefaultProps = keyof DefaultProps;
@@ -126,4 +103,4 @@ declare type Style = {
     [key: string]: string;
 };
 declare type Render = (value: number) => string | JQuery<HTMLElement> | JQuery<HTMLElement>[] | HTMLElement | HTMLElement[] | undefined;
-export { Callback, Mark, Tooltip, Rail, Dot, Track, Handle, Handler, Addition, KeyDefaultProps, DefaultProps, DefaultPropsView, Props, Style, Render, KeyProps, };
+export { Callback, Mark, Tooltip, Rail, Dot, Track, Handle, Handler, Addition, KeyDefaultProps, DefaultProps, Props, Style, Render, KeyProps, };

@@ -3,7 +3,7 @@ declare const defaultProps: DefaultProps;
 declare function objectToString(style?: {
     [key: string]: string;
 }): string;
-declare function calcOffset(value: number, min: number, max: number, precision?: 0): number;
+declare function calcOffset(value: number, min: number, max: number, precision?: number): number;
 declare function getHandleCenterPosition(vertical: boolean, handle: HTMLElement): number;
 declare function ensureValueInRange(value: number, { max, min }: {
     max: number;
@@ -58,6 +58,69 @@ declare function setFunctionGetBoundingClientRectHTMLElement(style?: Partial<{
     marginLeft: number;
     marginRight: number;
 }>): void;
+declare function correctMin(options: {
+    key: string;
+    props: DefaultProps;
+    values: unknown;
+}): void;
+declare function correctMax(options: {
+    key: string;
+    props: DefaultProps;
+    values: unknown;
+}): void;
+declare function correctStep(options: {
+    key: string;
+    props: DefaultProps;
+    values: unknown;
+}): void;
+declare function correctPrecision(options: {
+    key: string;
+    props: DefaultProps;
+    values: unknown;
+}): void;
+declare function correctIndent(options: {
+    key: string;
+    props: DefaultProps;
+    values: unknown;
+}): void;
+declare function correctClassNames(options: {
+    values?: Record<string, unknown>;
+    key: string;
+    value?: unknown;
+}): void;
+declare function isNeedCorrectStyle(style: unknown): boolean;
+declare function correctStyles(options: {
+    values?: Record<string, unknown>;
+    key: string;
+    value?: unknown;
+}): void;
+declare function correctStyle(options: {
+    values?: Record<string, unknown>;
+    key: string;
+    value?: unknown;
+}): void;
+declare function correctClassName(options: {
+    values?: Record<string, unknown>;
+    key: string;
+    value?: unknown;
+}): void;
+declare function correctValues(options: {
+    values?: Record<string, unknown>;
+    key: string;
+    props: DefaultProps;
+    value?: unknown;
+}): void;
+declare function correctIndex(options: {
+    values?: unknown;
+    key: string;
+    props: DefaultProps;
+}): void;
+declare function correctSet(options: {
+    key: string;
+    props: DefaultProps;
+    values: unknown;
+}): void;
+declare function correctData(props: DefaultProps): DefaultProps;
 declare function prepareData(props?: Props, prevProps?: DefaultProps): DefaultProps;
 declare function uniqId(): string;
 declare function getPosition({ vertical, coordinateX, coordinateY, }: {
@@ -65,9 +128,15 @@ declare function getPosition({ vertical, coordinateX, coordinateY, }: {
     coordinateX: number;
     coordinateY: number;
 }): number;
-declare function getNearest({ value, values, }: {
+declare function isDirectionToMin(options: {
+    value: number;
+    props: DefaultProps;
+    item: number;
+}): boolean;
+declare function getNearest({ value, values, props, }: {
     value: number;
     values: number[];
+    props: DefaultProps;
 }): {
     index: number;
     value: number;
@@ -79,4 +148,15 @@ declare function getNearestIndex(options: {
     props: DefaultProps;
     length: number;
 }): number;
-export { objectToString, uniqId, prepareData, setFunctionGetBoundingClientRectHTMLElement, calcValueWithEnsure, ensureValueCorrectNeighbors, checkNeighbors, calcValueByPos, calcValue, getSliderLength, getSliderStart, getCount, prepareValues, ensureValuePrecision, getClosestPoint, getPrecision, getMousePosition, ensureValueInRange, calcOffset, getHandleCenterPosition, getPosition, getNearestIndex, getNearest, defaultProps, };
+declare function getCorrectIndex(options: {
+    coordinateX: number;
+    coordinateY: number;
+    start: number;
+    props: DefaultProps;
+    length: number;
+    index?: number;
+}): {
+    isCorrect: boolean;
+    index: number;
+};
+export { objectToString, uniqId, prepareData, setFunctionGetBoundingClientRectHTMLElement, calcValueWithEnsure, ensureValueCorrectNeighbors, checkNeighbors, calcValueByPos, calcValue, getSliderLength, getSliderStart, getCount, prepareValues, ensureValuePrecision, getClosestPoint, getPrecision, getMousePosition, ensureValueInRange, calcOffset, getHandleCenterPosition, getPosition, getNearestIndex, getNearest, defaultProps, getCorrectIndex, isDirectionToMin, correctData, correctSet, correctMin, correctMax, correctStep, correctPrecision, correctIndent, correctClassNames, isNeedCorrectStyle, correctStyles, correctStyle, correctClassName, correctValues, correctIndex, };

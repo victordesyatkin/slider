@@ -1,5 +1,5 @@
 import PubSub from '../Pubsub';
-import { DefaultPropsView } from '../types';
+import { DefaultProps } from '../types';
 import { IView } from '../interfaces';
 declare class View extends PubSub implements IView {
     private props?;
@@ -11,7 +11,7 @@ declare class View extends PubSub implements IView {
     private marks;
     private parent?;
     private isRendered;
-    setProps(props: DefaultPropsView): void;
+    setProps(props: DefaultProps): void;
     render(parent?: JQuery<HTMLElement>): void;
     remove(): void;
     private static cleanSubView;

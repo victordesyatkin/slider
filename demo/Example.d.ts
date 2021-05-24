@@ -6,6 +6,7 @@ declare class Example {
     private $sections;
     private slider?;
     private props?;
+    private cache;
     constructor(parent: HTMLElement);
     private static prepareFunction;
     private static prepareArray;
@@ -14,13 +15,18 @@ declare class Example {
     private static prepareJSON;
     private static updateHandle;
     private static updateHandles;
+    private static extractFunctionBody;
+    private static extractValue;
     private init;
     private initHandlers;
+    private initCache;
     private initHandler;
     private getProps;
     private setProps;
     private updateProps;
     private checkNeedUpdate;
+    private updateSections;
+    private updateSection;
     private onAfterChange;
     private handleSectionClick;
     private handleSectionInput;

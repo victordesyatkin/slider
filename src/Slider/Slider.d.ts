@@ -1,8 +1,6 @@
 import { Props, DefaultProps, KeyDefaultProps } from '../types';
 declare class Slider {
     static PLUGIN_NAME: string;
-    private model;
-    private view;
     private presenter;
     static createSlider($element: JQuery<HTMLElement>, props?: Props): JQuery;
     constructor(element: JQuery<HTMLElement>, props?: Props);

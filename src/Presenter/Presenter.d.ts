@@ -1,9 +1,9 @@
-import { Props, DefaultProps } from '../types';
-import { IModel, IView, IPresenter } from '../interfaces';
+import { DefaultProps, Props } from '../types';
+import { IPresenter } from '../interfaces';
 declare class Presenter implements IPresenter {
     private model;
     private view;
-    constructor(model: IModel, view: IView);
+    constructor(element: JQuery<HTMLElement>, props?: Props);
     getProps(): DefaultProps;
     setProps(props?: Props): void;
     private initHandlesView;
