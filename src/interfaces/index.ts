@@ -19,6 +19,8 @@ interface IModel extends IPubSub {
     action?: string;
   }): void;
   setIndex(options: { index?: number }): void;
+  unsubscribeAll: () => void;
+  unsubscribe: (action?: string) => void;
 }
 
 interface IView extends IPubSub {
@@ -35,6 +37,8 @@ interface ISubView extends IView {
 interface IPresenter {
   getProps(): DefaultProps;
   setProps(props?: Props): void;
+  unsubscribeAll: () => void;
+  unsubscribe: (action?: string) => void;
 }
 
 export { IPresenter, ISubView, IView, IModel, IPubSub };

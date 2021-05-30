@@ -1,5 +1,6 @@
 import merge from 'lodash.merge';
 import orderBy from 'lodash.orderby';
+import isString from 'lodash.isstring';
 
 import PubSub from '../Pubsub';
 import {
@@ -12,11 +13,27 @@ import { IModel } from '../interfaces';
 import { DefaultProps, Props } from '../types';
 
 class Model extends PubSub implements IModel {
+  private static ACTIONS = ['onChange', 'onBeforeChange', 'onAfterChange'];
+
   private props: DefaultProps;
 
   constructor(props: DefaultProps) {
     super();
     this.props = props;
+  }
+
+  public unsubscribeAll(): void {
+    const actions: Record<string, null> = {};
+    Model.ACTIONS.forEach((action) => {
+      actions[action] = null;
+    });
+    this.setProps({ ...this.getProps(), ...actions });
+  }
+
+  public unsubscribe(action?: string): void {
+    if (isString(action) && Model.ACTIONS.indexOf(action) !== -1) {
+      this.setProps({ ...this.getProps(), [action]: null });
+    }
   }
 
   public getProps(): DefaultProps {
@@ -77,7 +94,7 @@ class Model extends PubSub implements IModel {
         merge({}, this.props, { values: nextValues, index: readyIndex })
       );
       if (this.props && action in this.props) {
-        let onAction: ((values: number[]) => void) | undefined;
+        let onAction: ((values: number[]) => void) | undefined | null;
         if (action === 'onChange') {
           onAction = this.props?.[action];
         } else if (action === 'onBeforeChange') {

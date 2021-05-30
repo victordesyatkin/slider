@@ -20,6 +20,14 @@ class Presenter implements IPresenter {
     this.initHandlesModel();
   }
 
+  public unsubscribeAll(): void {
+    this.model.unsubscribeAll();
+  }
+
+  public unsubscribe(action?: string): void {
+    this.model.unsubscribe(action);
+  }
+
   public getProps(): DefaultProps {
     return this.model.getProps();
   }

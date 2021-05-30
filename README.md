@@ -80,9 +80,54 @@
         </ol>
     <h4>Ручная Инициализация</h4>
         <h5>Инициализация</h5>
-            <code>$(<span style="color: #df5000;">'.my-selector'</span>).slider([options])</code>
+            <code>$(<span style="color: #df5000;">'.my-selector'</span>).slider([options]);</code>
         <h5>Доступ к экземпляру объекта</h5>
-            <code>$(<span style="color: #df5000;">'.my-selector'</span>).data(<span style="color: #df5000;">'slider'</span>)</code>
+            <code>$(<span style="color: #df5000;">'.my-selector'</span>).data(<span style="color: #df5000;">'slider'</span>);</code>
+        <h5>Подписаться на обновления</h5>
+            <p>Для подписки на обновления необходимо передать в параметрах функцию обратноо вызова (при инициализации 
+            или при дальнейшей работе приложения) для одной из функций onBeforeChange, onChange, onAfterChange ((values: number[]) => void)</p>
+            <p>Инициализация с функциями для подписки на обновления</p>
+            <code>
+                $(<span style="color: #df5000;">'.my-selector'</span>).slider({
+                    onChange: (values: number[]) => { ... },
+                    onBeforeChange: (values: number[]) => { ... },
+                    onAfterChange: (values: number[]) => { ... },
+                });
+            </code>
+            <p>Измененние функциий для подписки на обновления (в любом месте приложения получаем доступ к экземпляру)</p>
+            <code>
+                const slider = $(<span style="color: #df5000;">'.my-selector'</span>).data(<span style="color: #df5000;">'slider'</span>)
+                <span style="color: #df5000;">slider</span>).setProps({
+                    onChange: (values: number[]) => { ... },
+                    onBeforeChange: (values: number[]) => { ... },
+                    onAfterChange: (values: number[]) => { ... },
+                });
+            </code>
+        <h5>Отписаться от обновлений</h5>
+            <p>Для того чтобы отписаться от обновлений необходимо передать в параметрах для функций onBeforeChange, onChange, onAfterChange (для которой была передана функция обратного вызова) null или noop (например () => undefined)</p>
+            <p>В любом месте приложения получаем доступ к экземпляру</p>
+            <code>
+                const slider = $(<span style="color: #df5000;">'.my-selector'</span>).data(<span style="color: #df5000;">'slider'</span>);
+                <span style="color: #df5000;">slider</span>).setProps({
+                    onChange: null,
+                    onBeforeChange: null,
+                    onAfterChange: null,
+                });
+            </code>
+            <p>Для того чтобы отписаться от обновлений, дополнительно возможно использовать метод unsubscribe(action), где action - имя одной из функций onBeforeChange, onChange, onAfterChange (для которой была передана функция обратного вызова)</p>
+            <p>В любом месте приложения получаем доступ к экземпляру</p>
+            <code>
+                const slider = $(<span style="color: #df5000;">'.my-selector'</span>).data(<span style="color: #df5000;">'slider'</span>);
+                <span style="color: #df5000;">slider</span>).unsubscribe('onBeforeChange');
+                <span style="color: #df5000;">slider</span>).unsubscribe('onChange');
+                <span style="color: #df5000;">slider</span>).unsubscribe('onAfterChange');
+            </code>
+            <p>Для того чтобы отписаться от всех обновлений, дополнительно возможно использовать метод unsubscribeAll()</p>
+            <p>В любом месте приложения получаем доступ к экземпляру</p>
+            <code>
+                const slider = $(<span style="color: #df5000;">'.my-selector'</span>).data(<span style="color: #df5000;">'slider'</span>);
+                <span style="color: #df5000;">slider</span>).unsubscribeAll();
+            </code>
     <h4 id="api">API</h4>
     <table>
         <tr>
@@ -173,19 +218,19 @@
             <td>onBeforeChange</td>
             <td>Function</td>
             <td>noop</td>
-            <td>Функция будет срабатывать перед началом движения handle, когда его подняли</td>
+            <td>Функция будет срабатывать перед началом движения handle, когда его подняли ((values: number[]) => void)</td>
         </tr>
         <tr>
             <td>onChange</td>
             <td>Function</td>
             <td>noop</td>
-            <td>Функция будет срабатывать при движения handle</td>
+            <td>Функция будет срабатывать при движения handle ((values: number[]) => void)</td>
         </tr>
         <tr>
             <td>onAfterChange</td>
             <td>Function</td>
             <td>noop</td>
-            <td>Функция будет срабатывать после движения handle, когда его отпустили</td>
+            <td>Функция будет срабатывать после движения handle, когда его отпустили ((values: number[]) => void)</td>
         </tr>
         <tr>
             <td>handle</td>

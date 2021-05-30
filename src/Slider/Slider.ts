@@ -28,6 +28,14 @@ class Slider {
     this.presenter = new Presenter(element, props);
   }
 
+  public unsubscribeAll(): void {
+    this.presenter.unsubscribeAll();
+  }
+
+  public unsubscribe(action?: string): void {
+    this.presenter.unsubscribe(action);
+  }
+
   public getProps(): DefaultProps {
     const defaultProps: DefaultProps = this.presenter.getProps();
     return defaultProps;
