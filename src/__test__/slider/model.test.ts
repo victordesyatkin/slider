@@ -140,5 +140,228 @@ describe('slider', () => {
       index = model.getProps()?.index;
       expect(index).toBe(0);
     });
+    test('onChange, onBeforeChange, onAfterChange null (noop)', () => {
+      const onChange = jest.fn((_: number[]): void => {});
+      const onBeforeChange = jest.fn((_: number[]): void => {});
+      const onAfterChange = jest.fn((_: number[]): void => {});
+      const model = new Model({
+        ...defaultProps,
+        onChange,
+        onBeforeChange,
+        onAfterChange,
+      });
+      model.onChange({
+        coordinateX: 86,
+        coordinateY: 80,
+        length: 100,
+        start: 0,
+        action: 'onBeforeChange',
+      });
+      expect(onBeforeChange.mock.calls.length).toBe(1);
+      expect(onBeforeChange.mock.calls[0][0]).toStrictEqual([86]);
+      expect(onBeforeChange.mock.calls.length).toBe(1);
+      model.onChange({
+        coordinateX: 87,
+        coordinateY: 80,
+        length: 100,
+        start: 0,
+        action: 'onChange',
+      });
+      expect(onChange.mock.calls.length).toBe(1);
+      expect(onChange.mock.calls[0][0]).toStrictEqual([87]);
+      expect(onChange.mock.calls.length).toBe(1);
+      model.onChange({
+        coordinateX: 88,
+        coordinateY: 80,
+        length: 100,
+        start: 0,
+        action: 'onAfterChange',
+      });
+      expect(onAfterChange.mock.calls.length).toBe(1);
+      expect(onAfterChange.mock.calls[0][0]).toStrictEqual([88]);
+      expect(onAfterChange.mock.calls.length).toBe(1);
+      model.setProps({
+        ...defaultProps,
+        onChange: null,
+        onBeforeChange: null,
+        onAfterChange: null,
+      });
+      model.onChange({
+        coordinateX: 84,
+        coordinateY: 80,
+        length: 100,
+        start: 0,
+        action: 'onBeforeChange',
+      });
+      expect(onBeforeChange.mock.calls.length).toBe(1);
+      expect(onBeforeChange.mock.calls[0][0]).toStrictEqual([86]);
+      expect(onBeforeChange.mock.calls.length).toBe(1);
+      model.onChange({
+        coordinateX: 80,
+        coordinateY: 80,
+        length: 100,
+        start: 0,
+        action: 'onChange',
+      });
+      expect(onChange.mock.calls.length).toBe(1);
+      expect(onChange.mock.calls[0][0]).toStrictEqual([87]);
+      expect(onChange.mock.calls.length).toBe(1);
+      model.onChange({
+        coordinateX: 78,
+        coordinateY: 80,
+        length: 100,
+        start: 0,
+        action: 'onAfterChange',
+      });
+      expect(onAfterChange.mock.calls.length).toBe(1);
+      expect(onAfterChange.mock.calls[0][0]).toStrictEqual([88]);
+      expect(onAfterChange.mock.calls.length).toBe(1);
+    });
+    test('unsubscribe onChange, onBeforeChange, onAfterChange', () => {
+      const onChange = jest.fn((_: number[]): void => {});
+      const onBeforeChange = jest.fn((_: number[]): void => {});
+      const onAfterChange = jest.fn((_: number[]): void => {});
+      const model = new Model({
+        ...defaultProps,
+        onChange,
+        onBeforeChange,
+        onAfterChange,
+      });
+      model.onChange({
+        coordinateX: 86,
+        coordinateY: 80,
+        length: 100,
+        start: 0,
+        action: 'onBeforeChange',
+      });
+      expect(onBeforeChange.mock.calls.length).toBe(1);
+      expect(onBeforeChange.mock.calls[0][0]).toStrictEqual([86]);
+      expect(onBeforeChange.mock.calls.length).toBe(1);
+      model.onChange({
+        coordinateX: 87,
+        coordinateY: 80,
+        length: 100,
+        start: 0,
+        action: 'onChange',
+      });
+      expect(onChange.mock.calls.length).toBe(1);
+      expect(onChange.mock.calls[0][0]).toStrictEqual([87]);
+      expect(onChange.mock.calls.length).toBe(1);
+      model.onChange({
+        coordinateX: 88,
+        coordinateY: 80,
+        length: 100,
+        start: 0,
+        action: 'onAfterChange',
+      });
+      expect(onAfterChange.mock.calls.length).toBe(1);
+      expect(onAfterChange.mock.calls[0][0]).toStrictEqual([88]);
+      expect(onAfterChange.mock.calls.length).toBe(1);
+      model.unsubscribe('onChange');
+      model.unsubscribe('onBeforeChange');
+      model.unsubscribe('onAfterChange');
+      model.onChange({
+        coordinateX: 84,
+        coordinateY: 80,
+        length: 100,
+        start: 0,
+        action: 'onBeforeChange',
+      });
+      expect(onBeforeChange.mock.calls.length).toBe(1);
+      expect(onBeforeChange.mock.calls[0][0]).toStrictEqual([86]);
+      expect(onBeforeChange.mock.calls.length).toBe(1);
+      model.onChange({
+        coordinateX: 80,
+        coordinateY: 80,
+        length: 100,
+        start: 0,
+        action: 'onChange',
+      });
+      expect(onChange.mock.calls.length).toBe(1);
+      expect(onChange.mock.calls[0][0]).toStrictEqual([87]);
+      expect(onChange.mock.calls.length).toBe(1);
+      model.onChange({
+        coordinateX: 78,
+        coordinateY: 80,
+        length: 100,
+        start: 0,
+        action: 'onAfterChange',
+      });
+      expect(onAfterChange.mock.calls.length).toBe(1);
+      expect(onAfterChange.mock.calls[0][0]).toStrictEqual([88]);
+      expect(onAfterChange.mock.calls.length).toBe(1);
+    });
+    test('unsubscribeAll onChange, onBeforeChange, onAfterChange', () => {
+      const onChange = jest.fn((_: number[]): void => {});
+      const onBeforeChange = jest.fn((_: number[]): void => {});
+      const onAfterChange = jest.fn((_: number[]): void => {});
+      const model = new Model({
+        ...defaultProps,
+        onChange,
+        onBeforeChange,
+        onAfterChange,
+      });
+      model.onChange({
+        coordinateX: 86,
+        coordinateY: 80,
+        length: 100,
+        start: 0,
+        action: 'onBeforeChange',
+      });
+      expect(onBeforeChange.mock.calls.length).toBe(1);
+      expect(onBeforeChange.mock.calls[0][0]).toStrictEqual([86]);
+      expect(onBeforeChange.mock.calls.length).toBe(1);
+      model.onChange({
+        coordinateX: 87,
+        coordinateY: 80,
+        length: 100,
+        start: 0,
+        action: 'onChange',
+      });
+      expect(onChange.mock.calls.length).toBe(1);
+      expect(onChange.mock.calls[0][0]).toStrictEqual([87]);
+      expect(onChange.mock.calls.length).toBe(1);
+      model.onChange({
+        coordinateX: 88,
+        coordinateY: 80,
+        length: 100,
+        start: 0,
+        action: 'onAfterChange',
+      });
+      expect(onAfterChange.mock.calls.length).toBe(1);
+      expect(onAfterChange.mock.calls[0][0]).toStrictEqual([88]);
+      expect(onAfterChange.mock.calls.length).toBe(1);
+      model.unsubscribeAll();
+      model.onChange({
+        coordinateX: 84,
+        coordinateY: 80,
+        length: 100,
+        start: 0,
+        action: 'onBeforeChange',
+      });
+      expect(onBeforeChange.mock.calls.length).toBe(1);
+      expect(onBeforeChange.mock.calls[0][0]).toStrictEqual([86]);
+      expect(onBeforeChange.mock.calls.length).toBe(1);
+      model.onChange({
+        coordinateX: 80,
+        coordinateY: 80,
+        length: 100,
+        start: 0,
+        action: 'onChange',
+      });
+      expect(onChange.mock.calls.length).toBe(1);
+      expect(onChange.mock.calls[0][0]).toStrictEqual([87]);
+      expect(onChange.mock.calls.length).toBe(1);
+      model.onChange({
+        coordinateX: 78,
+        coordinateY: 80,
+        length: 100,
+        start: 0,
+        action: 'onAfterChange',
+      });
+      expect(onAfterChange.mock.calls.length).toBe(1);
+      expect(onAfterChange.mock.calls[0][0]).toStrictEqual([88]);
+      expect(onAfterChange.mock.calls.length).toBe(1);
+    });
   });
 });
