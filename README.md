@@ -117,9 +117,9 @@ $(<span style="color: #df5000;">'.my-selector'</span>).slider({
             <code>
 const slider = $(<span style="color: #df5000;">'.my-selector'</span>).data(<span style="color: #df5000;">'slider'</span>);
 <span style="color: #df5000;">slider</span>.setProps({
-onChange: (values: number[]) => { ... },
-onBeforeChange: (values: number[]) => { ... },
-onAfterChange: (values: number[]) => { ... },
+    onChange: (values: number[]) => { ... },
+    onBeforeChange: (values: number[]) => { ... },
+    onAfterChange: (values: number[]) => { ... },
 });
             </code>
         </pre>
