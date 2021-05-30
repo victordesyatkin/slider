@@ -80,9 +80,35 @@
         </ol>
     <h4>Ручная Инициализация</h4>
         <h5>Инициализация</h5>
-            <code>$(<span style="color: #df5000;">'.my-selector'</span>).slider([options]);</code>
+        <code>$(<span style="color: #df5000;">'.my-selector'</span>).slider([options]);</code>
         <h5>Доступ к экземпляру объекта</h5>
-            <code>$(<span style="color: #df5000;">'.my-selector'</span>).data(<span style="color: #df5000;">'slider'</span>);</code>
+        <code>$(<span style="color: #df5000;">'.my-selector'</span>).data(<span style="color: #df5000;">'slider'</span>);</code>
+        <h5>Обновление параметров</h5>
+        <p>В любом месте приложения получаем доступ к экземпляру</p>
+            <pre>
+                <code>
+const slider = $(<span style="color: #df5000;">'.my-selector'</span>).data(<span style="color: #df5000;">'slider'</span>);
+                </code>
+            </pre>
+        <p>Обновить параметры</p>
+        <pre>
+            <code>    
+<span style="color: #df5000;">slider</span>.setProps([options]);
+            </code>
+        </pre>
+        <h5>Получение параметров</h5>
+        <p>В любом месте приложения получаем доступ к экземпляру</p>
+        <pre>
+            <code>
+const slider = $(<span style="color: #df5000;">'.my-selector'</span>).data(<span style="color: #df5000;">'slider'</span>);
+            </code>
+        </pre>
+        <p>Получить параметры</p>
+        <pre>
+            <code>    
+const options = <span style="color: #df5000;">slider</span>.getProps();
+            </code>
+        </pre>
         <h5>Подписаться на обновления</h5>
             <p>Для подписки на обновления необходимо передать в параметрах функцию обратного вызова (при инициализации 
             или при дальнейшей работе приложения) для одной из функций onBeforeChange, onChange, onAfterChange ((values: number[]) => void)</p>
