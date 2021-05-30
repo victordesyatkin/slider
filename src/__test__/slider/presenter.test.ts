@@ -1,12 +1,6 @@
 import $ from 'jquery';
 
-import {
-  defaultProps,
-  setFunctionGetBoundingClientRectHTMLElement,
-  uniqId,
-} from '../../helpers/utils';
-import Model from '../../Model';
-import View from '../../View';
+import { defaultProps, uniqId } from '../../helpers/utils';
 import Presenter from '../../Presenter';
 
 describe('slider', () => {

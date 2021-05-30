@@ -39,6 +39,7 @@
     "fsd/no-function-declaration-in-event-listener": "error",
     "fsd/split-conditionals": "error",
     "@typescript-eslint/no-implied-eval": 0,
-    "no-restricted-syntax": 0
+    "no-restricted-syntax": 0,
+    "no-param-reassign": 0
   }
 }

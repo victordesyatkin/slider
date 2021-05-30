@@ -4,7 +4,6 @@ import { IPubSub } from '../interfaces';
 class PubSub implements IPubSub {
   private subscribers: { [key: string]: Callback[] } = {};
 
-  // eslint-disable-next-line fsd/hof-name-prefix
   public subscribe(
     eventName?: string,
     callback?: Callback

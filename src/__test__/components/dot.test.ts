@@ -9,101 +9,101 @@ import {
 
 describe('rail', () => {
   describe('view', () => {
-    // test('create dot view', () => {
-    //   const addition = { index: 0 };
-    //   const view = new DotView(addition);
-    //   expect(view).toBeInstanceOf(DotView);
-    //   expect(view).toEqual(
-    //     expect.objectContaining({
-    //       setProps: expect.any(Function),
-    //       render: expect.any(Function),
-    //       remove: expect.any(Function),
-    //     })
-    //   );
-    // });
+    test('create dot view', () => {
+      const addition = { index: 0 };
+      const view = new DotView(addition);
+      expect(view).toBeInstanceOf(DotView);
+      expect(view).toEqual(
+        expect.objectContaining({
+          setProps: expect.any(Function),
+          render: expect.any(Function),
+          remove: expect.any(Function),
+        })
+      );
+    });
 
-    // test('render dot view', () => {
-    //   setFunctionGetBoundingClientRectHTMLElement();
-    //   $('body').append('<div class="slider__wrapper"/>');
-    //   const view = new DotView({ index: 0 });
-    //   const $parent = $('.slider__wrapper');
-    //   view.render($parent);
-    //   let $element = $(`.${defaultProps.prefixCls}__dot`, $parent);
-    //   expect($element.length).toBe(0);
+    test('render dot view', () => {
+      setFunctionGetBoundingClientRectHTMLElement();
+      $('body').append('<div class="slider__wrapper"/>');
+      const view = new DotView({ index: 0 });
+      const $parent = $('.slider__wrapper');
+      view.render($parent);
+      let $element = $(`.${defaultProps.prefixCls}__dot`, $parent);
+      expect($element.length).toBe(0);
 
-    //   view.setProps(defaultProps);
-    //   $element = $(`.${defaultProps.prefixCls}__dot`, $parent);
-    //   expect($element.length).toBe(0);
+      view.setProps(defaultProps);
+      $element = $(`.${defaultProps.prefixCls}__dot`, $parent);
+      expect($element.length).toBe(0);
 
-    //   view.setAddition({ index: 0, value: 8 });
-    //   view.setProps(defaultProps);
-    //   $element = $(`.${defaultProps.prefixCls}__dot`, $parent);
-    //   expect($element.length).toBe(1);
+      view.setAddition({ index: 0, value: 8 });
+      view.setProps(defaultProps);
+      $element = $(`.${defaultProps.prefixCls}__dot`, $parent);
+      expect($element.length).toBe(1);
 
-    //   view.setAddition({ index: 0, value: 8 });
-    //   view.setProps({ ...defaultProps, values: [20] });
-    //   $element = $(`.${defaultProps.prefixCls}__dot`, $parent);
-    //   expect($element.length).toBe(1);
-    //   expect(
-    //     $element.hasClass(`.${defaultProps.prefixCls}__dot_active`)
-    //   ).toBeFalsy();
+      view.setAddition({ index: 0, value: 8 });
+      view.setProps({ ...defaultProps, values: [20] });
+      $element = $(`.${defaultProps.prefixCls}__dot`, $parent);
+      expect($element.length).toBe(1);
+      expect(
+        $element.hasClass(`.${defaultProps.prefixCls}__dot_active`)
+      ).toBeFalsy();
 
-    //   view.setAddition({ index: 0, value: 25 });
-    //   view.setProps({ ...defaultProps, values: [20] });
-    //   $element = $(`.${defaultProps.prefixCls}__dot`, $parent);
-    //   expect($element.length).toBe(1);
-    //   expect(
-    //     $element.hasClass(`${defaultProps.prefixCls}__dot_active`)
-    //   ).toBeFalsy();
+      view.setAddition({ index: 0, value: 25 });
+      view.setProps({ ...defaultProps, values: [20] });
+      $element = $(`.${defaultProps.prefixCls}__dot`, $parent);
+      expect($element.length).toBe(1);
+      expect(
+        $element.hasClass(`${defaultProps.prefixCls}__dot_active`)
+      ).toBeFalsy();
 
-    //   view.setAddition({ index: 0, value: 60 });
-    //   view.setProps({ ...defaultProps, values: [20, 40] });
-    //   $element = $(`.${defaultProps.prefixCls}__dot`, $parent);
-    //   expect($element.length).toBe(1);
-    //   expect(
-    //     $element.hasClass(`${defaultProps.prefixCls}__dot_active`)
-    //   ).toBeFalsy();
+      view.setAddition({ index: 0, value: 60 });
+      view.setProps({ ...defaultProps, values: [20, 40] });
+      $element = $(`.${defaultProps.prefixCls}__dot`, $parent);
+      expect($element.length).toBe(1);
+      expect(
+        $element.hasClass(`${defaultProps.prefixCls}__dot_active`)
+      ).toBeFalsy();
 
-    //   view.setAddition({ index: 0, value: 40 });
-    //   view.setProps({ ...defaultProps, values: [20, 60] });
-    //   $element = $(`.${defaultProps.prefixCls}__dot`, $parent);
-    //   expect($element.length).toBe(1);
-    //   expect(
-    //     $element.hasClass(`${defaultProps.prefixCls}__dot_active`)
-    //   ).toBeTruthy();
+      view.setAddition({ index: 0, value: 40 });
+      view.setProps({ ...defaultProps, values: [20, 60] });
+      $element = $(`.${defaultProps.prefixCls}__dot`, $parent);
+      expect($element.length).toBe(1);
+      expect(
+        $element.hasClass(`${defaultProps.prefixCls}__dot_active`)
+      ).toBeTruthy();
 
-    //   view.setAddition({ index: 0, value: 40 });
-    //   view.setProps({ ...defaultProps, vertical: true, reverse: false });
-    //   $element = $(`.${defaultProps.prefixCls}__dot`, $parent);
-    //   expect($element.length).toBe(1);
-    //   expect($element[0].style.bottom).toBe('40%');
-    //   expect($element[0].style.top).toBe('');
-    //   expect($element[0].style.transform).toBe('translateY(+50%)');
+      view.setAddition({ index: 0, value: 40 });
+      view.setProps({ ...defaultProps, vertical: true, reverse: false });
+      $element = $(`.${defaultProps.prefixCls}__dot`, $parent);
+      expect($element.length).toBe(1);
+      expect($element[0].style.bottom).toBe('40%');
+      expect($element[0].style.top).toBe('');
+      expect($element[0].style.transform).toBe('translateY(+50%)');
 
-    //   view.setAddition({ index: 0, value: 40 });
-    //   view.setProps({ ...defaultProps, vertical: true, reverse: true });
-    //   $element = $(`.${defaultProps.prefixCls}__dot`, $parent);
-    //   expect($element.length).toBe(1);
-    //   expect($element[0].style.top).toBe('40%');
-    //   expect($element[0].style.bottom).toBe('');
-    //   expect($element[0].style.transform).toBe('none');
+      view.setAddition({ index: 0, value: 40 });
+      view.setProps({ ...defaultProps, vertical: true, reverse: true });
+      $element = $(`.${defaultProps.prefixCls}__dot`, $parent);
+      expect($element.length).toBe(1);
+      expect($element[0].style.top).toBe('40%');
+      expect($element[0].style.bottom).toBe('');
+      expect($element[0].style.transform).toBe('none');
 
-    //   view.setAddition({ index: 0, value: 40 });
-    //   view.setProps({ ...defaultProps, vertical: false, reverse: true });
-    //   $element = $(`.${defaultProps.prefixCls}__dot`, $parent);
-    //   expect($element.length).toBe(1);
-    //   expect($element[0].style.right).toBe('40%');
-    //   expect($element[0].style.left).toBe('');
-    //   expect($element[0].style.transform).toBe('translateX(+50%)');
+      view.setAddition({ index: 0, value: 40 });
+      view.setProps({ ...defaultProps, vertical: false, reverse: true });
+      $element = $(`.${defaultProps.prefixCls}__dot`, $parent);
+      expect($element.length).toBe(1);
+      expect($element[0].style.right).toBe('40%');
+      expect($element[0].style.left).toBe('');
+      expect($element[0].style.transform).toBe('translateX(+50%)');
 
-    //   view.setAddition({ index: 0, value: 40 });
-    //   view.setProps({ ...defaultProps, vertical: false, reverse: false });
-    //   $element = $(`.${defaultProps.prefixCls}__dot`, $parent);
-    //   expect($element.length).toBe(1);
-    //   expect($element[0].style.left).toBe('40%');
-    //   expect($element[0].style.right).toBe('');
-    //   expect($element[0].style.transform).toBe('translateX(-50%)');
-    // });
+      view.setAddition({ index: 0, value: 40 });
+      view.setProps({ ...defaultProps, vertical: false, reverse: false });
+      $element = $(`.${defaultProps.prefixCls}__dot`, $parent);
+      expect($element.length).toBe(1);
+      expect($element[0].style.left).toBe('40%');
+      expect($element[0].style.right).toBe('');
+      expect($element[0].style.transform).toBe('translateX(-50%)');
+    });
 
     test('view dot prepareClassName', () => {
       const view = new DotView({ index: 0, value: 70 });

@@ -175,7 +175,6 @@ export default class DotsView extends PubSub implements ISubView {
 
   private appendSubViews(): void {
     if (this.view) {
-      // eslint-disable-next-line @typescript-eslint/unbound-method
       this.dots.forEach(this.appendSubView);
     }
   }

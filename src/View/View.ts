@@ -1,7 +1,6 @@
 import $ from 'jquery';
 import bind from 'bind-decorator';
 import classnames from 'classnames';
-import isUndefined from 'lodash.isundefined';
 
 import {
   objectToString,

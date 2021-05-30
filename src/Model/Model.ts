@@ -118,8 +118,8 @@ class Model extends PubSub implements IModel {
     }
     this.setIndex({ index });
     const { values } = this.props;
-    const onBeforeChange: ((values: number[]) => void) | undefined = this.props
-      ?.onBeforeChange;
+    const onBeforeChange: ((values: number[]) => void) | undefined | null = this
+      .props?.onBeforeChange;
     if (values && onBeforeChange) {
       onBeforeChange(values);
     }
@@ -132,9 +132,8 @@ class Model extends PubSub implements IModel {
     }
     this.setProps();
     const { values } = this.props;
-    // eslint-disable-next-line prettier/prettier
-    const onAfterChange: ((values: number[]) => void) | undefined = this.props
-      ?.onAfterChange;
+    const onAfterChange: ((values: number[]) => void) | undefined | null = this
+      .props?.onAfterChange;
     if (values && onAfterChange) {
       onAfterChange(values);
     }
