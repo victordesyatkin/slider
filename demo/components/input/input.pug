@@ -6,11 +6,11 @@ mixin input(props)
   if props
     -
       let { label, type = 'number', content, value, key, isControl, data = {}, link, isFirst, buttonRemove } = props;
-      let isChecked = value && type === "checkbox" ? true : false;
+      let isChecked = value && type === "checkbox";
       let className = 'input';
       let classNames = `${className} js-${className}`;
-      classNames += isControl ? ` ${className}_control js-${className}_control` : '';
-      classNames += isFirst ? ` ${className}_first js-${className}_first` : '';
+      classNames += isControl && ` ${className}_control js-${className}_control` || '';
+      classNames += isFirst && ` ${className}_first js-${className}_first` || '';
       let id = Math.random().toString(16).substr(2);
       if (label) {
           label = { ...label, id };
