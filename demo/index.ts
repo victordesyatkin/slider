@@ -4,8 +4,7 @@ function importAll(resolve: __WebpackModuleApi.RequireContext) {
   resolve.keys().forEach(resolve);
 }
 
-importAll(require.context('./components', true, /\.scss$/));
-importAll(require.context('./', true, /index\.scss$/));
+importAll(require.context('./', true, /^\.\/(?!.*(?:variables)).*\.scss$/));
 
 function renderExample(this: HTMLElement): false | void {
   const example = new Example(this);
