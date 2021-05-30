@@ -89,22 +89,22 @@
             <p>Инициализация с функциями для подписки на обновления</p>
             <pre>
                 <code>
-                    $(<span style="color: #df5000;">'.my-selector'</span>).slider({
-                        onChange: (values: number[]) => { ... },
-                        onBeforeChange: (values: number[]) => { ... },
-                        onAfterChange: (values: number[]) => { ... },
-                    });
+$(<span style="color: #df5000;">'.my-selector'</span>).slider({
+    onChange: (values: number[]) => { ... },
+    onBeforeChange: (values: number[]) => { ... },
+    onAfterChange: (values: number[]) => { ... },
+});
                 </code>
             </pre>
             <p>Измененние функциий для подписки на обновления (в любом месте приложения получаем доступ к экземпляру)</p>
             <pre>
                 <code>
-                    const slider = $(<span style="color: #df5000;">'.my-selector'</span>).data(<span style="color: #df5000;">'slider'</span>)
-                    <span style="color: #df5000;">slider</span>).setProps({
-                        onChange: (values: number[]) => { ... },
-                        onBeforeChange: (values: number[]) => { ... },
-                        onAfterChange: (values: number[]) => { ... },
-                    });
+const slider = $(<span style="color: #df5000;">'.my-selector'</span>).data(<span style="color: #df5000;">'slider'</span>)
+<span style="color: #df5000;">slider</span>).setProps({
+    onChange: (values: number[]) => { ... },
+    onBeforeChange: (values: number[]) => { ... },
+    onAfterChange: (values: number[]) => { ... },
+});
                 </code>
             </pre>
         <h5>Отписаться от обновлений</h5>
@@ -112,30 +112,30 @@
             <p>В любом месте приложения получаем доступ к экземпляру</p>
             <pre>
                 <code>
-                    const slider = $(<span style="color: #df5000;">'.my-selector'</span>).data(<span style="color: #df5000;">'slider'</span>);
-                    <span style="color: #df5000;">slider</span>).setProps({
-                        onChange: null,
-                        onBeforeChange: null,
-                        onAfterChange: null,
-                    });
+const slider = $(<span style="color: #df5000;">'.my-selector'</span>).data(<span style="color: #df5000;">'slider'</span>);
+<span style="color: #df5000;">slider</span>.setProps({
+    onChange: null,
+    onBeforeChange: null,
+    onAfterChange: null,
+});
                 </code>
             </pre>
             <p>Для того чтобы отписаться от обновлений, дополнительно возможно использовать метод unsubscribe(action), где action - имя одной из функций onBeforeChange, onChange, onAfterChange (для которой была передана функция обратного вызова)</p>
             <p>В любом месте приложения получаем доступ к экземпляру</p>
             <pre>
                 <code>
-                    const slider = $(<span style="color: #df5000;">'.my-selector'</span>).data(<span style="color: #df5000;">'slider'</span>);
-                    <span style="color: #df5000;">slider</span>).unsubscribe('onBeforeChange');
-                    <span style="color: #df5000;">slider</span>).unsubscribe('onChange');
-                    <span style="color: #df5000;">slider</span>).unsubscribe('onAfterChange');
+const slider = $(<span style="color: #df5000;">'.my-selector'</span>).data(<span style="color: #df5000;">'slider'</span>);
+<span style="color: #df5000;">slider</span>.unsubscribe('onBeforeChange');
+<span style="color: #df5000;">slider</span>.unsubscribe('onChange');
+<span style="color: #df5000;">slider</span>.unsubscribe('onAfterChange');
                 </code>
             </pre>
             <p>Для того чтобы отписаться от всех обновлений, дополнительно возможно использовать метод unsubscribeAll()</p>
             <p>В любом месте приложения получаем доступ к экземпляру</p>
             <pre>
                 <code>
-                    const slider = $(<span style="color: #df5000;">'.my-selector'</span>).data(<span style="color: #df5000;">'slider'</span>);
-                    <span style="color: #df5000;">slider</span>).unsubscribeAll();
+const slider = $(<span style="color: #df5000;">'.my-selector'</span>).data(<span style="color: #df5000;">'slider'</span>);
+<span style="color: #df5000;">slider</span>.unsubscribeAll();
                 </code>
             </pre>
     <h4 id="api">API</h4>
