@@ -84,50 +84,60 @@
         <h5>Доступ к экземпляру объекта</h5>
             <code>$(<span style="color: #df5000;">'.my-selector'</span>).data(<span style="color: #df5000;">'slider'</span>);</code>
         <h5>Подписаться на обновления</h5>
-            <p>Для подписки на обновления необходимо передать в параметрах функцию обратноо вызова (при инициализации 
+            <p>Для подписки на обновления необходимо передать в параметрах функцию обратного вызова (при инициализации 
             или при дальнейшей работе приложения) для одной из функций onBeforeChange, onChange, onAfterChange ((values: number[]) => void)</p>
             <p>Инициализация с функциями для подписки на обновления</p>
-            <code>
-                $(<span style="color: #df5000;">'.my-selector'</span>).slider({
-                    onChange: (values: number[]) => { ... },
-                    onBeforeChange: (values: number[]) => { ... },
-                    onAfterChange: (values: number[]) => { ... },
-                });
-            </code>
+            <pre>
+                <code>
+                    $(<span style="color: #df5000;">'.my-selector'</span>).slider({
+                        onChange: (values: number[]) => { ... },
+                        onBeforeChange: (values: number[]) => { ... },
+                        onAfterChange: (values: number[]) => { ... },
+                    });
+                </code>
+            </pre>
             <p>Измененние функциий для подписки на обновления (в любом месте приложения получаем доступ к экземпляру)</p>
-            <code>
-                const slider = $(<span style="color: #df5000;">'.my-selector'</span>).data(<span style="color: #df5000;">'slider'</span>)
-                <span style="color: #df5000;">slider</span>).setProps({
-                    onChange: (values: number[]) => { ... },
-                    onBeforeChange: (values: number[]) => { ... },
-                    onAfterChange: (values: number[]) => { ... },
-                });
-            </code>
+            <pre>
+                <code>
+                    const slider = $(<span style="color: #df5000;">'.my-selector'</span>).data(<span style="color: #df5000;">'slider'</span>)
+                    <span style="color: #df5000;">slider</span>).setProps({
+                        onChange: (values: number[]) => { ... },
+                        onBeforeChange: (values: number[]) => { ... },
+                        onAfterChange: (values: number[]) => { ... },
+                    });
+                </code>
+            </pre>
         <h5>Отписаться от обновлений</h5>
             <p>Для того чтобы отписаться от обновлений необходимо передать в параметрах для функций onBeforeChange, onChange, onAfterChange (для которой была передана функция обратного вызова) null или noop (например () => undefined)</p>
             <p>В любом месте приложения получаем доступ к экземпляру</p>
-            <code>
-                const slider = $(<span style="color: #df5000;">'.my-selector'</span>).data(<span style="color: #df5000;">'slider'</span>);
-                <span style="color: #df5000;">slider</span>).setProps({
-                    onChange: null,
-                    onBeforeChange: null,
-                    onAfterChange: null,
-                });
-            </code>
+            <pre>
+                <code>
+                    const slider = $(<span style="color: #df5000;">'.my-selector'</span>).data(<span style="color: #df5000;">'slider'</span>);
+                    <span style="color: #df5000;">slider</span>).setProps({
+                        onChange: null,
+                        onBeforeChange: null,
+                        onAfterChange: null,
+                    });
+                </code>
+            </pre>
             <p>Для того чтобы отписаться от обновлений, дополнительно возможно использовать метод unsubscribe(action), где action - имя одной из функций onBeforeChange, onChange, onAfterChange (для которой была передана функция обратного вызова)</p>
             <p>В любом месте приложения получаем доступ к экземпляру</p>
-            <code>
-                const slider = $(<span style="color: #df5000;">'.my-selector'</span>).data(<span style="color: #df5000;">'slider'</span>);
-                <span style="color: #df5000;">slider</span>).unsubscribe('onBeforeChange');
-                <span style="color: #df5000;">slider</span>).unsubscribe('onChange');
-                <span style="color: #df5000;">slider</span>).unsubscribe('onAfterChange');
-            </code>
+            <pre>
+                <code>
+                    const slider = $(<span style="color: #df5000;">'.my-selector'</span>).data(<span style="color: #df5000;">'slider'</span>);
+                    <span style="color: #df5000;">slider</span>).unsubscribe('onBeforeChange');
+                    <span style="color: #df5000;">slider</span>).unsubscribe('onChange');
+                    <span style="color: #df5000;">slider</span>).unsubscribe('onAfterChange');
+                </code>
+            </pre>
             <p>Для того чтобы отписаться от всех обновлений, дополнительно возможно использовать метод unsubscribeAll()</p>
             <p>В любом месте приложения получаем доступ к экземпляру</p>
-            <code>
-                const slider = $(<span style="color: #df5000;">'.my-selector'</span>).data(<span style="color: #df5000;">'slider'</span>);
-                <span style="color: #df5000;">slider</span>).unsubscribeAll();
-            </code>
+            <pre>
+                <code>
+                    const slider = $(<span style="color: #df5000;">'.my-selector'</span>).data(<span style="color: #df5000;">'slider'</span>);
+                    <span style="color: #df5000;">slider</span>).unsubscribeAll();
+                </code>
+            </pre>
     <h4 id="api">API</h4>
     <table>
         <tr>
