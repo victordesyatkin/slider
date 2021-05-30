@@ -1,1 +1,0 @@
-import './caption.scss';

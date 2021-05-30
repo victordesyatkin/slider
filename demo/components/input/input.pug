@@ -6,7 +6,7 @@ mixin input(props)
   if props
     -
       let { label, type = 'number', content, value, key, isControl, data = {}, link, isFirst, buttonRemove } = props;
-      let isChecked = value && type === "checkbox";
+      let isChecked = Boolean(value && type === "checkbox");
       let className = 'input';
       let classNames = `${className} js-${className}`;
       classNames += isControl && ` ${className}_control js-${className}_control` || '';
@@ -19,7 +19,6 @@ mixin input(props)
       if link
         div(class=`${className}__link`)
           +link(link)
-
       if label
         div(class=`${className}__label`)
           +label(label)

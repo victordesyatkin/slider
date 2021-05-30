@@ -12,8 +12,6 @@ import orderBy from 'lodash.orderby';
 import { uniqId, ensureValueInRange } from '../src/helpers/utils';
 import { Style, Render, Props, KeyProps } from '../src/types';
 import Slider from '../src/index';
-import './components/example/example';
-import './index.scss';
 
 class Example {
   private $parent: JQuery<HTMLElement>;

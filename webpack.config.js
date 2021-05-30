@@ -18,7 +18,7 @@ module.exports = (env, args = {}) => {
 
   const getStyleLoaders = () => {
     return [
-      isProduction ? MiniCssExtractPlugin.loader : 'style-loader',
+      isProduction && MiniCssExtractPlugin.loader || 'style-loader',
       {
         loader: 'css-loader',
         options: { sourceMap: isDevelopment },
@@ -94,8 +94,8 @@ module.exports = (env, args = {}) => {
       path: path.resolve(__dirname, 'dist'),
       chunkFilename: '[id].[contenthash].js',
     },
-    mode: isProduction ? 'production' : 'development',
-    devtool: isDevelopment ? 'source-map' : undefined,
+    mode: (isProduction && 'production') || 'development',
+    devtool: (isDevelopment && 'source-map') || undefined,
     module: {
       rules: [
         {
