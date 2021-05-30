@@ -271,27 +271,27 @@
             <td>dot</td>
             <td>object</td>
             <td>{}</td>
-            <td>Точки-отметки отображаются при наличие значения step,<br/>
+            <td>Точки отметки отображаются при наличие значения step,<br/>
             {<br/>
                 on?: boolean = false - вкл/выкл,<br/>
-                wrapClassName?: string = '' - имя класса для родительского класса точек-отметок,<br/>
-                style?: {"backgound": "red"} - стиль для точек-отметок,<br/>
-                className?: string = '' - имя класса для точек-отметок,<br/>
+                wrapClassName?: string = '' - имя класса для родительского класса точек отметок,<br/>
+                style?: {"backgound": "red"} - стиль для точек отметок,<br/>
+                className?: string = '' - имя класса для точек отметок,<br/>
             }</td>
         </tr>
         <tr>
             <td>mark</td>
             <td>object</td>
             <td>{}</td>
-            <td>Отметки-шкала, <br/>
+            <td>Отметки шкалы, <br/>
             {<br/>
                 on?: boolean = false - вкл/выкл,<br/>
-                wrapClassName?: string = '' - имя класса для родительского класса отметок-шкалы,<br/>
-                style?: {"backgound": "red"} - стиль для отметок-шкалы,<br/>
-                className?: string = '' - имя класса для отметок-шкалы,<br/>
-                render?: (value: number) => | string | JQuery<HTMLElement> | JQuery<HTMLElement>[] | HTMLElement | HTMLElement[] | undefined; - функция для изменения отображения отметок-шкалы,<br/>
-                values?: number[] - дополнительные значения отметок-шкалы отображаются внезависимости от значения step,<br/>
-                dot?: boolean = false, вкл/выкл точек-меток для дополнительных значений отметок-шкалы,<br/>
+                wrapClassName?: string = '' - имя класса для родительского класса отметок шкалы,<br/>
+                style?: {"backgound": "red"} - стиль для отметок шкалы,<br/>
+                className?: string = '' - имя класса для отметок шкалы,<br/>
+                render?: (value: number) => | string | JQuery<HTMLElement> | JQuery<HTMLElement>[] | HTMLElement | HTMLElement[] | undefined; - функция для изменения отображения отметок шкалы,<br/>
+                values?: number[] - дополнительные значения отметок шкалы отображаются внезависимости от значения step,<br/>
+                dot?: boolean = false, вкл/выкл точек-меток для дополнительных значений отметок шкалы,<br/>
             }
             </td>
         </tr>
