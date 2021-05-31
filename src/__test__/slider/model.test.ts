@@ -217,7 +217,7 @@ describe('slider', () => {
       expect(onAfterChange.mock.calls[0][0]).toStrictEqual([88]);
       expect(onAfterChange.mock.calls.length).toBe(1);
     });
-    test('unsubscribe onChange, onBeforeChange, onAfterChange', () => {
+    test('unsubscribeAction onChange, onBeforeChange, onAfterChange', () => {
       const onChange = jest.fn((_: number[]): void => {});
       const onBeforeChange = jest.fn((_: number[]): void => {});
       const onAfterChange = jest.fn((_: number[]): void => {});
@@ -257,9 +257,9 @@ describe('slider', () => {
       expect(onAfterChange.mock.calls.length).toBe(1);
       expect(onAfterChange.mock.calls[0][0]).toStrictEqual([88]);
       expect(onAfterChange.mock.calls.length).toBe(1);
-      model.unsubscribe('onChange');
-      model.unsubscribe('onBeforeChange');
-      model.unsubscribe('onAfterChange');
+      model.unsubscribeAction('onChange');
+      model.unsubscribeAction('onBeforeChange');
+      model.unsubscribeAction('onAfterChange');
       model.onChange({
         coordinateX: 84,
         coordinateY: 80,
@@ -291,7 +291,7 @@ describe('slider', () => {
       expect(onAfterChange.mock.calls[0][0]).toStrictEqual([88]);
       expect(onAfterChange.mock.calls.length).toBe(1);
     });
-    test('unsubscribeAll onChange, onBeforeChange, onAfterChange', () => {
+    test('unsubscribeAllActions onChange, onBeforeChange, onAfterChange', () => {
       const onChange = jest.fn((_: number[]): void => {});
       const onBeforeChange = jest.fn((_: number[]): void => {});
       const onAfterChange = jest.fn((_: number[]): void => {});
@@ -331,7 +331,7 @@ describe('slider', () => {
       expect(onAfterChange.mock.calls.length).toBe(1);
       expect(onAfterChange.mock.calls[0][0]).toStrictEqual([88]);
       expect(onAfterChange.mock.calls.length).toBe(1);
-      model.unsubscribeAll();
+      model.unsubscribeAllActions();
       model.onChange({
         coordinateX: 84,
         coordinateY: 80,

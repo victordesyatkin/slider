@@ -22,7 +22,7 @@ class Model extends PubSub implements IModel {
     this.props = props;
   }
 
-  public unsubscribeAll(): void {
+  public unsubscribeAllActions(): void {
     const actions: Record<string, null> = {};
     Model.ACTIONS.forEach((action) => {
       actions[action] = null;
@@ -30,7 +30,7 @@ class Model extends PubSub implements IModel {
     this.setProps({ ...this.getProps(), ...actions });
   }
 
-  public unsubscribe(action?: string): void {
+  public unsubscribeAction(action?: string): void {
     if (isString(action) && Model.ACTIONS.indexOf(action) !== -1) {
       this.setProps({ ...this.getProps(), [action]: null });
     }

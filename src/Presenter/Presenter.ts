@@ -21,11 +21,11 @@ class Presenter implements IPresenter {
   }
 
   public unsubscribeAll(): void {
-    this.model.unsubscribeAll();
+    this.model.unsubscribeAllActions();
   }
 
   public unsubscribe(action?: string): void {
-    this.model.unsubscribe(action);
+    this.model.unsubscribeAction(action);
   }
 
   public getProps(): DefaultProps {
