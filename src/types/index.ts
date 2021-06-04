@@ -12,9 +12,9 @@ type Props = {
   mark?: Mark;
   dot?: Dot;
   step?: number;
-  onChange?: (value: number[]) => void | null;
-  onBeforeChange?: (value: number[]) => void | null;
-  onAfterChange?: (value: number[]) => void | null;
+  onChange?: ((value: number[]) => void) | null;
+  onBeforeChange?: null | ((value: number[]) => void) | null;
+  onAfterChange?: ((value: number[]) => void) | null;
   track?: Track;
   handle?: Handle;
   startPoint?: number;
@@ -39,9 +39,9 @@ type DefaultProps = {
   style?: Style;
   mark?: Mark;
   step: number;
-  onChange?: (value: number[]) => void | null;
-  onBeforeChange?: (value: number[]) => void | null;
-  onAfterChange?: (value: number[]) => void | null;
+  onChange?: ((value: number[]) => void) | null;
+  onBeforeChange?: ((value: number[]) => void) | null;
+  onAfterChange?: ((value: number[]) => void) | null;
   track?: Track;
   handle?: Handle;
   dot?: Dot;
