@@ -29,16 +29,16 @@ describe('tooltip', () => {
       const view = new TooltipView({ index: 0 });
       const $parent = $('.slider__wrapper');
       view.render($parent);
-      let $element = $(`.${defaultProps.prefixCls}__tooltip`, $parent);
+      let $element = $(`.${defaultProps.prefixClassName}__tooltip`, $parent);
       expect($element.length).toBe(0);
 
       view.setProps(defaultProps);
-      $element = $(`.${defaultProps.prefixCls}__tooltip`, $parent);
+      $element = $(`.${defaultProps.prefixClassName}__tooltip`, $parent);
       expect($element.length).toBe(0);
 
       view.setAddition({ index: 0, value: 47 });
       view.setProps(defaultProps);
-      $element = $(`.${defaultProps.prefixCls}__tooltip`, $parent);
+      $element = $(`.${defaultProps.prefixClassName}__tooltip`, $parent);
       expect($element.length).toBe(1);
     });
 
@@ -49,12 +49,12 @@ describe('tooltip', () => {
       $('body').append(`<div class="${className}"/>`);
       const $parent = $(`.${className}`);
       view.render($parent);
-      let $element = $(`.${defaultProps.prefixCls}__tooltip`, $parent);
+      let $element = $(`.${defaultProps.prefixClassName}__tooltip`, $parent);
       expect($element.css('color')).toBeUndefined();
 
       let props: DefaultProps = { ...defaultProps, tooltip: { on: true } };
       view.setProps(props);
-      $element = $(`.${defaultProps.prefixCls}__tooltip`, $parent);
+      $element = $(`.${defaultProps.prefixClassName}__tooltip`, $parent);
       expect($element.css('color')).toBe('');
 
       props = {
@@ -62,7 +62,7 @@ describe('tooltip', () => {
         tooltip: { on: true, style: { color: 'red' } },
       };
       view.setProps(props);
-      $element = $(`.${defaultProps.prefixCls}__tooltip`, $parent);
+      $element = $(`.${defaultProps.prefixClassName}__tooltip`, $parent);
       expect($element.css('color')).toBe('red');
     });
 
@@ -76,16 +76,16 @@ describe('tooltip', () => {
       const $parent = $(`.${className}`);
       let view = new TooltipView(addition);
       view.render($parent);
-      let $element = $(`.${defaultProps.prefixCls}__tooltip`, $parent);
+      let $element = $(`.${defaultProps.prefixClassName}__tooltip`, $parent);
       expect($element.text()).toBe('');
 
       let props: DefaultProps = { ...defaultProps, tooltip: { on: true } };
       view.setProps(props);
-      $element = $(`.${defaultProps.prefixCls}__tooltip`, $parent);
+      $element = $(`.${defaultProps.prefixClassName}__tooltip`, $parent);
       expect($element.text()).toBe('80');
       props = { ...defaultProps, tooltip: { on: true, render: mockCallback } };
       view.setProps(props);
-      $element = $(`.${defaultProps.prefixCls}__tooltip`, $parent);
+      $element = $(`.${defaultProps.prefixClassName}__tooltip`, $parent);
       expect($element.text()).toBe('80%');
     });
     test('updateView view tooltip', () => {
@@ -98,14 +98,14 @@ describe('tooltip', () => {
       const $parent = $(`.${className}`);
       let view = new TooltipView(addition);
       view.render($parent);
-      let $element = $(`.${defaultProps.prefixCls}__tooltip`, $parent);
+      let $element = $(`.${defaultProps.prefixClassName}__tooltip`, $parent);
       let props: DefaultProps = { ...defaultProps, tooltip: { on: true } };
       view.setProps(props);
-      $element = $(`.${defaultProps.prefixCls}__tooltip`, $parent);
+      $element = $(`.${defaultProps.prefixClassName}__tooltip`, $parent);
       expect($element.length).toBe(1);
       props = { ...defaultProps, tooltip: { on: false } };
       view.setProps(props);
-      $element = $(`.${defaultProps.prefixCls}__tooltip`, $parent);
+      $element = $(`.${defaultProps.prefixClassName}__tooltip`, $parent);
       expect($element.length).toBe(0);
     });
     test('getAddition tooltip view', () => {

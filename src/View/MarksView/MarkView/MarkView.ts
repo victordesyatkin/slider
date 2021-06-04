@@ -82,9 +82,9 @@ class MarkView extends PubSub implements ISubView {
   }
 
   private prepareClassName(): string {
-    const prefixCls = this.props?.prefixCls || '';
+    const prefixClassName = this.props?.prefixClassName || '';
     const className = this.props?.mark?.className || '';
-    return classnames(`${prefixCls}__mark`, className);
+    return classnames(`${prefixClassName}__mark`, className);
   }
 
   private prepareStyle(): string | undefined {

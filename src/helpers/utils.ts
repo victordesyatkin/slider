@@ -9,7 +9,7 @@ import trim from 'lodash.trim';
 import { DefaultProps, Props } from '../types';
 
 const defaultProps: DefaultProps = {
-  prefixCls: 'fsd-slider',
+  prefixClassName: 'fsd-slider',
   values: [0],
   min: 0,
   max: 100,

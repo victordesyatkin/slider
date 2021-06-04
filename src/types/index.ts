@@ -1,5 +1,5 @@
 type Props = {
-  prefixCls?: string;
+  prefixClassName?: string;
   vertical?: boolean;
   reverse?: boolean;
   disabled?: boolean;
@@ -26,31 +26,17 @@ type Props = {
 };
 
 type DefaultProps = {
-  prefixCls: string;
+  prefixClassName: string;
   vertical: boolean;
   reverse: boolean;
   disabled: boolean;
-  isFocused?: boolean;
   values: number[];
   min: number;
   max: number;
-  precision: number;
-  classNames?: string[];
-  style?: Style;
-  mark?: Mark;
   step: number;
-  onChange?: ((value: number[]) => void) | null;
-  onBeforeChange?: ((value: number[]) => void) | null;
-  onAfterChange?: ((value: number[]) => void) | null;
-  track?: Track;
-  handle?: Handle;
-  dot?: Dot;
-  rail?: Rail;
-  startPoint?: number;
-  tooltip?: Tooltip;
   indent: number;
-  index?: number;
-};
+  precision: number;
+} & Props;
 
 type KeyDefaultProps = keyof DefaultProps;
 type KeyProps = keyof Props;

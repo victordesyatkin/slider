@@ -97,10 +97,10 @@ export default class DotsView extends PubSub implements ISubView {
   }
 
   private prepareClassName(): string {
-    const { prefixCls = '', vertical } = this.props || {};
+    const { prefixClassName = '', vertical } = this.props || {};
     const className = this.props?.dot?.wrapClassName;
-    return classnames(`${prefixCls}__dots`, className, {
-      [`${prefixCls}__dots_vertical`]: vertical,
+    return classnames(`${prefixClassName}__dots`, className, {
+      [`${prefixClassName}__dots_vertical`]: vertical,
     });
   }
 

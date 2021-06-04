@@ -96,12 +96,12 @@ class View extends PubSub implements IView {
   }
 
   private prepareClassName(): string {
-    const { prefixCls = '', mark, disabled, vertical, classNames } =
+    const { prefixClassName = '', mark, disabled, vertical, classNames } =
       this.props || {};
-    return classnames(prefixCls, {
-      [`${prefixCls}_with-mark`]: mark?.on,
-      [`${prefixCls}_disabled`]: disabled,
-      [`${prefixCls}_vertical`]: vertical,
+    return classnames(prefixClassName, {
+      [`${prefixClassName}_with-mark`]: mark?.on,
+      [`${prefixClassName}_disabled`]: disabled,
+      [`${prefixClassName}_vertical`]: vertical,
       classNames,
     });
   }

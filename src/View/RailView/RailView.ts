@@ -79,9 +79,9 @@ export default class RailView extends PubSub implements ISubView {
   }
 
   private prepareClassName(): string {
-    const prefixCls = this.props?.prefixCls || '';
+    const prefixClassName = this.props?.prefixClassName || '';
     const className = this.props?.rail?.className || '';
-    return classnames(`${prefixCls}__rail`, className);
+    return classnames(`${prefixClassName}__rail`, className);
   }
 
   private prepareStyle(): string | undefined {

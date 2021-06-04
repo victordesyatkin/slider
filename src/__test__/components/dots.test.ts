@@ -27,22 +27,22 @@ describe('dots', () => {
       const view = new DotsView({ index: 0 });
       const $parent = $('.slider__wrapper-8');
       view.render($parent);
-      let $element = $(`.${defaultProps.prefixCls}__dots`, $parent);
+      let $element = $(`.${defaultProps.prefixClassName}__dots`, $parent);
       expect($element.length).toBe(0);
 
       view.setProps(defaultProps);
-      $element = $(`.${defaultProps.prefixCls}__dots`, $parent);
+      $element = $(`.${defaultProps.prefixClassName}__dots`, $parent);
       expect($element.length).toBe(0);
 
       view.setProps({ ...defaultProps, dot: { on: true } });
-      $element = $(`.${defaultProps.prefixCls}__dots`, $parent);
+      $element = $(`.${defaultProps.prefixClassName}__dots`, $parent);
       expect($element.length).toBe(1);
 
-      $element = $(`.${defaultProps.prefixCls}__dot`, $parent);
+      $element = $(`.${defaultProps.prefixClassName}__dot`, $parent);
       expect($element.length).toBe(0);
 
       view.setProps({ ...defaultProps, dot: { on: true }, step: 10 });
-      $element = $(`.${defaultProps.prefixCls}__dot`, $parent);
+      $element = $(`.${defaultProps.prefixClassName}__dot`, $parent);
       expect($element.length).toBe(11);
 
       view.setProps({
@@ -51,7 +51,7 @@ describe('dots', () => {
         step: 10,
         mark: { on: true },
       });
-      $element = $(`.${defaultProps.prefixCls}__dot`, $parent);
+      $element = $(`.${defaultProps.prefixClassName}__dot`, $parent);
       expect($element.length).toBe(11);
 
       view.setProps({
@@ -60,7 +60,7 @@ describe('dots', () => {
         step: 10,
         mark: { on: true, values: [14, 86] },
       });
-      $element = $(`.${defaultProps.prefixCls}__dot`, $parent);
+      $element = $(`.${defaultProps.prefixClassName}__dot`, $parent);
       expect($element.length).toBe(11);
 
       view.setProps({
@@ -69,7 +69,7 @@ describe('dots', () => {
         step: 10,
         mark: { on: true, values: [14, 86], dot: true },
       });
-      $element = $(`.${defaultProps.prefixCls}__dot`, $parent);
+      $element = $(`.${defaultProps.prefixClassName}__dot`, $parent);
       expect($element.length).toBe(13);
     });
 
@@ -82,10 +82,10 @@ describe('dots', () => {
       let props = { ...defaultProps, dot: { on: true } };
       view.setProps(props);
       view.render($parent);
-      let $element = $(`.${defaultProps.prefixCls}__dots`, $parent);
+      let $element = $(`.${defaultProps.prefixClassName}__dots`, $parent);
       expect($element.length).toBe(1);
       view.setProps({ ...props, dot: { on: false } });
-      $element = $(`.${defaultProps.prefixCls}__dots`, $parent);
+      $element = $(`.${defaultProps.prefixClassName}__dots`, $parent);
       expect($element.length).toBe(0);
     });
 
@@ -95,7 +95,7 @@ describe('dots', () => {
       let addition = { index: 0 };
       const view = new DotsView(addition);
       const $parent = $(`.${className}`);
-      let $element = $(`.${defaultProps.prefixCls}__dots`, $parent);
+      let $element = $(`.${defaultProps.prefixClassName}__dots`, $parent);
       expect($element.length).toBe(0);
     });
   });

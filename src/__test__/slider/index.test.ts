@@ -88,7 +88,7 @@ describe('slider', () => {
         onBeforeChange,
         onAfterChange,
       }).data(Slider.PLUGIN_NAME);
-      const $handle = $(`.${defaultProps.prefixCls}__handle`, $element);
+      const $handle = $(`.${defaultProps.prefixClassName}__handle`, $element);
       const event = $.Event('mousemove');
       event.pageX = 20;
       event.pageY = 100;
@@ -132,7 +132,7 @@ describe('slider', () => {
         onBeforeChange,
         onAfterChange,
       }).data(Slider.PLUGIN_NAME);
-      const $handle = $(`.${defaultProps.prefixCls}__handle`, $element);
+      const $handle = $(`.${defaultProps.prefixClassName}__handle`, $element);
       const event = $.Event('mousemove');
       event.pageX = 20;
       event.pageY = 100;
@@ -173,7 +173,7 @@ describe('slider', () => {
         onBeforeChange,
         onAfterChange,
       }).data(Slider.PLUGIN_NAME);
-      const $handle = $(`.${defaultProps.prefixCls}__handle`, $element);
+      const $handle = $(`.${defaultProps.prefixClassName}__handle`, $element);
       const event = $.Event('mousemove');
       event.pageX = 20;
       event.pageY = 100;

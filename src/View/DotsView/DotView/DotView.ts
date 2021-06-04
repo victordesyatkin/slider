@@ -78,7 +78,7 @@ class DotView extends PubSub implements ISubView {
   }
 
   private prepareClassName(): string {
-    const prefixCls = this.props?.prefixCls || '';
+    const prefixClassName = this.props?.prefixClassName || '';
     const className = this.props?.dot?.className || '';
     const { value } = this.addition;
     let values = this.props?.values;
@@ -92,8 +92,8 @@ class DotView extends PubSub implements ISubView {
           active = true;
         }
       }
-      return classnames(`${prefixCls}__dot`, className, {
-        [`${prefixCls}__dot_active`]: active,
+      return classnames(`${prefixClassName}__dot`, className, {
+        [`${prefixClassName}__dot_active`]: active,
       });
     }
     return '';

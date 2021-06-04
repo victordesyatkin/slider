@@ -29,15 +29,15 @@ describe('rail', () => {
       const view = new TrackView(addition);
       const $parent = $('.slider__wrapper');
       view.render($parent);
-      let $element = $(`.${defaultProps.prefixCls}__track`, $parent);
+      let $element = $(`.${defaultProps.prefixClassName}__track`, $parent);
       expect($element.length).toBe(0);
 
       view.setProps(defaultProps);
-      $element = $(`.${defaultProps.prefixCls}__track`, $parent);
+      $element = $(`.${defaultProps.prefixClassName}__track`, $parent);
       expect($element.length).toBe(1);
 
       view.setProps({ ...defaultProps, track: { on: false } });
-      $element = $(`.${defaultProps.prefixCls}__track`, $parent);
+      $element = $(`.${defaultProps.prefixClassName}__track`, $parent);
       expect($element.length).toBe(0);
     });
   });

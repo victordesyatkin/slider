@@ -18,7 +18,7 @@ describe('handle', () => {
     const $parent = $(`.${className}`);
     view.setProps(defaultProps);
     view.render($parent);
-    let $element = $(`.${defaultProps.prefixCls}__handle`, $parent);
+    let $element = $(`.${defaultProps.prefixClassName}__handle`, $parent);
     $element.trigger('mousedown');
     expect(handleViewMouseDown1.mock.calls.length).toBe(0);
 
@@ -31,7 +31,7 @@ describe('handle', () => {
     });
     view.setProps(defaultProps);
     view.render($parent);
-    $element = $(`.${defaultProps.prefixCls}__handle`, $parent);
+    $element = $(`.${defaultProps.prefixClassName}__handle`, $parent);
     expect($element.length).toBe(1);
     $element.trigger('mousedown');
     expect(handleViewMouseDown2.mock.calls.length).toBe(1);
@@ -46,17 +46,17 @@ describe('handle', () => {
     let props = { ...defaultProps, tooltip: { on: true } };
     view.setProps(props);
     view.render($parent);
-    let $handle = $(`.${defaultProps.prefixCls}__handle`, $parent);
-    let $tooltip = $(`.${defaultProps.prefixCls}__tooltip`, $parent);
+    let $handle = $(`.${defaultProps.prefixClassName}__handle`, $parent);
+    let $tooltip = $(`.${defaultProps.prefixClassName}__tooltip`, $parent);
     expect($handle.length).toBe(1);
 
     expect($tooltip.length).toBe(1);
 
     props = { ...defaultProps, tooltip: { on: false } };
     view.setProps(props);
-    $handle = $(`.${defaultProps.prefixCls}__handle`, $parent);
+    $handle = $(`.${defaultProps.prefixClassName}__handle`, $parent);
     expect($handle.length).toBe(1);
-    $tooltip = $(`.${defaultProps.prefixCls}__tooltip`, $parent);
+    $tooltip = $(`.${defaultProps.prefixClassName}__tooltip`, $parent);
     expect($tooltip.length).toBe(0);
   });
 });

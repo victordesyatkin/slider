@@ -28,18 +28,18 @@ describe('rail', () => {
       const view = new MarkView({ index: 0 });
       const $parent = $('.slider__wrapper');
       view.render($parent);
-      let $element = $(`.${defaultProps.prefixCls}__mark`, $parent);
+      let $element = $(`.${defaultProps.prefixClassName}__mark`, $parent);
       expect($element.length).toBe(0);
 
       view.setProps(defaultProps);
       view.render($parent);
-      $element = $(`.${defaultProps.prefixCls}__mark`, $parent);
+      $element = $(`.${defaultProps.prefixClassName}__mark`, $parent);
       expect($element.length).toBe(0);
 
       view.setAddition({ index: 0, value: 62 });
       view.setProps(defaultProps);
       view.render($parent);
-      $element = $(`.${defaultProps.prefixCls}__mark`, $parent);
+      $element = $(`.${defaultProps.prefixClassName}__mark`, $parent);
       expect($element.length).toBe(1);
     });
 
@@ -50,7 +50,7 @@ describe('rail', () => {
       $('body').append(`<div class="${className}"/>`);
       const $parent = $(`.${className}`);
       mark.render($parent);
-      let $element = $(`.${defaultProps.prefixCls}__mark`, $parent);
+      let $element = $(`.${defaultProps.prefixClassName}__mark`, $parent);
       expect($element.css('color')).toBeUndefined();
     });
 
@@ -69,19 +69,19 @@ describe('rail', () => {
       $('body').append(`<div class="${className}"/>`);
       const $parent = $(`.${className}`);
       mark.render($parent);
-      let $element = $(`.${defaultProps.prefixCls}__mark`, $parent);
+      let $element = $(`.${defaultProps.prefixClassName}__mark`, $parent);
       expect($element.length).toBe(1);
       expect($element.text()).toBe(`${addition.value}`);
       props = { ...props, mark: { render: mockCallback, on: true } };
       mark.setProps(props);
-      $element = $(`.${defaultProps.prefixCls}__mark`, $parent);
+      $element = $(`.${defaultProps.prefixClassName}__mark`, $parent);
       expect($element.length).toBe(1);
       expect($element.text()).toBe(`${addition.value}%`);
 
       props = { ...props, mark: { on: true } };
       mark.setProps(props);
 
-      $element = $(`.${defaultProps.prefixCls}__mark`, $parent);
+      $element = $(`.${defaultProps.prefixClassName}__mark`, $parent);
       expect($element.length).toBe(1);
       expect($element.text()).toBe(`${addition.value}`);
     });
@@ -103,7 +103,7 @@ describe('rail', () => {
       $('body').append(`<div class="${className}"/>`);
       const $parent = $(`.${className}`);
       mark.render($parent);
-      let $element = $(`.${defaultProps.prefixCls}__mark`, $parent);
+      let $element = $(`.${defaultProps.prefixClassName}__mark`, $parent);
       $element.trigger('click');
       mark.setProps(props);
       expect(handleViewClick.mock.calls.length).toBe(0);
@@ -111,14 +111,14 @@ describe('rail', () => {
       addition = { index: 0, handles: { handleViewClick } };
       mark.setAddition(addition);
       mark.setProps(props);
-      $element = $(`.${defaultProps.prefixCls}__mark`, $parent);
+      $element = $(`.${defaultProps.prefixClassName}__mark`, $parent);
       $element.trigger('click');
       expect(handleViewClick.mock.calls.length).toBe(0);
 
       addition = { index: 0, value: 80, handles: { handleViewClick } };
       mark.setAddition(addition);
       mark.setProps(props);
-      $element = $(`.${defaultProps.prefixCls}__mark`, $parent);
+      $element = $(`.${defaultProps.prefixClassName}__mark`, $parent);
       $element.trigger('click');
       expect(handleViewClick.mock.calls.length).toBe(1);
     });

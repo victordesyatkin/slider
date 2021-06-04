@@ -78,12 +78,12 @@ export default class TrackView extends PubSub implements ISubView {
   }
 
   private prepareClassName(): string {
-    const prefixCls = this.props?.prefixCls || '';
+    const prefixClassName = this.props?.prefixClassName || '';
     const index = this.addition?.index;
     const className = this.props?.track?.classNames || '';
     return classnames(
-      `${prefixCls}__track`,
-      { [`${prefixCls}__track-${index}`]: true },
+      `${prefixClassName}__track`,
+      { [`${prefixClassName}__track-${index}`]: true },
       className
     );
   }

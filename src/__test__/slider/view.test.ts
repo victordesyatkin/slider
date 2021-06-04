@@ -29,11 +29,11 @@ describe('slider', () => {
       const view = new View();
       const $parent = $('.slider__wrapper');
       view.render($parent);
-      let $slider = $(`.${defaultProps.prefixCls}`, $parent);
+      let $slider = $(`.${defaultProps.prefixClassName}`, $parent);
       expect($slider.length).toBe(0);
 
       view.setProps(defaultProps);
-      $slider = $(`.${defaultProps.prefixCls}`, $parent);
+      $slider = $(`.${defaultProps.prefixClassName}`, $parent);
       expect($slider.length).toBe(1);
     });
 
@@ -44,19 +44,19 @@ describe('slider', () => {
       const $parent = $('.slider__wrapper1');
       view.setProps(defaultProps);
       view.render($parent);
-      let $handle = $(`.${defaultProps.prefixCls}__handle`, $parent);
+      let $handle = $(`.${defaultProps.prefixClassName}__handle`, $parent);
       expect($handle.length).toBe(1);
 
       view.setProps({ ...defaultProps, values: [20, 80] });
-      $handle = $(`.${defaultProps.prefixCls}__handle`, $parent);
+      $handle = $(`.${defaultProps.prefixClassName}__handle`, $parent);
       expect($handle.length).toBe(2);
 
       view.setProps({ ...defaultProps, values: [20, 80, 50] });
-      $handle = $(`.${defaultProps.prefixCls}__handle`, $parent);
+      $handle = $(`.${defaultProps.prefixClassName}__handle`, $parent);
       expect($handle.length).toBe(3);
 
       view.setProps({ ...defaultProps, values: [20] });
-      $handle = $(`.${defaultProps.prefixCls}__handle`, $parent);
+      $handle = $(`.${defaultProps.prefixClassName}__handle`, $parent);
       expect($handle.length).toBe(1);
     });
 
@@ -67,26 +67,26 @@ describe('slider', () => {
       const $parent = $('.slider__wrapper2');
       view.setProps(defaultProps);
       view.render($parent);
-      let $tracks = $(`.${defaultProps.prefixCls}__track`, $parent);
+      let $tracks = $(`.${defaultProps.prefixClassName}__track`, $parent);
       expect($tracks.length).toBe(1);
 
       let values: number[] = [20, 80];
       view.setProps({ ...defaultProps, values });
-      $tracks = $(`.${defaultProps.prefixCls}__track`, $parent);
+      $tracks = $(`.${defaultProps.prefixClassName}__track`, $parent);
 
       expect($tracks.length).toBe(
         values.length > 1 ? values.length - 1 : values.length
       );
       values = [20, 80, 50];
       view.setProps({ ...defaultProps, values });
-      $tracks = $(`.${defaultProps.prefixCls}__track`, $parent);
+      $tracks = $(`.${defaultProps.prefixClassName}__track`, $parent);
 
       expect($tracks.length).toBe(
         values.length > 1 ? values.length - 1 : values.length
       );
       values = [20];
       view.setProps({ ...defaultProps, values });
-      $tracks = $(`.${defaultProps.prefixCls}__track`, $parent);
+      $tracks = $(`.${defaultProps.prefixClassName}__track`, $parent);
 
       expect($tracks.length).toBe(
         values.length > 1 ? values.length - 1 : values.length
@@ -102,26 +102,26 @@ describe('slider', () => {
       let props = { ...defaultProps };
       view.setProps(props);
       view.render($parent);
-      let $dot = $(`.${defaultProps.prefixCls}__dot`, $parent);
+      let $dot = $(`.${defaultProps.prefixClassName}__dot`, $parent);
       expect($dot.length).toBe(0);
 
       view.setProps({ ...defaultProps, dot });
-      $dot = $(`.${defaultProps.prefixCls}__dot`, $parent);
+      $dot = $(`.${defaultProps.prefixClassName}__dot`, $parent);
       expect($dot.length).toBe(0);
 
       props = { ...defaultProps, dot, step: 10 };
       view.setProps(props);
-      $dot = $(`.${defaultProps.prefixCls}__dot`, $parent);
+      $dot = $(`.${defaultProps.prefixClassName}__dot`, $parent);
       expect($dot.length).toBe(11);
 
       props = { ...defaultProps, dot, step: 50 };
       view.setProps(props);
-      $dot = $(`.${defaultProps.prefixCls}__dot`, $parent);
+      $dot = $(`.${defaultProps.prefixClassName}__dot`, $parent);
       expect($dot.length).toBe(3);
 
       props = { ...defaultProps, dot, step: 50, mark: { on: true } };
       view.setProps(props);
-      $dot = $(`.${defaultProps.prefixCls}__dot`, $parent);
+      $dot = $(`.${defaultProps.prefixClassName}__dot`, $parent);
       expect($dot.length).toBe(3);
 
       props = {
@@ -131,7 +131,7 @@ describe('slider', () => {
         mark: { on: true, values: [20] },
       };
       view.setProps(props);
-      $dot = $(`.${defaultProps.prefixCls}__dot`, $parent);
+      $dot = $(`.${defaultProps.prefixClassName}__dot`, $parent);
       expect($dot.length).toBe(3);
 
       props = {
@@ -141,7 +141,7 @@ describe('slider', () => {
         mark: { on: true, values: [20], dot: true },
       };
       view.setProps(props);
-      $dot = $(`.${defaultProps.prefixCls}__dot`, $parent);
+      $dot = $(`.${defaultProps.prefixClassName}__dot`, $parent);
       expect($dot.length).toBe(4);
     });
 
@@ -154,17 +154,17 @@ describe('slider', () => {
       let mark: Mark = { on: true };
       view.setProps({ ...defaultProps });
       view.render($parent);
-      let $mark = $(`.${defaultProps.prefixCls}__mark`, $parent);
+      let $mark = $(`.${defaultProps.prefixClassName}__mark`, $parent);
       expect($mark.length).toBe(0);
       view.setProps({ ...defaultProps, mark });
-      $mark = $(`.${defaultProps.prefixCls}__mark`, $parent);
+      $mark = $(`.${defaultProps.prefixClassName}__mark`, $parent);
       expect($mark.length).toBe(0);
       view.setProps({
         ...defaultProps,
         mark,
         step: 10,
       });
-      $mark = $(`.${defaultProps.prefixCls}__mark`, $parent);
+      $mark = $(`.${defaultProps.prefixClassName}__mark`, $parent);
       expect($mark.length).toBe(11);
 
       view.setProps({
@@ -172,14 +172,14 @@ describe('slider', () => {
         mark: { on: true, values: [15] },
         step: 20,
       });
-      $mark = $(`.${defaultProps.prefixCls}__mark`, $parent);
+      $mark = $(`.${defaultProps.prefixClassName}__mark`, $parent);
       expect($mark.length).toBe(7);
     });
 
     test('render view check count tooltip', () => {
       setFunctionGetBoundingClientRectHTMLElement();
       const className = 'slider__wrapper5';
-      const findClassName = `.${defaultProps.prefixCls}__tooltip`;
+      const findClassName = `.${defaultProps.prefixClassName}__tooltip`;
       $('body').append(`<div class="${className}"/>`);
       const view = new View();
       const $parent = $(`.${className}`);
@@ -210,7 +210,7 @@ describe('slider', () => {
         tooltip: { ...tooltip, always: true },
         values: [20],
       });
-      $mark = $(`.${defaultProps.prefixCls}__tooltip_always`, $parent);
+      $mark = $(`.${defaultProps.prefixClassName}__tooltip_always`, $parent);
       expect($mark.length).toBe(1);
     });
 
@@ -248,7 +248,7 @@ describe('slider', () => {
         }): void => {}
       );
       view.subscribe('onChange', mockCallback);
-      let $rail = $(`.${defaultProps.prefixCls}__rail`, $parent);
+      let $rail = $(`.${defaultProps.prefixClassName}__rail`, $parent);
       $rail.trigger('click');
       expect(mockCallback.mock.calls.length).toBe(1);
       expect(mockCallback.mock.calls[0][0]).toStrictEqual({
@@ -270,7 +270,7 @@ describe('slider', () => {
       view.render($parent);
       let mockCallback = jest.fn((options: { index: number }): void => {});
       view.subscribe('onBeforeChange', mockCallback);
-      const $handle = $(`.${defaultProps.prefixCls}__handle`, $parent);
+      const $handle = $(`.${defaultProps.prefixClassName}__handle`, $parent);
       $handle.trigger('mousedown');
       expect(mockCallback.mock.calls.length).toBe(1);
       expect(mockCallback.mock.calls[0][0]).toStrictEqual({ index: 0 });
@@ -291,7 +291,7 @@ describe('slider', () => {
       view.subscribe('onAfterChange', mockCallback);
       window.dispatchEvent(new Event('mouseup'));
       expect(mockCallback.mock.calls.length).toBe(0);
-      const $handle = $(`.${defaultProps.prefixCls}__handle`, $parent);
+      const $handle = $(`.${defaultProps.prefixClassName}__handle`, $parent);
       $handle.trigger('mousedown');
       $handle.trigger('mouseup');
       expect(mockCallback.mock.calls.length).toBe(1);
@@ -319,7 +319,7 @@ describe('slider', () => {
       );
       view.subscribe('onChange', mockCallback);
       expect(mockCallback.mock.calls.length).toBe(0);
-      const $handle = $(`.${defaultProps.prefixCls}__handle`, $parent);
+      const $handle = $(`.${defaultProps.prefixClassName}__handle`, $parent);
       $handle.trigger('mousedown');
       let event = new MouseEvent('mousemove');
       window.dispatchEvent(event);
@@ -345,7 +345,7 @@ describe('slider', () => {
       view.setProps({ ...defaultProps, isFocused: true });
       let mockCallback = jest.fn((options: { index: number }): void => {});
       view.subscribe('setIndex', mockCallback);
-      const $handle = $(`.${defaultProps.prefixCls}__handle`, $parent);
+      const $handle = $(`.${defaultProps.prefixClassName}__handle`, $parent);
       $handle.trigger('mousedown');
       let event = new MouseEvent('mouseup');
       window.dispatchEvent(event);
@@ -354,7 +354,7 @@ describe('slider', () => {
       window.dispatchEvent(event);
       expect(mockCallback.mock.calls.length).toBe(1);
       $handle.trigger('mouseup');
-      let $rail = $(`.${defaultProps.prefixCls}__rail`, $parent);
+      let $rail = $(`.${defaultProps.prefixClassName}__rail`, $parent);
       $handle.trigger('mouseup');
       $rail.trigger('mouseup');
       expect(mockCallback.mock.calls.length).toBe(1);

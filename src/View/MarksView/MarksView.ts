@@ -98,9 +98,9 @@ export default class MarksView extends PubSub implements ISubView {
   }
 
   private prepareClassName(): string {
-    const prefixCls = this.props?.prefixCls || '';
+    const prefixClassName = this.props?.prefixClassName || '';
     const className = this.props?.mark?.wrapClassName;
-    return classnames(`${prefixCls}__marks`, className);
+    return classnames(`${prefixClassName}__marks`, className);
   }
 
   private prepareStyle(): string | undefined {

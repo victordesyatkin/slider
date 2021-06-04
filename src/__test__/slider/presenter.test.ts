@@ -22,7 +22,7 @@ describe('slider', () => {
         values: [0, 50],
         isFocused: true,
       });
-      let $handle = $(`.${defaultProps.prefixCls}__handle`, $element);
+      let $handle = $(`.${defaultProps.prefixClassName}__handle`, $element);
       $($handle.get(1)).trigger('mousedown');
       $($handle.get(1)).trigger('mouseup');
       let props = presenter.getProps();
@@ -33,7 +33,7 @@ describe('slider', () => {
       );
       expect($handle.length).toEqual(2);
       presenter.setProps({ ...defaultProps, values: [10] });
-      $handle = $(`.${defaultProps.prefixCls}__handle`, $element);
+      $handle = $(`.${defaultProps.prefixClassName}__handle`, $element);
       expect($handle.length).toEqual(1);
     });
 
@@ -48,7 +48,7 @@ describe('slider', () => {
         onAfterChange: onAfterChange,
       };
       const _ = new Presenter($element, props);
-      const $handle = $(`.${defaultProps.prefixCls}__handle`, $element);
+      const $handle = $(`.${defaultProps.prefixClassName}__handle`, $element);
       $($handle.get(1)).trigger('mousedown');
       $($handle.get(1)).trigger('mouseup');
       expect(onAfterChange.mock.calls.length).toBe(1);
@@ -65,7 +65,7 @@ describe('slider', () => {
         onChange,
       };
       const _ = new Presenter($element, props);
-      const $handle = $(`.${defaultProps.prefixCls}__handle`, $element);
+      const $handle = $(`.${defaultProps.prefixClassName}__handle`, $element);
       const event = $.Event('mousemove');
       event.pageX = 20;
       event.pageY = 100;
@@ -104,7 +104,7 @@ describe('slider', () => {
         values: [0, 50],
         isFocused: true,
       });
-      let $handle = $(`.${defaultProps.prefixCls}__handle`, $element);
+      let $handle = $(`.${defaultProps.prefixClassName}__handle`, $element);
       $($handle.get(1)).trigger('mousedown');
       $($handle.get(1)).trigger('mouseup');
       let props = presenter.getProps();
@@ -127,7 +127,7 @@ describe('slider', () => {
         onBeforeChange,
         onAfterChange,
       });
-      const $handle = $(`.${defaultProps.prefixCls}__handle`, $element);
+      const $handle = $(`.${defaultProps.prefixClassName}__handle`, $element);
       const event = $.Event('mousemove');
       event.pageX = 20;
       event.pageY = 100;
@@ -173,7 +173,7 @@ describe('slider', () => {
         onBeforeChange,
         onAfterChange,
       });
-      const $handle = $(`.${defaultProps.prefixCls}__handle`, $element);
+      const $handle = $(`.${defaultProps.prefixClassName}__handle`, $element);
       const event = $.Event('mousemove');
       event.pageX = 20;
       event.pageY = 100;
@@ -216,7 +216,7 @@ describe('slider', () => {
         onBeforeChange,
         onAfterChange,
       });
-      const $handle = $(`.${defaultProps.prefixCls}__handle`, $element);
+      const $handle = $(`.${defaultProps.prefixClassName}__handle`, $element);
       const event = $.Event('mousemove');
       event.pageX = 20;
       event.pageY = 100;
