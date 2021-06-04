@@ -7,6 +7,6 @@ mixin caption(props)
       let themes = {
           section: 'section',
       };
-      classNames += themes[theme] && ` ${className}_theme_${themes[theme]}` || '';
+      classNames += themes[theme] ? ` ${className}_theme_${themes[theme]}` : '';
     h3(class=classNames)
       span(class=`${className}__content`)= content

@@ -21,8 +21,8 @@ interface IModel extends IPubSub {
     setIndex(options: {
         index?: number;
     }): void;
-    unsubscribeAll: () => void;
-    unsubscribe: (action?: string) => void;
+    unsubscribeAllActions: () => void;
+    unsubscribeAction: (action?: string) => void;
 }
 interface IView extends IPubSub {
     setProps(props: DefaultProps): void;

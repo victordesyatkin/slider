@@ -22,7 +22,7 @@ mixin section(props = {})
               item.key = index;
               isFirst = index === 0;
               sectionItemClasses += ` ${sectionItemClass}_control js-${sectionItemClass}_control`;
-              sectionItemClasses += isFirst && ` ${sectionItemClass}_first js-${sectionItemClass}_first` || ''
+              sectionItemClasses += isFirst ? ` ${sectionItemClass}_first js-${sectionItemClass}_first` : '';
               index += 1;
           }
         div(class=sectionItemClasses)

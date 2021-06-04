@@ -5,8 +5,8 @@ declare class Model extends PubSub implements IModel {
     private static ACTIONS;
     private props;
     constructor(props: DefaultProps);
-    unsubscribeAll(): void;
-    unsubscribe(action?: string): void;
+    unsubscribeAllActions(): void;
+    unsubscribeAction(action?: string): void;
     getProps(): DefaultProps;
     setProps(props?: Props): void;
     onChange(options: {

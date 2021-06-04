@@ -13,9 +13,9 @@ declare type Props = {
     mark?: Mark;
     dot?: Dot;
     step?: number;
-    onChange?: (value: number[]) => void;
-    onBeforeChange?: (value: number[]) => void;
-    onAfterChange?: (value: number[]) => void;
+    onChange?: (value: number[]) => void | null;
+    onBeforeChange?: (value: number[]) => void | null;
+    onAfterChange?: (value: number[]) => void | null;
     track?: Track;
     handle?: Handle;
     startPoint?: number;

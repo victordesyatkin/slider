@@ -12,5 +12,5 @@ mixin link(props)
       }
       let className = 'link';
       let classNames = `${className}`;
-      classNames += themes[theme] && ` ${className}_theme_${themes[theme]}` || ''; 
+      classNames += themes[theme] ? ` ${className}_theme_${themes[theme]}` : ''; 
     a(href=href, title=title, target=target, rel=rel, class=classNames)= content
