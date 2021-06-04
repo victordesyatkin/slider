@@ -14,13 +14,13 @@ export default class HandleView extends PubSub implements ISubView {
 
   private props?: DefaultProps;
 
-  private view?: JQuery<HTMLElement>;
+  private view?: JQuery<HTMLElement> | null;
 
   private isRendered = false;
 
   private parent?: JQuery<HTMLElement>;
 
-  private tooltip?: TooltipView;
+  private tooltip?: TooltipView | null;
 
   constructor(addition: Addition) {
     super();
@@ -53,7 +53,7 @@ export default class HandleView extends PubSub implements ISubView {
   public remove(): void {
     if (this.view) {
       this.view.remove();
-      this.view = undefined;
+      this.view = null;
       this.isRendered = false;
     }
   }
@@ -162,7 +162,7 @@ export default class HandleView extends PubSub implements ISubView {
       }
     } else if (this.tooltip && this.view) {
       this.tooltip.remove();
-      this.tooltip = undefined;
+      this.tooltip = null;
       this.view.empty();
     }
   }

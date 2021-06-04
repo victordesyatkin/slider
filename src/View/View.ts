@@ -20,7 +20,7 @@ import { IView, ISubView } from '../interfaces';
 class View extends PubSub implements IView {
   private props?: DefaultProps;
 
-  private view?: JQuery<HTMLElement>;
+  private view?: JQuery<HTMLElement> | null;
 
   private rails: ISubView[] = [];
 
@@ -59,7 +59,7 @@ class View extends PubSub implements IView {
   public remove(): void {
     if (this.view) {
       this.view.remove();
-      this.view = undefined;
+      this.view = null;
       this.isRendered = false;
     }
   }

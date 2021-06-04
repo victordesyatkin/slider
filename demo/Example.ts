@@ -33,8 +33,8 @@ class Example {
     this.init();
   }
 
-  private static prepareFunction(string?: unknown): undefined | Render {
-    let result: undefined | Render;
+  private static prepareFunction(string?: unknown): null | undefined | Render {
+    let result: null | undefined | Render;
     if (!isString(string) || !trim(string)) {
       return result;
     }
@@ -42,7 +42,7 @@ class Example {
       result = new Function('v', string) as Render;
       result(0);
     } catch (error) {
-      result = undefined;
+      result = null;
     }
     if (isFunction(result)) {
       return result;
@@ -59,7 +59,7 @@ class Example {
   }
 
   private static isResult(
-    result: string[] | Render | Style | undefined
+    result: string[] | Render | Style | undefined | null
   ): boolean {
     if (result) {
       if (Array.isArray(result)) {
@@ -77,7 +77,7 @@ class Example {
     string?: unknown
   ): string[] | Style | Render | undefined {
     const result = Example.prepareJSON(string);
-    if (Example.isResult(result)) {
+    if (result && Example.isResult(result)) {
       return result;
     }
     return undefined;
@@ -85,8 +85,8 @@ class Example {
 
   private static prepareJSON(
     json?: unknown
-  ): undefined | Style | string[] | Render {
-    let result: undefined | Style | string[] | Render;
+  ): undefined | Style | string[] | Render | null {
+    let result: undefined | Style | string[] | Render | null;
     if (!isString(json) || !trim(json)) {
       return result;
     }
@@ -94,7 +94,7 @@ class Example {
       try {
         result = JSON.parse(json) as undefined;
       } catch (error) {
-        result = undefined;
+        result = null;
       }
     }
     return result;
@@ -447,12 +447,13 @@ class Example {
       return;
     }
     if (property === 'values') {
-      if (type === 'values' && !isUndefined(value)) {
+      const isCorrectValue = value !== null && !isUndefined(value);
+      if (type === 'values' && isCorrectValue) {
         this.props = {
           ...this.props,
           values: [...(this.props?.values || []), value as number],
         };
-      } else if (type === 'mark' && !isUndefined(value)) {
+      } else if (type === 'mark' && isCorrectValue) {
         this.props = {
           ...this.props,
           mark: {

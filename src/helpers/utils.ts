@@ -190,7 +190,7 @@ function getCount(props?: DefaultProps): number {
 
 function getSliderStart(options: {
   props?: DefaultProps;
-  view?: JQuery<HTMLElement>;
+  view?: JQuery<HTMLElement> | null;
 }): number {
   const { props, view } = options;
   if (props && view) {
@@ -205,7 +205,7 @@ function getSliderStart(options: {
 }
 
 function getSliderLength(options: {
-  view?: JQuery<HTMLElement>;
+  view?: JQuery<HTMLElement> | null;
   props?: DefaultProps;
 }): number {
   const { props, view } = options;

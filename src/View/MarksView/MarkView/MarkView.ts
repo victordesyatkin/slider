@@ -15,7 +15,7 @@ import { DefaultProps, Addition } from '../../../types';
 class MarkView extends PubSub implements ISubView {
   private props?: DefaultProps;
 
-  private view?: JQuery<HTMLElement>;
+  private view?: JQuery<HTMLElement> | null;
 
   private addition: Addition;
 
@@ -51,7 +51,7 @@ class MarkView extends PubSub implements ISubView {
   public remove(): void {
     if (this.view) {
       this.view.remove();
-      this.view = undefined;
+      this.view = null;
       this.isRendered = false;
     }
   }

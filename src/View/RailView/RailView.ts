@@ -10,7 +10,7 @@ import { DefaultProps, Addition } from '../../types';
 export default class RailView extends PubSub implements ISubView {
   private props?: DefaultProps;
 
-  private view?: JQuery<HTMLElement>;
+  private view?: JQuery<HTMLElement> | null;
 
   private addition: Addition;
 
@@ -45,7 +45,7 @@ export default class RailView extends PubSub implements ISubView {
   public remove(): void {
     if (this.view) {
       this.view.remove();
-      this.view = undefined;
+      this.view = null;
       this.isRendered = false;
     }
   }
