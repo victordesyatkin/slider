@@ -1,29 +1,29 @@
-type Props = {
-  prefixClassName?: string;
-  vertical?: boolean;
-  reverse?: boolean;
-  disabled?: boolean;
-  isFocused?: boolean;
-  values?: number[];
-  min?: number;
-  max?: number;
-  classNames?: string[];
-  style?: Style;
-  mark?: Mark;
-  dot?: Dot;
-  step?: number;
-  onChange?: ((value: number[]) => void) | null;
-  onBeforeChange?: null | ((value: number[]) => void) | null;
-  onAfterChange?: ((value: number[]) => void) | null;
-  track?: Track;
-  handle?: Handle;
-  startPoint?: number;
-  rail?: Rail;
-  tooltip?: Tooltip;
-  indent?: number;
-  precision?: number;
-  index?: number;
-};
+type Props = Partial<{
+  prefixClassName: string;
+  vertical: boolean;
+  reverse: boolean;
+  disabled: boolean;
+  isFocused: boolean;
+  values: number[];
+  min: number;
+  max: number;
+  classNames: string[];
+  style: Style;
+  mark: Mark;
+  dot: Dot;
+  step: number;
+  onChange: ((value: number[]) => void) | null;
+  onBeforeChange: null | ((value: number[]) => void) | null;
+  onAfterChange: ((value: number[]) => void) | null;
+  track: Track;
+  handle: Handle;
+  startPoint: number;
+  rail: Rail;
+  tooltip: Tooltip;
+  indent: number;
+  precision: number;
+  index: number;
+}>;
 
 type DefaultProps = {
   prefixClassName: string;
@@ -55,43 +55,42 @@ type Handle = {
   styles: Style[];
 };
 
-type Track = {
-  classNames?: string[];
-  styles?: Style[];
-  on?: boolean;
-};
+type Track = Partial<{
+  classNames: string[];
+  styles: Style[];
+  on: boolean;
+}>;
 
-type Rail = {
-  className?: string;
-  style?: Style;
-  on?: boolean;
-};
+type Rail = Partial<{
+  className: string;
+  style: Style;
+  on: boolean;
+}>;
 
-type Dot = {
-  wrapClassName?: string;
-  className?: string;
-  style?: Style;
-  on?: boolean;
-};
+type Dot = Partial<{
+  wrapClassName: string;
+  className: string;
+  style: Style;
+  on: boolean;
+}>;
 
-type Tooltip = {
-  className?: string[];
-  style?: Style;
-  render?: Render;
-  on?: boolean;
-  always?: boolean;
-};
+type Tooltip = Partial<{
+  className: string[];
+  style: Style;
+  render: Render;
+  on: boolean;
+  always: boolean;
+}>;
 
-type Mark = {
-  wrapClassName?: string;
-  className?: string;
-  style?: Style;
-  render?: Render;
-
-  values?: number[];
-  on?: boolean;
-  dot?: boolean;
-};
+type Mark = Partial<{
+  wrapClassName: string;
+  className: string;
+  style: Style;
+  render: Render;
+  values: number[];
+  on: boolean;
+  dot: boolean;
+}>;
 
 type Callback = (data: any) => void;
 
