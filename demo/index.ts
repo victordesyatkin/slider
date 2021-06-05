@@ -1,4 +1,4 @@
-import Example from './Example';
+import Example from './components/example';
 
 function importAll(resolve: __WebpackModuleApi.RequireContext) {
   resolve.keys().forEach(resolve);
@@ -11,7 +11,7 @@ function renderExample(this: HTMLElement): false | void {
 }
 
 function renderComponent() {
-  $('.js-example').each(renderExample);
+  $('.js-example-wrapper').each(renderExample);
 }
 
 $(renderComponent);

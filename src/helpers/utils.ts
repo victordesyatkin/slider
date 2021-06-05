@@ -180,7 +180,7 @@ function prepareValues(props: DefaultProps): DefaultProps {
   let markValues: number[] = (mark?.values || []).map((value) =>
     ensureValueInRange(value, { min: props.min, max: props.max })
   );
-  markValues = orderBy(markValues, [], ['asc']);
+  markValues = orderBy(uniq(markValues), [], ['asc']);
   return { ...props, values, mark: { ...mark, values: markValues } };
 }
 
@@ -475,16 +475,15 @@ function correctValues(options: {
     readyValue = value.slice();
     value.forEach((temp, index) => {
       const isNeedCorrect =
-        temp > max || temp < min || Number.isNaN(parseFloat(String(temp)));
+        (temp > max && temp < min) || Number.isNaN(parseFloat(String(temp)));
       if (isNeedCorrect && Array.isArray(readyValue)) {
         readyValue[index] = min;
       }
     });
-    readyValue = orderBy(readyValue, [], ['asc']);
   }
   const isCorrectObject = values && key in values;
   if (isCorrectObject && typeof values === 'object') {
-    values[key] = readyValue?.length ? readyValue : undefined;
+    values[key] = orderBy(uniq([min, max, ...readyValue]), [], ['asc']);
   }
 }
 
@@ -595,14 +594,14 @@ function correctData(props: DefaultProps): DefaultProps {
 function prepareData(props?: Props, prevProps?: DefaultProps): DefaultProps {
   const values: number[] =
     props?.values || prevProps?.values || defaultProps.values;
-  const markValues: number[] | undefined =
-    props?.mark?.values ||
-    prevProps?.mark?.values ||
-    defaultProps?.mark?.values;
+  // const markValues: number[] | undefined =
+  //   props?.mark?.values ||
+  //   prevProps?.mark?.values ||
+  //   defaultProps?.mark?.values;
   const mergeProps: DefaultProps = merge({}, defaultProps, prevProps, props);
   const correctedProps = correctData({
     ...mergeProps,
-    mark: { ...mergeProps?.mark, values: markValues },
+    // mark: { ...mergeProps?.mark, values: markValues },
   });
   const readyProps = prepareValues({
     ...correctedProps,

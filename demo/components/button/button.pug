@@ -1,12 +1,9 @@
 mixin button(props)
   if props
     -
-      let { type = 'button', content, data = {}, title, isControl, isAdd, isRemove } = props;
+      let { type = 'button', content, data = {}, title } = props;
       let className = 'button';
       let classNames = `${className} js-${className}`;
-      classNames += isControl ? ` ${className}_control` : '';
-      classNames += isAdd ? ` js-${className}_add` : '';
-      classNames += isRemove ? ` js-${className}_remove` : '';
     if content
       button(type=type, data=data, title=title, class=classNames)
         span(class=`${className}__content `) !{content}

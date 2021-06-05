@@ -15,5 +15,9 @@ html(lang=lang)
       link(rel=rel, href=href, sizes=sizes, type=type)
     title= title
   body
-    each example in examples            
-      +example(example)
+    -
+      let className = 'example-wrapper';
+      let classNames = `${className} js-${className}`;
+    each example in examples
+      div(class=classNames)
+        +example(example)

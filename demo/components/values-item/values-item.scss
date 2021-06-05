@@ -1,0 +1,24 @@
+$parent: 'values-item';
+
+.#{$parent} {
+  display: flex;
+  width: 100%;
+  min-width: 0;
+  align-items: center;
+
+  &__index {
+    margin-right: 0.4rem;
+  }
+
+  &__input {
+    width: 100%;
+    min-width: 0;
+    display: inline-flex;
+    flex-grow: 1;
+    flex-shrink: 1;
+  }
+
+  &__control {
+    margin-left: 0.4rem;
+  }
+}

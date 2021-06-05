@@ -1,40 +1,27 @@
 include ../caption/caption
 include ../input/input
 include ../button/button
+include ../values/values
 
 mixin section(props = {})
   -
-    let { items = [], caption, buttonAdd, buttonRemove } = props;
+    let { items = [], caption, isControl, data } = props;
     let className = 'section';
     let classNames = `${className} js-${className}`;
   section(class=classNames) 
     div(class=`${className}__caption`)
       +caption(caption)
     div(class=`${className}__items js-${className}__items`)
-      - let index = 0;
-      each item in items
+      if isControl
         -
-          let { isControl } = item || {};
-          let sectionItemClass = `${className}__item`;
-          let sectionItemClasses = `${sectionItemClass} js-${sectionItemClass}`;
-          let isFirst = false;
-          if (isControl) {
-              item.key = index;
-              isFirst = index === 0;
-              sectionItemClasses += ` ${sectionItemClass}_control js-${sectionItemClass}_control`;
-              sectionItemClasses += isFirst ? ` ${sectionItemClass}_first js-${sectionItemClass}_first` : '';
-              index += 1;
-          }
-        div(class=sectionItemClasses)
-          if isControl
-            .section__button-control
-              +button(buttonAdd)
+          let sectionValuesClass = `${className}__values`;
+          let sectionValuesClasses = `${sectionValuesClass} js-${sectionValuesClass}`;
+        div(class=sectionValuesClasses, data=data)
+          +values(props)
+      else
+        each item in items
           -
-            if (isFirst) {
-                item = { ...item, isFirst };
-            }
-            if (isControl) {
-                item = { ...item, buttonRemove };
-            }
-          div(class=`${className}__input js-${className}__input`)
+            let sectionItemClass = `${className}__item`;
+            let sectionItemClasses = `${sectionItemClass} js-${sectionItemClass}`;
+          div(class=sectionItemClasses)
             +input(item)

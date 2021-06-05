@@ -9,29 +9,33 @@ import isString from 'lodash.isstring';
 import merge from 'lodash.merge';
 import orderBy from 'lodash.orderby';
 
-import { uniqId, ensureValueInRange } from '../src/helpers/utils';
-import { Style, Render, Props, KeyProps } from '../src/types';
-import Slider from '../src/index';
+import { uniqId, ensureValueInRange } from '../../../src/helpers/utils';
+import { Style, Render, Props, KeyProps } from '../../../src/types';
+import Slider from '../../../src/index';
 
 class Example {
-  private $parent: JQuery<HTMLElement>;
+  private cache: Record<string, JQuery<HTMLElement>> = {};
 
-  private $sliderWrapper: JQuery<HTMLElement>;
+  private $element: JQuery<HTMLElement>;
+
+  private props?: Props;
 
   private $sections: JQuery<HTMLElement>;
 
   private slider?: Slider;
 
-  private props?: Props;
-
-  private cache: Record<string, JQuery<HTMLElement>> = {};
+  private $sliderWrapper: JQuery<HTMLElement>;
 
   constructor(parent: HTMLElement) {
-    this.$parent = $(parent);
-    this.$sliderWrapper = $('.js-slider__dummy', this.$parent);
-    this.$sections = $('.js-section', this.$parent);
+    this.$element = $(Example.query, parent);
+    this.$sliderWrapper = $('.js-slider__dummy', this.$element);
+    this.$sections = $('.js-section', this.$element);
     this.init();
   }
+
+  private static className = 'example';
+
+  private static query = `.js-${Example.className}`;
 
   private static prepareFunction(string?: unknown): null | undefined | Render {
     let result: null | undefined | Render;
@@ -136,7 +140,10 @@ class Example {
     const { values, property, index } = options;
     let value: string | number | undefined | boolean = '';
     const isCorrectObject =
-      isObject(values) && !Array.isArray(values) && !isFunction(values);
+      values &&
+      isObject(values) &&
+      !Array.isArray(values) &&
+      !isFunction(values);
     const isCorrectType =
       typeof values === 'string' ||
       typeof values === 'boolean' ||
@@ -158,7 +165,7 @@ class Example {
       } else {
         value = temp;
       }
-    } else if (Array.isArray(values) || isFunction(values)) {
+    } else if (Array.isArray(values)) {
       value = JSON.stringify(values);
     } else if (isCorrectType) {
       value = values as number;
@@ -173,19 +180,19 @@ class Example {
         onChange: this.onAfterChange,
       })
       .data(Slider.PLUGIN_NAME) as Slider;
-    this.initHandlers();
+    this.bindEventListeners();
     this.initCache();
     this.updateProps();
   }
 
-  private initHandlers() {
-    this.$sections.each(this.initHandler);
+  private bindEventListeners() {
+    this.$sections.each(this.bindEventListener);
   }
 
   private initCache() {
     this.cache = {};
     let index = 0;
-    $('.js-input', this.$parent).each((_: number, element: HTMLElement) => {
+    $('.js-input', this.$element).each((_: number, element: HTMLElement) => {
       const $element = $(element);
       const data = $element.data('data') as
         | {
@@ -208,7 +215,7 @@ class Example {
   }
 
   @bind
-  private initHandler(index: number, element: HTMLElement) {
+  private bindEventListener(index: number, element: HTMLElement) {
     $(element).on({ click: this.handleSectionClick });
     $(element).on({ input: this.handleSectionInput });
     $(element).on({ focusout: this.handleSectionFocusout });
@@ -224,6 +231,7 @@ class Example {
     if (this.props && this.slider) {
       this.slider.setProps(this.props);
       const props = this.slider.getProps();
+      console.log('props : ', props);
       this.updateSections(props);
     }
   }
@@ -285,6 +293,11 @@ class Example {
       const values = props[readyType];
       if (!isUndefined(values)) {
         const $item = this.cache[key];
+        if (property === 'values') {
+          console.log('$item : ', $item);
+          console.log('index : ', index);
+          console.log('key : ', key);
+        }
         const $input = $('.js-input__input', $item);
         let value = Example.extractValue({
           values,
@@ -404,6 +417,7 @@ class Example {
           $input.val(ensureValueInRange(value, { max, min }));
         }
         $lastItem.after($last);
+        this.initCache();
         this.updateProps();
       }
     }
@@ -417,6 +431,7 @@ class Example {
         if ($item.length) {
           $item.remove();
           Example.updateHandles(currentTarget);
+          this.initCache();
           this.updateProps();
         }
       }

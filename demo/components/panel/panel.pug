@@ -3,12 +3,13 @@ include ../section/section
 
 mixin panel(props = {})
   -
-    let { sections = [], link } = props;
+    let { sections = [], link, method = 'GET', action = '' } = props;
     let className = 'panel';
     let classNames = `${className}`;
   section(class=classNames)
     div(class=`${className}__head`)
       +link(link)
-    div(class=`${className}__sections`)
+    form(class=`${className}__sections`, action=action, method=method)
       each section in sections
+        div(class=`${className}__section-item js-${className}__section-item`)
         +section(section)

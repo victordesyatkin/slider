@@ -1,0 +1,24 @@
+include ../input/input
+include ../button/button
+include ../values-item/values-item
+
+mixin values(props)
+  if props
+    -
+      let { buttonAdd, buttonRemove, isDisable, items = [] } = props;
+      let className = 'values';
+      let classNames = `${className} js-${className}`;
+      let itemLength = items.length;
+      classNames += isDisable ? `${className}_disabled` : '';
+      classNames += items.length ? '' : `${className}_hidden`;
+    div(class=classNames)
+      ul(class=`${className}__control-items`)
+        li(class=`${className}__control-item js-${className}__control-item-add`)
+          +button(buttonAdd)
+        li(class=`${className}__control-item js-${className}__control-item-remove`)
+          +button(buttonRemove)
+      if itemLength
+        ul(class=`${className}__items js-${className}__items`)
+          each item, index in items
+            li(class=`${className}__item`)
+              +values-item({ item, index, buttonRemove })

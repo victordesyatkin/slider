@@ -1,0 +1,15 @@
+include ../input/input
+include ../button/button
+
+mixin values-item(props)
+  if props
+    -
+      let className = 'values-item';
+      let classNames = `${className} js-${className}`;
+      let { index, item, buttonRemove } = props;
+    div(class=classNames)
+      span(class=`${className}__index js-${className}__index`) #{index + 1}:
+      span(class=`${className}__input js-${className}__input`)
+        +input(item)
+      span(class=`${className}__control js-${className}__control`)
+        +button(buttonRemove)

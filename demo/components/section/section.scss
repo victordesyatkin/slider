@@ -26,15 +26,4 @@ $parent: 'section';
     flex-direction: column;
     justify-content: center;
   }
-
-  &__button-control {
-    display: none;
-  }
-
-  &__item_first {
-    .#{$parent}__button-control {
-      align-self: flex-end;
-      display: flex;
-    }
-  }
 }
