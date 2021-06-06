@@ -1,5 +1,6 @@
 import { ComponentProps, SectionProps } from '../../modules/types';
 import Component from '../../helpers';
+import Section from '../section';
 
 class Panel extends Component<{ sections: SectionProps[] }> {
   constructor(options: ComponentProps) {
@@ -11,21 +12,23 @@ class Panel extends Component<{ sections: SectionProps[] }> {
 
   public query = `js-${this.className}`;
 
-  public init() {
+  public init(): void {
     this.$sections = $(`${this.query}__section-item`, this.$element);
-    this.sections = this.$sections.each(this.createSection);
+    this.$sections.each(this.createSection);
   }
 
-  private $sections?: JQuery<HTMLElement>;
+  private $sections?: JQuery<HTMLElement> | null;
 
-  private sections?: Section[] = [];
+  private sections?: Section[] | null = [];
 
   private createSection(index: number, element: HTMLElement) {
     const { sections } = this.props || {};
-    this.sections[index] = new Section({
-      parent: element,
-      props: sections?.[index],
-    });
+    if (Array.isArray(this.sections)) {
+      this.sections[index] = new Section({
+        parent: element,
+        props: sections?.[index],
+      });
+    }
   }
 }
 

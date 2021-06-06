@@ -1,26 +1,42 @@
 import bind from 'bind-decorator';
 import isUndefined from 'lodash.isundefined';
 
+import { ComponentProps, ValueItemProps } from '../../modules/types';
+import Component from '../../helpers';
 import Button from '../button';
 import Input from '../input';
 
-type ValueItemProps = Partial<{
-  parent: HTMLElement;
-  value: string;
-  index: number;
-  handleButtonRemoveClick: (index?: number) => void;
-}> | null;
-
-class ValueItem {
-  constructor(props?: ValueItemProps) {
-    this.init(props);
+class ValueItem extends Component<ValueItemProps> {
+  constructor(options: ComponentProps) {
+    super(options);
+    this.renderComponent();
   }
 
   public getValue(): string | number | string[] | undefined {
     return this.input?.getValue();
   }
 
-  private $element?: JQuery<HTMLElement> | null;
+  public className = `values-item`;
+
+  public query = `.js-${this.className}`;
+
+  public init() {
+    const { item } = this.props || {};
+    if (item) {
+      const { value } = item;
+      this.$index = $(`${this.query}__index`, this.$element);
+      this.$input = $(`${this.query}__input`, this.$element);
+      this.input = new Input({ parent: this.$input, props: { value } });
+      this.$buttonRemove = $(`${this.query}__control`, this.$element);
+      console.log('this.$buttonRemove : ', this.$buttonRemove);
+      this.buttonRemove = new Button({
+        parent: this.$buttonRemove,
+        props: {
+          handleButtonClick: this.handleButtonRemoveClick,
+        },
+      });
+    }
+  }
 
   private $index?: JQuery<HTMLElement> | null;
 
@@ -31,31 +47,6 @@ class ValueItem {
   private $buttonRemove?: JQuery<HTMLElement> | null;
 
   private buttonRemove?: Button | null;
-
-  private static className = `values-item`;
-
-  private static query = `.js-${ValueItem.className}`;
-
-  private props?: ValueItemProps;
-
-  private init(props?: ValueItemProps) {
-    if (props) {
-      this.props = props;
-      const { parent, value } = props || {};
-      if (parent) {
-        this.$element = $(ValueItem.query, parent);
-        this.$index = $(`${ValueItem.query}__index`, this.$element);
-        this.$input = $(`${ValueItem.query}__input`, this.$element);
-        this.input = new Input({ parent: this.$input, value });
-        this.$buttonRemove = $(`${ValueItem.query}__control`, this.$element);
-        console.log('this.$buttonRemove : ', this.$buttonRemove);
-        this.buttonRemove = new Button({
-          parent: this.$buttonRemove,
-          handleButtonClick: this.handleButtonRemoveClick,
-        });
-      }
-    }
-  }
 
   @bind
   private handleButtonRemoveClick() {

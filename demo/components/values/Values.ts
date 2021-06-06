@@ -2,21 +2,35 @@ import isObject from 'lodash.isobject';
 import isUndefined from 'lodash.isundefined';
 import bind from 'bind-decorator';
 
+import { ValuesProps, ComponentProps } from '../../modules/types';
+import Component from '../../helpers';
 import ValuesItem from '../values-item';
 
-type ValuesProps = Partial<{
-  parent: HTMLElement;
-  items: { value: number }[] | null;
-}> | null;
-
-class Values {
-  constructor(props?: ValuesProps) {
-    this.init(props);
+class Values extends Component<ValuesProps> {
+  constructor(options: ComponentProps) {
+    super(options);
+    this.renderComponent();
   }
 
-  private props?: ValuesProps;
+  public className = `values`;
 
-  private $element?: JQuery<HTMLElement> | null;
+  public query = `.js-${this.className}`;
+
+  public init(props?: ValuesProps): void {
+    if (props && isObject(props)) {
+      this.props = props;
+      this.$buttonAdd = $(`${this.query}__control-item-add`, this.$element);
+      this.$buttonRemove = $(
+        `${this.query}__control-item-remove`,
+        this.$element
+      );
+      this.toggleVisibleButtonRemove();
+      this.bindEventListeners();
+      this.$items = $(`${this.query}__item`, this.$element);
+      console.log('this.$items : ', this.$items);
+      this.$items.each(this.createValuesItem);
+    }
+  }
 
   private $buttonAdd?: JQuery<HTMLElement> | null;
 
@@ -26,39 +40,19 @@ class Values {
 
   private items: ValuesItem[] = [];
 
-  private static className = `values`;
-
-  private static query = `.js-${Values.className}`;
-
-  private init(props?: ValuesProps) {
-    if (props && isObject(props)) {
-      this.props = props;
-      const { parent } = this.props;
-      this.$element = $(Values.query, parent);
-      this.$buttonAdd = $(`${Values.query}__control-item-add`, this.$element);
-      this.$buttonRemove = $(
-        `${Values.query}__control-item-remove`,
-        this.$element
-      );
-      this.toggleVisibleButtonRemove();
-      this.bindEventListeners();
-      this.$items = $(`${Values.query}__item`, this.$element);
-      console.log('this.$items : ', this.$items);
-      this.$items.each(this.createItem);
-    }
-  }
-
   @bind
-  private createItem(index: number, element: HTMLElement) {
+  private createValuesItem(index: number, element: HTMLElement) {
     const { items } = this.props || {};
-    const { value } = items?.[index] || {};
-    console.log('createItem : ', value);
-    if (!isUndefined(value)) {
+    if (Array.isArray(items)) {
+      const item = items[index];
+      console.log('createItem : ', item);
       this.items[index] = new ValuesItem({
         parent: element,
-        index,
-        value: String(value),
-        handleButtonRemoveClick: this.handleButtonRemoveClick,
+        props: {
+          index,
+          item,
+          handleButtonRemoveClick: this.handleButtonRemoveClick,
+        },
       });
     }
   }
@@ -88,7 +82,7 @@ class Values {
     if (isUndefined(flag)) {
       readyFlag = Boolean(items?.length);
     }
-    this.$element?.toggleClass(`${Values.className}__hidden`, readyFlag);
+    this.$element?.toggleClass(`${this.className}__hidden`, readyFlag);
   }
 }
 

@@ -5,7 +5,7 @@ import trim from 'lodash.trim';
 import { ComponentProps } from '../modules/types';
 
 class Component<T> {
-  constructor(options: ComponentProps) {
+  constructor(options?: ComponentProps) {
     this.options = options;
     const { props, parent } = this.options || {};
     this.parent = parent;

@@ -1,27 +1,18 @@
-import { ButtonProps } from '../../modules/types';
+import Component from '../../helpers';
+import { ButtonProps, ComponentProps } from '../../modules/types';
 
-class Button {
-  constructor(props?: ButtonProps) {
-    this.init(props);
+class Button extends Component<ButtonProps> {
+  constructor(options: ComponentProps) {
+    super(options);
+    this.renderComponent();
   }
 
-  private props?: ButtonProps;
+  public className = 'button';
 
-  private $element?: JQuery<HTMLElement> | null;
+  public query = `.js-${this.className}`;
 
-  private static className = 'button';
-
-  private static query = `.js-${Button.className}`;
-
-  private init(props?: ButtonProps) {
-    if (props) {
-      this.props = props;
-      const { parent } = this.props || {};
-      if (parent) {
-        this.$element = $(Button.query, parent);
-        this.bindEventListeners();
-      }
-    }
+  public init(): void {
+    this.bindEventListeners();
   }
 
   private bindEventListeners() {

@@ -1,9 +1,20 @@
-class Input {
-  constructor(props?: {
-    parent?: HTMLElement | JQuery<HTMLElement> | null;
-    value: unknown;
-  }) {
-    this.init(props);
+import Component from '../../helpers';
+import { ComponentProps, InputProps } from '../../modules/types';
+
+class Input extends Component<InputProps> {
+  constructor(options?: ComponentProps) {
+    super(options);
+    this.renderComponent();
+  }
+
+  public className = 'input';
+
+  public query = `.js-${this.className}`;
+
+  public init(): void {
+    const { value } = this.props || {};
+    this.$input = $(`${this.query}__input`, this.$element);
+    this.$input.val(String(value));
   }
 
   public setValue(value: unknown): void {
@@ -14,27 +25,7 @@ class Input {
     return this.$input?.val();
   }
 
-  private $element?: JQuery<HTMLElement> | null;
-
   private $input?: JQuery<HTMLElement> | null;
-
-  private static className = 'input';
-
-  private static query = `.js-${Input.className}`;
-
-  private init(props?: {
-    parent?: HTMLElement | JQuery<HTMLElement> | null;
-    value: unknown;
-  }) {
-    if (props) {
-      const { parent, value = '' } = props;
-      if (parent) {
-        this.$element = $(Input.query, parent);
-        this.$input = $(`${Input.query}__input`, this.$element);
-        this.$input.val(String(value));
-      }
-    }
-  }
 }
 
 export default Input;
