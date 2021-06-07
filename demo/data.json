@@ -80,30 +80,19 @@
               "content": "&#x274C",
               "title": "Remove"
             },
-            "isControl": true,
-            "data": {
-              "type": "values",
-              "property": "values"
-            },
-            "items": [
-              {
+            "template": {
+              "item": {
                 "value": 20,
                 "type": "number",
                 "data": {
                   "type": "values",
                   "property": "values"
                 }
-              },
+              }
+            },
+            "items": [
               {
-                "value": 45,
-                "type": "number",
-                "data": {
-                  "type": "values",
-                  "property": "values"
-                }
-              },
-              {
-                "value": 75,
+                "value": [20, 45, 75],
                 "type": "number",
                 "data": {
                   "type": "values",
@@ -444,20 +433,22 @@
               "theme": "section"
             },
             "buttonAdd": {
-              "data": { "type": 1 },
               "type": "button",
               "content": "&#x271A;",
-              "isControl": true,
-              "isAdd": true,
               "title": "Add"
             },
             "buttonRemove": {
-              "data": { "type": 0 },
               "type": "button",
               "content": "&#x274C",
-              "title": "Remove",
-              "isControl": true,
-              "isRemove": true
+              "title": "Remove"
+            },
+            "template": {
+              "value": 0,
+              "type": "number",
+              "data": {
+                "type": "values",
+                "property": "values"
+              }
             },
             "items": [
               {
@@ -479,38 +470,7 @@
                   "href": "https://github.com/victordesyatkin/slider/blob/master/README.md#api"
                 },
                 "type": "number",
-                "isControl": true,
-                "value": 0,
-                "data": {
-                  "type": "mark",
-                  "property": "values"
-                }
-              },
-              {
-                "link": {
-                  "content": "Values",
-                  "href": "https://github.com/victordesyatkin/slider/blob/master/README.md#api",
-                  "title": "readme",
-                  "target": "_blank"
-                },
-                "type": "number",
-                "isControl": true,
-                "value": 45,
-                "data": {
-                  "type": "mark",
-                  "property": "values"
-                }
-              },
-              {
-                "link": {
-                  "content": "Values",
-                  "href": "https://github.com/victordesyatkin/slider/blob/master/README.md#api",
-                  "title": "readme",
-                  "target": "_blank"
-                },
-                "type": "number",
-                "isControl": true,
-                "value": 100,
+                "value": [0, 45, 100],
                 "data": {
                   "type": "mark",
                   "property": "values"

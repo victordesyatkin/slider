@@ -20,21 +20,22 @@ class ValueItem extends Component<ValueItemProps> {
 
   public query = `.js-${this.className}`;
 
-  public init() {
-    const { item } = this.props || {};
-    if (item) {
-      const { value } = item;
+  public init(): void {
+    const { value } = this.props || {};
+    if (!isUndefined(value)) {
       this.$index = $(`${this.query}__index`, this.$element);
       this.$input = $(`${this.query}__input`, this.$element);
       this.input = new Input({ parent: this.$input, props: { value } });
       this.$buttonRemove = $(`${this.query}__control`, this.$element);
-      console.log('this.$buttonRemove : ', this.$buttonRemove);
-      this.buttonRemove = new Button({
-        parent: this.$buttonRemove,
-        props: {
-          handleButtonClick: this.handleButtonRemoveClick,
-        },
-      });
+      if (this.$buttonRemove && this.$buttonRemove.length) {
+        this.buttonRemove = new Button({
+          parent: this.$buttonRemove,
+          props: {
+            handleButtonClick: this.handleButtonRemoveClick,
+          },
+        });
+      }
+      this.setIndex();
     }
   }
 
@@ -50,17 +51,17 @@ class ValueItem extends Component<ValueItemProps> {
 
   @bind
   private handleButtonRemoveClick() {
-    console.log('handleButtonRemoveClick :');
     const { handleButtonRemoveClick, index } = this.props || {};
+    console.log('valueItem : ', this.props);
     if (handleButtonRemoveClick) {
       handleButtonRemoveClick(index);
     }
   }
 
   private setIndex() {
-    const { index } = this.props || {};
+    const { index = 0 } = this.props || {};
     if (!isUndefined(index)) {
-      this.$index?.text(index);
+      this.$index?.text(`${index + 1}:`);
     }
   }
 }

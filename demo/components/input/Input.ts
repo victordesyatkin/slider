@@ -18,7 +18,13 @@ class Input extends Component<InputProps> {
   }
 
   public setValue(value: unknown): void {
-    this.$input?.val(String(value));
+    if (this.props) {
+      const { type } = this.props;
+      if (type === 'checkbox') {
+        this.$input?.prop('checked', Boolean(value));
+      }
+      this.$input?.val(String(value));
+    }
   }
 
   public getValue(): string | number | string[] | undefined {

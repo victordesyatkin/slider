@@ -6,12 +6,6 @@ $parent: 'values';
   flex-direction: column;
   min-width: 0;
 
-  &_empty {
-    &__control-remove {
-      display: none;
-    }
-  }
-
   &__control-items,
   &__items {
     margin: 0;
@@ -40,6 +34,11 @@ $parent: 'values';
     list-style-type: none;
     width: 100%;
     min-width: 0;
+  }
+
+  &__label,
+  &__link {
+    margin-bottom: 0.4rem;
   }
 
   &__item {

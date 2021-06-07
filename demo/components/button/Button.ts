@@ -15,6 +15,14 @@ class Button extends Component<ButtonProps> {
     this.bindEventListeners();
   }
 
+  public enabled(): void {
+    this.$element?.prop('disabled', false);
+  }
+
+  public disabled(): void {
+    this.$element?.prop('disabled', true);
+  }
+
   private bindEventListeners() {
     const { handleButtonClick } = this.props || {};
     if (handleButtonClick) {

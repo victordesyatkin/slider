@@ -1,24 +1,35 @@
 include ../input/input
 include ../button/button
 include ../values-item/values-item
+include ../label/label
+include ../link/link
 
 mixin values(props)
   if props
     -
-      let { buttonAdd, buttonRemove, isDisable, items = [] } = props;
+      let { buttonAdd, buttonRemove, template, value = [], link, label, ...other } = props;
       let className = 'values';
       let classNames = `${className} js-${className}`;
-      let itemLength = items.length;
-      classNames += isDisable ? `${className}_disabled` : '';
-      classNames += items.length ? '' : `${className}_hidden`;
+      let valueLength = value.length;
     div(class=classNames)
       ul(class=`${className}__control-items`)
         li(class=`${className}__control-item js-${className}__control-item-add`)
           +button(buttonAdd)
         li(class=`${className}__control-item js-${className}__control-item-remove`)
-          +button(buttonRemove)
-      if itemLength
-        ul(class=`${className}__items js-${className}__items`)
-          each item, index in items
-            li(class=`${className}__item`)
-              +values-item({ item, index, buttonRemove })
+          +button({ isDisabled: !valueLength, ...buttonRemove })
+      template(class=`js-${className}__template`)
+        +values-item({ ...template, buttonRemove })
+      if link
+        div(class=`${className}__link`)
+          +link(link)
+      if label
+        div(class=`${className}__label`)
+          +label(label)
+      div(class=`${className}__content js-${className}__content`)
+        if valueLength
+          ul(class=`${className}__items`)
+            each item, index in value
+              li(class=`${className}__item js-${className}__item`) 
+                +values-item({ value: item, index, buttonRemove, buttonAdd, ...other })
+        else
+          p(class=`${className}__no-content`) No content

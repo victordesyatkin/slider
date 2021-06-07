@@ -5,23 +5,30 @@ include ../values/values
 
 mixin section(props = {})
   -
-    let { items = [], caption, isControl, data } = props;
+    let { items = [], caption, buttonAdd, buttonRemove, template } = props;
     let className = 'section';
     let classNames = `${className} js-${className}`;
-  section(class=classNames) 
+  div(class=classNames)
     div(class=`${className}__caption`)
       +caption(caption)
     div(class=`${className}__items js-${className}__items`)
       if isControl
-        -
-          let sectionValuesClass = `${className}__values`;
-          let sectionValuesClasses = `${sectionValuesClass} js-${sectionValuesClass}`;
-        div(class=sectionValuesClasses, data=data)
+        div(class=sectionItemClasses, data=data, data-type=type, data-property=property)
           +values(props)
       else
         each item in items
           -
+            let { data } = item || {};
+            let { type, property } = data || {};
             let sectionItemClass = `${className}__item`;
             let sectionItemClasses = `${sectionItemClass} js-${sectionItemClass}`;
-          div(class=sectionItemClasses)
-            +input(item)
+          div(
+            class=sectionItemClasses,
+            data=data,
+            data-type=type,
+            data-property=property
+          )
+            if property === 'values'
+              +values({ buttonAdd, buttonRemove, template, ...item })
+            else
+              +input(item)

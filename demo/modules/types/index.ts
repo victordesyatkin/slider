@@ -25,11 +25,11 @@ type DataProps = Partial<{
   property: string;
 }> | null;
 
-type ItemProps = {
-  value: number;
+type ItemProps = Partial<{
+  value: number | string | number[] | string[];
   type: string;
   data: DataProps;
-} | null;
+}> | null;
 
 type SectionProps = Partial<{
   caption: CaptionProps;
@@ -40,17 +40,37 @@ type SectionProps = Partial<{
   items: ItemProps[];
 }> | null;
 
-type PanelProps = Partial<{ parent: HTMLElement | null }> | null;
+type LinkProps = Partial<{
+  content: string;
+  href: string;
+  title: string;
+  target: string;
+  theme: string;
+}>;
 
-type ValuesProps = Partial<{ data: DataProps; items: ItemProps[] }> | null;
+type PanelProps = Partial<{ link: LinkProps; sections: SectionProps[] }> | null;
 
-type ValueItemProps = Partial<{
-  item: ItemProps;
-  index: number;
-  handleButtonRemoveClick: (index?: number) => void;
+type ValuesProps = Partial<{
+  data: DataProps;
+  value: number[];
+  type: string;
+  handleButtonAddClick: () => void;
+  handleButtonRemoveClick: () => void;
 }> | null;
 
-type InputProps = Partial<{ value: string | number }> | null;
+type ValueItemProps = Partial<
+  {
+    index: number;
+    handleButtonRemoveClick: (index?: number) => void;
+  } & ItemProps
+> | null;
+
+type InputProps = ItemProps | null;
+
+type ExampleProps = Partial<{
+  caption: CaptionProps;
+  panel: PanelProps;
+}> | null;
 
 export {
   ComponentProps,
@@ -63,4 +83,5 @@ export {
   ValueItemProps,
   InputProps,
   DataProps,
+  ExampleProps,
 };
