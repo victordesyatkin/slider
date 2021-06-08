@@ -48,7 +48,11 @@ type LinkProps = Partial<{
   theme: string;
 }>;
 
-type PanelProps = Partial<{ link: LinkProps; sections: SectionProps[] }> | null;
+type PanelProps = Partial<{
+  link: LinkProps;
+  sections: SectionProps[];
+  handlePanelFocusout: () => void;
+}> | null;
 
 type ValuesProps = Partial<{
   data: DataProps;
@@ -62,10 +66,18 @@ type ValueItemProps = Partial<
   {
     index: number;
     handleButtonRemoveClick: (index?: number) => void;
+    handleInputInput: (
+      options?: Partial<{ index: number; value: string }>
+    ) => void;
   } & ItemProps
 > | null;
 
-type InputProps = ItemProps | null;
+type InputProps =
+  | (Partial<{
+      handleInputInput: (value: string) => void;
+    }> &
+      ItemProps)
+  | null;
 
 type ExampleProps = Partial<{
   caption: CaptionProps;

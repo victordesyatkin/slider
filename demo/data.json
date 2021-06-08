@@ -67,42 +67,6 @@
         "sections": [
           {
             "caption": {
-              "content": "Values",
-              "theme": "section"
-            },
-            "buttonAdd": {
-              "type": "button",
-              "content": "&#x271A;",
-              "title": "Add"
-            },
-            "buttonRemove": {
-              "type": "button",
-              "content": "&#x274C",
-              "title": "Remove"
-            },
-            "template": {
-              "item": {
-                "value": 20,
-                "type": "number",
-                "data": {
-                  "type": "values",
-                  "property": "values"
-                }
-              }
-            },
-            "items": [
-              {
-                "value": [20, 45, 75],
-                "type": "number",
-                "data": {
-                  "type": "values",
-                  "property": "values"
-                }
-              }
-            ]
-          },
-          {
-            "caption": {
               "content": "Min",
               "theme": "section"
             },
@@ -177,6 +141,22 @@
                 "data": {
                   "type": "indent",
                   "property": "indent"
+                }
+              }
+            ]
+          },
+          {
+            "caption": {
+              "content": "Index",
+              "theme": "section"
+            },
+            "items": [
+              {
+                "value": 0,
+                "type": "number",
+                "data": {
+                  "type": "index",
+                  "property": "index"
                 }
               }
             ]

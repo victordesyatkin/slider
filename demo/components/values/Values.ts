@@ -24,6 +24,7 @@ class Values extends Component<ValuesProps> {
   }
 
   public setValue(value?: unknown): void {
+    console.log('Values setValue : ', value);
     if (this.props && Array.isArray(value)) {
       this.props.value = value;
       this.renderUl();
@@ -95,35 +96,44 @@ class Values extends Component<ValuesProps> {
           index,
           value: item,
           handleButtonRemoveClick: this.handleButtonRemoveClick,
+          handleInputInput: this.handleInputInput,
         },
       });
     }
   }
 
   private renderUl() {
-    const { value } = this.props || {};
+    const { value, data } = this.props || {};
+    const { type } = data || {};
+    if (type === 'mark') {
+      console.log('renderUl value : ', value);
+    }
     const html = this.$template?.html();
     if (html && Array.isArray(value)) {
       this.$content?.empty();
       this.items = [];
-      const $ul = this.createUl();
-      value.forEach((item, index) => {
-        const $li = this.createLi();
-        $li.append(html);
-        this.items[index] = new ValueItem({
-          parent: $li,
-          props: {
-            ...this.props,
-            value: item,
-            index,
-            handleButtonRemoveClick: this.handleButtonRemoveClick,
-          },
-        });
-        $ul.append($li);
-      });
       if (value.length) {
+        const $ul = this.createUl();
+        value.forEach((item, index) => {
+          console.log('renderUl item : ', item);
+          console.log('renderUl index : ', index);
+          const $li = this.createLi();
+          $li.append(html);
+          this.items[index] = new ValueItem({
+            parent: $li,
+            props: {
+              ...this.props,
+              value: item,
+              index,
+              handleButtonRemoveClick: this.handleButtonRemoveClick,
+              handleInputInput: this.handleInputInput,
+            },
+          });
+          $ul.append($li);
+        });
         this.$content?.append($ul);
         this.toggleVisibleButtonRemove();
+        // console.log('renderUl $ul : ', $ul);
       } else {
         const $p = $('<p/>', {
           class: `${this.className}__no-content js-${this.className}__no-content`,
@@ -152,6 +162,7 @@ class Values extends Component<ValuesProps> {
     const { handleButtonRemoveClick } = this.props || {};
     const { value } = this.props || {};
     const valueLength = value?.length;
+    // console.log('readyValue : ', value);
     if (Array.isArray(value) && valueLength) {
       let readyIndex = parseFloat(String(index));
       readyIndex = Number.isNaN(readyIndex) ? valueLength - 1 : Number(index);
@@ -161,11 +172,32 @@ class Values extends Component<ValuesProps> {
         ...this.props,
         value: readyValue,
       };
+      console.log('this.props : ', this.props);
       if (handleButtonRemoveClick) {
         handleButtonRemoveClick();
       }
       this.renderUl();
       this.toggleVisibleButtonRemove();
+    }
+  }
+
+  @bind
+  handleInputInput(options?: { index?: number; value?: string }): void {
+    if (this.props) {
+      // console.log('options : ', options);
+      const { index, value } = options || {};
+      let readyValue = parseFloat(String(value));
+      if (Number.isNaN(readyValue)) {
+        readyValue = 0;
+      }
+      const { value: prev } = this.props || {};
+      const readyIndex = parseInt(String(index), 10);
+      if (Array.isArray(prev) && !Number.isNaN(readyIndex)) {
+        if (typeof readyIndex === 'number') {
+          prev[readyIndex] = readyValue;
+          this.props.value = prev;
+        }
+      }
     }
   }
 
@@ -175,8 +207,8 @@ class Values extends Component<ValuesProps> {
     if (isUndefined(flag)) {
       readyFlag = Boolean(value?.length);
     }
-    console.log('props : ', this.props);
-    console.log('readyFlag : ', readyFlag);
+    // console.log('props : ', this.props);
+    // console.log('readyFlag : ', readyFlag);
     if (readyFlag) {
       this.buttonRemove?.enabled();
     } else {

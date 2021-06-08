@@ -387,7 +387,7 @@ function correctClassNames(options: {
   value?: unknown;
 }): void {
   const { values, value, key } = options;
-  const readyValue: string[] | undefined = [];
+  const readyValue: string[] | undefined | null = [];
   if (value && Array.isArray(value)) {
     value.forEach((className) => {
       const isNeedCorrect = !(isString(className) && trim(className));
@@ -397,7 +397,7 @@ function correctClassNames(options: {
     });
   }
   if (values && typeof values === 'object') {
-    values[key] = readyValue && readyValue.length ? readyValue : undefined;
+    values[key] = readyValue && readyValue.length ? readyValue : null;
   }
 }
 
@@ -414,7 +414,7 @@ function correctStyles(options: {
   value?: unknown;
 }): void {
   const { values, value, key } = options;
-  const readyValue: Record<string, string>[] | undefined = [];
+  const readyValue: Record<string, string>[] | undefined | null = [];
   if (value && Array.isArray(value)) {
     value.forEach((style) => {
       if (!isNeedCorrectStyle(style)) {
@@ -424,7 +424,7 @@ function correctStyles(options: {
   }
   const isCorrect = values && key in values;
   if (typeof values === 'object' && isCorrect) {
-    values[key] = readyValue && readyValue?.length ? readyValue : undefined;
+    values[key] = readyValue && readyValue?.length ? readyValue : null;
   }
 }
 
@@ -434,7 +434,7 @@ function correctStyle(options: {
   value?: unknown;
 }): void {
   const { values, value, key } = options;
-  let readyValue: Record<string, string> | undefined;
+  let readyValue: Record<string, string> | undefined | null = null;
   const isCorrect =
     isReallyObject(value) && isObject(value) && Object.keys(value).length;
   if (isCorrect) {
@@ -452,7 +452,7 @@ function correctClassName(options: {
   value?: unknown;
 }): void {
   const { values, value, key } = options;
-  let readyValue: string | undefined;
+  let readyValue: string | undefined | null = null;
   if (isString(value) && trim(value)) {
     readyValue = value;
   }
@@ -494,10 +494,13 @@ function correctIndex(options: {
 }): void {
   const { values, props } = options;
   const { values: items = [] } = props;
-  const readyValue: number | undefined = defaultProps.index;
+  const readyValue: number | undefined | null = defaultProps.index;
   const isNeedCorrect =
     !isUndefined(values) &&
-    (Number(values) < 0 || Number(values) > items.length);
+    (Number(values) < 0 ||
+      Number(values) > items.length ||
+      values === null ||
+      typeof values !== 'number');
   if (isNeedCorrect) {
     props.index = readyValue;
   }

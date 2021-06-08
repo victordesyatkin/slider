@@ -1,5 +1,6 @@
 import bind from 'bind-decorator';
 import isUndefined from 'lodash.isundefined';
+import isFunction from 'lodash.isfunction';
 
 import { ComponentProps, ValueItemProps } from '../../modules/types';
 import Component from '../../helpers';
@@ -25,7 +26,10 @@ class ValueItem extends Component<ValueItemProps> {
     if (!isUndefined(value)) {
       this.$index = $(`${this.query}__index`, this.$element);
       this.$input = $(`${this.query}__input`, this.$element);
-      this.input = new Input({ parent: this.$input, props: { value } });
+      this.input = new Input({
+        parent: this.$input,
+        props: { value, handleInputInput: this.handleInputInput },
+      });
       this.$buttonRemove = $(`${this.query}__control`, this.$element);
       if (this.$buttonRemove && this.$buttonRemove.length) {
         this.buttonRemove = new Button({
@@ -52,9 +56,18 @@ class ValueItem extends Component<ValueItemProps> {
   @bind
   private handleButtonRemoveClick() {
     const { handleButtonRemoveClick, index } = this.props || {};
-    console.log('valueItem : ', this.props);
-    if (handleButtonRemoveClick) {
+    // console.log('valueItem : ', this.props);
+    if (handleButtonRemoveClick && isFunction(handleButtonRemoveClick)) {
       handleButtonRemoveClick(index);
+    }
+  }
+
+  @bind
+  private handleInputInput(value: string) {
+    const { handleInputInput, index } = this.props || {};
+    // console.log('valueItem : ', this.props);
+    if (handleInputInput && isFunction(handleInputInput)) {
+      handleInputInput({ index, value });
     }
   }
 
