@@ -261,14 +261,17 @@ describe('helpers', () => {
     });
     test('prepareData', () => {
       expect(utils.prepareData()).toEqual(
-        expect.objectContaining(defaultProps)
+        expect.objectContaining({
+          ...defaultProps,
+          mark: {
+            ...defaultProps.mark,
+            values: [defaultProps.min, defaultProps.max],
+          },
+        })
       );
       let props = utils.prepareData({ values: [30, 25] });
       expect(props.values).toEqual(expect.arrayContaining([30, 25]));
-      props = utils.prepareData(
-        { values: [14, 25] },
-        { ...defaultProps, values: [18] }
-      );
+      props = utils.prepareData({ values: [14, 25] });
       expect(props.values).toEqual(expect.arrayContaining([14, 25]));
     });
     test('uniqId', () => {
@@ -465,6 +468,7 @@ describe('helpers', () => {
           className: 'cccc',
           wrapClassName: 'eeee',
           style: { 'background-color': 'yellow' },
+          values: [-50, 200, 100],
         },
         rail: {
           className: 'cccc',
@@ -494,6 +498,7 @@ describe('helpers', () => {
           indent: defaultProps.indent,
           classNames: ['bbbbb', 'aaaa'],
           style: { color: 'red' },
+          index: undefined,
           handle: {
             classNames: ['cccc'],
             styles: [
@@ -509,14 +514,15 @@ describe('helpers', () => {
             ],
           },
           dot: {
-            className: undefined,
-            wrapClassName: undefined,
+            className: null,
+            wrapClassName: null,
             style: { 'background-color': 'yellow' },
           },
           mark: {
             className: 'cccc',
             wrapClassName: 'eeee',
             style: { 'background-color': 'yellow' },
+            values: [-100, -50, 100],
           },
         })
       );
@@ -562,7 +568,7 @@ describe('helpers', () => {
       });
       expect(props.rail).toEqual(
         expect.objectContaining({
-          className: undefined,
+          className: null,
           styles: [{ color: 'red' }],
         })
       );
@@ -573,8 +579,8 @@ describe('helpers', () => {
       });
       expect(props.dot).toEqual(
         expect.objectContaining({
-          wrapClassName: undefined,
-          style: undefined,
+          wrapClassName: null,
+          style: null,
           className: 'aaaa',
         })
       );
@@ -639,13 +645,20 @@ describe('helpers', () => {
         values: -5,
       });
       expect(props.step).toEqual(0);
-      props = { ...defaultProps, max: -10, min: -50 };
+      props = { ...defaultProps, max: -10, min: -50, step: 5 };
       utils.correctStep({
         key: 'step',
         props: props,
         values: -5,
       });
       expect(props.step).toEqual(0);
+      props = { ...defaultProps, max: -10, min: -50, step: 6 };
+      utils.correctStep({
+        key: 'step',
+        props,
+        values: 10,
+      });
+      expect(props.step).toEqual(6);
     });
     test('correctPrecision', () => {
       let props = { ...defaultProps };
@@ -699,7 +712,7 @@ describe('helpers', () => {
         value: values1.classNames,
         values,
       });
-      expect(values.classNames).toEqual(undefined);
+      expect(values.classNames).toEqual(null);
     });
     test('isNeedCorrectStyle', () => {
       let isCorrect = utils.isNeedCorrectStyle({
@@ -749,7 +762,7 @@ describe('helpers', () => {
         value: values1.styles,
         values: values1,
       });
-      expect(values1.styles).toEqual(undefined);
+      expect(values1.styles).toEqual(null);
       const values2 = {
         styles: '',
       };
@@ -758,7 +771,7 @@ describe('helpers', () => {
         value: values2.styles,
         values: values2,
       });
-      expect(values2.styles).toEqual(undefined);
+      expect(values2.styles).toEqual(null);
     });
     test('correctStyle', () => {
       const values = {
@@ -780,7 +793,7 @@ describe('helpers', () => {
         value: values1.style,
         values: values1,
       });
-      expect(values1.style).toEqual(undefined);
+      expect(values1.style).toEqual(null);
       const values2 = {
         style: '',
       };
@@ -817,7 +830,7 @@ describe('helpers', () => {
         value: values1.className,
         values: values1,
       });
-      expect(values1.className).toEqual(undefined);
+      expect(values1.className).toEqual(null);
       const values2 = {
         className: {},
       };
@@ -826,7 +839,7 @@ describe('helpers', () => {
         value: values2.className,
         values: values2,
       });
-      expect(values2.className).toEqual(undefined);
+      expect(values2.className).toEqual(null);
     });
     test('correctValues', () => {
       const values = {
@@ -838,7 +851,7 @@ describe('helpers', () => {
         values,
         props: { ...defaultProps },
       });
-      expect(values.values).toEqual(undefined);
+      expect(values.values).toEqual([defaultProps.min, defaultProps.max]);
       const values1 = {
         values: ['aaaa'],
       };
@@ -934,7 +947,16 @@ describe('helpers', () => {
       };
       utils.correctIndex(options4);
       expect(options4.props).toEqual(
-        expect.objectContaining({ ...defaultProps, index: 1 })
+        expect.objectContaining({ ...defaultProps, index: undefined })
+      );
+      const options5 = {
+        key: 'index',
+        values: 0,
+        props: { ...defaultProps, index: 0 },
+      };
+      utils.correctIndex(options5);
+      expect(options5.props).toEqual(
+        expect.objectContaining({ ...defaultProps, index: 0 })
       );
     });
   });

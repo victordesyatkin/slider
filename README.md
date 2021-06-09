@@ -69,6 +69,7 @@
         <li><a href="https://www.npmjs.com/package/lodash.set" target="_blank" rel="noopener">lodash.set</a></li>
         <li><a href="https://www.npmjs.com/package/lodash.trim" target="_blank" rel="noopener">lodash.trim</a></li>
         <li><a href="https://www.npmjs.com/package/lodash.uniq" target="_blank" rel="noopener">lodash.uniq</a></li>
+        <li><a href="https://www.npmjs.com/package/lodash.omit" target="_blank" rel="noopener">lodash.omit</a></li>
     </ul>
     <h4>Установка</h4>
         <ol>
@@ -229,12 +230,6 @@ const slider = $(<span style="color: #df5000;">'.my-selector'</span>).data(<span
             <td>Отступ между handles</td>
         </tr>
         <tr>
-            <td>index</td>
-            <td>number</td>
-            <td>0</td>
-            <td>Номер handle, который будет в фокусе при инициализации, если isFocused используется (слева направо)</td>
-        </tr>
-        <tr>
             <td>disabled</td>
             <td>boolean</td>
             <td>false</td>
@@ -316,7 +311,7 @@ const slider = $(<span style="color: #df5000;">'.my-selector'</span>).data(<span
                 style?: {"backgound": "red"} - стиль для отметок шкалы,<br/>
                 className?: string = '' - имя класса для отметок шкалы,<br/>
                 render?: (value: number) => | string | JQuery<HTMLElement> | JQuery<HTMLElement>[] | HTMLElement | HTMLElement[] | undefined; - функция для изменения отображения отметок шкалы,<br/>
-                values?: number[] - дополнительные значения отметок шкалы отображаются внезависимости от значения step,<br/>
+                values?: number[min, ..., max] - дополнительные значения отметок шкалы отображаются внезависимости от значения step, отметки минимального и максимального значений добавлены по умолчанию<br/>
                 dot?: boolean = false, вкл/выкл точек-меток для дополнительных значений отметок шкалы,<br/>
             }
             </td>

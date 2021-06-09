@@ -17,8 +17,6 @@ mixin values(props)
           +button(buttonAdd)
         li(class=`${className}__control-item js-${className}__control-item-remove`)
           +button({ isDisabled: !valueLength, ...buttonRemove })
-      template(class=`js-${className}__template`)
-        +values-item({ ...template, buttonRemove })
       if link
         div(class=`${className}__link`)
           +link(link)
@@ -33,3 +31,5 @@ mixin values(props)
                 +values-item({ value: item, index, buttonRemove, buttonAdd, ...other })
         else
           p(class=`${className}__no-content`) No content
+      template(class=`js-${className}__template`)
+        +values-item({ ...template, buttonRemove })

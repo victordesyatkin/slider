@@ -1,17 +1,9 @@
 import $ from 'jquery';
 import bind from 'bind-decorator';
 import set from 'lodash.set';
-import isObject from 'lodash.isobject';
-import isFunction from 'lodash.isfunction';
-import trim from 'lodash.trim';
-import isUndefined from 'lodash.isundefined';
-import isString from 'lodash.isstring';
-import merge from 'lodash.merge';
-import orderBy from 'lodash.orderby';
 import isEqual from 'lodash.isequal';
 
-import { uniqId, ensureValueInRange } from '../../../src/helpers/utils';
-import { Style, Render, Props, KeyProps } from '../../../src/types';
+import { Props } from '../../../src/types';
 import Slider from '../slider';
 import { ComponentProps, ExampleProps } from '../../modules/types';
 import Component, { checkedIsEqual } from '../../helpers';
@@ -31,17 +23,21 @@ class Example extends Component<ExampleProps> {
     const { panel } = this.props || {};
     this.panel = new Panel({
       parent: this.$element,
-      props: { ...panel, handlePanelFocusout: this.handlePanelFocusout },
+      props: { ...panel, handleInputFocusout: this.handleInputFocusout },
     });
     this.values = this.panel.getValues();
     this.slider = new Slider({
       parent: this.$element,
-      props: { ...this.values, onAfterChange: this.onAfterChange },
+      props: $.extend(
+        {},
+        {
+          ...this.values,
+          values: [...(this.values?.values || [])],
+          onAfterChange: this.onAfterChange,
+        }
+      ),
     });
     this.setValues();
-    // this.bindEventListeners();
-    // this.initCache();
-    // this.updateProps();
   }
 
   private panel?: Panel | null;
@@ -51,8 +47,7 @@ class Example extends Component<ExampleProps> {
   private values?: Props | null;
 
   @bind
-  private handlePanelFocusout(): void {
-    console.log('handlePanelFocusout : ');
+  private handleInputFocusout(): void {
     this.setValues();
     return undefined;
   }
@@ -60,13 +55,11 @@ class Example extends Component<ExampleProps> {
   private setValues(): void {
     const prev = this.slider?.getProps();
     const next = this.panel?.getValues();
-    console.log('setProps : ', next);
     if (checkedIsEqual({ prev, next })) {
       return undefined;
     }
     this.slider?.setProps(next);
     this.values = this.slider?.getProps();
-    console.log('getProps : ', this.values);
     this.panel?.setValues(this.values);
     return undefined;
   }
@@ -77,14 +70,11 @@ class Example extends Component<ExampleProps> {
       return undefined;
     }
     const { values: prev } = this.values || {};
-    // console.log('onAfterChange next : ', next);
-    // console.log('onAfterChange prev : ', prev);
-    // console.log('onAfterChange isEqual : ', isEqual(prev, next));
     if (isEqual(prev, next)) {
       return undefined;
     }
-    const values = merge({}, this.values);
-    set(values, ['values'], next);
+    const values = $.extend(true, {}, this.values);
+    set(values, ['values'], [...next]);
     this.panel?.setValues(values);
     return undefined;
   }

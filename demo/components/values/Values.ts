@@ -1,5 +1,5 @@
-import isObject from 'lodash.isobject';
 import isUndefined from 'lodash.isundefined';
+import isFunction from 'lodash.isfunction';
 import bind from 'bind-decorator';
 
 import { ValuesProps, ComponentProps } from '../../modules/types';
@@ -24,7 +24,6 @@ class Values extends Component<ValuesProps> {
   }
 
   public setValue(value?: unknown): void {
-    console.log('Values setValue : ', value);
     if (this.props && Array.isArray(value)) {
       this.props.value = value;
       this.renderUl();
@@ -51,7 +50,6 @@ class Values extends Component<ValuesProps> {
     this.toggleVisibleButtonRemove();
     this.$items = $(`${this.query}__item`, this.$element);
     this.$items.each(this.createValuesItem);
-    // console.log('this.$items : ', this.$items);
   }
 
   private $template?: JQuery<HTMLElement> | null;
@@ -86,10 +84,9 @@ class Values extends Component<ValuesProps> {
 
   @bind
   private createValuesItem(index: number, element: HTMLElement) {
-    const { value } = this.props || {};
+    const { value, handleInputFocusout } = this.props || {};
     if (Array.isArray(value)) {
       const item = value[index];
-      // console.log('createItem : ', item);
       this.items[index] = new ValuesItem({
         parent: element,
         props: {
@@ -97,17 +94,14 @@ class Values extends Component<ValuesProps> {
           value: item,
           handleButtonRemoveClick: this.handleButtonRemoveClick,
           handleInputInput: this.handleInputInput,
+          handleInputFocusout,
         },
       });
     }
   }
 
   private renderUl() {
-    const { value, data } = this.props || {};
-    const { type } = data || {};
-    if (type === 'mark') {
-      console.log('renderUl value : ', value);
-    }
+    const { value } = this.props || {};
     const html = this.$template?.html();
     if (html && Array.isArray(value)) {
       this.$content?.empty();
@@ -115,8 +109,6 @@ class Values extends Component<ValuesProps> {
       if (value.length) {
         const $ul = this.createUl();
         value.forEach((item, index) => {
-          console.log('renderUl item : ', item);
-          console.log('renderUl index : ', index);
           const $li = this.createLi();
           $li.append(html);
           this.items[index] = new ValueItem({
@@ -133,7 +125,6 @@ class Values extends Component<ValuesProps> {
         });
         this.$content?.append($ul);
         this.toggleVisibleButtonRemove();
-        // console.log('renderUl $ul : ', $ul);
       } else {
         const $p = $('<p/>', {
           class: `${this.className}__no-content js-${this.className}__no-content`,
@@ -151,40 +142,43 @@ class Values extends Component<ValuesProps> {
       value: [...(this.props?.value || []), 0],
     };
     this.renderUl();
-    const { handleButtonAddClick } = this.props || {};
+    const { handleButtonAddClick, handleInputFocusout } = this.props || {};
     if (handleButtonAddClick) {
       handleButtonAddClick();
+    }
+    if (handleInputFocusout && isFunction(handleInputFocusout)) {
+      handleInputFocusout();
     }
   }
 
   @bind
   private handleButtonRemoveClick(index?: number): void {
-    const { handleButtonRemoveClick } = this.props || {};
+    const { handleButtonRemoveClick, handleInputFocusout } = this.props || {};
     const { value } = this.props || {};
     const valueLength = value?.length;
-    // console.log('readyValue : ', value);
     if (Array.isArray(value) && valueLength) {
       let readyIndex = parseFloat(String(index));
-      readyIndex = Number.isNaN(readyIndex) ? valueLength - 1 : Number(index);
+      readyIndex = Number.isNaN(readyIndex) ? 1 : Number(index);
       const readyValue = [...value];
       readyValue.splice(readyIndex, 1);
       this.props = {
         ...this.props,
         value: readyValue,
       };
-      console.log('this.props : ', this.props);
+      this.renderUl();
+      this.toggleVisibleButtonRemove();
+      if (handleInputFocusout && isFunction(handleInputFocusout)) {
+        handleInputFocusout();
+      }
       if (handleButtonRemoveClick) {
         handleButtonRemoveClick();
       }
-      this.renderUl();
-      this.toggleVisibleButtonRemove();
     }
   }
 
   @bind
   handleInputInput(options?: { index?: number; value?: string }): void {
     if (this.props) {
-      // console.log('options : ', options);
       const { index, value } = options || {};
       let readyValue = parseFloat(String(value));
       if (Number.isNaN(readyValue)) {
@@ -194,8 +188,9 @@ class Values extends Component<ValuesProps> {
       const readyIndex = parseInt(String(index), 10);
       if (Array.isArray(prev) && !Number.isNaN(readyIndex)) {
         if (typeof readyIndex === 'number') {
-          prev[readyIndex] = readyValue;
-          this.props.value = prev;
+          const readyPrev = [...prev];
+          readyPrev[readyIndex] = readyValue;
+          this.props.value = readyPrev;
         }
       }
     }
@@ -207,8 +202,6 @@ class Values extends Component<ValuesProps> {
     if (isUndefined(flag)) {
       readyFlag = Boolean(value?.length);
     }
-    // console.log('props : ', this.props);
-    // console.log('readyFlag : ', readyFlag);
     if (readyFlag) {
       this.buttonRemove?.enabled();
     } else {

@@ -189,7 +189,7 @@ describe('rail', () => {
       $element.trigger('click');
       expect(handleViewClick.mock.calls.length).toBe(0);
 
-      view.setProps(merge({}, { ...defaultProps }));
+      view.setProps($.extend({}, defaultProps));
       $element = $(`.${defaultProps.prefixClassName}__dot`, $parent);
       $element.trigger('click');
       expect(handleViewClick.mock.calls.length).toBe(0);

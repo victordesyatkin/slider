@@ -1,10 +1,11 @@
+import $ from 'jquery';
 import orderBy from 'lodash.orderby';
-import merge from 'lodash.merge';
 import uniq from 'lodash.uniq';
 import isUndefined from 'lodash.isundefined';
 import isObject from 'lodash.isobject';
 import isString from 'lodash.isstring';
 import trim from 'lodash.trim';
+import isFunction from 'lodash.isfunction';
 
 import { DefaultProps, Props } from '../types';
 
@@ -174,13 +175,16 @@ function calcValueWithEnsure(options: {
 function prepareValues(props: DefaultProps): DefaultProps {
   let { values } = props;
   const { mark } = props;
+  if (!values.length) {
+    values = defaultProps.values;
+  }
   values = orderBy(values).map((value, index) =>
     calcValueWithEnsure({ value, props, index })
   );
   let markValues: number[] = (mark?.values || []).map((value) =>
     ensureValueInRange(value, { min: props.min, max: props.max })
   );
-  markValues = orderBy(uniq(markValues), [], ['asc']);
+  markValues = orderBy(markValues, [], ['asc']);
   return { ...props, values, mark: { ...mark, values: markValues } };
 }
 
@@ -335,11 +339,13 @@ function correctStep(options: {
   values: unknown;
 }): void {
   const { key, values, props } = options;
-  const { max } = props;
+  const { max, min } = props;
   const readyKey = key as keyof typeof props;
   const readyValues = parseFloat(String(values));
   const isNeedCorrect =
-    Number.isNaN(readyValues) || readyValues < 0 || readyValues >= max;
+    Number.isNaN(readyValues) ||
+    readyValues >= Math.abs(max - min) ||
+    readyValues < 0;
   if (isNeedCorrect && readyKey in props) {
     props.step = defaultProps.step;
   }
@@ -372,7 +378,7 @@ function correctIndent(options: {
   let isNeedCorrect = Number.isNaN(readyValues) || readyValues < 0;
   if (!isNeedCorrect) {
     const count = currentValues.length - 1;
-    if (count * readyValues > max) {
+    if (count * readyValues > Math.abs(max)) {
       isNeedCorrect = true;
     }
   }
@@ -475,15 +481,22 @@ function correctValues(options: {
     readyValue = value.slice();
     value.forEach((temp, index) => {
       const isNeedCorrect =
-        (temp > max && temp < min) || Number.isNaN(parseFloat(String(temp)));
+        temp > max || temp < min || Number.isNaN(parseFloat(String(temp)));
       if (isNeedCorrect && Array.isArray(readyValue)) {
         readyValue[index] = min;
       }
     });
   }
   const isCorrectObject = values && key in values;
+
   if (isCorrectObject && typeof values === 'object') {
-    values[key] = orderBy(uniq([min, max, ...readyValue]), [], ['asc']);
+    if (readyValue.indexOf(min) === -1) {
+      readyValue.push(min);
+    }
+    if (readyValue.indexOf(max) === -1) {
+      readyValue.push(max);
+    }
+    values[key] = orderBy(readyValue, [], ['asc']);
   }
 }
 
@@ -495,14 +508,30 @@ function correctIndex(options: {
   const { values, props } = options;
   const { values: items = [] } = props;
   const readyValue: number | undefined | null = defaultProps.index;
+  const readyValues = parseInt(String(values), 10);
   const isNeedCorrect =
-    !isUndefined(values) &&
-    (Number(values) < 0 ||
-      Number(values) > items.length ||
-      values === null ||
-      typeof values !== 'number');
+    Number.isNaN(readyValues) ||
+    Number(readyValues) < 0 ||
+    Number(readyValues) > items.length - 1;
   if (isNeedCorrect) {
     props.index = readyValue;
+  }
+}
+
+function correctRender(options: {
+  values?: Record<string, unknown>;
+  key: string;
+  props: DefaultProps;
+  value?: unknown;
+}): void {
+  const { values, value, key } = options;
+  let readyValue: ((items: number) => void) | null | undefined = value as null;
+  if (!isFunction(readyValue)) {
+    readyValue = null;
+  }
+  const isCorrectObject = values && key in values;
+  if (isCorrectObject && typeof values === 'object') {
+    values[key] = readyValue;
   }
 }
 
@@ -535,6 +564,10 @@ function correctSet(options: {
           correctClassName({ values: readyValues, key: readyKey, value });
           break;
         }
+        case 'render': {
+          correctRender({ values: readyValues, key: readyKey, value, props });
+          break;
+        }
         case 'values': {
           correctValues({ values: readyValues, key: readyKey, value, props });
           break;
@@ -548,7 +581,7 @@ function correctSet(options: {
 }
 
 function correctData(props: DefaultProps): DefaultProps {
-  const result = merge({}, props);
+  const result = $.extend(true, {}, props);
   Object.keys(result).forEach((key) => {
     const readyKey = key as keyof typeof result;
     const values = result[readyKey];
@@ -594,23 +627,11 @@ function correctData(props: DefaultProps): DefaultProps {
   return result;
 }
 
-function prepareData(props?: Props, prevProps?: DefaultProps): DefaultProps {
-  const values: number[] =
-    props?.values || prevProps?.values || defaultProps.values;
-  // const markValues: number[] | undefined =
-  //   props?.mark?.values ||
-  //   prevProps?.mark?.values ||
-  //   defaultProps?.mark?.values;
-  const mergeProps: DefaultProps = merge({}, defaultProps, prevProps, props);
-  const correctedProps = correctData({
-    ...mergeProps,
-    // mark: { ...mergeProps?.mark, values: markValues },
-  });
-  const readyProps = prepareValues({
-    ...correctedProps,
-    values,
-  });
-  return readyProps;
+function prepareData(props?: Props): DefaultProps {
+  const correctedProps = correctData(
+    $.extend(true, {}, { ...defaultProps, ...props })
+  );
+  return prepareValues(correctedProps);
 }
 
 function uniqId(): string {
@@ -762,4 +783,5 @@ export {
   correctClassName,
   correctValues,
   correctIndex,
+  correctRender,
 };

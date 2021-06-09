@@ -67,6 +67,32 @@
         "sections": [
           {
             "caption": {
+              "content": "Values",
+              "theme": "section"
+            },
+            "buttonAdd": {
+              "type": "button",
+              "content": "&#x271A;",
+              "title": "Add"
+            },
+            "buttonRemove": {
+              "type": "button",
+              "content": "&#x274C",
+              "title": "Remove"
+            },
+            "items": [
+              {
+                "value": [20, 45, 75],
+                "type": "number",
+                "data": {
+                  "type": "values",
+                  "property": "values"
+                }
+              }
+            ]
+          },
+          {
+            "caption": {
               "content": "Min",
               "theme": "section"
             },
@@ -141,22 +167,6 @@
                 "data": {
                   "type": "indent",
                   "property": "indent"
-                }
-              }
-            ]
-          },
-          {
-            "caption": {
-              "content": "Index",
-              "theme": "section"
-            },
-            "items": [
-              {
-                "value": 0,
-                "type": "number",
-                "data": {
-                  "type": "index",
-                  "property": "index"
                 }
               }
             ]
@@ -422,14 +432,6 @@
               "content": "&#x274C",
               "title": "Remove"
             },
-            "template": {
-              "value": 0,
-              "type": "number",
-              "data": {
-                "type": "values",
-                "property": "values"
-              }
-            },
             "items": [
               {
                 "label": {
@@ -581,6 +583,1534 @@
                   "target": "_blank"
                 },
                 "value": "return `${v}%`;",
+                "type": "text",
+                "data": {
+                  "type": "tooltip",
+                  "property": "render"
+                }
+              }
+            ]
+          }
+        ]
+      },
+      "slider": {}
+    },
+    {
+      "caption": {
+        "content": "Simple vertical reverse configuration"
+      },
+      "panel": {
+        "link": {
+          "content": "Configuration",
+          "href": "https://github.com/victordesyatkin/slider/blob/master/README.md#api",
+          "title": "readme",
+          "target": "_blank"
+        },
+        "sections": [
+          {
+            "caption": {
+              "content": "Values",
+              "theme": "section"
+            },
+            "buttonAdd": {
+              "type": "button",
+              "content": "&#x271A;",
+              "title": "Add"
+            },
+            "buttonRemove": {
+              "type": "button",
+              "content": "&#x274C",
+              "title": "Remove"
+            },
+            "items": [
+              {
+                "value": [7],
+                "type": "number",
+                "data": {
+                  "type": "values",
+                  "property": "values"
+                }
+              }
+            ]
+          },
+          {
+            "caption": {
+              "content": "Min",
+              "theme": "section"
+            },
+            "items": [
+              {
+                "value": 0,
+                "type": "number",
+                "data": {
+                  "type": "min",
+                  "property": "min"
+                }
+              }
+            ]
+          },
+          {
+            "caption": {
+              "content": "Max",
+              "theme": "section"
+            },
+            "items": [
+              {
+                "value": 10,
+                "type": "number",
+                "data": {
+                  "type": "max",
+                  "property": "max"
+                }
+              }
+            ]
+          },
+          {
+            "caption": {
+              "content": "Step",
+              "theme": "section"
+            },
+            "items": [
+              {
+                "value": 1,
+                "type": "number",
+                "data": {
+                  "type": "step",
+                  "property": "step"
+                }
+              }
+            ]
+          },
+          {
+            "caption": {
+              "content": "Precision",
+              "theme": "section"
+            },
+            "items": [
+              {
+                "value": 1,
+                "type": "number",
+                "data": {
+                  "type": "precision",
+                  "property": "precision"
+                }
+              }
+            ]
+          },
+          {
+            "caption": {
+              "content": "Vertical",
+              "theme": "section"
+            },
+            "items": [
+              {
+                "value": 1,
+                "type": "checkbox",
+                "data": {
+                  "type": "vertical",
+                  "property": "vertical"
+                }
+              }
+            ]
+          },
+          {
+            "caption": {
+              "content": "Reverse",
+              "theme": "section"
+            },
+            "items": [
+              {
+                "value": 1,
+                "type": "checkbox",
+                "data": {
+                  "type": "reverse",
+                  "property": "reverse"
+                }
+              }
+            ]
+          },
+          {
+            "caption": {
+              "content": "Disabled",
+              "theme": "section"
+            },
+            "items": [
+              {
+                "value": 0,
+                "type": "checkbox",
+                "data": {
+                  "type": "disabled",
+                  "property": "disabled"
+                }
+              }
+            ]
+          },
+          {
+            "caption": {
+              "content": "Handle",
+              "theme": "section"
+            },
+            "items": [
+              {
+                "link": {
+                  "content": "Class names (json)",
+                  "href": "https://github.com/victordesyatkin/slider/blob/master/README.md#api",
+                  "title": "readme",
+                  "target": "_blank"
+                },
+                "value": "",
+                "type": "text",
+                "data": {
+                  "type": "handle",
+                  "property": "classNames"
+                }
+              },
+              {
+                "link": {
+                  "content": "Styles (json)",
+                  "href": "https://github.com/victordesyatkin/slider/blob/master/README.md#api",
+                  "title": "readme",
+                  "target": "_blank"
+                },
+                "value": "",
+                "type": "text",
+                "data": {
+                  "type": "handle",
+                  "property": "styles"
+                }
+              }
+            ]
+          },
+          {
+            "caption": {
+              "content": "Rail",
+              "theme": "section"
+            },
+            "items": [
+              {
+                "label": {
+                  "content": "On/Off"
+                },
+                "value": 1,
+                "type": "checkbox",
+                "data": {
+                  "type": "rail",
+                  "property": "on"
+                }
+              },
+              {
+                "link": {
+                  "content": "Style (json)",
+                  "href": "https://github.com/victordesyatkin/slider/blob/master/README.md#api",
+                  "title": "readme",
+                  "target": "_blank"
+                },
+                "value": "",
+                "type": "text",
+                "data": {
+                  "type": "rail",
+                  "property": "style"
+                }
+              },
+              {
+                "label": {
+                  "content": "Class name"
+                },
+                "value": "",
+                "type": "text",
+                "data": {
+                  "type": "rail",
+                  "property": "className"
+                }
+              }
+            ]
+          },
+          {
+            "caption": {
+              "content": "Track",
+              "theme": "section"
+            },
+            "items": [
+              {
+                "label": {
+                  "content": "On/Off"
+                },
+                "value": 1,
+                "type": "checkbox",
+                "data": {
+                  "type": "track",
+                  "property": "on"
+                }
+              },
+              {
+                "link": {
+                  "content": "Styles (json)",
+                  "href": "https://github.com/victordesyatkin/slider/blob/master/README.md#api",
+                  "title": "readme",
+                  "target": "_blank"
+                },
+                "value": "",
+                "type": "text",
+                "data": {
+                  "type": "track",
+                  "property": "styles"
+                }
+              },
+              {
+                "link": {
+                  "content": "Class names (json)",
+                  "href": "https://github.com/victordesyatkin/slider/blob/master/README.md#api",
+                  "title": "readme",
+                  "target": "_blank"
+                },
+                "value": "",
+                "type": "text",
+                "data": {
+                  "type": "track",
+                  "property": "classNames"
+                }
+              }
+            ]
+          },
+          {
+            "caption": {
+              "content": "Dot",
+              "theme": "section"
+            },
+            "items": [
+              {
+                "label": {
+                  "content": "On/Off"
+                },
+                "value": 0,
+                "type": "checkbox",
+                "data": {
+                  "type": "dot",
+                  "property": "on"
+                }
+              },
+              {
+                "link": {
+                  "content": "Style (json)",
+                  "href": "https://github.com/victordesyatkin/slider/blob/master/README.md#api",
+                  "title": "readme",
+                  "target": "_blank"
+                },
+                "value": "",
+                "type": "text",
+                "data": {
+                  "type": "dot",
+                  "property": "style"
+                }
+              },
+              {
+                "label": {
+                  "content": "Class name"
+                },
+                "value": "",
+                "type": "text",
+                "data": {
+                  "type": "dot",
+                  "property": "className"
+                }
+              },
+              {
+                "label": {
+                  "content": "Wrapper class name"
+                },
+                "value": "",
+                "type": "text",
+                "data": {
+                  "type": "dot",
+                  "property": "wrapClassName"
+                }
+              }
+            ]
+          },
+          {
+            "caption": {
+              "content": "Mark",
+              "theme": "section"
+            },
+            "buttonAdd": {
+              "type": "button",
+              "content": "&#x271A;",
+              "title": "Add"
+            },
+            "buttonRemove": {
+              "type": "button",
+              "content": "&#x274C",
+              "title": "Remove"
+            },
+            "items": [
+              {
+                "label": {
+                  "content": "On/Off"
+                },
+                "value": 1,
+                "type": "checkbox",
+                "data": {
+                  "type": "mark",
+                  "property": "on"
+                }
+              },
+              {
+                "link": {
+                  "content": "Values",
+                  "href": "https://github.com/victordesyatkin/slider/blob/master/README.md#api",
+                  "title": "readme",
+                  "target": "_blank"
+                },
+                "type": "number",
+                "value": [0, 100],
+                "data": {
+                  "type": "mark",
+                  "property": "values"
+                }
+              },
+              {
+                "label": {
+                  "content": "Dot on/off"
+                },
+                "value": 0,
+                "type": "checkbox",
+                "data": {
+                  "type": "mark",
+                  "property": "dot"
+                }
+              },
+              {
+                "link": {
+                  "content": "Style (json)",
+                  "href": "https://github.com/victordesyatkin/slider/blob/master/README.md#api",
+                  "title": "readme",
+                  "target": "_blank"
+                },
+                "value": "",
+                "type": "text",
+                "data": {
+                  "type": "mark",
+                  "property": "style"
+                }
+              },
+              {
+                "label": {
+                  "content": "Class name"
+                },
+                "value": "",
+                "type": "text",
+                "data": {
+                  "type": "mark",
+                  "property": "className"
+                }
+              },
+              {
+                "label": {
+                  "content": "Wrapper class name"
+                },
+                "value": "",
+                "type": "text",
+                "data": {
+                  "type": "mark",
+                  "property": "wrapClassName"
+                }
+              },
+              {
+                "link": {
+                  "content": "Render function value",
+                  "href": "https://github.com/victordesyatkin/slider/blob/master/README.md#api",
+                  "title": "readme",
+                  "target": "_blank"
+                },
+                "value": "return `${v}&#176;C`",
+                "type": "text",
+                "data": {
+                  "type": "mark",
+                  "property": "render"
+                }
+              }
+            ]
+          },
+          {
+            "caption": {
+              "content": "Tooltip",
+              "theme": "section"
+            },
+            "items": [
+              {
+                "label": {
+                  "content": "On/Off"
+                },
+                "value": 1,
+                "type": "checkbox",
+                "data": {
+                  "type": "tooltip",
+                  "property": "on"
+                }
+              },
+              {
+                "label": {
+                  "content": "Always"
+                },
+                "value": 0,
+                "type": "checkbox",
+                "data": {
+                  "type": "tooltip",
+                  "property": "always"
+                }
+              },
+              {
+                "link": {
+                  "content": "Style (json)",
+                  "href": "https://github.com/victordesyatkin/slider/blob/master/README.md#api",
+                  "title": "readme",
+                  "target": "_blank"
+                },
+                "value": "",
+                "type": "text",
+                "data": {
+                  "type": "tooltip",
+                  "property": "style"
+                }
+              },
+              {
+                "label": {
+                  "content": "Class name"
+                },
+                "value": "",
+                "type": "text",
+                "data": {
+                  "type": "tooltip",
+                  "property": "className"
+                }
+              },
+              {
+                "link": {
+                  "content": "Render function value",
+                  "href": "https://github.com/victordesyatkin/slider/blob/master/README.md#api",
+                  "title": "readme",
+                  "target": "_blank"
+                },
+                "value": "return `${v}&#176;C`",
+                "type": "text",
+                "data": {
+                  "type": "tooltip",
+                  "property": "render"
+                }
+              }
+            ]
+          }
+        ]
+      },
+      "slider": {}
+    },
+    {
+      "caption": {
+        "content": "Simple negative configuration"
+      },
+      "panel": {
+        "link": {
+          "content": "Configuration",
+          "href": "https://github.com/victordesyatkin/slider/blob/master/README.md#api",
+          "title": "readme",
+          "target": "_blank"
+        },
+        "sections": [
+          {
+            "caption": {
+              "content": "Values",
+              "theme": "section"
+            },
+            "buttonAdd": {
+              "type": "button",
+              "content": "&#x271A;",
+              "title": "Add"
+            },
+            "buttonRemove": {
+              "type": "button",
+              "content": "&#x274C",
+              "title": "Remove"
+            },
+            "items": [
+              {
+                "value": [-3],
+                "type": "number",
+                "data": {
+                  "type": "values",
+                  "property": "values"
+                }
+              }
+            ]
+          },
+          {
+            "caption": {
+              "content": "Min",
+              "theme": "section"
+            },
+            "items": [
+              {
+                "value": -10,
+                "type": "number",
+                "data": {
+                  "type": "min",
+                  "property": "min"
+                }
+              }
+            ]
+          },
+          {
+            "caption": {
+              "content": "Max",
+              "theme": "section"
+            },
+            "items": [
+              {
+                "value": 10,
+                "type": "number",
+                "data": {
+                  "type": "max",
+                  "property": "max"
+                }
+              }
+            ]
+          },
+          {
+            "caption": {
+              "content": "Step",
+              "theme": "section"
+            },
+            "items": [
+              {
+                "value": 2.5,
+                "type": "number",
+                "data": {
+                  "type": "step",
+                  "property": "step"
+                }
+              }
+            ]
+          },
+          {
+            "caption": {
+              "content": "Precision",
+              "theme": "section"
+            },
+            "items": [
+              {
+                "value": 1,
+                "type": "number",
+                "data": {
+                  "type": "precision",
+                  "property": "precision"
+                }
+              }
+            ]
+          },
+          {
+            "caption": {
+              "content": "Vertical",
+              "theme": "section"
+            },
+            "items": [
+              {
+                "value": 0,
+                "type": "checkbox",
+                "data": {
+                  "type": "vertical",
+                  "property": "vertical"
+                }
+              }
+            ]
+          },
+          {
+            "caption": {
+              "content": "Reverse",
+              "theme": "section"
+            },
+            "items": [
+              {
+                "value": 0,
+                "type": "checkbox",
+                "data": {
+                  "type": "reverse",
+                  "property": "reverse"
+                }
+              }
+            ]
+          },
+          {
+            "caption": {
+              "content": "Disabled",
+              "theme": "section"
+            },
+            "items": [
+              {
+                "value": 0,
+                "type": "checkbox",
+                "data": {
+                  "type": "disabled",
+                  "property": "disabled"
+                }
+              }
+            ]
+          },
+          {
+            "caption": {
+              "content": "Handle",
+              "theme": "section"
+            },
+            "items": [
+              {
+                "link": {
+                  "content": "Class names (json)",
+                  "href": "https://github.com/victordesyatkin/slider/blob/master/README.md#api",
+                  "title": "readme",
+                  "target": "_blank"
+                },
+                "value": "",
+                "type": "text",
+                "data": {
+                  "type": "handle",
+                  "property": "classNames"
+                }
+              },
+              {
+                "link": {
+                  "content": "Styles (json)",
+                  "href": "https://github.com/victordesyatkin/slider/blob/master/README.md#api",
+                  "title": "readme",
+                  "target": "_blank"
+                },
+                "value": "",
+                "type": "text",
+                "data": {
+                  "type": "handle",
+                  "property": "styles"
+                }
+              }
+            ]
+          },
+          {
+            "caption": {
+              "content": "Rail",
+              "theme": "section"
+            },
+            "items": [
+              {
+                "label": {
+                  "content": "On/Off"
+                },
+                "value": 1,
+                "type": "checkbox",
+                "data": {
+                  "type": "rail",
+                  "property": "on"
+                }
+              },
+              {
+                "link": {
+                  "content": "Style (json)",
+                  "href": "https://github.com/victordesyatkin/slider/blob/master/README.md#api",
+                  "title": "readme",
+                  "target": "_blank"
+                },
+                "value": "{\"background\": \"bisque\", \"border\": \"none\"}",
+                "type": "text",
+                "data": {
+                  "type": "rail",
+                  "property": "style"
+                }
+              },
+              {
+                "label": {
+                  "content": "Class name"
+                },
+                "value": "",
+                "type": "text",
+                "data": {
+                  "type": "rail",
+                  "property": "className"
+                }
+              }
+            ]
+          },
+          {
+            "caption": {
+              "content": "Track",
+              "theme": "section"
+            },
+            "items": [
+              {
+                "label": {
+                  "content": "On/Off"
+                },
+                "value": 1,
+                "type": "checkbox",
+                "data": {
+                  "type": "track",
+                  "property": "on"
+                }
+              },
+              {
+                "link": {
+                  "content": "Styles (json)",
+                  "href": "https://github.com/victordesyatkin/slider/blob/master/README.md#api",
+                  "title": "readme",
+                  "target": "_blank"
+                },
+                "value": "[{\"background\": \"#ffab9a\"}]",
+                "type": "text",
+                "data": {
+                  "type": "track",
+                  "property": "styles"
+                }
+              },
+              {
+                "link": {
+                  "content": "Class names (json)",
+                  "href": "https://github.com/victordesyatkin/slider/blob/master/README.md#api",
+                  "title": "readme",
+                  "target": "_blank"
+                },
+                "value": "",
+                "type": "text",
+                "data": {
+                  "type": "track",
+                  "property": "classNames"
+                }
+              }
+            ]
+          },
+          {
+            "caption": {
+              "content": "Dot",
+              "theme": "section"
+            },
+            "items": [
+              {
+                "label": {
+                  "content": "On/Off"
+                },
+                "value": 0,
+                "type": "checkbox",
+                "data": {
+                  "type": "dot",
+                  "property": "on"
+                }
+              },
+              {
+                "link": {
+                  "content": "Style (json)",
+                  "href": "https://github.com/victordesyatkin/slider/blob/master/README.md#api",
+                  "title": "readme",
+                  "target": "_blank"
+                },
+                "value": "",
+                "type": "text",
+                "data": {
+                  "type": "dot",
+                  "property": "style"
+                }
+              },
+              {
+                "label": {
+                  "content": "Class name"
+                },
+                "value": "",
+                "type": "text",
+                "data": {
+                  "type": "dot",
+                  "property": "className"
+                }
+              },
+              {
+                "label": {
+                  "content": "Wrapper class name"
+                },
+                "value": "",
+                "type": "text",
+                "data": {
+                  "type": "dot",
+                  "property": "wrapClassName"
+                }
+              }
+            ]
+          },
+          {
+            "caption": {
+              "content": "Mark",
+              "theme": "section"
+            },
+            "buttonAdd": {
+              "type": "button",
+              "content": "&#x271A;",
+              "title": "Add"
+            },
+            "buttonRemove": {
+              "type": "button",
+              "content": "&#x274C",
+              "title": "Remove"
+            },
+            "items": [
+              {
+                "label": {
+                  "content": "On/Off"
+                },
+                "value": 1,
+                "type": "checkbox",
+                "data": {
+                  "type": "mark",
+                  "property": "on"
+                }
+              },
+              {
+                "link": {
+                  "content": "Values",
+                  "href": "https://github.com/victordesyatkin/slider/blob/master/README.md#api",
+                  "title": "readme",
+                  "target": "_blank"
+                },
+                "type": "number",
+                "value": [0, 100],
+                "data": {
+                  "type": "mark",
+                  "property": "values"
+                }
+              },
+              {
+                "label": {
+                  "content": "Dot on/off"
+                },
+                "value": 0,
+                "type": "checkbox",
+                "data": {
+                  "type": "mark",
+                  "property": "dot"
+                }
+              },
+              {
+                "link": {
+                  "content": "Style (json)",
+                  "href": "https://github.com/victordesyatkin/slider/blob/master/README.md#api",
+                  "title": "readme",
+                  "target": "_blank"
+                },
+                "value": "",
+                "type": "text",
+                "data": {
+                  "type": "mark",
+                  "property": "style"
+                }
+              },
+              {
+                "label": {
+                  "content": "Class name"
+                },
+                "value": "",
+                "type": "text",
+                "data": {
+                  "type": "mark",
+                  "property": "className"
+                }
+              },
+              {
+                "label": {
+                  "content": "Wrapper class name"
+                },
+                "value": "",
+                "type": "text",
+                "data": {
+                  "type": "mark",
+                  "property": "wrapClassName"
+                }
+              },
+              {
+                "link": {
+                  "content": "Render function value",
+                  "href": "https://github.com/victordesyatkin/slider/blob/master/README.md#api",
+                  "title": "readme",
+                  "target": "_blank"
+                },
+                "value": "",
+                "type": "text",
+                "data": {
+                  "type": "mark",
+                  "property": "render"
+                }
+              }
+            ]
+          },
+          {
+            "caption": {
+              "content": "Tooltip",
+              "theme": "section"
+            },
+            "items": [
+              {
+                "label": {
+                  "content": "On/Off"
+                },
+                "value": 0,
+                "type": "checkbox",
+                "data": {
+                  "type": "tooltip",
+                  "property": "on"
+                }
+              },
+              {
+                "label": {
+                  "content": "Always"
+                },
+                "value": 0,
+                "type": "checkbox",
+                "data": {
+                  "type": "tooltip",
+                  "property": "always"
+                }
+              },
+              {
+                "link": {
+                  "content": "Style (json)",
+                  "href": "https://github.com/victordesyatkin/slider/blob/master/README.md#api",
+                  "title": "readme",
+                  "target": "_blank"
+                },
+                "value": "",
+                "type": "text",
+                "data": {
+                  "type": "tooltip",
+                  "property": "style"
+                }
+              },
+              {
+                "label": {
+                  "content": "Class name"
+                },
+                "value": "",
+                "type": "text",
+                "data": {
+                  "type": "tooltip",
+                  "property": "className"
+                }
+              },
+              {
+                "link": {
+                  "content": "Render function value",
+                  "href": "https://github.com/victordesyatkin/slider/blob/master/README.md#api",
+                  "title": "readme",
+                  "target": "_blank"
+                },
+                "value": "",
+                "type": "text",
+                "data": {
+                  "type": "tooltip",
+                  "property": "render"
+                }
+              }
+            ]
+          }
+        ]
+      },
+      "slider": {}
+    },
+    {
+      "caption": {
+        "content": "Simple horizontal reverse configuration"
+      },
+      "panel": {
+        "link": {
+          "content": "Configuration",
+          "href": "https://github.com/victordesyatkin/slider/blob/master/README.md#api",
+          "title": "readme",
+          "target": "_blank"
+        },
+        "sections": [
+          {
+            "caption": {
+              "content": "Values",
+              "theme": "section"
+            },
+            "buttonAdd": {
+              "type": "button",
+              "content": "&#x271A;",
+              "title": "Add"
+            },
+            "buttonRemove": {
+              "type": "button",
+              "content": "&#x274C",
+              "title": "Remove"
+            },
+            "items": [
+              {
+                "value": [5.5],
+                "type": "number",
+                "data": {
+                  "type": "values",
+                  "property": "values"
+                }
+              }
+            ]
+          },
+          {
+            "caption": {
+              "content": "Min",
+              "theme": "section"
+            },
+            "items": [
+              {
+                "value": 0,
+                "type": "number",
+                "data": {
+                  "type": "min",
+                  "property": "min"
+                }
+              }
+            ]
+          },
+          {
+            "caption": {
+              "content": "Max",
+              "theme": "section"
+            },
+            "items": [
+              {
+                "value": 10,
+                "type": "number",
+                "data": {
+                  "type": "max",
+                  "property": "max"
+                }
+              }
+            ]
+          },
+          {
+            "caption": {
+              "content": "Step",
+              "theme": "section"
+            },
+            "items": [
+              {
+                "value": 0.5,
+                "type": "number",
+                "data": {
+                  "type": "step",
+                  "property": "step"
+                }
+              }
+            ]
+          },
+          {
+            "caption": {
+              "content": "Precision",
+              "theme": "section"
+            },
+            "items": [
+              {
+                "value": 1,
+                "type": "number",
+                "data": {
+                  "type": "precision",
+                  "property": "precision"
+                }
+              }
+            ]
+          },
+          {
+            "caption": {
+              "content": "Vertical",
+              "theme": "section"
+            },
+            "items": [
+              {
+                "value": 0,
+                "type": "checkbox",
+                "data": {
+                  "type": "vertical",
+                  "property": "vertical"
+                }
+              }
+            ]
+          },
+          {
+            "caption": {
+              "content": "Reverse",
+              "theme": "section"
+            },
+            "items": [
+              {
+                "value": 1,
+                "type": "checkbox",
+                "data": {
+                  "type": "reverse",
+                  "property": "reverse"
+                }
+              }
+            ]
+          },
+          {
+            "caption": {
+              "content": "Disabled",
+              "theme": "section"
+            },
+            "items": [
+              {
+                "value": 0,
+                "type": "checkbox",
+                "data": {
+                  "type": "disabled",
+                  "property": "disabled"
+                }
+              }
+            ]
+          },
+          {
+            "caption": {
+              "content": "Handle",
+              "theme": "section"
+            },
+            "items": [
+              {
+                "link": {
+                  "content": "Class names (json)",
+                  "href": "https://github.com/victordesyatkin/slider/blob/master/README.md#api",
+                  "title": "readme",
+                  "target": "_blank"
+                },
+                "value": "",
+                "type": "text",
+                "data": {
+                  "type": "handle",
+                  "property": "classNames"
+                }
+              },
+              {
+                "link": {
+                  "content": "Styles (json)",
+                  "href": "https://github.com/victordesyatkin/slider/blob/master/README.md#api",
+                  "title": "readme",
+                  "target": "_blank"
+                },
+                "value": "",
+                "type": "text",
+                "data": {
+                  "type": "handle",
+                  "property": "styles"
+                }
+              }
+            ]
+          },
+          {
+            "caption": {
+              "content": "Rail",
+              "theme": "section"
+            },
+            "items": [
+              {
+                "label": {
+                  "content": "On/Off"
+                },
+                "value": 1,
+                "type": "checkbox",
+                "data": {
+                  "type": "rail",
+                  "property": "on"
+                }
+              },
+              {
+                "link": {
+                  "content": "Style (json)",
+                  "href": "https://github.com/victordesyatkin/slider/blob/master/README.md#api",
+                  "title": "readme",
+                  "target": "_blank"
+                },
+                "value": "{\"background\": \"#F1B24A\", \"border\": \"none\"}",
+                "type": "text",
+                "data": {
+                  "type": "rail",
+                  "property": "style"
+                }
+              },
+              {
+                "label": {
+                  "content": "Class name"
+                },
+                "value": "",
+                "type": "text",
+                "data": {
+                  "type": "rail",
+                  "property": "className"
+                }
+              }
+            ]
+          },
+          {
+            "caption": {
+              "content": "Track",
+              "theme": "section"
+            },
+            "items": [
+              {
+                "label": {
+                  "content": "On/Off"
+                },
+                "value": 1,
+                "type": "checkbox",
+                "data": {
+                  "type": "track",
+                  "property": "on"
+                }
+              },
+              {
+                "link": {
+                  "content": "Styles (json)",
+                  "href": "https://github.com/victordesyatkin/slider/blob/master/README.md#api",
+                  "title": "readme",
+                  "target": "_blank"
+                },
+                "value": "[{\"background\": \"#4DA8DA\"}]",
+                "type": "text",
+                "data": {
+                  "type": "track",
+                  "property": "styles"
+                }
+              },
+              {
+                "link": {
+                  "content": "Class names (json)",
+                  "href": "https://github.com/victordesyatkin/slider/blob/master/README.md#api",
+                  "title": "readme",
+                  "target": "_blank"
+                },
+                "value": "",
+                "type": "text",
+                "data": {
+                  "type": "track",
+                  "property": "classNames"
+                }
+              }
+            ]
+          },
+          {
+            "caption": {
+              "content": "Dot",
+              "theme": "section"
+            },
+            "items": [
+              {
+                "label": {
+                  "content": "On/Off"
+                },
+                "value": 0,
+                "type": "checkbox",
+                "data": {
+                  "type": "dot",
+                  "property": "on"
+                }
+              },
+              {
+                "link": {
+                  "content": "Style (json)",
+                  "href": "https://github.com/victordesyatkin/slider/blob/master/README.md#api",
+                  "title": "readme",
+                  "target": "_blank"
+                },
+                "value": "",
+                "type": "text",
+                "data": {
+                  "type": "dot",
+                  "property": "style"
+                }
+              },
+              {
+                "label": {
+                  "content": "Class name"
+                },
+                "value": "",
+                "type": "text",
+                "data": {
+                  "type": "dot",
+                  "property": "className"
+                }
+              },
+              {
+                "label": {
+                  "content": "Wrapper class name"
+                },
+                "value": "",
+                "type": "text",
+                "data": {
+                  "type": "dot",
+                  "property": "wrapClassName"
+                }
+              }
+            ]
+          },
+          {
+            "caption": {
+              "content": "Mark",
+              "theme": "section"
+            },
+            "buttonAdd": {
+              "type": "button",
+              "content": "&#x271A;",
+              "title": "Add"
+            },
+            "buttonRemove": {
+              "type": "button",
+              "content": "&#x274C",
+              "title": "Remove"
+            },
+            "items": [
+              {
+                "label": {
+                  "content": "On/Off"
+                },
+                "value": 1,
+                "type": "checkbox",
+                "data": {
+                  "type": "mark",
+                  "property": "on"
+                }
+              },
+              {
+                "link": {
+                  "content": "Values",
+                  "href": "https://github.com/victordesyatkin/slider/blob/master/README.md#api",
+                  "title": "readme",
+                  "target": "_blank"
+                },
+                "type": "number",
+                "value": [0, 100],
+                "data": {
+                  "type": "mark",
+                  "property": "values"
+                }
+              },
+              {
+                "label": {
+                  "content": "Dot on/off",
+                  "href": ""
+                },
+                "value": 0,
+                "type": "checkbox",
+                "data": {
+                  "type": "mark",
+                  "property": "dot"
+                }
+              },
+              {
+                "link": {
+                  "content": "Style (json)",
+                  "href": "https://github.com/victordesyatkin/slider/blob/master/README.md#api",
+                  "title": "readme",
+                  "target": "_blank"
+                },
+                "value": "",
+                "type": "text",
+                "data": {
+                  "type": "mark",
+                  "property": "style"
+                }
+              },
+              {
+                "label": {
+                  "content": "Class name"
+                },
+                "value": "",
+                "type": "text",
+                "data": {
+                  "type": "mark",
+                  "property": "className"
+                }
+              },
+              {
+                "label": {
+                  "content": "Wrapper class name"
+                },
+                "value": "",
+                "type": "text",
+                "data": {
+                  "type": "mark",
+                  "property": "wrapClassName"
+                }
+              },
+              {
+                "link": {
+                  "content": "Render function value",
+                  "href": "https://github.com/victordesyatkin/slider/blob/master/README.md#api",
+                  "title": "readme",
+                  "target": "_blank"
+                },
+                "value": "",
+                "type": "text",
+                "data": {
+                  "type": "mark",
+                  "property": "render"
+                }
+              }
+            ]
+          },
+          {
+            "caption": {
+              "content": "Tooltip",
+              "theme": "section"
+            },
+            "items": [
+              {
+                "label": {
+                  "content": "On/Off"
+                },
+                "value": 1,
+                "type": "checkbox",
+                "data": {
+                  "type": "tooltip",
+                  "property": "on"
+                }
+              },
+              {
+                "label": {
+                  "content": "Always"
+                },
+                "value": 1,
+                "type": "checkbox",
+                "data": {
+                  "type": "tooltip",
+                  "property": "always"
+                }
+              },
+              {
+                "link": {
+                  "content": "Style (json)",
+                  "href": "https://github.com/victordesyatkin/slider/blob/master/README.md#api",
+                  "title": "readme",
+                  "target": "_blank"
+                },
+                "value": "",
+                "type": "text",
+                "data": {
+                  "type": "tooltip",
+                  "property": "style"
+                }
+              },
+              {
+                "link": {
+                  "content": "Class name"
+                },
+                "value": "",
+                "type": "text",
+                "data": {
+                  "type": "tooltip",
+                  "property": "className"
+                }
+              },
+              {
+                "link": {
+                  "content": "Render function value",
+                  "href": "https://github.com/victordesyatkin/slider/blob/master/README.md#api",
+                  "title": "readme",
+                  "target": "_blank"
+                },
+                "value": "",
                 "type": "text",
                 "data": {
                   "type": "tooltip",

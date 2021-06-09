@@ -1,3 +1,5 @@
+import $ from 'jquery';
+
 import Slider from '../../../src';
 import { Props } from '../../../src/types';
 import Component from '../../helpers';
@@ -15,11 +17,9 @@ class SliderComponent extends Component<Props> {
 
   public init(): void {
     this.$slider = $(`${this.query}__dummy`, this.$element);
-    // console.log('this.$slider : ', this.$slider);
     this.slider = this.$slider
-      .slider(this.props)
+      .slider($.extend(true, {}, this.props))
       .data(Slider.PLUGIN_NAME) as Slider;
-    // console.log('this.slider : ', this.slider);
   }
 
   public setProps(props?: Props): void {

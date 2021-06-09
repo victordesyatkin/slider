@@ -1,5 +1,4 @@
 import isFunction from 'lodash.isfunction';
-import isUndefined from 'lodash.isundefined';
 import bind from 'bind-decorator';
 
 import Component from '../../helpers';
@@ -16,9 +15,12 @@ class Input extends Component<InputProps> {
   public query = `.js-${this.className}`;
 
   public init(): void {
-    const { value } = this.props || {};
+    const { value, handleInputFocusout } = this.props || {};
     this.$input = $(`${this.query}__input`, this.$element);
-    this.$input.on({ input: this.handleInputInput });
+    this.$input.on({
+      input: this.handleInputInput,
+      focusout: handleInputFocusout,
+    });
     this.setValue(value);
   }
 
@@ -28,20 +30,11 @@ class Input extends Component<InputProps> {
       if (type === 'checkbox') {
         this.$input?.prop('checked', Boolean(parseInt(String(value), 10)));
       }
-      if (type === 'min') {
-        // console.log('min : ', value);
-      }
       this.$input?.val(String(value));
     }
   }
 
   public getValue(): string | number | string[] | undefined {
-    const { data } = this.props || {};
-    const { type } = data || {};
-    if (type === 'disabled') {
-      // console.log('getValue disabled : ', this.$input?.val());
-      // console.log('getValue this.$input : ', this.$input?.val());
-    }
     return this.$input?.val();
   }
 

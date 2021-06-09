@@ -82,7 +82,20 @@ describe('slider', () => {
       $('body').append(`<div class="${className}"/>`);
       const $element = $(`.${className}`);
       const presenter = new Presenter($element);
-      expect(defaultProps).toStrictEqual(presenter.getProps());
+      const props = presenter.getProps();
+      expect({
+        ...defaultProps,
+        mark: {
+          ...defaultProps.mark,
+          values: [defaultProps.min, defaultProps.max],
+        },
+      }).toStrictEqual({
+        ...props,
+        mark: {
+          ...defaultProps.mark,
+          values: [defaultProps.min, defaultProps.max],
+        },
+      });
     });
 
     test('setProps', () => {
@@ -90,9 +103,20 @@ describe('slider', () => {
       $('body').append(`<div class="${className}"/>`);
       const $element = $(`.${className}`);
       const presenter = new Presenter($element);
-      const props = { ...defaultProps, values: [5] };
+      const props = {
+        ...defaultProps,
+        values: [5],
+        mark: {
+          ...defaultProps.mark,
+          values: [defaultProps.min, defaultProps.max],
+        },
+      };
       presenter.setProps(props);
-      expect(props).toStrictEqual(presenter.getProps());
+      const next = presenter.getProps();
+      expect({ ...props }).toStrictEqual({
+        ...next,
+        mark: { ...next.mark, values: [next.min, next.max] },
+      });
     });
 
     test('setIndex', () => {

@@ -9,7 +9,7 @@ export default class TooltipView extends PubSub implements ISubView {
     private parent?;
     constructor(addition: Addition);
     setProps(props: DefaultProps): void;
-    render(parent?: JQuery<HTMLElement>): void;
+    render(parent?: JQuery<HTMLElement> | null): void;
     remove(): void;
     getAddition(): Addition;
     setAddition(addition: Addition): void;

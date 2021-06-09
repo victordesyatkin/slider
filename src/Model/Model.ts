@@ -1,4 +1,4 @@
-import merge from 'lodash.merge';
+import $ from 'jquery';
 import orderBy from 'lodash.orderby';
 import isString from 'lodash.isstring';
 
@@ -8,41 +8,55 @@ import {
   getPosition,
   calcValueByPos,
   getCorrectIndex,
+  defaultProps,
 } from '../helpers/utils';
 import { IModel } from '../interfaces';
 import { DefaultProps, Props } from '../types';
 
 class Model extends PubSub implements IModel {
-  private static ACTIONS = ['onChange', 'onBeforeChange', 'onAfterChange'];
+  private static actions = ['onChange', 'onBeforeChange', 'onAfterChange'];
 
   private props: DefaultProps;
 
   constructor(props: DefaultProps) {
     super();
-    this.props = props;
+    this.props = prepareData(props);
   }
 
   public unsubscribeAllActions(): void {
     const actions: Record<string, null> = {};
-    Model.ACTIONS.forEach((action) => {
+    Model.actions.forEach((action) => {
       actions[action] = null;
     });
-    this.setProps({ ...this.getProps(), ...actions });
+    this.setProps($.extend(true, {}, { ...this.getProps(), ...actions }));
   }
 
   public unsubscribeAction(action?: string): void {
-    if (isString(action) && Model.ACTIONS.indexOf(action) !== -1) {
-      this.setProps({ ...this.getProps(), [action]: null });
+    if (isString(action) && Model.actions.indexOf(action) !== -1) {
+      this.setProps($.extend(true, {}, { ...this.getProps(), [action]: null }));
     }
   }
 
   public getProps(): DefaultProps {
-    return this.props;
+    return $.extend(true, {}, this.props);
   }
 
   public setProps(props?: Props): void {
-    this.props = prepareData(props, this.getProps());
+    const prev = this.getProps();
+    const { disabled: disabledPrev } = prev;
+    const { disabled: disabledNext } = props || {};
+    if (disabledPrev && disabledPrev === disabledNext) {
+      return undefined;
+    }
+    const combineProps = $.extend(
+      true,
+      {},
+      { ...defaultProps, ...prev, ...props }
+    );
+
+    this.props = prepareData(combineProps);
     this.publish('setPropsForView', this.props);
+    return undefined;
   }
 
   public onChange(options: {
@@ -91,7 +105,7 @@ class Model extends PubSub implements IModel {
       nextValues[readyIndex] = nextValue;
       nextValues = orderBy(nextValues, [], ['asc']);
       this.setProps(
-        merge({}, this.props, { values: nextValues, index: readyIndex })
+        $.extend({}, this.props, { values: nextValues, index: readyIndex })
       );
       if (this.props && action in this.props) {
         let onAction: ((values: number[]) => void) | undefined | null;
@@ -103,7 +117,7 @@ class Model extends PubSub implements IModel {
           onAction = this.props?.[action];
         }
         if (nextValues && onAction) {
-          onAction(nextValues);
+          onAction([...nextValues]);
         }
       }
     } else if (isCorrect) {
@@ -121,7 +135,7 @@ class Model extends PubSub implements IModel {
     const onBeforeChange: ((values: number[]) => void) | undefined | null = this
       .props?.onBeforeChange;
     if (values && onBeforeChange) {
-      onBeforeChange(values);
+      onBeforeChange([...values]);
     }
   }
 
@@ -130,12 +144,12 @@ class Model extends PubSub implements IModel {
     if (disabled) {
       return;
     }
-    this.setProps();
+    this.setProps(this.getProps());
     const { values } = this.props;
     const onAfterChange: ((values: number[]) => void) | undefined | null = this
       .props?.onAfterChange;
     if (values && onAfterChange) {
-      onAfterChange(values);
+      onAfterChange([...values]);
     }
   }
 
@@ -145,7 +159,7 @@ class Model extends PubSub implements IModel {
       return;
     }
     if (previousIndex !== index) {
-      const props = merge({}, this.props, { index });
+      const props = $.extend({}, this.props, { index });
       this.setProps(props);
     }
   }

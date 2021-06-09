@@ -22,13 +22,17 @@ class ValueItem extends Component<ValueItemProps> {
   public query = `.js-${this.className}`;
 
   public init(): void {
-    const { value } = this.props || {};
+    const { value, handleInputFocusout } = this.props || {};
     if (!isUndefined(value)) {
       this.$index = $(`${this.query}__index`, this.$element);
       this.$input = $(`${this.query}__input`, this.$element);
       this.input = new Input({
         parent: this.$input,
-        props: { value, handleInputInput: this.handleInputInput },
+        props: {
+          value,
+          handleInputInput: this.handleInputInput,
+          handleInputFocusout,
+        },
       });
       this.$buttonRemove = $(`${this.query}__control`, this.$element);
       if (this.$buttonRemove && this.$buttonRemove.length) {
@@ -56,7 +60,6 @@ class ValueItem extends Component<ValueItemProps> {
   @bind
   private handleButtonRemoveClick() {
     const { handleButtonRemoveClick, index } = this.props || {};
-    // console.log('valueItem : ', this.props);
     if (handleButtonRemoveClick && isFunction(handleButtonRemoveClick)) {
       handleButtonRemoveClick(index);
     }
@@ -65,7 +68,6 @@ class ValueItem extends Component<ValueItemProps> {
   @bind
   private handleInputInput(value: string) {
     const { handleInputInput, index } = this.props || {};
-    // console.log('valueItem : ', this.props);
     if (handleInputInput && isFunction(handleInputInput)) {
       handleInputInput({ index, value });
     }

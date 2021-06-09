@@ -4,7 +4,6 @@ import isUndefined from 'lodash.isundefined';
 import isFunction from 'lodash.isfunction';
 import isObject from 'lodash.isobject';
 import isEqual from 'lodash.isequal';
-import merge from 'lodash.merge';
 import omit from 'lodash.omit';
 
 import { Render, Style, Props, KeyProps } from '../../src/types';
@@ -31,7 +30,7 @@ function prepareJSON<T>(json?: unknown): undefined | null | T {
 function prepareFunction(string?: unknown): null | undefined | Render {
   let result: null | undefined | Render;
   if (!isString(string) || !trim(string)) {
-    return result;
+    return null;
   }
   try {
     result = new Function('v', string) as Render;
@@ -42,15 +41,15 @@ function prepareFunction(string?: unknown): null | undefined | Render {
   if (isFunction(result)) {
     return result;
   }
-  return result;
+  return null;
 }
 
-function prepareArray<T>(string?: unknown): undefined | T[] {
+function prepareArray<T>(string?: unknown): T[] | null {
   const result = prepareJSON(string);
   if (Array.isArray(result)) {
     return result as T[];
   }
-  return undefined;
+  return null;
 }
 
 function isResult(
@@ -91,7 +90,6 @@ function valueToProp(options?: {
   }
   switch (property) {
     case 'values': {
-      // console.log('prepareValue value0 : ', value);
       if (Array.isArray(value)) {
         const correctValue: number[] = [];
         value.forEach((item) => {
@@ -104,17 +102,24 @@ function valueToProp(options?: {
             correctValue.push(item);
           }
         });
-        // console.log('prepareValue correctValue : ', correctValue);
         return correctValue;
       }
       return null;
+    }
+    case 'index': {
+      if (
+        Number.isNaN(Number(readyValue)) ||
+        Number.isNaN(parseFloat(String(readyValue)))
+      ) {
+        return null;
+      }
+      return parseFloat(String(readyValue)) - 1;
     }
     case 'min':
     case 'max':
     case 'step':
     case 'precision':
-    case 'indent':
-    case 'index': {
+    case 'indent': {
       if (
         Number.isNaN(Number(readyValue)) ||
         Number.isNaN(parseFloat(String(readyValue)))
@@ -130,9 +135,6 @@ function valueToProp(options?: {
     case 'on':
     case 'dot':
     case 'always': {
-      if (property === 'disabled') {
-        // console.log('disabled : ', readyValue);
-      }
       readyValue = Boolean(parseInt(String(readyValue), 10));
       return readyValue;
     }
@@ -171,7 +173,6 @@ function prepareValues(
   if (!type || !property) {
     return values;
   }
-  // console.log('prepareValues 0 : ', property);
   if (property === 'values') {
     const isCorrectValue =
       value !== null && !isUndefined(value) && Array.isArray(value);
@@ -220,13 +221,12 @@ function prepareValues(
   return values;
 }
 
-function extractFunctionBody(callback?: unknown): string | undefined {
-  let result: string | undefined;
+function extractFunctionBody(callback?: unknown): string | undefined | null {
   if (isFunction(callback)) {
     const entire = callback.toString();
     return entire.slice(entire.indexOf('{') + 1, entire.lastIndexOf('}'));
   }
-  return result;
+  return null;
 }
 
 function propsToValue(
@@ -264,6 +264,9 @@ function propsToValue(
       case 'classNames': {
         return value ? JSON.stringify(value) : '';
       }
+      case 'index': {
+        return value ? parseFloat(String(value)) + 1 : 0;
+      }
       default: {
         return isUndefined(value) || value === null ? '' : value;
       }
@@ -272,11 +275,14 @@ function propsToValue(
   return undefined;
 }
 
-function excludeRender(options: Props): Props {
-  const props = merge({}, options);
-  const { tooltip, mark } = props;
-  props.tooltip = omit(tooltip, ['render']);
-  props.mark = omit(mark, ['render']);
+function excludeProps(options: Props): Props {
+  let props = $.extend(true, {}, options);
+  props = omit(props, [
+    'prefixClassName',
+    'onBeforeChange',
+    'onChange',
+    'onAfterChange',
+  ]);
   return props;
 }
 
@@ -285,13 +291,31 @@ function checkedIsEqual(options?: {
   next?: unknown | null;
 }): boolean {
   const { prev, next } = options || {};
-  let readyPrev = prev;
-  let readyNext = next;
-  if (isObject(readyPrev)) {
-    readyPrev = excludeRender(readyPrev as Props);
-  }
-  if (isObject(readyNext)) {
-    readyNext = excludeRender(readyNext as Props);
+  let readyPrev = prev as Props;
+  let readyNext = next as Props;
+  if (isObject(readyPrev) && isObject(readyNext)) {
+    readyPrev = excludeProps(readyPrev);
+    const { tooltip: tooltipPrev, mark: markPrev } = readyPrev;
+    const readyTooltipRenderPrev = tooltipPrev?.render;
+    const readyMarkRenderPrev = markPrev?.render;
+    readyNext = excludeProps(readyNext);
+    const { tooltip: tooltipNext, mark: markNext } = readyNext;
+    const readyTooltipRenderNext = tooltipNext?.render;
+    const readyMarkRenderNext = markNext?.render;
+    if (
+      JSON.stringify(readyTooltipRenderPrev) ===
+      JSON.stringify(readyTooltipRenderNext)
+    ) {
+      readyPrev.tooltip = omit(tooltipPrev, ['render']);
+      readyNext.tooltip = omit(tooltipNext, ['render']);
+    }
+    if (
+      JSON.stringify(readyMarkRenderPrev) ===
+      JSON.stringify(readyMarkRenderNext)
+    ) {
+      readyPrev.mark = omit(markPrev, ['render']);
+      readyNext.mark = omit(markNext, ['render']);
+    }
   }
   return isEqual(readyPrev, readyNext);
 }

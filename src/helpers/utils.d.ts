@@ -32,10 +32,10 @@ declare function prepareValues(props: DefaultProps): DefaultProps;
 declare function getCount(props?: DefaultProps): number;
 declare function getSliderStart(options: {
     props?: DefaultProps;
-    view?: JQuery<HTMLElement>;
+    view?: JQuery<HTMLElement> | null;
 }): number;
 declare function getSliderLength(options: {
-    view?: JQuery<HTMLElement>;
+    view?: JQuery<HTMLElement> | null;
     props?: DefaultProps;
 }): number;
 declare function calcValue(options: {
@@ -115,13 +115,19 @@ declare function correctIndex(options: {
     key: string;
     props: DefaultProps;
 }): void;
+declare function correctRender(options: {
+    values?: Record<string, unknown>;
+    key: string;
+    props: DefaultProps;
+    value?: unknown;
+}): void;
 declare function correctSet(options: {
     key: string;
     props: DefaultProps;
     values: unknown;
 }): void;
 declare function correctData(props: DefaultProps): DefaultProps;
-declare function prepareData(props?: Props, prevProps?: DefaultProps): DefaultProps;
+declare function prepareData(props?: Props): DefaultProps;
 declare function uniqId(): string;
 declare function getPosition({ vertical, coordinateX, coordinateY, }: {
     vertical: boolean;
@@ -159,4 +165,4 @@ declare function getCorrectIndex(options: {
     isCorrect: boolean;
     index: number;
 };
-export { objectToString, uniqId, prepareData, setFunctionGetBoundingClientRectHTMLElement, calcValueWithEnsure, ensureValueCorrectNeighbors, checkNeighbors, calcValueByPos, calcValue, getSliderLength, getSliderStart, getCount, prepareValues, ensureValuePrecision, getClosestPoint, getPrecision, getMousePosition, ensureValueInRange, calcOffset, getHandleCenterPosition, getPosition, getNearestIndex, getNearest, defaultProps, getCorrectIndex, isDirectionToMin, correctData, correctSet, correctMin, correctMax, correctStep, correctPrecision, correctIndent, correctClassNames, isNeedCorrectStyle, correctStyles, correctStyle, correctClassName, correctValues, correctIndex, };
+export { objectToString, uniqId, prepareData, setFunctionGetBoundingClientRectHTMLElement, calcValueWithEnsure, ensureValueCorrectNeighbors, checkNeighbors, calcValueByPos, calcValue, getSliderLength, getSliderStart, getCount, prepareValues, ensureValuePrecision, getClosestPoint, getPrecision, getMousePosition, ensureValueInRange, calcOffset, getHandleCenterPosition, getPosition, getNearestIndex, getNearest, defaultProps, getCorrectIndex, isDirectionToMin, correctData, correctSet, correctMin, correctMax, correctStep, correctPrecision, correctIndent, correctClassNames, isNeedCorrectStyle, correctStyles, correctStyle, correctClassName, correctValues, correctIndex, correctRender, };

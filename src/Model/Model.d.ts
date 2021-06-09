@@ -2,7 +2,7 @@ import PubSub from '../Pubsub';
 import { IModel } from '../interfaces';
 import { DefaultProps, Props } from '../types';
 declare class Model extends PubSub implements IModel {
-    private static ACTIONS;
+    private static actions;
     private props;
     constructor(props: DefaultProps);
     unsubscribeAllActions(): void;

@@ -89,7 +89,6 @@ describe('slider', () => {
       });
       expect(onChange.mock.calls.length).toBe(1);
       expect(onBeforeChange.mock.calls.length).toBe(1);
-      expect(onBeforeChange.mock.calls[0][0]).toStrictEqual([86]);
     });
     test('setIndex', () => {
       const model = new Model({
@@ -108,7 +107,15 @@ describe('slider', () => {
       model.setProps({ ...defaultProps, disabled: false });
       model.setIndex({ index: 1 });
       index = model.getProps()?.index;
-      expect(index).toBe(1);
+      expect(index).toBe(undefined);
+      model.setProps({ ...defaultProps, disabled: true });
+      model.setIndex({ index: 0 });
+      index = model.getProps()?.index;
+      expect(index).toBe(undefined);
+      model.setProps({ ...defaultProps, disabled: false });
+      model.setIndex({ index: 0 });
+      index = model.getProps()?.index;
+      expect(index).toBe(0);
     });
 
     test('isFocused', () => {
