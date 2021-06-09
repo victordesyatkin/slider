@@ -307,12 +307,12 @@ const slider = $(<span style="color: #df5000;">'.my-selector'</span>).data(<span
             <td>Отметки шкалы, <br/>
             {<br/>
                 on?: boolean = false - вкл/выкл,<br/>
-                wrapClassName?: string = '' - имя класса для родительского класса отметок шкалы;<br/>
-                style?: {"backgound": "red"} - стиль для отметок шкалы;<br/>
-                className?: string = '' - имя класса для отметок шкалы;<br/>
-                render?: (value: number) => | string | JQuery<HTMLElement> | JQuery<HTMLElement>[] | HTMLElement | HTMLElement[] | undefined; - функция для изменения отображения отметок шкалы;<br/>
-                values?: number[min, ..., max] - дополнительные значения отметок шкалы отображаются внезависимости от значения step, отметки минимального и максимального значений добавлены по умолчанию;<br/>
-                dot?: boolean = false, вкл/выкл точек-меток для дополнительных значений отметок шкалы;<br/>
+                wrapClassName?: string = '' - имя класса для родительского класса отметок шкалы,<br/>
+                style?: {"backgound": "red"} - стиль для отметок шкалы,<br/>
+                className?: string = '' - имя класса для отметок шкалы,<br/>
+                render?: (value: number) => | string | JQuery<HTMLElement> | JQuery<HTMLElement>[] | HTMLElement | HTMLElement[] | undefined; - функция для изменения отображения отметок шкалы,<br/>
+                values?: number[min, ..., max] - дополнительные значения отметок шкалы отображаются внезависимости от значения step, отметки минимального и максимального значений добавлены по умолчанию,<br/>
+                dot?: boolean = false, вкл/выкл точек-меток для дополнительных значений отметок шкалы,<br/>
             }
             </td>
         </tr>
@@ -322,11 +322,11 @@ const slider = $(<span style="color: #df5000;">'.my-selector'</span>).data(<span
             <td>{}</td>
             <td>Всплывающие подсказки,<br/>
             {<br/>
-                on?: boolean = false - вкл/выкл;<br/>
-                style?: {"backgound": "red"} - стиль для подсказки;<br/>
-                className?: string = '' - имя класса для подсказки;<br/>
-                render?: (value: number) => | string | JQuery<HTMLElement> | JQuery<HTMLElement>[] | HTMLElement | HTMLElement[] | undefined; - функция для изменения отображения подсказки;<br/>
-                always?: boolean = false, вкл/выкл постоянного отображения подсказок, если установлено значение false подсказки отображаются только при наведении на handle;<br/>
+                on?: boolean = false - вкл/выкл,<br/>
+                style?: {"backgound": "red"} - стиль для подсказки,<br/>
+                className?: string = '' - имя класса для подсказки,<br/>
+                render?: (value: number) => | string | JQuery<HTMLElement> | JQuery<HTMLElement>[] | HTMLElement | HTMLElement[] | undefined; - функция для изменения отображения подсказки,<br/>
+                always?: boolean = false, вкл/выкл постоянного отображения подсказок, если установлено значение false подсказки отображаются только при наведении на handle,<br/>
             }
             </td>
         </tr>
