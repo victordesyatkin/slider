@@ -75,7 +75,7 @@ class Section extends Component<SectionProps> {
 
   @bind
   private createItem(props?: ItemProps) {
-    const { handleInputFocusout } = this.props || {};
+    const { handleInputInput, handleInputFocusout } = this.props || {};
     const { data } = props || {};
     const { type, property } = data || {};
     if (type && property) {
@@ -89,12 +89,12 @@ class Section extends Component<SectionProps> {
       if (property === 'values') {
         item = new Values({
           parent: $item,
-          props: { ...props, handleInputFocusout },
+          props: { ...props, handleInputInput, handleInputFocusout },
         });
       } else {
         item = new Input({
           parent: $item,
-          props: { ...props, handleInputFocusout },
+          props: { ...props, handleInputInput, handleInputFocusout },
         });
       }
       this.items[key] = item;

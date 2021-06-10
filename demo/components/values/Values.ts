@@ -54,8 +54,6 @@ class Values extends Component<ValuesProps> {
 
   private $template?: JQuery<HTMLElement> | null;
 
-  private $ul?: JQuery<HTMLElement> | null;
-
   private $content?: JQuery<HTMLElement> | null;
 
   private $buttonAdd?: JQuery<HTMLElement> | null;
@@ -101,7 +99,7 @@ class Values extends Component<ValuesProps> {
   }
 
   private renderUl() {
-    const { value } = this.props || {};
+    const { value, handleInputFocusout } = this.props || {};
     const html = this.$template?.html();
     if (html && Array.isArray(value)) {
       this.$content?.empty();
@@ -119,6 +117,7 @@ class Values extends Component<ValuesProps> {
               index,
               handleButtonRemoveClick: this.handleButtonRemoveClick,
               handleInputInput: this.handleInputInput,
+              handleInputFocusout,
             },
           });
           $ul.append($li);
@@ -146,7 +145,7 @@ class Values extends Component<ValuesProps> {
     if (handleButtonAddClick) {
       handleButtonAddClick();
     }
-    if (handleInputFocusout && isFunction(handleInputFocusout)) {
+    if (isFunction(handleInputFocusout)) {
       handleInputFocusout();
     }
   }
@@ -167,7 +166,7 @@ class Values extends Component<ValuesProps> {
       };
       this.renderUl();
       this.toggleVisibleButtonRemove();
-      if (handleInputFocusout && isFunction(handleInputFocusout)) {
+      if (isFunction(handleInputFocusout)) {
         handleInputFocusout();
       }
       if (handleButtonRemoveClick) {

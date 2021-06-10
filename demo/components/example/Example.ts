@@ -23,7 +23,11 @@ class Example extends Component<ExampleProps> {
     const { panel } = this.props || {};
     this.panel = new Panel({
       parent: this.$element,
-      props: { ...panel, handleInputFocusout: this.handleInputFocusout },
+      props: {
+        ...panel,
+        handleInputInput: this.handleInputInput,
+        handleInputFocusout: this.handleInputInput,
+      },
     });
     this.values = this.panel.getValues();
     this.slider = new Slider({
@@ -47,7 +51,7 @@ class Example extends Component<ExampleProps> {
   private values?: Props | null;
 
   @bind
-  private handleInputFocusout(): void {
+  private handleInputInput(): void {
     this.setValues();
     return undefined;
   }
@@ -75,6 +79,7 @@ class Example extends Component<ExampleProps> {
     }
     const values = $.extend(true, {}, this.values);
     set(values, ['values'], [...next]);
+    this.values = values;
     this.panel?.setValues(values);
     return undefined;
   }

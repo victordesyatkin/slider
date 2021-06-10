@@ -49,12 +49,13 @@ class Panel extends Component<PanelProps> {
 
   @bind
   private createSection(index: number, element: HTMLElement) {
-    const { sections, handleInputFocusout } = this.props || {};
+    const { sections, handleInputInput, handleInputFocusout } =
+      this.props || {};
     const props = sections?.[index];
     if (props && Array.isArray(this.sections)) {
       this.sections[index] = new Section({
         parent: element,
-        props: { ...props, handleInputFocusout },
+        props: { ...props, handleInputInput, handleInputFocusout },
       });
     }
   }
