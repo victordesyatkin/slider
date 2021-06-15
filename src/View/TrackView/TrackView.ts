@@ -80,12 +80,8 @@ export default class TrackView extends PubSub implements ISubView {
   private prepareClassName(): string {
     const prefixClassName = this.props?.prefixClassName || '';
     const index = this.addition?.index;
-    const className = this.props?.track?.classNames || '';
-    return classnames(
-      `${prefixClassName}__track`,
-      { [`${prefixClassName}__track-${index}`]: true },
-      className
-    );
+    const className = this.props?.track?.classNames?.[index] || '';
+    return classnames(`${prefixClassName}__track`, className);
   }
 
   private prepareStyle(): string | undefined {
@@ -95,7 +91,7 @@ export default class TrackView extends PubSub implements ISubView {
       const style = this.props?.track?.styles?.[index] || {};
       const { isVertical, min, max } = this.props;
       let { isReverse } = this.props;
-      const { values, startPoint } = this.props;
+      const { values } = this.props;
       const readyOffset = calcOffset({
         value: values[index],
         min,
@@ -109,10 +105,7 @@ export default class TrackView extends PubSub implements ISubView {
           calcOffset({ value: values[index + 1], min, max, precision: 2 }) -
           readyOffset;
       } else {
-        const trackOffset =
-          startPoint !== undefined
-            ? calcOffset({ value: startPoint, min, max, precision: 2 })
-            : 0;
+        const trackOffset = 0;
         offset = trackOffset;
         length = readyOffset - trackOffset;
       }

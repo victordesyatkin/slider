@@ -7,7 +7,18 @@ import isString from 'lodash.isstring';
 import trim from 'lodash.trim';
 import isFunction from 'lodash.isfunction';
 
-import { DefaultProps, Props } from '../types';
+import {
+  DefaultProps,
+  Props,
+  Style,
+  Track,
+  Rail,
+  Dot,
+  Mark,
+  Tooltip,
+  Handle,
+  Render,
+} from '../types';
 
 const defaultProps: DefaultProps = {
   prefixClassName: 'fsd-slider',
@@ -347,117 +358,100 @@ function setFunctionGetBoundingClientRectHTMLElement(
   };
 }
 
-function correctMin(options: {
-  key: string;
-  props: DefaultProps;
-  values: unknown;
-}): void {
-  const { key, values, props } = options;
-  const { max } = props;
-  const readyKey = key as keyof typeof props;
-  const readyValues = parseFloat(String(values));
+function correctMin(options: { max: number; min: number }): number {
+  const { min, max } = options;
+  let readyMin = parseFloat(String(min));
   const isNeedCorrect =
-    isUndefined(readyValues) || Number.isNaN(readyValues) || readyValues >= max;
-  if (isNeedCorrect && readyKey in props) {
-    let readyValue = -1 * max;
-    if (!readyValue) {
-      readyValue = defaultProps.min;
+    isUndefined(readyMin) || Number.isNaN(readyMin) || readyMin >= max;
+  if (isNeedCorrect) {
+    readyMin = -1 * max;
+    if (!readyMin) {
+      readyMin = defaultProps.min;
     }
-    props.min = readyValue;
   }
+  return readyMin;
 }
 
-function correctMax(options: {
-  key: string;
-  props: DefaultProps;
-  values: unknown;
-}): void {
-  const { key, values, props } = options;
-  const { min } = props;
-  const readyKey = key as keyof typeof props;
-  const readyValues = parseFloat(String(values));
-  const isNeedCorrect = Number.isNaN(readyValues) || readyValues <= min;
-  if (isNeedCorrect && readyKey in props) {
-    let readyValue = 2 * Math.abs(min);
-    if (!readyValue) {
-      readyValue = defaultProps.max;
+function correctMax(options: { min: number; max: number }): number {
+  const { min, max } = options;
+  let readyMax = parseFloat(String(max));
+  const isNeedCorrect = Number.isNaN(readyMax) || readyMax <= min;
+  if (isNeedCorrect) {
+    readyMax = 2 * Math.abs(min);
+    if (!readyMax) {
+      readyMax = defaultProps.max;
     }
-    props.max = readyValue;
   }
+  return readyMax;
 }
 
 function correctStep(options: {
-  key: string;
-  props: DefaultProps;
-  values: unknown;
-}): void {
-  const { key, values, props } = options;
-  const { max, min } = props;
-  const readyKey = key as keyof typeof props;
-  const readyValues = parseFloat(String(values));
+  min: number;
+  max: number;
+  step: number | undefined;
+}): number {
+  const { max, min, step } = options;
+  let readyStep = parseFloat(String(step));
   const isNeedCorrect =
-    Number.isNaN(readyValues) ||
-    readyValues >= Math.abs(max - min) ||
-    readyValues < 0;
-  if (isNeedCorrect && readyKey in props) {
-    props.step = defaultProps.step;
+    Number.isNaN(readyStep) ||
+    readyStep >= Math.abs(max - min) ||
+    readyStep < 0;
+  if (isNeedCorrect) {
+    readyStep = defaultProps.step;
   }
+  return readyStep;
 }
 
-function correctPrecision(options: {
-  key: string;
-  props: DefaultProps;
-  values: unknown;
-}): void {
-  const { key, values, props } = options;
-  const readyKey = key as keyof typeof props;
-  const readyValues = parseFloat(String(values));
+function correctPrecision(options: { precision: number }): number {
+  const { precision } = options;
+  const readyPrecision = parseFloat(String(precision));
   const isNeedCorrect =
-    Number.isNaN(readyValues) || readyValues < 0 || readyValues > 100;
-  if (isNeedCorrect && readyKey in props) {
-    props.precision = defaultProps.precision;
+    Number.isNaN(readyPrecision) || readyPrecision < 0 || readyPrecision > 100;
+  if (isNeedCorrect) {
+    return defaultProps.precision;
   }
+  return readyPrecision;
 }
 
 function correctIndent(options: {
-  key: string;
-  props: DefaultProps;
-  values: unknown;
-}): void {
-  const { key, values, props } = options;
-  const { values: currentValues, max } = props;
-  const readyKey = key as keyof typeof props;
-  const readyValues = parseFloat(String(values));
-  let isNeedCorrect = Number.isNaN(readyValues) || readyValues < 0;
+  indent: number;
+  values: number[];
+  max: number;
+}): number {
+  const { values, max, indent } = options;
+  const readyIndent = parseFloat(String(indent));
+  let isNeedCorrect = Number.isNaN(readyIndent) || readyIndent < 0;
   if (!isNeedCorrect) {
-    const count = currentValues.length - 1;
-    if (count * readyValues > Math.abs(max)) {
+    const count = values.length - 1;
+    if (count * readyIndent > Math.abs(max)) {
       isNeedCorrect = true;
     }
   }
-  if (isNeedCorrect && readyKey in props) {
-    props.indent = defaultProps.indent;
+  if (isNeedCorrect) {
+    return defaultProps.indent;
   }
+  return readyIndent;
 }
 
-function correctClassNames(options: {
-  values?: Record<string, unknown>;
-  key: string;
-  value?: unknown;
-}): void {
-  const { values, value, key } = options;
-  const readyValue: string[] | undefined | null = [];
-  if (value && Array.isArray(value)) {
-    value.forEach((className) => {
+function correctClassNames(
+  options?: Partial<{
+    classNames: string[] | null;
+  }>
+): string[] | null {
+  const { classNames } = options || {};
+  const readyClassNames: string[] | null = [];
+  if (classNames && Array.isArray(classNames)) {
+    classNames.forEach((className) => {
       const isNeedCorrect = !(isString(className) && trim(className));
-      if (!isNeedCorrect) {
-        readyValue.push(className);
+      if (!isNeedCorrect && readyClassNames) {
+        readyClassNames.push(className);
       }
     });
   }
-  if (values && typeof values === 'object') {
-    values[key] = readyValue && readyValue.length ? readyValue : null;
+  if (readyClassNames?.length) {
+    return readyClassNames;
   }
+  return null;
 }
 
 function isNeedCorrectStyle(style: unknown): boolean {
@@ -467,81 +461,68 @@ function isNeedCorrectStyle(style: unknown): boolean {
   );
 }
 
-function correctStyles(options: {
-  values?: Record<string, unknown>;
-  key: string;
-  value?: unknown;
-}): void {
-  const { values, value, key } = options;
-  const readyValue: Record<string, string>[] | undefined | null = [];
-  if (value && Array.isArray(value)) {
-    value.forEach((style) => {
+function correctStyles(
+  options?: Partial<{ styles: Style[] | null }>
+): Style[] | null {
+  const { styles } = options || {};
+  const readyStyles: Style[] | undefined | null = [];
+  if (styles && Array.isArray(styles)) {
+    styles.forEach((style) => {
       if (!isNeedCorrectStyle(style)) {
-        readyValue.push(style);
+        readyStyles.push(style);
       }
     });
   }
-  const isCorrect = values && key in values;
-  if (typeof values === 'object' && isCorrect) {
-    values[key] = readyValue && readyValue?.length ? readyValue : null;
+  if (readyStyles?.length) {
+    return readyStyles;
   }
+  return null;
 }
 
-function correctStyle(options: {
-  values?: Record<string, unknown>;
-  key: string;
-  value?: unknown;
-}): void {
-  const { values, value, key } = options;
-  let readyValue: Record<string, string> | undefined | null = null;
+function correctStyle(
+  options?: Partial<{ style: Style | null }>
+): Style | null {
+  const { style } = options || {};
   const isCorrect =
-    isReallyObject(value) && isObject(value) && Object.keys(value).length;
+    isReallyObject(style) && isObject(style) && Object.keys(style).length;
   if (isCorrect) {
-    readyValue = value as Record<string, string>;
+    return style as Style;
   }
-  const isCorrectObject = values && key in values;
-  if (typeof values === 'object' && isCorrectObject) {
-    values[key] = readyValue;
-  }
+  return null;
 }
 
-function correctClassName(options: {
-  values?: Record<string, unknown>;
-  key: string;
-  value?: unknown;
-}): void {
-  const { values, value, key } = options;
-  let readyValue: string | undefined | null = null;
-  if (isString(value) && trim(value)) {
-    readyValue = value;
+function correctClassName(
+  options?: Partial<{
+    className: string | null;
+  }>
+): string | null {
+  const { className } = options || {};
+  if (isString(className) && trim(className)) {
+    return className;
   }
-  const isCorrectObject = values && key in values;
-  if (isCorrectObject && typeof values === 'object') {
-    values[key] = readyValue;
-  }
+  return null;
 }
 
-function correctValues(options: {
-  values?: Record<string, unknown>;
-  key: string;
-  props: DefaultProps;
-  value?: unknown;
-}): void {
-  const { values, value, key, props } = options;
-  const { max, min } = props;
-  let readyValue: number[] | undefined = [];
-  if (Array.isArray(value) && value.length) {
-    readyValue = value.slice();
-    value.forEach((temp, index) => {
+function correctValues(
+  options?: Partial<{
+    values?: number[] | null;
+    min: number;
+    max: number;
+  }>
+): number[] | null {
+  const { values, max, min } = options || {};
+  let readyValues: number[] | undefined = [];
+  if (Array.isArray(values)) {
+    readyValues = values.slice();
+    values.forEach((temp, index) => {
       const isNeedCorrect =
         temp > max || temp < min || Number.isNaN(parseFloat(String(temp)));
-      if (isNeedCorrect && Array.isArray(readyValue)) {
-        readyValue[index] = min;
+      if (isNeedCorrect && Array.isArray(readyValues)) {
+        readyValues[index] = min;
       }
     });
   }
   const isCorrectObject = values && key in values;
-
   if (isCorrectObject && typeof values === 'object') {
     if (readyValue.indexOf(min) === -1) {
       readyValue.push(min);
@@ -551,57 +532,160 @@ function correctValues(options: {
     }
     values[key] = orderBy(readyValue, [], ['asc']);
   }
+  return values;
 }
 
 function correctIndex(options: {
-  values?: unknown;
-  key: string;
-  props: DefaultProps;
-}): void {
-  const { values, props } = options;
-  const { values: items = [] } = props;
-  const readyValue: number | undefined | null = defaultProps.index;
-  const readyValues = parseInt(String(values), 10);
+  index?: number;
+  values: number[];
+}): number | undefined {
+  const { values, index } = options;
+  const readyIndex: number | undefined = parseInt(String(index), 10);
   const isNeedCorrect =
-    Number.isNaN(readyValues) ||
-    Number(readyValues) < 0 ||
-    Number(readyValues) > items.length - 1;
+    Number.isNaN(readyIndex) ||
+    readyIndex < 0 ||
+    readyIndex > values.length - 1;
   if (isNeedCorrect) {
-    props.index = readyValue;
+    return defaultProps.index;
   }
+  return readyIndex;
 }
 
-function correctRender(options: {
-  values?: Record<string, unknown>;
-  key: string;
-  props: DefaultProps;
-  value?: unknown;
-}): void {
-  const { values, value, key } = options;
-  let readyValue: ((items: number) => void) | null | undefined = value as null;
-  if (!isFunction(readyValue)) {
-    readyValue = null;
+function correctRender(
+  options?: Partial<{
+    render: Render | null;
+  }>
+): Render | null {
+  const { render } = options || {};
+  if (isFunction(render)) {
+    return render;
   }
-  const isCorrectObject = values && key in values;
-  if (isCorrectObject && typeof values === 'object') {
-    values[key] = readyValue;
-  }
+  return null;
 }
 
-function correctSet(options: {
-  key: string;
-  props: DefaultProps;
-  values: unknown;
-}): void {
-  const { values, props } = options;
-  if (isObject(values) && isReallyObject(values)) {
-    Object.keys(values).forEach((valuesKey: string) => {
-      const readyKey = valuesKey as keyof typeof values;
-      const value = values[readyKey];
-      const readyValues = values as Record<string, string>;
-      switch (readyKey) {
+function correctIsOn(options?: Partial<{ isOn?: boolean }>): boolean {
+  const { isOn } = options || {};
+  return Boolean(isOn);
+}
+
+function correctWithDot(options?: Partial<{ withDot?: boolean }>): boolean {
+  const { withDot } = options || {};
+  return Boolean(withDot);
+}
+
+function correctTrack(options?: Partial<{ entity: Track }>) {
+  const { entity } = options || {};
+  if (isObject(entity) && isReallyObject(entity)) {
+    Object.keys(entity).forEach((key) => {
+      const castKey = key as keyof typeof entity;
+      switch (castKey) {
         case 'classNames': {
-          correctClassNames({ values: readyValues, key: readyKey, value });
+          const value = entity[castKey];
+          entity[castKey] = correctClassNames({ classNames: value });
+          break;
+        }
+        case 'styles': {
+          const value = entity[castKey];
+          entity[castKey] = correctStyles({ styles: value });
+          break;
+        }
+        case 'isOn': {
+          const value = entity[castKey];
+          entity[castKey] = correctIsOn({ isOn: value });
+          break;
+        }
+        default: {
+          break;
+        }
+      }
+    });
+  }
+  return entity;
+}
+
+function correctHandle(options?: Partial<{ entity: Handle }>) {
+  const { entity } = options || {};
+  if (isObject(entity) && isReallyObject(entity)) {
+    Object.keys(entity).forEach((key) => {
+      const castKey = key as keyof typeof entity;
+      switch (castKey) {
+        case 'classNames': {
+          const value = entity[castKey];
+          entity[castKey] = correctClassNames({ classNames: value });
+          break;
+        }
+        case 'styles': {
+          const value = entity[castKey];
+          entity[castKey] = correctStyles({ styles: value });
+          break;
+        }
+        default: {
+          break;
+        }
+      }
+    });
+  }
+  return entity;
+}
+
+function correctMark(
+  options?: Partial<{ entity: Mark; min: number; max: number }>
+) {
+  const { entity, min, max } = options || {};
+  if (isObject(entity) && isReallyObject(entity)) {
+    Object.keys(entity).forEach((key) => {
+      const castKey = key as keyof typeof entity;
+      switch (castKey) {
+        case 'isOn': {
+          const value = entity[castKey];
+          entity[castKey] = correctIsOn({ isOn: value });
+          break;
+        }
+        case 'className': {
+          const value = entity[castKey];
+          entity[castKey] = correctClassName({ className: value });
+          break;
+        }
+        case 'style': {
+          const value = entity[castKey];
+          entity[castKey] = correctStyle({ style: value });
+          break;
+        }
+        case 'withDot': {
+          const value = entity[castKey];
+          entity[castKey] = correctWithDot({ withDot: value });
+          break;
+        }
+        case 'render': {
+          const value = entity[castKey];
+          entity[castKey] = correctRender({ render: value });
+          break;
+        }
+        case 'values': {
+          const value = entity[castKey];
+          entity[castKey] = correctValues({ values: value });
+          break;
+        }
+        default: {
+          break;
+        }
+      }
+    });
+  }
+  return entity;
+}
+
+function correctEntity<T>(
+  options: Partial<{ entity: T; max: number; min: number }>
+): T {
+  const { entity } = options;
+  if (isObject(entity) && isReallyObject(entity)) {
+    Object.keys(entity).forEach((key) => {
+      const castKey = key as keyof typeof entity;
+      switch (castKey) {
+        case 'classNames': {
+          const value = entity[castKey];
+          entity[castKey] = correctClassNames({ classNames: value });
           break;
         }
         case 'styles': {
@@ -631,48 +715,95 @@ function correctSet(options: {
       }
     });
   }
+  return entity;
 }
 
 function correctData(props: DefaultProps): DefaultProps {
   const result = $.extend(true, {}, props);
   Object.keys(result).forEach((key) => {
-    const readyKey = key as keyof typeof result;
-    const values = result[readyKey];
-    switch (readyKey) {
+    const castKey = key as keyof typeof result;
+    switch (castKey) {
       case 'min': {
-        correctMin({ key: readyKey, props: result, values });
+        const { max, min } = result;
+        result[castKey] = correctMin({ min, max });
         break;
       }
       case 'max': {
-        correctMax({ key: readyKey, props: result, values });
+        const { max, min } = result;
+        result[castKey] = correctMax({ min, max });
         break;
       }
       case 'step': {
-        correctStep({ key: readyKey, props: result, values });
+        const { max, min, step } = result;
+        result[castKey] = correctStep({ step, min, max });
         break;
       }
       case 'precision': {
-        correctPrecision({ key: readyKey, props: result, values });
+        const { precision } = result;
+        result[castKey] = correctPrecision({
+          precision,
+        });
         break;
       }
       case 'indent': {
-        correctIndent({ key: readyKey, props: result, values });
+        const { indent, max, values } = result;
+        result[castKey] = correctIndent({ indent, max, values });
         break;
       }
       case 'index': {
-        correctIndex({ key: readyKey, props: result, values });
+        const { index, values } = result;
+        result[castKey] = correctIndex({ values, index });
         break;
       }
       case 'classNames': {
-        correctClassNames({ values: result, key, value: values });
+        const { classNames } = result;
+        result[castKey] = correctClassNames({
+          classNames,
+        });
         break;
       }
       case 'style': {
-        correctStyle({ values: result, key, value: values });
+        const { style } = result;
+        result[castKey] = correctStyle({ style });
+        break;
+      }
+      case 'track': {
+        const entity = result[castKey];
+        result[castKey] = correctTrack({
+          entity,
+        });
+        break;
+      }
+      case 'handle': {
+        const entity = result[castKey];
+        result[castKey] = correctHandle({
+          entity,
+        });
+        break;
+      }
+      case 'mark': {
+        const { min, max } = result;
+        const entity = result[castKey];
+        result[castKey] = correctMark({
+          entity,
+          max,
+          min,
+        });
+        break;
+      }
+      case 'dot':
+      case 'tooltip':
+      case 'rail': {
+        const { min, max } = result;
+        const entity = result[castKey];
+        result[castKey] = correctEntity<typeof entity>({
+          entity,
+          max,
+          min,
+        });
         break;
       }
       default: {
-        correctSet({ key: readyKey, props: result, values });
         break;
       }
     }
@@ -835,7 +966,7 @@ export {
   getCorrectIndex,
   isDirectionToMin,
   correctData,
-  correctSet,
+  correctEntity,
   correctMin,
   correctMax,
   correctStep,

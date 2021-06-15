@@ -7,8 +7,8 @@ type Props = Partial<{
   values: number[];
   min: number;
   max: number;
-  classNames: string[];
-  style: Style;
+  classNames: string[] | null;
+  style: Style | null;
   mark: Mark;
   dot: Dot;
   step: number;
@@ -17,7 +17,6 @@ type Props = Partial<{
   onAfterChange: ((value: number[]) => void) | null;
   track: Track;
   handle: Handle;
-  startPoint: number;
   rail: Rail;
   tooltip: Tooltip;
   indent: number;
@@ -50,46 +49,46 @@ type Addition = {
 
 type Handler = (index: number, event: JQuery.Event, value?: number) => void;
 
-type Handle = {
-  classNames?: string[];
-  styles: Style[];
-};
+type Handle = Partial<{
+  classNames: string[] | null;
+  styles: Style[] | null;
+}>;
 
 type Track = Partial<{
-  classNames: string[];
-  styles: Style[];
+  classNames: string[] | null;
+  styles: Style[] | null;
   isOn: boolean;
 }>;
 
 type Rail = Partial<{
-  className: string;
-  style: Style;
+  className: string | null;
+  style: Style | null;
   isOn: boolean;
 }>;
 
 type Dot = Partial<{
-  wrapClassName: string;
-  className: string;
-  style: Style;
+  wrapClassName: string | null;
+  className: string | null;
+  style: Style | null;
   isOn: boolean;
 }>;
 
 type Tooltip = Partial<{
-  className: string[];
-  style: Style;
-  render: Render;
+  classNames: string[] | null;
+  style: Style | null;
+  render: Render | null;
   isOn: boolean;
   always: boolean;
 }>;
 
 type Mark = Partial<{
-  wrapClassName: string;
-  className: string;
-  style: Style;
-  render: Render;
-  values: number[];
+  wrapClassName: string | null;
+  className: string | null;
+  style: Style | null;
+  render: Render | null;
+  values: number[] | null;
   isOn: boolean;
-  dot: boolean;
+  withDot: boolean;
 }>;
 
 type Callback = (data: any) => void;
