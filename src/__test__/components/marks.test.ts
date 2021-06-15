@@ -34,20 +34,20 @@ describe('rail', () => {
       $element = $(`.${defaultProps.prefixClassName}__marks`, $parent);
       expect($element.length).toBe(0);
 
-      view.setProps({ ...defaultProps, mark: { on: true } });
+      view.setProps({ ...defaultProps, mark: { isOn: true } });
       $element = $(`.${defaultProps.prefixClassName}__marks`, $parent);
       expect($element.length).toBe(1);
 
       $element = $(`.${defaultProps.prefixClassName}__mark`, $parent);
       expect($element.length).toBe(0);
 
-      view.setProps({ ...defaultProps, mark: { on: true }, step: 10 });
+      view.setProps({ ...defaultProps, mark: { isOn: true }, step: 10 });
       $element = $(`.${defaultProps.prefixClassName}__mark`, $parent);
       expect($element.length).toBe(11);
 
       view.setProps({
         ...defaultProps,
-        mark: { on: true, values: [24] },
+        mark: { isOn: true, values: [24] },
         step: 10,
       });
       $element = $(`.${defaultProps.prefixClassName}__mark`, $parent);
@@ -61,12 +61,12 @@ describe('rail', () => {
       const $parent = $(`.${className}`);
       let $element = $(`.${defaultProps.prefixClassName}__marks`, $parent);
       expect($element.length).toBe(0);
-      let props = { ...defaultProps, mark: { on: true } };
+      let props = { ...defaultProps, mark: { isOn: true } };
       view.setProps(props);
       view.render($parent);
       $element = $(`.${defaultProps.prefixClassName}__marks`, $parent);
       expect($element.length).toBe(1);
-      props = { ...defaultProps, mark: { on: false } };
+      props = { ...defaultProps, mark: { isOn: false } };
       view.setProps(props);
       $element = $(`.${defaultProps.prefixClassName}__marks`, $parent);
       expect($element.length).toBe(0);

@@ -34,40 +34,40 @@ describe('dots', () => {
       $element = $(`.${defaultProps.prefixClassName}__dots`, $parent);
       expect($element.length).toBe(0);
 
-      view.setProps({ ...defaultProps, dot: { on: true } });
+      view.setProps({ ...defaultProps, dot: { isOn: true } });
       $element = $(`.${defaultProps.prefixClassName}__dots`, $parent);
       expect($element.length).toBe(1);
 
       $element = $(`.${defaultProps.prefixClassName}__dot`, $parent);
       expect($element.length).toBe(0);
 
-      view.setProps({ ...defaultProps, dot: { on: true }, step: 10 });
+      view.setProps({ ...defaultProps, dot: { isOn: true }, step: 10 });
       $element = $(`.${defaultProps.prefixClassName}__dot`, $parent);
       expect($element.length).toBe(11);
 
       view.setProps({
         ...defaultProps,
-        dot: { on: true },
+        dot: { isOn: true },
         step: 10,
-        mark: { on: true },
+        mark: { isOn: true },
       });
       $element = $(`.${defaultProps.prefixClassName}__dot`, $parent);
       expect($element.length).toBe(11);
 
       view.setProps({
         ...defaultProps,
-        dot: { on: true },
+        dot: { isOn: true },
         step: 10,
-        mark: { on: true, values: [14, 86] },
+        mark: { isOn: true, values: [14, 86] },
       });
       $element = $(`.${defaultProps.prefixClassName}__dot`, $parent);
       expect($element.length).toBe(11);
 
       view.setProps({
         ...defaultProps,
-        dot: { on: true },
+        dot: { isOn: true },
         step: 10,
-        mark: { on: true, values: [14, 86], dot: true },
+        mark: { isOn: true, values: [14, 86], dot: true },
       });
       $element = $(`.${defaultProps.prefixClassName}__dot`, $parent);
       expect($element.length).toBe(13);
@@ -79,12 +79,12 @@ describe('dots', () => {
       let addition = { index: 0 };
       const view = new DotsView(addition);
       const $parent = $(`.${className}`);
-      let props = { ...defaultProps, dot: { on: true } };
+      let props = { ...defaultProps, dot: { isOn: true } };
       view.setProps(props);
       view.render($parent);
       let $element = $(`.${defaultProps.prefixClassName}__dots`, $parent);
       expect($element.length).toBe(1);
-      view.setProps({ ...props, dot: { on: false } });
+      view.setProps({ ...props, dot: { isOn: false } });
       $element = $(`.${defaultProps.prefixClassName}__dots`, $parent);
       expect($element.length).toBe(0);
     });

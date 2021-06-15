@@ -79,8 +79,8 @@ export default class MarksView extends PubSub implements ISubView {
 
   private createView(): void {
     if (this.props) {
-      const on = this.props?.mark?.on;
-      if (on) {
+      const isOn = this.props?.mark?.isOn;
+      if (isOn) {
         this.view = $('<div/>', this.prepareAttr());
       }
     }
@@ -113,7 +113,7 @@ export default class MarksView extends PubSub implements ISubView {
 
   private updateView(): void {
     if (this.view) {
-      if (this.props?.mark?.on) {
+      if (this.props?.mark?.isOn) {
         this.view.attr(this.prepareAttr());
       } else {
         this.remove();
@@ -133,7 +133,7 @@ export default class MarksView extends PubSub implements ISubView {
   ): ISubView[] {
     const readyViews = [...views];
     if (this.props && this.view) {
-      const { min, max, step, reverse } = this.props;
+      const { min, max, step, isReverse } = this.props;
       let values: number[] = [];
       const markValues = this.props?.mark?.values;
       if (Array.isArray(markValues)) {
@@ -144,7 +144,7 @@ export default class MarksView extends PubSub implements ISubView {
           values.push(index);
         }
       }
-      values = orderBy(uniq(values), [], reverse ? 'desc' : 'asc');
+      values = orderBy(uniq(values), [], isReverse ? 'desc' : 'asc');
       const { length } = values;
       const { handles } = this.addition;
       for (let index = 0; index < length; index += 1) {

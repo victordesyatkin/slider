@@ -91,18 +91,7 @@ function valueToProp(options?: {
   switch (property) {
     case 'values': {
       if (Array.isArray(value)) {
-        const correctValue: number[] = [];
-        value.forEach((item) => {
-          if (
-            !(
-              Number.isNaN(Number(item)) &&
-              Number.isNaN(parseFloat(String(item)))
-            )
-          ) {
-            correctValue.push(item);
-          }
-        });
-        return correctValue;
+        return value as number[];
       }
       return null;
     }
@@ -128,11 +117,11 @@ function valueToProp(options?: {
       }
       return parseFloat(String(readyValue));
     }
-    case 'disabled':
-    case 'vertical':
-    case 'reverse':
+    case 'isDisabled':
+    case 'isVertical':
+    case 'isReverse':
     case 'isFocused':
-    case 'on':
+    case 'isOn':
     case 'dot':
     case 'always': {
       readyValue = Boolean(parseInt(String(readyValue), 10));
@@ -196,9 +185,9 @@ function prepareValues(
       'min',
       'max',
       'step',
-      'disabled',
-      'vertical',
-      'reverse',
+      'isDisabled',
+      'isVertical',
+      'isReverse',
       'precision',
       'indent',
       'isFocused',
@@ -254,7 +243,7 @@ function propsToValue(
       case 'values': {
         return value;
       }
-      case 'on': {
+      case 'isOn': {
         return Number(value);
       }
       case 'render': {

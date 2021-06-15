@@ -35,7 +35,7 @@ describe('slider', () => {
       model.onAfterChange();
       expect(onAfterChange.mock.calls.length).toBe(1);
 
-      model.setProps({ ...defaultProps, disabled: true });
+      model.setProps({ ...defaultProps, isDisabled: true });
       model.onAfterChange();
       expect(onAfterChange.mock.calls.length).toBe(1);
     });
@@ -49,7 +49,7 @@ describe('slider', () => {
       model.onBeforeChange({ index: 0 });
       expect(onBeforeChange.mock.calls.length).toBe(1);
       expect(onBeforeChange.mock.calls[0][0]).toStrictEqual([0]);
-      model.setProps({ ...defaultProps, disabled: true });
+      model.setProps({ ...defaultProps, isDisabled: true });
       model.publish('handleViewMouseDown', { index: 0 });
       expect(onBeforeChange.mock.calls.length).toBe(1);
     });
@@ -69,7 +69,7 @@ describe('slider', () => {
       expect(onChange.mock.calls[0][0]).toStrictEqual([43]);
       let values = model.getProps()?.values;
       expect(values).toStrictEqual([43]);
-      model.setProps({ ...defaultProps, disabled: true });
+      model.setProps({ ...defaultProps, isDisabled: true });
       model.onChange({
         coordinateX: 86,
         coordinateY: 80,
@@ -79,7 +79,7 @@ describe('slider', () => {
       values = model.getProps()?.values;
       expect(values).toStrictEqual([0]);
       expect(onChange.mock.calls.length).toBe(1);
-      model.setProps({ ...defaultProps, disabled: false });
+      model.setProps({ ...defaultProps, isDisabled: false });
       model.onChange({
         coordinateX: 86,
         coordinateY: 80,
@@ -97,22 +97,22 @@ describe('slider', () => {
       model.setIndex({ index: 7 });
       let index = model.getProps()?.index;
       expect(index).toBe(undefined);
-      model.setProps({ ...defaultProps, disabled: true });
+      model.setProps({ ...defaultProps, isDisabled: true });
       model.setIndex({ index: 12 });
       index = model.getProps()?.index;
       expect(index).toBe(undefined);
       model.setIndex({ index: 1 });
       index = model.getProps()?.index;
       expect(index).toBe(undefined);
-      model.setProps({ ...defaultProps, disabled: false });
+      model.setProps({ ...defaultProps, isDisabled: false });
       model.setIndex({ index: 1 });
       index = model.getProps()?.index;
       expect(index).toBe(undefined);
-      model.setProps({ ...defaultProps, disabled: true });
+      model.setProps({ ...defaultProps, isDisabled: true });
       model.setIndex({ index: 0 });
       index = model.getProps()?.index;
       expect(index).toBe(undefined);
-      model.setProps({ ...defaultProps, disabled: false });
+      model.setProps({ ...defaultProps, isDisabled: false });
       model.setIndex({ index: 0 });
       index = model.getProps()?.index;
       expect(index).toBe(0);

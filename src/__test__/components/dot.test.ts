@@ -73,7 +73,7 @@ describe('rail', () => {
       ).toBeTruthy();
 
       view.setAddition({ index: 0, value: 40 });
-      view.setProps({ ...defaultProps, vertical: true, reverse: false });
+      view.setProps({ ...defaultProps, isVertical: true, isReverse: false });
       $element = $(`.${defaultProps.prefixClassName}__dot`, $parent);
       expect($element.length).toBe(1);
       expect($element[0].style.bottom).toBe('40%');
@@ -81,7 +81,7 @@ describe('rail', () => {
       expect($element[0].style.transform).toBe('translateY(+50%)');
 
       view.setAddition({ index: 0, value: 40 });
-      view.setProps({ ...defaultProps, vertical: true, reverse: true });
+      view.setProps({ ...defaultProps, isVertical: true, isReverse: true });
       $element = $(`.${defaultProps.prefixClassName}__dot`, $parent);
       expect($element.length).toBe(1);
       expect($element[0].style.top).toBe('40%');
@@ -89,7 +89,7 @@ describe('rail', () => {
       expect($element[0].style.transform).toBe('none');
 
       view.setAddition({ index: 0, value: 40 });
-      view.setProps({ ...defaultProps, vertical: false, reverse: true });
+      view.setProps({ ...defaultProps, isVertical: false, isReverse: true });
       $element = $(`.${defaultProps.prefixClassName}__dot`, $parent);
       expect($element.length).toBe(1);
       expect($element[0].style.right).toBe('40%');
@@ -97,7 +97,7 @@ describe('rail', () => {
       expect($element[0].style.transform).toBe('translateX(+50%)');
 
       view.setAddition({ index: 0, value: 40 });
-      view.setProps({ ...defaultProps, vertical: false, reverse: false });
+      view.setProps({ ...defaultProps, isVertical: false, isReverse: false });
       $element = $(`.${defaultProps.prefixClassName}__dot`, $parent);
       expect($element.length).toBe(1);
       expect($element[0].style.left).toBe('40%');
@@ -111,7 +111,7 @@ describe('rail', () => {
       view.setAddition(addition);
       let props = {
         ...defaultProps,
-        dot: { on: true },
+        dot: { isOn: true },
         step: 10,
         values: [10, 80],
       };
@@ -148,7 +148,7 @@ describe('rail', () => {
       view.setAddition({ index: 0, value: 20 });
       view.setProps({
         ...defaultProps,
-        dot: { on: true },
+        dot: { isOn: true },
         step: 10,
         values: [10],
       });
@@ -158,7 +158,7 @@ describe('rail', () => {
       view.setAddition({ index: 0, value: 0 });
       view.setProps({
         ...defaultProps,
-        dot: { on: true },
+        dot: { isOn: true },
         step: 10,
         values: [10],
       });
@@ -209,7 +209,7 @@ describe('rail', () => {
       $('body').append('<div class="slider__wrapper11"/>');
       const view = new DotView({ index: 0 });
       view.setAddition({ index: 0, value: 40 });
-      view.setProps({ ...defaultProps, dot: { on: true }, step: 10 });
+      view.setProps({ ...defaultProps, dot: { isOn: true }, step: 10 });
       const $parent = $('.slider__wrapper11');
       view.render($parent);
       let $element = $(`.${defaultProps.prefixClassName}__dot`, $parent);

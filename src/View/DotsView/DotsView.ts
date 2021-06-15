@@ -78,8 +78,8 @@ export default class DotsView extends PubSub implements ISubView {
 
   private createView(): void {
     if (this.props) {
-      const on = this.props?.dot?.on;
-      if (on) {
+      const isOn = this.props?.dot?.isOn;
+      if (isOn) {
         this.view = $('<div/>', this.prepareAttr());
       }
     }
@@ -97,10 +97,10 @@ export default class DotsView extends PubSub implements ISubView {
   }
 
   private prepareClassName(): string {
-    const { prefixClassName = '', vertical } = this.props || {};
+    const { prefixClassName = '', isVertical } = this.props || {};
     const className = this.props?.dot?.wrapClassName;
     return classnames(`${prefixClassName}__dots`, className, {
-      [`${prefixClassName}__dots_vertical`]: vertical,
+      [`${prefixClassName}__dots_vertical`]: isVertical,
     });
   }
 
@@ -114,7 +114,7 @@ export default class DotsView extends PubSub implements ISubView {
 
   private updateView(): void {
     if (this.view) {
-      if (this.props?.dot?.on) {
+      if (this.props?.dot?.isOn) {
         this.view.attr(this.prepareAttr());
       } else {
         this.remove();
@@ -134,10 +134,10 @@ export default class DotsView extends PubSub implements ISubView {
   ): ISubView[] {
     const readyViews = [...views];
     if (this.props && this.view) {
-      const { min, max, step, reverse } = this.props;
+      const { min, max, step, isReverse } = this.props;
       let values: number[] = [];
-      const on = this.props?.mark?.dot;
-      if (on) {
+      const isOn = this.props?.mark?.dot;
+      if (isOn) {
         const markValues = this.props?.mark?.values;
         if (Array.isArray(markValues)) {
           values = [...markValues];
@@ -149,7 +149,7 @@ export default class DotsView extends PubSub implements ISubView {
         }
       }
       const { handles } = this.addition;
-      values = orderBy(uniq(values), [], reverse ? 'desc' : 'asc');
+      values = orderBy(uniq(values), [], isReverse ? 'desc' : 'asc');
       const { length } = values;
       for (let index = 0; index < length; index += 1) {
         if (readyViews[index]) {

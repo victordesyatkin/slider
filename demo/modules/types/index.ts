@@ -38,9 +38,11 @@ type SectionProps = Partial<{
   isControl: boolean;
   data: DataProps;
   items: ItemProps[];
-  handleInputFocusout: () => void;
+  handleInputFocusout: (
+    options?: Partial<{ index: number; value: string; type: string }>
+  ) => void;
   handleInputInput: (
-    options?: Partial<{ index: number; value: string }>
+    options?: Partial<{ index: number; value: string; type: string }>
   ) => void;
 }> | null;
 
@@ -55,9 +57,11 @@ type LinkProps = Partial<{
 type PanelProps = Partial<{
   link: LinkProps;
   sections: SectionProps[];
-  handleInputFocusout: () => void;
+  handleInputFocusout: (
+    options?: Partial<{ index: number; value: string; type: string }>
+  ) => void;
   handleInputInput: (
-    options?: Partial<{ index: number; value: string }>
+    options?: Partial<{ index: number; value: string; type: string }>
   ) => void;
 }> | null;
 
@@ -67,27 +71,35 @@ type ValuesProps = Partial<{
   type: string;
   handleButtonAddClick: () => void;
   handleButtonRemoveClick: () => void;
-  handleInputFocusout: () => void;
+  handleInputFocusout: (
+    options?: Partial<{ index: number; value: string; type: string }>
+  ) => void;
   handleInputInput: (
-    options?: Partial<{ index: number; value: string }>
+    options?: Partial<{ index: number; value: string; type: string }>
   ) => void;
 }> | null;
 
 type ValueItemProps = Partial<
   {
     index: number;
-    handleInputFocusout: () => void;
+    handleInputFocusout: (
+      options?: Partial<{ index: number; value: string; type: string }>
+    ) => void;
     handleButtonRemoveClick: (index?: number) => void;
     handleInputInput: (
-      options?: Partial<{ index: number; value: string }>
+      options?: Partial<{ index: number; value: string; type: string }>
     ) => void;
   } & ItemProps
 > | null;
 
 type InputProps =
   | (Partial<{
-      handleInputInput: (value: string) => void;
-      handleInputFocusout: () => void;
+      handleInputInput: (
+        options?: Partial<{ value: string; type: string }>
+      ) => void;
+      handleInputFocusout: (
+        options?: Partial<{ value: string; type: string }>
+      ) => void;
     }> &
       ItemProps)
   | null;

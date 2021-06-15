@@ -22,16 +22,17 @@ class ValueItem extends Component<ValueItemProps> {
   public query = `.js-${this.className}`;
 
   public init(): void {
-    const { value, handleInputFocusout } = this.props || {};
+    const { value } = this.props || {};
     if (!isUndefined(value)) {
       this.$index = $(`${this.query}__index`, this.$element);
       this.$input = $(`${this.query}__input`, this.$element);
+      // console.log('ValueItem value : ', value);
       this.input = new Input({
         parent: this.$input,
         props: {
           value,
           handleInputInput: this.handleInputInput,
-          handleInputFocusout,
+          handleInputFocusout: this.handleInputFocusout,
         },
       });
       this.$buttonRemove = $(`${this.query}__control`, this.$element);
@@ -66,10 +67,20 @@ class ValueItem extends Component<ValueItemProps> {
   }
 
   @bind
-  private handleInputInput(value: string) {
-    const { handleInputInput, index } = this.props || {};
+  private handleInputInput(options?: Partial<{ value: string }>) {
+    const { value } = options || {};
+    const { handleInputInput, index, type } = this.props || {};
     if (handleInputInput && isFunction(handleInputInput)) {
-      handleInputInput({ index, value });
+      handleInputInput({ index, value, type });
+    }
+  }
+
+  @bind
+  private handleInputFocusout(options?: Partial<{ value: string }>) {
+    const { value } = options || {};
+    const { handleInputFocusout, index, type } = this.props || {};
+    if (handleInputFocusout && isFunction(handleInputFocusout)) {
+      handleInputFocusout({ index, value, type });
     }
   }
 

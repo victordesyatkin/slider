@@ -200,16 +200,16 @@ const slider = $(<span style="color: #df5000;">'.my-selector'</span>).data(<span
             <td>Имена классов, которые добавляются к корневому узлу слайдера</td>
         </tr>
         <tr>
-            <td>vertical</td>
+            <td>isVertical</td>
             <td>boolean</td>
             <td>false</td>
-            <td>Ориентация слайдера если vertical true, то слайдер будет вертикальным</td>
+            <td>Ориентация слайдера если isVertical true, то слайдер будет вертикальным</td>
         </tr>
         <tr>
-            <td>reverse</td>
+            <td>isReverse</td>
             <td>boolean</td>
             <td>false</td>
-            <td>Направление компонентов слайдера если reverse true, то компоненты отображаются реверсивно</td>
+            <td>Направление компонентов слайдера если isReverse true, то компоненты отображаются реверсивно</td>
         </tr>
         <tr>
             <td>isFocused</td>
@@ -230,10 +230,10 @@ const slider = $(<span style="color: #df5000;">'.my-selector'</span>).data(<span
             <td>Отступ между handles</td>
         </tr>
         <tr>
-            <td>disabled</td>
+            <td>isDisabled</td>
             <td>boolean</td>
             <td>false</td>
-            <td>Отключение слайдера</td>
+            <td>Отключение слайдера, если isDisabled имеет значение true, то слайдер отключен</td>
         </tr>
         <tr>
             <td>onBeforeChange</td>
@@ -267,24 +267,24 @@ const slider = $(<span style="color: #df5000;">'.my-selector'</span>).data(<span
         <tr>
             <td>track</td>
             <td>object</td>
-            <td>{on: true}</td>
+            <td>{isOn: true}</td>
             <td>Трек,<br/>
             {<br/>
                 classNames?: string[] = [] - имя класса для каждого трека,<br/>
                 styles: style[] = [] стиль для каждого трека, где style: {"backgound-color": "yellow"},<br/>
-                on?: boolean = true - вкл/выкл,<br/>
+                isOn?: boolean = true - вкл/выкл,<br/>
             }
             </td>
         </tr>
         <tr>
             <td>rail</td>
             <td>object</td>
-            <td>{on: true}</td>
+            <td>{isOn: true}</td>
             <td>Рельс, <br/>
             {<br/>
                 className?: string = '' - имя класса рельсы,<br/>
                 styles: style[] = [] - стиль рельсы, где style: {"backgound-color": "green"},<br/>
-                on?: boolean = true - вкл/выкл,<br/>
+                isOn?: boolean = true - вкл/выкл,<br/>
             }
             </td>
         </tr>
@@ -294,7 +294,7 @@ const slider = $(<span style="color: #df5000;">'.my-selector'</span>).data(<span
             <td>{}</td>
             <td>Точки отметки отображаются при наличие значения step,<br/>
             {<br/>
-                on?: boolean = false - вкл/выкл,<br/>
+                isOn?: boolean = false - вкл/выкл,<br/>
                 wrapClassName?: string = '' - имя класса для родительского класса точек отметок,<br/>
                 style?: {"backgound": "red"} - стиль для точек отметок,<br/>
                 className?: string = '' - имя класса для точек отметок,<br/>
@@ -306,7 +306,7 @@ const slider = $(<span style="color: #df5000;">'.my-selector'</span>).data(<span
             <td>{}</td>
             <td>Отметки шкалы, <br/>
             {<br/>
-                on?: boolean = false - вкл/выкл,<br/>
+                isOn?: boolean = false - вкл/выкл,<br/>
                 wrapClassName?: string = '' - имя класса для родительского класса отметок шкалы,<br/>
                 style?: {"backgound": "red"} - стиль для отметок шкалы,<br/>
                 className?: string = '' - имя класса для отметок шкалы,<br/>
@@ -322,7 +322,7 @@ const slider = $(<span style="color: #df5000;">'.my-selector'</span>).data(<span
             <td>{}</td>
             <td>Всплывающие подсказки,<br/>
             {<br/>
-                on?: boolean = false - вкл/выкл,<br/>
+                isOn?: boolean = false - вкл/выкл,<br/>
                 style?: {"backgound": "red"} - стиль для подсказки,<br/>
                 className?: string = '' - имя класса для подсказки,<br/>
                 render?: (value: number) => | string | JQuery<HTMLElement> | JQuery<HTMLElement>[] | HTMLElement | HTMLElement[] | undefined; - функция для изменения отображения подсказки,<br/>

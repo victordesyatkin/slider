@@ -27,7 +27,7 @@ describe('helpers', () => {
       expect(utils.calcOffset(0, -100, 100)).toBe(50);
     });
 
-    test('vertical, HTMLElement -> getHandleCenterPosition -> number', () => {
+    test('isVertical, HTMLElement -> getHandleCenterPosition -> number', () => {
       utils.setFunctionGetBoundingClientRectHTMLElement();
       document.body.innerHTML = `<div class="${className1}" style="width:100px;height:100px;">hello world!</div>`;
       let el = $(`.${className1}`).get(0);
@@ -43,7 +43,7 @@ describe('helpers', () => {
       expect(utils.ensureValueInRange(-200, { min: -70, max: 30 })).toBe(-70);
       expect(utils.ensureValueInRange(16, { min: 0, max: 4 })).toBe(4);
     });
-    test('(vertical: boolean, e: MouseEvent): number -> getMousePosition -> number', () => {
+    test('(isVertical: boolean, e: MouseEvent): number -> getMousePosition -> number', () => {
       let e = new MouseEvent('mousemove', {
         screenX: 4,
         screenY: 16,
@@ -142,7 +142,7 @@ describe('helpers', () => {
       });
       expect(
         utils.getSliderStart({
-          props: { ...defaultProps, vertical: true },
+          props: { ...defaultProps, isVertical: true },
           view: $el,
         })
       ).toBe(10);
@@ -153,7 +153,7 @@ describe('helpers', () => {
       });
       expect(
         utils.getSliderStart({
-          props: { ...defaultProps, vertical: true, reverse: true },
+          props: { ...defaultProps, isVertical: true, isReverse: true },
           view: $el,
         })
       ).toBe(40);
@@ -171,7 +171,7 @@ describe('helpers', () => {
       expect(
         utils.getSliderLength({
           view: $el,
-          props: { ...defaultProps, vertical: true },
+          props: { ...defaultProps, isVertical: true },
         })
       ).toBe(100);
     });
@@ -194,7 +194,7 @@ describe('helpers', () => {
         utils.calcValue({
           offset: 50,
           length: 100,
-          props: { ...defaultProps, vertical: true },
+          props: { ...defaultProps, isVertical: true },
         })
       ).toBe(50);
     });
@@ -218,7 +218,7 @@ describe('helpers', () => {
         utils.calcValueByPos({
           position: 50,
           length: 100,
-          props: { ...defaultProps, vertical: true },
+          props: { ...defaultProps, isVertical: true },
           index: 0,
           start: 0,
         })
@@ -282,12 +282,12 @@ describe('helpers', () => {
     });
     test('getPosition', () => {
       const position1 = utils.getPosition({
-        vertical: false,
+        isVertical: false,
         coordinateX: 10,
         coordinateY: 40,
       });
       const position2 = utils.getPosition({
-        vertical: true,
+        isVertical: true,
         coordinateX: 10,
         coordinateY: 40,
       });

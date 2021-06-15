@@ -98,7 +98,7 @@ describe('slider', () => {
       $('body').append('<div class="slider__wrapper3"/>');
       const view = new View();
       const $parent = $('.slider__wrapper3');
-      let dot: Dot = { on: true };
+      let dot: Dot = { isOn: true };
       let props = { ...defaultProps };
       view.setProps(props);
       view.render($parent);
@@ -119,7 +119,7 @@ describe('slider', () => {
       $dot = $(`.${defaultProps.prefixClassName}__dot`, $parent);
       expect($dot.length).toBe(3);
 
-      props = { ...defaultProps, dot, step: 50, mark: { on: true } };
+      props = { ...defaultProps, dot, step: 50, mark: { isOn: true } };
       view.setProps(props);
       $dot = $(`.${defaultProps.prefixClassName}__dot`, $parent);
       expect($dot.length).toBe(3);
@@ -128,7 +128,7 @@ describe('slider', () => {
         ...defaultProps,
         dot,
         step: 50,
-        mark: { on: true, values: [20] },
+        mark: { isOn: true, values: [20] },
       };
       view.setProps(props);
       $dot = $(`.${defaultProps.prefixClassName}__dot`, $parent);
@@ -138,7 +138,7 @@ describe('slider', () => {
         ...defaultProps,
         dot,
         step: 50,
-        mark: { on: true, values: [20], dot: true },
+        mark: { isOn: true, values: [20], dot: true },
       };
       view.setProps(props);
       $dot = $(`.${defaultProps.prefixClassName}__dot`, $parent);
@@ -151,7 +151,7 @@ describe('slider', () => {
       $('body').append(`<div class="${className}"/>`);
       const $parent = $(`.${className}`);
       const view = new View();
-      let mark: Mark = { on: true };
+      let mark: Mark = { isOn: true };
       view.setProps({ ...defaultProps });
       view.render($parent);
       let $mark = $(`.${defaultProps.prefixClassName}__mark`, $parent);
@@ -169,7 +169,7 @@ describe('slider', () => {
 
       view.setProps({
         ...defaultProps,
-        mark: { on: true, values: [15] },
+        mark: { isOn: true, values: [15] },
         step: 20,
       });
       $mark = $(`.${defaultProps.prefixClassName}__mark`, $parent);
@@ -183,7 +183,7 @@ describe('slider', () => {
       $('body').append(`<div class="${className}"/>`);
       const view = new View();
       const $parent = $(`.${className}`);
-      let tooltip: Tooltip = { on: true };
+      let tooltip: Tooltip = { isOn: true };
       view.setProps({ ...defaultProps });
       view.render($parent);
       let $mark = $(findClassName, $parent);
@@ -266,7 +266,7 @@ describe('slider', () => {
       $('body').append(`<div class="${className}"/>`);
       const view = new View();
       const $parent = $(`.${className}`);
-      view.setProps({ ...defaultProps, dot: { on: true } });
+      view.setProps({ ...defaultProps, dot: { isOn: true } });
       view.render($parent);
       let mockCallback = jest.fn((options: { index: number }): void => {});
       view.subscribe('onBeforeChange', mockCallback);

@@ -173,7 +173,7 @@
           },
           {
             "caption": {
-              "content": "Vertical",
+              "content": "isVertical",
               "theme": "section"
             },
             "items": [
@@ -181,15 +181,15 @@
                 "value": 0,
                 "type": "checkbox",
                 "data": {
-                  "type": "vertical",
-                  "property": "vertical"
+                  "type": "isVertical",
+                  "property": "isVertical"
                 }
               }
             ]
           },
           {
             "caption": {
-              "content": "Reverse",
+              "content": "isReverse",
               "theme": "section"
             },
             "items": [
@@ -197,15 +197,15 @@
                 "value": 0,
                 "type": "checkbox",
                 "data": {
-                  "type": "reverse",
-                  "property": "reverse"
+                  "type": "isReverse",
+                  "property": "isReverse"
                 }
               }
             ]
           },
           {
             "caption": {
-              "content": "Disabled",
+              "content": "isDisabled",
               "theme": "section"
             },
             "items": [
@@ -213,8 +213,8 @@
                 "value": 0,
                 "type": "checkbox",
                 "data": {
-                  "type": "disabled",
-                  "property": "disabled"
+                  "type": "isDisabled",
+                  "property": "isDisabled"
                 }
               }
             ]
@@ -279,13 +279,13 @@
             "items": [
               {
                 "label": {
-                  "content": "On/Off"
+                  "content": "isOn/isOff"
                 },
                 "value": 1,
                 "type": "checkbox",
                 "data": {
                   "type": "rail",
-                  "property": "on"
+                  "property": "isOn"
                 }
               },
               {
@@ -323,13 +323,13 @@
             "items": [
               {
                 "label": {
-                  "content": "On/Off"
+                  "content": "isOn/isOff"
                 },
                 "value": 1,
                 "type": "checkbox",
                 "data": {
                   "type": "track",
-                  "property": "on"
+                  "property": "isOn"
                 }
               },
               {
@@ -370,13 +370,13 @@
             "items": [
               {
                 "label": {
-                  "content": "On/Off"
+                  "content": "isOn/isOff"
                 },
                 "value": 1,
                 "type": "checkbox",
                 "data": {
                   "type": "dot",
-                  "property": "on"
+                  "property": "isOn"
                 }
               },
               {
@@ -435,13 +435,13 @@
             "items": [
               {
                 "label": {
-                  "content": "On/Off"
+                  "content": "isOn/isOff"
                 },
                 "value": 1,
                 "type": "checkbox",
                 "data": {
                   "type": "mark",
-                  "property": "on"
+                  "property": "isOn"
                 }
               },
               {
@@ -460,7 +460,7 @@
               },
               {
                 "label": {
-                  "content": "Dot on/off"
+                  "content": "Dot isOn/isOff"
                 },
                 "value": 1,
                 "type": "checkbox",
@@ -530,13 +530,13 @@
             "items": [
               {
                 "label": {
-                  "content": "On/Off"
+                  "content": "isOn/isOff"
                 },
                 "value": 1,
                 "type": "checkbox",
                 "data": {
                   "type": "tooltip",
-                  "property": "on"
+                  "property": "isOn"
                 }
               },
               {
@@ -597,7 +597,7 @@
     },
     {
       "caption": {
-        "content": "Simple vertical reverse configuration"
+        "content": "Simple isVertical isReverse configuration"
       },
       "panel": {
         "link": {
@@ -699,7 +699,7 @@
           },
           {
             "caption": {
-              "content": "Vertical",
+              "content": "isVertical",
               "theme": "section"
             },
             "items": [
@@ -707,15 +707,15 @@
                 "value": 1,
                 "type": "checkbox",
                 "data": {
-                  "type": "vertical",
-                  "property": "vertical"
+                  "type": "isVertical",
+                  "property": "isVertical"
                 }
               }
             ]
           },
           {
             "caption": {
-              "content": "Reverse",
+              "content": "isReverse",
               "theme": "section"
             },
             "items": [
@@ -723,15 +723,15 @@
                 "value": 1,
                 "type": "checkbox",
                 "data": {
-                  "type": "reverse",
-                  "property": "reverse"
+                  "type": "isReverse",
+                  "property": "isReverse"
                 }
               }
             ]
           },
           {
             "caption": {
-              "content": "Disabled",
+              "content": "isDisabled",
               "theme": "section"
             },
             "items": [
@@ -739,8 +739,8 @@
                 "value": 0,
                 "type": "checkbox",
                 "data": {
-                  "type": "disabled",
-                  "property": "disabled"
+                  "type": "isDisabled",
+                  "property": "isDisabled"
                 }
               }
             ]
@@ -789,13 +789,13 @@
             "items": [
               {
                 "label": {
-                  "content": "On/Off"
+                  "content": "isOn/isOff"
                 },
                 "value": 1,
                 "type": "checkbox",
                 "data": {
                   "type": "rail",
-                  "property": "on"
+                  "property": "isOn"
                 }
               },
               {
@@ -833,13 +833,13 @@
             "items": [
               {
                 "label": {
-                  "content": "On/Off"
+                  "content": "isOn/isOff"
                 },
                 "value": 1,
                 "type": "checkbox",
                 "data": {
                   "type": "track",
-                  "property": "on"
+                  "property": "isOn"
                 }
               },
               {
@@ -880,13 +880,13 @@
             "items": [
               {
                 "label": {
-                  "content": "On/Off"
+                  "content": "isOn/isOff"
                 },
                 "value": 0,
                 "type": "checkbox",
                 "data": {
                   "type": "dot",
-                  "property": "on"
+                  "property": "isOn"
                 }
               },
               {
@@ -945,13 +945,13 @@
             "items": [
               {
                 "label": {
-                  "content": "On/Off"
+                  "content": "isOn/isOff"
                 },
                 "value": 1,
                 "type": "checkbox",
                 "data": {
                   "type": "mark",
-                  "property": "on"
+                  "property": "isOn"
                 }
               },
               {
@@ -970,7 +970,7 @@
               },
               {
                 "label": {
-                  "content": "Dot on/off"
+                  "content": "Dot isOn/isOff"
                 },
                 "value": 0,
                 "type": "checkbox",
@@ -1039,13 +1039,13 @@
             "items": [
               {
                 "label": {
-                  "content": "On/Off"
+                  "content": "isOn/isOff"
                 },
                 "value": 1,
                 "type": "checkbox",
                 "data": {
                   "type": "tooltip",
-                  "property": "on"
+                  "property": "isOn"
                 }
               },
               {
@@ -1208,7 +1208,7 @@
           },
           {
             "caption": {
-              "content": "Vertical",
+              "content": "isVertical",
               "theme": "section"
             },
             "items": [
@@ -1216,15 +1216,15 @@
                 "value": 0,
                 "type": "checkbox",
                 "data": {
-                  "type": "vertical",
-                  "property": "vertical"
+                  "type": "isVertical",
+                  "property": "isVertical"
                 }
               }
             ]
           },
           {
             "caption": {
-              "content": "Reverse",
+              "content": "isReverse",
               "theme": "section"
             },
             "items": [
@@ -1232,15 +1232,15 @@
                 "value": 0,
                 "type": "checkbox",
                 "data": {
-                  "type": "reverse",
-                  "property": "reverse"
+                  "type": "isReverse",
+                  "property": "isReverse"
                 }
               }
             ]
           },
           {
             "caption": {
-              "content": "Disabled",
+              "content": "isDisabled",
               "theme": "section"
             },
             "items": [
@@ -1248,8 +1248,8 @@
                 "value": 0,
                 "type": "checkbox",
                 "data": {
-                  "type": "disabled",
-                  "property": "disabled"
+                  "type": "isDisabled",
+                  "property": "isDisabled"
                 }
               }
             ]
@@ -1298,13 +1298,13 @@
             "items": [
               {
                 "label": {
-                  "content": "On/Off"
+                  "content": "isOn/isOff"
                 },
                 "value": 1,
                 "type": "checkbox",
                 "data": {
                   "type": "rail",
-                  "property": "on"
+                  "property": "isOn"
                 }
               },
               {
@@ -1342,13 +1342,13 @@
             "items": [
               {
                 "label": {
-                  "content": "On/Off"
+                  "content": "isOn/isOff"
                 },
                 "value": 1,
                 "type": "checkbox",
                 "data": {
                   "type": "track",
-                  "property": "on"
+                  "property": "isOn"
                 }
               },
               {
@@ -1389,13 +1389,13 @@
             "items": [
               {
                 "label": {
-                  "content": "On/Off"
+                  "content": "isOn/isOff"
                 },
                 "value": 0,
                 "type": "checkbox",
                 "data": {
                   "type": "dot",
-                  "property": "on"
+                  "property": "isOn"
                 }
               },
               {
@@ -1454,13 +1454,13 @@
             "items": [
               {
                 "label": {
-                  "content": "On/Off"
+                  "content": "isOn/isOff"
                 },
                 "value": 1,
                 "type": "checkbox",
                 "data": {
                   "type": "mark",
-                  "property": "on"
+                  "property": "isOn"
                 }
               },
               {
@@ -1479,7 +1479,7 @@
               },
               {
                 "label": {
-                  "content": "Dot on/off"
+                  "content": "Dot isOn/isOff"
                 },
                 "value": 0,
                 "type": "checkbox",
@@ -1548,13 +1548,13 @@
             "items": [
               {
                 "label": {
-                  "content": "On/Off"
+                  "content": "isOn/isOff"
                 },
                 "value": 0,
                 "type": "checkbox",
                 "data": {
                   "type": "tooltip",
-                  "property": "on"
+                  "property": "isOn"
                 }
               },
               {
@@ -1615,7 +1615,7 @@
     },
     {
       "caption": {
-        "content": "Simple horizontal reverse configuration"
+        "content": "Simple horizontal isReverse configuration"
       },
       "panel": {
         "link": {
@@ -1717,7 +1717,7 @@
           },
           {
             "caption": {
-              "content": "Vertical",
+              "content": "isVertical",
               "theme": "section"
             },
             "items": [
@@ -1725,15 +1725,15 @@
                 "value": 0,
                 "type": "checkbox",
                 "data": {
-                  "type": "vertical",
-                  "property": "vertical"
+                  "type": "isVertical",
+                  "property": "isVertical"
                 }
               }
             ]
           },
           {
             "caption": {
-              "content": "Reverse",
+              "content": "isReverse",
               "theme": "section"
             },
             "items": [
@@ -1741,15 +1741,15 @@
                 "value": 1,
                 "type": "checkbox",
                 "data": {
-                  "type": "reverse",
-                  "property": "reverse"
+                  "type": "isReverse",
+                  "property": "isReverse"
                 }
               }
             ]
           },
           {
             "caption": {
-              "content": "Disabled",
+              "content": "isDisabled",
               "theme": "section"
             },
             "items": [
@@ -1757,8 +1757,8 @@
                 "value": 0,
                 "type": "checkbox",
                 "data": {
-                  "type": "disabled",
-                  "property": "disabled"
+                  "type": "isDisabled",
+                  "property": "isDisabled"
                 }
               }
             ]
@@ -1807,13 +1807,13 @@
             "items": [
               {
                 "label": {
-                  "content": "On/Off"
+                  "content": "isOn/isOff"
                 },
                 "value": 1,
                 "type": "checkbox",
                 "data": {
                   "type": "rail",
-                  "property": "on"
+                  "property": "isOn"
                 }
               },
               {
@@ -1851,13 +1851,13 @@
             "items": [
               {
                 "label": {
-                  "content": "On/Off"
+                  "content": "isOn/isOff"
                 },
                 "value": 1,
                 "type": "checkbox",
                 "data": {
                   "type": "track",
-                  "property": "on"
+                  "property": "isOn"
                 }
               },
               {
@@ -1898,13 +1898,13 @@
             "items": [
               {
                 "label": {
-                  "content": "On/Off"
+                  "content": "isOn/isOff"
                 },
                 "value": 0,
                 "type": "checkbox",
                 "data": {
                   "type": "dot",
-                  "property": "on"
+                  "property": "isOn"
                 }
               },
               {
@@ -1963,13 +1963,13 @@
             "items": [
               {
                 "label": {
-                  "content": "On/Off"
+                  "content": "isOn/isOff"
                 },
                 "value": 1,
                 "type": "checkbox",
                 "data": {
                   "type": "mark",
-                  "property": "on"
+                  "property": "isOn"
                 }
               },
               {
@@ -1988,7 +1988,7 @@
               },
               {
                 "label": {
-                  "content": "Dot on/off",
+                  "content": "Dot isOn/isOff",
                   "href": ""
                 },
                 "value": 0,
@@ -2058,13 +2058,13 @@
             "items": [
               {
                 "label": {
-                  "content": "On/Off"
+                  "content": "isOn/isOff"
                 },
                 "value": 1,
                 "type": "checkbox",
                 "data": {
                   "type": "tooltip",
-                  "property": "on"
+                  "property": "isOn"
                 }
               },
               {

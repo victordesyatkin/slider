@@ -60,8 +60,8 @@ export default class RailView extends PubSub implements ISubView {
 
   private createView(): void {
     if (this.props) {
-      const on = this.props?.rail?.on;
-      if (on) {
+      const isOn = this.props?.rail?.isOn;
+      if (isOn) {
         this.view = $('<div/>', this.prepareAttr());
       }
     }
@@ -93,7 +93,7 @@ export default class RailView extends PubSub implements ISubView {
 
   private updateView(): void {
     if (this.view) {
-      if (this.props?.rail?.on) {
+      if (this.props?.rail?.isOn) {
         this.view.attr(this.prepareAttr());
       } else {
         this.remove();

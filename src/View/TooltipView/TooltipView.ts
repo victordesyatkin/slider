@@ -124,7 +124,7 @@ export default class TooltipView extends PubSub implements ISubView {
 
   private updateView(): void {
     if (this.view) {
-      if (this.props?.tooltip?.on) {
+      if (this.props?.tooltip?.isOn) {
         this.view.attr(this.prepareAttr());
       } else {
         this.remove();

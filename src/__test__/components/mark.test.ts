@@ -61,7 +61,7 @@ describe('rail', () => {
       });
       let props: DefaultProps = {
         ...defaultProps,
-        mark: { on: true },
+        mark: { isOn: true },
       };
       const mark = new MarkView(addition);
       mark.setProps(props);
@@ -72,13 +72,13 @@ describe('rail', () => {
       let $element = $(`.${defaultProps.prefixClassName}__mark`, $parent);
       expect($element.length).toBe(1);
       expect($element.text()).toBe(`${addition.value}`);
-      props = { ...props, mark: { render: mockCallback, on: true } };
+      props = { ...props, mark: { render: mockCallback, isOn: true } };
       mark.setProps(props);
       $element = $(`.${defaultProps.prefixClassName}__mark`, $parent);
       expect($element.length).toBe(1);
       expect($element.text()).toBe(`${addition.value}%`);
 
-      props = { ...props, mark: { on: true } };
+      props = { ...props, mark: { isOn: true } };
       mark.setProps(props);
 
       $element = $(`.${defaultProps.prefixClassName}__mark`, $parent);

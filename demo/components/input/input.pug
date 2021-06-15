@@ -5,7 +5,7 @@ include ../button/button
 mixin input(props)
   if props
     -
-      let { label, type = 'number', value, data, link, idDisabled } = props;
+      let { label, type = 'number', value, data, link, isDisabled } = props;
       let isChecked = Boolean(value && type === "checkbox");
       let className = 'input';
       let classNames = `${className} js-${className}`;
@@ -27,5 +27,5 @@ mixin input(props)
           checked=isChecked,
           value=value,
           class=`${className}__input js-${className}__input`,
-          disabled=idDisabled
+          disabled=isDisabled
         )

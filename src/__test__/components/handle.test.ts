@@ -37,13 +37,13 @@ describe('handle', () => {
     expect(handleViewMouseDown2.mock.calls.length).toBe(1);
   });
 
-  test('on/off tooltip handle view', () => {
+  test('isOn/isOff tooltip handle view', () => {
     let addition = { index: 0 };
     const view = new HandleView(addition);
     let className = 'slider__wrapper-10';
     $('body').append(`<div class="${className}"/>`);
     const $parent = $(`.${className}`);
-    let props = { ...defaultProps, tooltip: { on: true } };
+    let props = { ...defaultProps, tooltip: { isOn: true } };
     view.setProps(props);
     view.render($parent);
     let $handle = $(`.${defaultProps.prefixClassName}__handle`, $parent);
@@ -52,7 +52,7 @@ describe('handle', () => {
 
     expect($tooltip.length).toBe(1);
 
-    props = { ...defaultProps, tooltip: { on: false } };
+    props = { ...defaultProps, tooltip: { isOn: false } };
     view.setProps(props);
     $handle = $(`.${defaultProps.prefixClassName}__handle`, $parent);
     expect($handle.length).toBe(1);

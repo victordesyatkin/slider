@@ -50,7 +50,7 @@ describe('rail', () => {
       view.render($parent);
       let $element = $(`.${defaultProps.prefixClassName}__rail`, $parent);
       expect($element.length).toBe(1);
-      props = { ...defaultProps, rail: { on: false } };
+      props = { ...defaultProps, rail: { isOn: false } };
       view.setProps(props);
       $element = $(`.${defaultProps.prefixClassName}__rail`, $parent);
       expect($element.length).toBe(0);

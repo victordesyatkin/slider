@@ -59,8 +59,8 @@ export default class TrackView extends PubSub implements ISubView {
 
   private createView(): void {
     if (this.props && !isUndefined(this.addition?.index)) {
-      const on = this.props?.track?.on;
-      if (on) {
+      const isOn = this.props?.track?.isOn;
+      if (isOn) {
         this.view = $('<div/>', this.prepareAttr());
       }
     }
@@ -93,8 +93,8 @@ export default class TrackView extends PubSub implements ISubView {
     if (this.props) {
       const index = this.addition?.index;
       const style = this.props?.track?.styles?.[index] || {};
-      const { vertical, min, max } = this.props;
-      let { reverse } = this.props;
+      const { isVertical, min, max } = this.props;
+      let { isReverse } = this.props;
       const { values, startPoint } = this.props;
       const readyOffset = calcOffset(values[index], min, max, 2);
       let offset = readyOffset;
@@ -108,19 +108,19 @@ export default class TrackView extends PubSub implements ISubView {
         length = readyOffset - trackOffset;
       }
       if (length < 0) {
-        reverse = !reverse;
+        isReverse = !isReverse;
         length = Math.abs(length);
         offset = 100 - offset;
       }
-      const positionStyle = vertical
+      const positionStyle = isVertical
         ? {
-            [reverse ? 'top' : 'bottom']: `${offset}%`,
-            [reverse ? 'bottom' : 'top']: 'auto',
+            [isReverse ? 'top' : 'bottom']: `${offset}%`,
+            [isReverse ? 'bottom' : 'top']: 'auto',
             height: `${length}%`,
           }
         : {
-            [reverse ? 'right' : 'left']: `${offset}%`,
-            [reverse ? 'left' : 'right']: 'auto',
+            [isReverse ? 'right' : 'left']: `${offset}%`,
+            [isReverse ? 'left' : 'right']: 'auto',
             width: `${length}%`,
           };
       readyStyle = objectToString({
@@ -133,7 +133,7 @@ export default class TrackView extends PubSub implements ISubView {
 
   private updateView(): void {
     if (this.view) {
-      if (this.props?.track?.on) {
+      if (this.props?.track?.isOn) {
         this.view.attr(this.prepareAttr());
       } else {
         this.remove();

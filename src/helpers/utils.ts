@@ -14,11 +14,11 @@ const defaultProps: DefaultProps = {
   values: [0],
   min: 0,
   max: 100,
-  disabled: false,
-  track: { on: true },
-  rail: { on: true },
-  vertical: false,
-  reverse: false,
+  isDisabled: false,
+  track: { isOn: true },
+  rail: { isOn: true },
+  isVertical: false,
+  isReverse: false,
   precision: 0,
   mark: { values: [] },
   isFocused: false,
@@ -51,11 +51,11 @@ function calcOffset(
 }
 
 function getHandleCenterPosition(
-  vertical: boolean,
+  isVertical: boolean,
   handle: HTMLElement
 ): number {
   const coords = handle.getBoundingClientRect();
-  return vertical
+  return isVertical
     ? coords.top + coords.height * 0.5
     : window.pageXOffset + coords.left + coords.width * 0.5;
 }
@@ -73,9 +73,9 @@ function ensureValueInRange(
   return value;
 }
 
-function getMousePosition(vertical: boolean, event: MouseEvent): number {
+function getMousePosition(isVertical: boolean, event: MouseEvent): number {
   const { clientY = 0, pageX = 0 } = event || {};
-  return vertical ? clientY : pageX;
+  return isVertical ? clientY : pageX;
 }
 
 function getPrecision(step: number): number {
@@ -198,12 +198,12 @@ function getSliderStart(options: {
 }): number {
   const { props, view } = options;
   if (props && view) {
-    const { vertical, reverse } = props;
+    const { isVertical, isReverse } = props;
     const rect = view.get(0).getBoundingClientRect();
-    if (vertical) {
-      return reverse ? rect.bottom : rect.top;
+    if (isVertical) {
+      return isReverse ? rect.bottom : rect.top;
     }
-    return window.pageXOffset + (reverse ? rect.right : rect.left);
+    return window.pageXOffset + (isReverse ? rect.right : rect.left);
   }
   return 0;
 }
@@ -214,9 +214,9 @@ function getSliderLength(options: {
 }): number {
   const { props, view } = options;
   if (props && view) {
-    const { vertical } = props;
+    const { isVertical } = props;
     const coords = view.get(0).getBoundingClientRect();
-    return vertical ? coords.height : coords.width;
+    return isVertical ? coords.height : coords.width;
   }
   return 0;
 }
@@ -227,9 +227,9 @@ function calcValue(options: {
   props: DefaultProps;
 }): number {
   const { offset, length, props } = options;
-  const { vertical, min, max, step } = props;
+  const { isVertical, min, max, step } = props;
   const ratio = Math.abs(Math.max(offset, 0) / length);
-  const value = vertical
+  const value = isVertical
     ? (1 - ratio) * (max - min) + min
     : ratio * (max - min) + min;
   const readyPrecision = step ? getPrecision(step) : 2;
@@ -244,8 +244,8 @@ function calcValueByPos(options: {
   length: number;
 }): number {
   const { position, props, start } = options;
-  const { reverse, min, max } = props;
-  const sign = reverse ? -1 : +1;
+  const { isReverse, min, max } = props;
+  const sign = isReverse ? -1 : +1;
   const offset = sign * (position - start);
   let value = ensureValueInRange(calcValue({ ...options, offset }), {
     min,
@@ -639,15 +639,15 @@ function uniqId(): string {
 }
 
 function getPosition({
-  vertical = false,
+  isVertical = false,
   coordinateX = 0,
   coordinateY = 0,
 }: {
-  vertical: boolean;
+  isVertical: boolean;
   coordinateX: number;
   coordinateY: number;
 }): number {
-  return vertical ? coordinateY : coordinateX;
+  return isVertical ? coordinateY : coordinateX;
 }
 
 function isDirectionToMin(options: {
@@ -700,9 +700,9 @@ function getNearestIndex(options: {
   length: number;
 }): number {
   const { coordinateX, coordinateY, props, start } = options;
-  const { reverse, min, max, values, vertical } = props;
-  const position = getPosition({ vertical, coordinateX, coordinateY });
-  const sign = reverse ? -1 : +1;
+  const { isReverse, min, max, values, isVertical } = props;
+  const position = getPosition({ isVertical, coordinateX, coordinateY });
+  const sign = isReverse ? -1 : +1;
   const offset = sign * (position - start);
   const value = ensureValueInRange(calcValue({ ...options, offset }), {
     min,

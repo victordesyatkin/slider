@@ -114,19 +114,19 @@ export default class HandleView extends PubSub implements ISubView {
     if (this.props) {
       const index = this.addition?.index;
       const style = this.props?.handle?.styles?.[index] || {};
-      const { values, min, max, vertical, reverse } = this.props;
+      const { values, min, max, isVertical, isReverse } = this.props;
       const value = values[index];
       const offset = calcOffset(value, min, max, 2);
-      const positionStyle = vertical
+      const positionStyle = isVertical
         ? {
-            [reverse ? 'top' : 'bottom']: `${offset}%`,
-            [reverse ? 'bottom' : 'top']: 'auto',
-            transform: reverse ? 'none' : `translateY(+50%)`,
+            [isReverse ? 'top' : 'bottom']: `${offset}%`,
+            [isReverse ? 'bottom' : 'top']: 'auto',
+            transform: isReverse ? 'none' : `translateY(+50%)`,
           }
         : {
-            [reverse ? 'right' : 'left']: `${offset}%`,
-            [reverse ? 'left' : 'right']: 'auto',
-            transform: `translateX(${reverse ? '+' : '-'}50%)`,
+            [isReverse ? 'right' : 'left']: `${offset}%`,
+            [isReverse ? 'left' : 'right']: 'auto',
+            transform: `translateX(${isReverse ? '+' : '-'}50%)`,
           };
       readyStyle = objectToString({
         ...style,
@@ -142,8 +142,8 @@ export default class HandleView extends PubSub implements ISubView {
   }
 
   private appendTooltip(): void {
-    const on = this.props?.tooltip?.on;
-    if (on && this.isProps()) {
+    const isOn = this.props?.tooltip?.isOn;
+    if (isOn && this.isProps()) {
       const index = this.addition?.index;
       const value = this.props?.values?.[index];
       if (!isUndefined(value)) {

@@ -146,7 +146,7 @@ class Values extends Component<ValuesProps> {
       handleButtonAddClick();
     }
     if (isFunction(handleInputFocusout)) {
-      handleInputFocusout();
+      handleInputFocusout({ type: 'values' });
     }
   }
 
@@ -167,7 +167,7 @@ class Values extends Component<ValuesProps> {
       this.renderUl();
       this.toggleVisibleButtonRemove();
       if (isFunction(handleInputFocusout)) {
-        handleInputFocusout();
+        handleInputFocusout({ type: 'values' });
       }
       if (handleButtonRemoveClick) {
         handleButtonRemoveClick();
@@ -179,10 +179,7 @@ class Values extends Component<ValuesProps> {
   handleInputInput(options?: { index?: number; value?: string }): void {
     if (this.props) {
       const { index, value } = options || {};
-      let readyValue = parseFloat(String(value));
-      if (Number.isNaN(readyValue)) {
-        readyValue = 0;
-      }
+      const readyValue = parseFloat(String(value));
       const { value: prev } = this.props || {};
       const readyIndex = parseInt(String(index), 10);
       if (Array.isArray(prev) && !Number.isNaN(readyIndex)) {

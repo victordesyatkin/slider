@@ -15,11 +15,11 @@ class Input extends Component<InputProps> {
   public query = `.js-${this.className}`;
 
   public init(): void {
-    const { value, handleInputFocusout } = this.props || {};
+    const { value } = this.props || {};
     this.$input = $(`${this.query}__input`, this.$element);
     this.$input.on({
       input: this.handleInputInput,
-      focusout: handleInputFocusout,
+      focusout: this.handleInputFocusout,
     });
     this.setValue(value);
   }
@@ -52,7 +52,18 @@ class Input extends Component<InputProps> {
       if (handleInputInput && isFunction(handleInputInput)) {
         const { target } = event;
         const { value } = target;
-        handleInputInput(value);
+        handleInputInput({ value, type });
+      }
+    }
+    return undefined;
+  }
+
+  @bind handleInputFocusout(): void {
+    if (this.props) {
+      const { handleInputFocusout, type } = this.props || {};
+      if (handleInputFocusout && isFunction(handleInputFocusout)) {
+        const value = this.$input?.val();
+        handleInputFocusout({ value, type });
       }
     }
     return undefined;

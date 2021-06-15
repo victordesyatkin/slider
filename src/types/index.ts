@@ -1,8 +1,8 @@
 type Props = Partial<{
   prefixClassName: string;
-  vertical: boolean;
-  reverse: boolean;
-  disabled: boolean;
+  isVertical: boolean;
+  isReverse: boolean;
+  isDisabled: boolean;
   isFocused: boolean;
   values: number[];
   min: number;
@@ -27,9 +27,9 @@ type Props = Partial<{
 
 type DefaultProps = {
   prefixClassName: string;
-  vertical: boolean;
-  reverse: boolean;
-  disabled: boolean;
+  isVertical: boolean;
+  isReverse: boolean;
+  isDisabled: boolean;
   values: number[];
   min: number;
   max: number;
@@ -58,27 +58,27 @@ type Handle = {
 type Track = Partial<{
   classNames: string[];
   styles: Style[];
-  on: boolean;
+  isOn: boolean;
 }>;
 
 type Rail = Partial<{
   className: string;
   style: Style;
-  on: boolean;
+  isOn: boolean;
 }>;
 
 type Dot = Partial<{
   wrapClassName: string;
   className: string;
   style: Style;
-  on: boolean;
+  isOn: boolean;
 }>;
 
 type Tooltip = Partial<{
   className: string[];
   style: Style;
   render: Render;
-  on: boolean;
+  isOn: boolean;
   always: boolean;
 }>;
 
@@ -88,7 +88,7 @@ type Mark = Partial<{
   style: Style;
   render: Render;
   values: number[];
-  on: boolean;
+  isOn: boolean;
   dot: boolean;
 }>;
 

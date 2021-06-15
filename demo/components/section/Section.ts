@@ -94,7 +94,11 @@ class Section extends Component<SectionProps> {
       } else {
         item = new Input({
           parent: $item,
-          props: { ...props, handleInputInput, handleInputFocusout },
+          props: {
+            ...props,
+            handleInputInput,
+            handleInputFocusout,
+          },
         });
       }
       this.items[key] = item;

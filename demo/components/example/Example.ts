@@ -26,7 +26,7 @@ class Example extends Component<ExampleProps> {
       props: {
         ...panel,
         handleInputInput: this.handleInputInput,
-        handleInputFocusout: this.handleInputInput,
+        handleInputFocusout: this.handleInputFocusout,
       },
     });
     this.values = this.panel.getValues();
@@ -51,8 +51,20 @@ class Example extends Component<ExampleProps> {
   private values?: Props | null;
 
   @bind
-  private handleInputInput(): void {
-    this.setValues();
+  private handleInputInput(options: Partial<{ type: string }>): void {
+    const { type } = options || {};
+    if (type && type === 'checkbox') {
+      this.setValues();
+    }
+    return undefined;
+  }
+
+  @bind
+  private handleInputFocusout(options: Partial<{ type: string }>): void {
+    const { type } = options || {};
+    if (type && type !== 'checkbox') {
+      this.setValues();
+    }
     return undefined;
   }
 

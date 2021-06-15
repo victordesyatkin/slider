@@ -36,7 +36,7 @@ describe('rail', () => {
       $element = $(`.${defaultProps.prefixClassName}__track`, $parent);
       expect($element.length).toBe(1);
 
-      view.setProps({ ...defaultProps, track: { on: false } });
+      view.setProps({ ...defaultProps, track: { isOn: false } });
       $element = $(`.${defaultProps.prefixClassName}__track`, $parent);
       expect($element.length).toBe(0);
     });

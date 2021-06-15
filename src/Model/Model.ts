@@ -43,8 +43,8 @@ class Model extends PubSub implements IModel {
 
   public setProps(props?: Props): void {
     const prev = this.getProps();
-    const { disabled: disabledPrev } = prev;
-    const { disabled: disabledNext } = props || {};
+    const { isDisabled: disabledPrev } = prev;
+    const { isDisabled: disabledNext } = props || {};
     if (disabledPrev && disabledPrev === disabledNext) {
       return undefined;
     }
@@ -66,8 +66,8 @@ class Model extends PubSub implements IModel {
     length: number;
     action?: string;
   }): void {
-    const { disabled, vertical } = this.props;
-    if (disabled) {
+    const { isDisabled, isVertical } = this.props;
+    if (isDisabled) {
       return;
     }
     const {
@@ -87,7 +87,7 @@ class Model extends PubSub implements IModel {
       props: this.props,
     });
     const position: number = getPosition({
-      vertical,
+      isVertical,
       coordinateX,
       coordinateY,
     });
@@ -126,8 +126,8 @@ class Model extends PubSub implements IModel {
   }
 
   public onBeforeChange({ index }: { index: number | undefined }): void {
-    const { disabled } = this.props;
-    if (disabled) {
+    const { isDisabled } = this.props;
+    if (isDisabled) {
       return;
     }
     this.setIndex({ index });
@@ -140,8 +140,8 @@ class Model extends PubSub implements IModel {
   }
 
   public onAfterChange(): void {
-    const { disabled } = this.props;
-    if (disabled) {
+    const { isDisabled } = this.props;
+    if (isDisabled) {
       return;
     }
     this.setProps(this.getProps());
@@ -154,8 +154,8 @@ class Model extends PubSub implements IModel {
   }
 
   public setIndex({ index }: { index?: number }): void {
-    const { index: previousIndex, disabled } = this.props;
-    if (disabled) {
+    const { index: previousIndex, isDisabled } = this.props;
+    if (isDisabled) {
       return;
     }
     if (previousIndex !== index) {

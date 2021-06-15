@@ -52,14 +52,14 @@ describe('tooltip', () => {
       let $element = $(`.${defaultProps.prefixClassName}__tooltip`, $parent);
       expect($element.css('color')).toBeUndefined();
 
-      let props: DefaultProps = { ...defaultProps, tooltip: { on: true } };
+      let props: DefaultProps = { ...defaultProps, tooltip: { isOn: true } };
       view.setProps(props);
       $element = $(`.${defaultProps.prefixClassName}__tooltip`, $parent);
       expect($element.css('color')).toBe('');
 
       props = {
         ...defaultProps,
-        tooltip: { on: true, style: { color: 'red' } },
+        tooltip: { isOn: true, style: { color: 'red' } },
       };
       view.setProps(props);
       $element = $(`.${defaultProps.prefixClassName}__tooltip`, $parent);
@@ -79,11 +79,14 @@ describe('tooltip', () => {
       let $element = $(`.${defaultProps.prefixClassName}__tooltip`, $parent);
       expect($element.text()).toBe('');
 
-      let props: DefaultProps = { ...defaultProps, tooltip: { on: true } };
+      let props: DefaultProps = { ...defaultProps, tooltip: { isOn: true } };
       view.setProps(props);
       $element = $(`.${defaultProps.prefixClassName}__tooltip`, $parent);
       expect($element.text()).toBe('80');
-      props = { ...defaultProps, tooltip: { on: true, render: mockCallback } };
+      props = {
+        ...defaultProps,
+        tooltip: { isOn: true, render: mockCallback },
+      };
       view.setProps(props);
       $element = $(`.${defaultProps.prefixClassName}__tooltip`, $parent);
       expect($element.text()).toBe('80%');
@@ -99,11 +102,11 @@ describe('tooltip', () => {
       let view = new TooltipView(addition);
       view.render($parent);
       let $element = $(`.${defaultProps.prefixClassName}__tooltip`, $parent);
-      let props: DefaultProps = { ...defaultProps, tooltip: { on: true } };
+      let props: DefaultProps = { ...defaultProps, tooltip: { isOn: true } };
       view.setProps(props);
       $element = $(`.${defaultProps.prefixClassName}__tooltip`, $parent);
       expect($element.length).toBe(1);
-      props = { ...defaultProps, tooltip: { on: false } };
+      props = { ...defaultProps, tooltip: { isOn: false } };
       view.setProps(props);
       $element = $(`.${defaultProps.prefixClassName}__tooltip`, $parent);
       expect($element.length).toBe(0);
