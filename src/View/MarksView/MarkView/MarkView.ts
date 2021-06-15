@@ -93,7 +93,7 @@ class MarkView extends PubSub implements ISubView {
       const value = this.addition?.value || 0;
       const style = this.props?.mark?.style || {};
       const { isVertical, min, max, isReverse } = this.props;
-      const offset = calcOffset(value, min, max, 2);
+      const offset = calcOffset({ value, min, max, precision: 2 });
       const positionStyle = isVertical
         ? {
             [isReverse ? 'top' : 'bottom']: `${offset}%`,

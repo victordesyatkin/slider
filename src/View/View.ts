@@ -134,11 +134,12 @@ class View extends PubSub implements IView {
     if (!this.props?.isFocused) {
       this.publish('setIndex', { index: -1 });
     }
+    const { isVertical } = this.props || {};
     this.publish('onChange', {
       coordinateX,
       coordinateY,
       start: getSliderStart({ props: this.props, view: this.view }),
-      length: getSliderLength({ props: this.props, view: this.view }),
+      length: getSliderLength({ isVertical, view: this.view }),
       action: 'onAfterChange',
     });
   }
@@ -165,12 +166,13 @@ class View extends PubSub implements IView {
 
   @bind
   private handleWindowMouseMove(event: MouseEvent): void {
+    const { isVertical } = this.props || {};
     const { clientY: coordinateY = 0, pageX: coordinateX = 0 } = event || {};
     this.publish('onChange', {
       coordinateX,
       coordinateY,
       start: getSliderStart({ props: this.props, view: this.view }),
-      length: getSliderLength({ props: this.props, view: this.view }),
+      length: getSliderLength({ isVertical, view: this.view }),
     });
   }
 

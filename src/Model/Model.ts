@@ -66,7 +66,7 @@ class Model extends PubSub implements IModel {
     length: number;
     action?: string;
   }): void {
-    const { isDisabled, isVertical } = this.props;
+    const { isDisabled } = this.props;
     if (isDisabled) {
       return;
     }
@@ -77,28 +77,41 @@ class Model extends PubSub implements IModel {
       length,
       action = 'onChange',
     } = options;
-    const { index } = this.props;
+    const { index, isVertical, isReverse, min, max, step, values } = this.props;
     const { index: readyIndex, isCorrect } = getCorrectIndex({
       index,
       coordinateX,
       coordinateY,
       start,
       length,
-      props: this.props,
+      isVertical,
+      min,
+      max,
+      step,
+      values,
+      isReverse,
     });
     const position: number = getPosition({
       isVertical,
       coordinateX,
       coordinateY,
     });
-    const { values: previousValues } = this.props;
+    const { values: previousValues, indent, mark } = this.props;
+    const { values: extraValues } = mark || {};
     const previousValue = previousValues[readyIndex];
     const nextValue = calcValueByPos({
       position,
       start,
       length,
-      props: this.props,
       index: readyIndex,
+      isVertical,
+      isReverse,
+      min,
+      max,
+      step,
+      indent,
+      values,
+      extraValues,
     });
     if (previousValue !== nextValue) {
       let nextValues = [...previousValues];

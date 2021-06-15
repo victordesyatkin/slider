@@ -26,7 +26,6 @@ class ValueItem extends Component<ValueItemProps> {
     if (!isUndefined(value)) {
       this.$index = $(`${this.query}__index`, this.$element);
       this.$input = $(`${this.query}__input`, this.$element);
-      // console.log('ValueItem value : ', value);
       this.input = new Input({
         parent: this.$input,
         props: {

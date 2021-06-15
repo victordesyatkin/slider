@@ -40,30 +40,34 @@ function objectToString(style?: { [key: string]: string }): string {
   return lines.join('');
 }
 
-function calcOffset(
-  value: number,
-  min: number,
-  max: number,
-  precision = 0
-): number {
+function calcOffset(options: {
+  value: number;
+  min: number;
+  max: number;
+  precision: number;
+}): number {
+  const { value, min, max, precision = 0 } = options;
   const ratio = (value - min) / (max - min);
   return Number(Math.max(0, ratio * 100).toFixed(precision));
 }
 
-function getHandleCenterPosition(
-  isVertical: boolean,
-  handle: HTMLElement
-): number {
+function getHandleCenterPosition(options: {
+  isVertical: boolean;
+  handle: HTMLElement;
+}): number {
+  const { isVertical, handle } = options;
   const coords = handle.getBoundingClientRect();
   return isVertical
     ? coords.top + coords.height * 0.5
     : window.pageXOffset + coords.left + coords.width * 0.5;
 }
 
-function ensureValueInRange(
-  value: number,
-  { max, min }: { max: number; min: number }
-): number {
+function ensureValueInRange(options: {
+  value: number;
+  max: number;
+  min: number;
+}): number {
+  const { value, min, max } = options;
   if (value <= min) {
     return min;
   }
@@ -73,7 +77,11 @@ function ensureValueInRange(
   return value;
 }
 
-function getMousePosition(isVertical: boolean, event: MouseEvent): number {
+function getMousePosition(options: {
+  isVertical: boolean;
+  event: MouseEvent;
+}): number {
+  const { isVertical, event } = options;
   const { clientY = 0, pageX = 0 } = event || {};
   return isVertical ? clientY : pageX;
 }
@@ -87,37 +95,40 @@ function getPrecision(step: number): number {
   return precision;
 }
 
-function getClosestPoint(
-  value: number,
-  { step, min, max }: { step: number | undefined; min: number; max: number },
-  props: DefaultProps
-): number {
-  if (step) {
-    let points: number[] = [...(props?.mark?.values || [])];
-    const baseNum = 10 ** getPrecision(step);
-    const maxSteps = Math.floor(
-      (max * baseNum - min * baseNum) / (step * baseNum)
-    );
-    const steps = Math.min((value - min) / step, maxSteps);
-    const closestStep = Math.round(steps) * step + min;
-    points.push(closestStep);
-    points = uniq(points);
-    const diffs = points.map((point) => Math.abs(value - point));
-    return points[diffs.indexOf(Math.min(...diffs))];
-  }
-  return value;
+function getClosestPoint(options: {
+  value: number;
+  step: number;
+  min: number;
+  max: number;
+  extraValues: number[] | undefined;
+}): number {
+  const { step, extraValues, max, min, value } = options;
+  let points: number[] = [...(extraValues || [])];
+  const maximumSteps = Math.floor((max - min) / step);
+  const steps = Math.min((value - min) / step, maximumSteps);
+  const closestStep = Math.round(steps) * step + min;
+  points.push(closestStep);
+  points = uniq(points);
+  const diffs = points.map((point) => Math.abs(value - point));
+  return points[diffs.indexOf(Math.min(...diffs))];
 }
 
-function ensureValuePrecision(value: number, props: DefaultProps): number {
-  const { step = 0, min, max } = props;
-  const closestPoint = Number.isFinite(
-    getClosestPoint(value, { step, min, max }, props)
-  )
-    ? getClosestPoint(value, { step, min, max }, props)
-    : 0;
-  return step
-    ? parseFloat(closestPoint.toFixed(getPrecision(step)))
-    : closestPoint;
+function ensureValuePrecision(options: {
+  value: number;
+  max: number;
+  min: number;
+  step: number | undefined;
+  extraValues: number[] | undefined;
+}): number {
+  const { step, min, max, value, extraValues } = options;
+  let closestPoint = value;
+  if (step) {
+    const temp = getClosestPoint({ value, step, min, max, extraValues });
+    if (Number.isFinite(temp)) {
+      closestPoint = parseFloat(temp.toFixed(getPrecision(step)));
+    }
+  }
+  return closestPoint;
 }
 
 function checkNeighbors(value: number[]): boolean {
@@ -126,12 +137,13 @@ function checkNeighbors(value: number[]): boolean {
 
 function ensureValueCorrectNeighbors(options: {
   value: number;
-  props: DefaultProps;
+  min: number;
+  max: number;
   index: number;
+  values: number[];
+  indent: number;
 }): number {
-  const { props, index } = options;
-  const { indent, values } = props;
-  const { min, max } = props;
+  const { index, min, max, values, indent } = options;
   let { value } = options;
   let calculateMin = min;
   let calculateMax = max;
@@ -146,7 +158,8 @@ function ensureValueCorrectNeighbors(options: {
     }
     const isCorrect = prevValue || nextValue;
     if (isCorrect) {
-      value = ensureValueInRange(value, {
+      value = ensureValueInRange({
+        value,
         min: calculateMin,
         max: calculateMax,
       });
@@ -154,35 +167,47 @@ function ensureValueCorrectNeighbors(options: {
     calculateMin = min;
     calculateMax = max;
   }
-  return ensureValueInRange(value, {
-    min: calculateMin,
-    max: calculateMax,
-  });
+  return ensureValueInRange({ value, min: calculateMin, max: calculateMax });
 }
 
 function calcValueWithEnsure(options: {
   value: number;
-  props: DefaultProps;
+  min: number;
+  max: number;
+  values: number[];
+  indent: number;
   index: number;
+  step: number | undefined;
+  extraValues: number[] | undefined;
 }): number {
-  const { props } = options;
   let { value } = options;
-  value = ensureValuePrecision(value, props);
+  const { step, min, max, extraValues } = options;
+  value = ensureValuePrecision({ value, max, min, step, extraValues });
   value = ensureValueCorrectNeighbors({ ...options, value });
   return value;
 }
 
 function prepareValues(props: DefaultProps): DefaultProps {
   let { values } = props;
-  const { mark } = props;
+  const { min, max, indent, step, mark } = props;
+  const extraValues = mark?.values || [];
   if (!values.length) {
     values = defaultProps.values;
   }
   values = orderBy(values).map((value, index) =>
-    calcValueWithEnsure({ value, props, index })
+    calcValueWithEnsure({
+      values,
+      value,
+      index,
+      min,
+      max,
+      step,
+      indent,
+      extraValues,
+    })
   );
-  let markValues: number[] = (mark?.values || []).map((value) =>
-    ensureValueInRange(value, { min: props.min, max: props.max })
+  let markValues: number[] = extraValues.map((value) =>
+    ensureValueInRange({ value, min, max })
   );
   markValues = orderBy(markValues, [], ['asc']);
   return { ...props, values, mark: { ...mark, values: markValues } };
@@ -210,11 +235,10 @@ function getSliderStart(options: {
 
 function getSliderLength(options: {
   view?: JQuery<HTMLElement> | null;
-  props?: DefaultProps;
+  isVertical?: boolean;
 }): number {
-  const { props, view } = options;
-  if (props && view) {
-    const { isVertical } = props;
+  const { view, isVertical } = options;
+  if (!isUndefined(isVertical) && view) {
     const coords = view.get(0).getBoundingClientRect();
     return isVertical ? coords.height : coords.width;
   }
@@ -224,10 +248,12 @@ function getSliderLength(options: {
 function calcValue(options: {
   offset: number;
   length: number;
-  props: DefaultProps;
+  isVertical: boolean;
+  min: number;
+  max: number;
+  step: number | undefined;
 }): number {
-  const { offset, length, props } = options;
-  const { isVertical, min, max, step } = props;
+  const { offset, length, isVertical, min, max, step } = options;
   const ratio = Math.abs(Math.max(offset, 0) / length);
   const value = isVertical
     ? (1 - ratio) * (max - min) + min
@@ -239,19 +265,48 @@ function calcValue(options: {
 function calcValueByPos(options: {
   position: number;
   start: number;
-  props: DefaultProps;
   index: number;
   length: number;
+  isVertical: boolean;
+  isReverse: boolean;
+  min: number;
+  max: number;
+  step: number | undefined;
+  indent: number;
+  values: number[];
+  extraValues: number[] | undefined;
 }): number {
-  const { position, props, start } = options;
-  const { isReverse, min, max } = props;
+  const {
+    position,
+    start,
+    isReverse,
+    min,
+    max,
+    isVertical,
+    step,
+    length,
+    values,
+    indent,
+    index,
+    extraValues,
+  } = options;
   const sign = isReverse ? -1 : +1;
   const offset = sign * (position - start);
-  let value = ensureValueInRange(calcValue({ ...options, offset }), {
+  let value = ensureValueInRange({
+    value: calcValue({ step, max, min, length, isVertical, offset }),
     min,
     max,
   });
-  value = calcValueWithEnsure({ ...options, value });
+  value = calcValueWithEnsure({
+    min,
+    max,
+    values,
+    indent,
+    index,
+    step,
+    extraValues,
+    value,
+  });
   return value;
 }
 
@@ -650,11 +705,7 @@ function getPosition({
   return isVertical ? coordinateY : coordinateX;
 }
 
-function isDirectionToMin(options: {
-  value: number;
-  props: DefaultProps;
-  item: number;
-}): boolean {
+function isDirectionToMin(options: { value: number; item: number }): boolean {
   const { value, item } = options;
   const direction = value - item;
   return direction < 0;
@@ -663,11 +714,9 @@ function isDirectionToMin(options: {
 function getNearest({
   value,
   values,
-  props,
 }: {
   value: number;
   values: number[];
-  props: DefaultProps;
 }): {
   index: number;
   value: number;
@@ -677,7 +726,7 @@ function getNearest({
   let readyDifferent = Number.MAX_SAFE_INTEGER;
   values.forEach((item, index) => {
     const different = Math.abs(value - item);
-    if (isDirectionToMin({ value, props, item })) {
+    if (isDirectionToMin({ value, item })) {
       if (readyDifferent > different) {
         readyDifferent = different;
         readyIndex = index;
@@ -696,19 +745,35 @@ function getNearestIndex(options: {
   coordinateX: number;
   coordinateY: number;
   start: number;
-  props: DefaultProps;
   length: number;
+  isVertical: boolean;
+  min: number;
+  max: number;
+  step: number | undefined;
+  values: number[];
+  isReverse: boolean;
 }): number {
-  const { coordinateX, coordinateY, props, start } = options;
-  const { isReverse, min, max, values, isVertical } = props;
+  const {
+    coordinateX,
+    coordinateY,
+    start,
+    isReverse,
+    min,
+    max,
+    values,
+    isVertical,
+    step,
+    length,
+  } = options;
   const position = getPosition({ isVertical, coordinateX, coordinateY });
   const sign = isReverse ? -1 : +1;
   const offset = sign * (position - start);
-  const value = ensureValueInRange(calcValue({ ...options, offset }), {
+  const value = ensureValueInRange({
+    value: calcValue({ step, min, max, length, isVertical, offset }),
     min,
     max,
   });
-  const { index } = getNearest({ value, values, props });
+  const { index } = getNearest({ value, values });
   return index;
 }
 
@@ -716,26 +781,29 @@ function getCorrectIndex(options: {
   coordinateX: number;
   coordinateY: number;
   start: number;
-  props: DefaultProps;
   length: number;
   index?: number;
+  isVertical: boolean;
+  min: number;
+  max: number;
+  step: number | undefined;
+  values: number[];
+  isReverse: boolean;
 }): { isCorrect: boolean; index: number } {
-  const { index, ...other } = options;
+  const { index, values } = options;
   let readyIndex: number = index || 0;
   let isCorrect = false;
   const isNotCorrectIndex = isUndefined(index) || index < 0;
   if (isNotCorrectIndex) {
-    readyIndex = getNearestIndex(other);
+    readyIndex = getNearestIndex(options);
     isCorrect = true;
   } else if (!isUndefined(index)) {
-    const { props } = other;
-    const { values } = props;
     const currentValue = values[index];
     const previousValue = values[index - 1];
     const nextValue = values[index + 1];
     readyIndex = index;
     if (currentValue === previousValue || currentValue === nextValue) {
-      readyIndex = getNearestIndex(other);
+      readyIndex = getNearestIndex(options);
       isCorrect = true;
     }
   }

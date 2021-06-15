@@ -166,12 +166,15 @@ describe('helpers', () => {
       document.body.innerHTML = `<div class="${className1}" style="width:200px;height:100px;">hello world!</div>`;
       let $el = $(`.${className1}`);
       expect(
-        utils.getSliderLength({ view: $el, props: { ...defaultProps } })
+        utils.getSliderLength({
+          view: $el,
+          isVertical: defaultProps.isVertical,
+        })
       ).toBe(200);
       expect(
         utils.getSliderLength({
           view: $el,
-          props: { ...defaultProps, isVertical: true },
+          isVertical: true,
         })
       ).toBe(100);
     });
