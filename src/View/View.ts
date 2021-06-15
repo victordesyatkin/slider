@@ -4,7 +4,6 @@ import classnames from 'classnames';
 
 import {
   objectToString,
-  getCount,
   getSliderStart,
   getSliderLength,
 } from '../helpers/utils';
@@ -134,11 +133,11 @@ class View extends PubSub implements IView {
     if (!this.props?.isFocused) {
       this.publish('setIndex', { index: -1 });
     }
-    const { isVertical } = this.props || {};
+    const { isVertical, isReverse } = this.props || {};
     this.publish('onChange', {
       coordinateX,
       coordinateY,
-      start: getSliderStart({ props: this.props, view: this.view }),
+      start: getSliderStart({ isReverse, isVertical, view: this.view }),
       length: getSliderLength({ isVertical, view: this.view }),
       action: 'onAfterChange',
     });
@@ -166,18 +165,19 @@ class View extends PubSub implements IView {
 
   @bind
   private handleWindowMouseMove(event: MouseEvent): void {
-    const { isVertical } = this.props || {};
+    const { isVertical, isReverse } = this.props || {};
     const { clientY: coordinateY = 0, pageX: coordinateX = 0 } = event || {};
     this.publish('onChange', {
       coordinateX,
       coordinateY,
-      start: getSliderStart({ props: this.props, view: this.view }),
+      start: getSliderStart({ isReverse, isVertical, view: this.view }),
       length: getSliderLength({ isVertical, view: this.view }),
     });
   }
 
   private createOrUpdateSubViews(): void {
-    const count = getCount(this.props);
+    const { values = [] } = this.props || {};
+    const count = (values || []).length;
     this.rails = this.createOrUpdateSubView<RailView>(
       this.rails,
       1,
@@ -227,7 +227,9 @@ class View extends PubSub implements IView {
           handleViewMouseDown: this.handleViewMouseDown,
         };
       } else if (action === 'click') {
-        if (getCount(this.props) > 0) {
+        const { values = [] } = this.props;
+        const valuesLength = (values || []).length;
+        if (valuesLength > 0) {
           handles = {
             handleViewClick: this.handleViewClick,
           };

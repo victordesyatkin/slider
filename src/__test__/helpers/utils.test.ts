@@ -117,12 +117,6 @@ describe('helpers', () => {
       expect((r?.mark?.values || []).length).toBe(2);
       expect(r.mark?.values).toEqual(expect.arrayContaining([40, 50]));
     });
-    test('undefined -> getCount -> 0', () => {
-      expect(utils.getCount()).toBe(0);
-    });
-    test('values: [10, 48, 14] -> getCount -> 3', () => {
-      expect(utils.getCount({ ...defaultProps, values: [10, 48, 14] })).toBe(3);
-    });
     test('getSliderStart', () => {
       expect(utils.getSliderStart({})).toBe(0);
       expect(utils.getSliderStart({ props: { ...defaultProps } })).toBe(0);

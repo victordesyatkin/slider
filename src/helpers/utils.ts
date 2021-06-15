@@ -213,17 +213,15 @@ function prepareValues(props: DefaultProps): DefaultProps {
   return { ...props, values, mark: { ...mark, values: markValues } };
 }
 
-function getCount(props?: DefaultProps): number {
-  return (props?.values || []).length;
-}
-
-function getSliderStart(options: {
-  props?: DefaultProps;
-  view?: JQuery<HTMLElement> | null;
-}): number {
-  const { props, view } = options;
-  if (props && view) {
-    const { isVertical, isReverse } = props;
+function getSliderStart(
+  options?: Partial<{
+    isVertical: boolean;
+    isReverse: boolean;
+    view: JQuery<HTMLElement> | null;
+  }>
+): number {
+  const { isReverse, isVertical, view } = options || {};
+  if (view) {
     const rect = view.get(0).getBoundingClientRect();
     if (isVertical) {
       return isReverse ? rect.bottom : rect.top;
@@ -822,7 +820,6 @@ export {
   calcValue,
   getSliderLength,
   getSliderStart,
-  getCount,
   prepareValues,
   ensureValuePrecision,
   getClosestPoint,
