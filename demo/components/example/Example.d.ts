@@ -8,7 +8,7 @@ declare class Example extends Component<ExampleProps> {
     private panel?;
     private slider?;
     private values?;
-    private handleInputFocusout;
+    private handleInputInput;
     private setValues;
     private onAfterChange;
 }

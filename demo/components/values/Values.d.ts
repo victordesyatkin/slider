@@ -8,7 +8,6 @@ declare class Values extends Component<ValuesProps> {
     setValue(value?: unknown): void;
     init(): void;
     private $template?;
-    private $ul?;
     private $content?;
     private $buttonAdd?;
     private buttonAdd?;

@@ -34,6 +34,10 @@ declare type SectionProps = Partial<{
     data: DataProps;
     items: ItemProps[];
     handleInputFocusout: () => void;
+    handleInputInput: (options?: Partial<{
+        index: number;
+        value: string;
+    }>) => void;
 }> | null;
 declare type LinkProps = Partial<{
     content: string;
@@ -46,6 +50,10 @@ declare type PanelProps = Partial<{
     link: LinkProps;
     sections: SectionProps[];
     handleInputFocusout: () => void;
+    handleInputInput: (options?: Partial<{
+        index: number;
+        value: string;
+    }>) => void;
 }> | null;
 declare type ValuesProps = Partial<{
     data: DataProps;
@@ -54,6 +62,10 @@ declare type ValuesProps = Partial<{
     handleButtonAddClick: () => void;
     handleButtonRemoveClick: () => void;
     handleInputFocusout: () => void;
+    handleInputInput: (options?: Partial<{
+        index: number;
+        value: string;
+    }>) => void;
 }> | null;
 declare type ValueItemProps = Partial<{
     index: number;
