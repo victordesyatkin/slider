@@ -124,7 +124,7 @@ function getClosestPoint(options: {
   return points[diffs.indexOf(Math.min(...diffs))];
 }
 
-function checkExistStep(step: number | undefined): boolean {
+function checkIsCorrectStep(step: number | undefined): boolean {
   return Boolean(step) && typeof step === 'number';
 }
 
@@ -137,7 +137,7 @@ function ensureValuePrecision(options: {
 }): number {
   const { step, min, max, value, extraValues } = options;
   let closestPoint = value;
-  if (step && checkExistStep(step)) {
+  if (step && checkIsCorrectStep(step)) {
     const temporaryClosestPoint = getClosestPoint({
       value,
       step,
@@ -1099,7 +1099,7 @@ export {
   getCorrectIndex,
   isDirectionToMin,
   isNeedCorrectStyle,
-  checkExistStep,
+  checkIsCorrectStep,
   correctData,
   correctMin,
   correctMax,
