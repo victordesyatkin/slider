@@ -189,14 +189,14 @@ const slider = $(<span style="color: #df5000;">'.my-selector'</span>).data(<span
         </tr>
         <tr>
             <td>style</td>
-            <td>object</td>
-            <td>{}</td>
+            <td>object | null</td>
+            <td>null</td>
             <td>style: {"backgound": "red"} дополнительный стиль для корневого узла слайдера</td>
         </tr>
         <tr>
             <td>classNames</td>
-            <td>string[]</td>
-            <td>[]</td>
+            <td>string[] | null</td>
+            <td>null</td>
             <td>Имена классов, которые добавляются к корневому узлу слайдера</td>
         </tr>
         <tr>
@@ -237,20 +237,20 @@ const slider = $(<span style="color: #df5000;">'.my-selector'</span>).data(<span
         </tr>
         <tr>
             <td>onBeforeChange</td>
-            <td>Function</td>
-            <td>noop</td>
+            <td>Function | null</td>
+            <td>null</td>
             <td>Функция будет срабатывать перед началом движения handle, когда его подняли ((values: number[]) => void)</td>
         </tr>
         <tr>
             <td>onChange</td>
-            <td>Function</td>
-            <td>noop</td>
+            <td>Function | null</td>
+            <td>null</td>
             <td>Функция будет срабатывать при движения handle ((values: number[]) => void)</td>
         </tr>
         <tr>
             <td>onAfterChange</td>
-            <td>Function</td>
-            <td>noop</td>
+            <td>Function | null</td>
+            <td>null</td>
             <td>Функция будет срабатывать после движения handle, когда его отпустили ((values: number[]) => void)</td>
         </tr>
         <tr>
@@ -259,8 +259,8 @@ const slider = $(<span style="color: #df5000;">'.my-selector'</span>).data(<span
             <td>{}</td>
             <td>Ручка,<br/>
             {<br/>
-                classNames?: string[] = [] - имя класса для каждой ручки,<br/>
-                styles: style[] = [] стиль для каждой ручки, где style: {"backgound": "red"},<br/>
+                classNames?: string[] | null = null - имя класса для каждой ручки,<br/>
+                styles: style[] | null = null стиль для каждой ручки, где style: {"backgound": "red"},<br/>
             }
             </td>
         </tr>
@@ -270,8 +270,8 @@ const slider = $(<span style="color: #df5000;">'.my-selector'</span>).data(<span
             <td>{isOn: true}</td>
             <td>Трек,<br/>
             {<br/>
-                classNames?: string[] = [] - имя класса для каждого трека,<br/>
-                styles: style[] = [] стиль для каждого трека, где style: {"backgound-color": "yellow"},<br/>
+                classNames?: string[] | null= null - имя класса для каждого трека,<br/>
+                styles: style[] = [] | null = null стиль для каждого трека, где style: {"backgound-color": "yellow"},<br/>
                 isOn?: boolean = true - вкл/выкл,<br/>
             }
             </td>
@@ -282,8 +282,8 @@ const slider = $(<span style="color: #df5000;">'.my-selector'</span>).data(<span
             <td>{isOn: true}</td>
             <td>Рельс, <br/>
             {<br/>
-                className?: string = '' - имя класса рельсы,<br/>
-                styles: style[] = [] - стиль рельсы, где style: {"backgound-color": "green"},<br/>
+                className?: string | null = null - имя класса рельсы,<br/>
+                style?: style | null = null - стиль рельсы, где style: {"backgound-color": "green"},<br/>
                 isOn?: boolean = true - вкл/выкл,<br/>
             }
             </td>
@@ -307,12 +307,12 @@ const slider = $(<span style="color: #df5000;">'.my-selector'</span>).data(<span
             <td>Отметки шкалы, <br/>
             {<br/>
                 isOn?: boolean = false - вкл/выкл,<br/>
+                isDot?: boolean = false, вкл/выкл точек-меток для дополнительных значений отметок шкалы,<br/>
                 wrapClassName?: string = '' - имя класса для родительского класса отметок шкалы,<br/>
                 style?: {"backgound": "red"} - стиль для отметок шкалы,<br/>
                 className?: string = '' - имя класса для отметок шкалы,<br/>
                 render?: (value: number) => | string | JQuery<HTMLElement> | JQuery<HTMLElement>[] | HTMLElement | HTMLElement[] | undefined; - функция для изменения отображения отметок шкалы,<br/>
                 values?: number[min, ..., max] - дополнительные значения отметок шкалы отображаются внезависимости от значения step, отметки минимального и максимального значений добавлены по умолчанию,<br/>
-                dot?: boolean = false, вкл/выкл точек-меток для дополнительных значений отметок шкалы,<br/>
             }
             </td>
         </tr>
@@ -326,7 +326,7 @@ const slider = $(<span style="color: #df5000;">'.my-selector'</span>).data(<span
                 style?: {"backgound": "red"} - стиль для подсказки,<br/>
                 className?: string = '' - имя класса для подсказки,<br/>
                 render?: (value: number) => | string | JQuery<HTMLElement> | JQuery<HTMLElement>[] | HTMLElement | HTMLElement[] | undefined; - функция для изменения отображения подсказки,<br/>
-                always?: boolean = false, вкл/выкл постоянного отображения подсказок, если установлено значение false подсказки отображаются только при наведении на handle,<br/>
+                isAlways?: boolean = false, вкл/выкл постоянного отображения подсказок, если установлено значение false подсказки отображаются только при наведении на handle,<br/>
             }
             </td>
         </tr>

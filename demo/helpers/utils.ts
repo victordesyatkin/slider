@@ -122,8 +122,8 @@ function valueToProp(options?: {
     case 'isReverse':
     case 'isFocused':
     case 'isOn':
-    case 'dot':
-    case 'always': {
+    case 'withDot':
+    case 'isAlways': {
       readyValue = Boolean(parseInt(String(readyValue), 10));
       return readyValue;
     }

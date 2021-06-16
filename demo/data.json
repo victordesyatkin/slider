@@ -541,13 +541,13 @@
               },
               {
                 "label": {
-                  "content": "Always"
+                  "content": "isAlways"
                 },
                 "value": 1,
                 "type": "checkbox",
                 "data": {
                   "type": "tooltip",
-                  "property": "always"
+                  "property": "isAlways"
                 }
               },
               {

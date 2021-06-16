@@ -74,11 +74,11 @@ type Dot = Partial<{
 }>;
 
 type Tooltip = Partial<{
-  classNames: string[] | null;
+  className: string | null;
   style: Style | null;
   render: Render | null;
   isOn: boolean;
-  always: boolean;
+  isAlways: boolean;
 }>;
 
 type Mark = Partial<{

@@ -541,13 +541,13 @@
               },
               {
                 "label": {
-                  "content": "Always"
+                  "content": "isAlways"
                 },
                 "value": 1,
                 "type": "checkbox",
                 "data": {
                   "type": "tooltip",
-                  "property": "always"
+                  "property": "isAlways"
                 }
               },
               {
@@ -1050,13 +1050,13 @@
               },
               {
                 "label": {
-                  "content": "Always"
+                  "content": "isAlways"
                 },
                 "value": 0,
                 "type": "checkbox",
                 "data": {
                   "type": "tooltip",
-                  "property": "always"
+                  "property": "isAlways"
                 }
               },
               {
@@ -1559,13 +1559,13 @@
               },
               {
                 "label": {
-                  "content": "Always"
+                  "content": "isAlways"
                 },
                 "value": 0,
                 "type": "checkbox",
                 "data": {
                   "type": "tooltip",
-                  "property": "always"
+                  "property": "isAlways"
                 }
               },
               {
@@ -2069,13 +2069,13 @@
               },
               {
                 "label": {
-                  "content": "Always"
+                  "content": "isAlways"
                 },
                 "value": 1,
                 "type": "checkbox",
                 "data": {
                   "type": "tooltip",
-                  "property": "always"
+                  "property": "isAlways"
                 }
               },
               {

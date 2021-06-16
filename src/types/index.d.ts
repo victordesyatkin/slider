@@ -77,7 +77,7 @@ declare type Tooltip = Partial<{
   style: Style;
   render: Render;
   isOn: boolean;
-  always: boolean;
+  isAlways: boolean;
 }>;
 declare type Mark = Partial<{
   wrapClassName: string;

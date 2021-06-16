@@ -77,11 +77,11 @@ export default class TooltipView extends PubSub implements ISubView {
 
   private prepareClassName(): string {
     const prefixClassName = this.props?.prefixClassName || '';
-    const className = this.props?.tooltip?.className || '';
-    const always = this.props?.tooltip?.always;
+    const className = this.props?.tooltip?.className || [];
+    const isAlways = this.props?.tooltip?.isAlways;
 
     return classnames(`${prefixClassName}__tooltip`, className, {
-      [`${prefixClassName}__tooltip_always`]: always,
+      [`${prefixClassName}__tooltip_always`]: isAlways,
     });
   }
 

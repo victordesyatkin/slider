@@ -111,7 +111,7 @@ function getClosestPoint(options: {
   step: number;
   min: number;
   max: number;
-  extraValues: number[] | undefined;
+  extraValues: number[] | undefined | null;
 }): number {
   const { step, extraValues, max, min, value } = options;
   let points: number[] = [...(extraValues || [])];
@@ -129,7 +129,7 @@ function ensureValuePrecision(options: {
   max: number;
   min: number;
   step: number | undefined;
-  extraValues: number[] | undefined;
+  extraValues: number[] | undefined | null;
 }): number {
   const { step, min, max, value, extraValues } = options;
   let closestPoint = value;
@@ -189,7 +189,7 @@ function calcValueWithEnsure(options: {
   indent: number;
   index: number;
   step: number | undefined;
-  extraValues: number[] | undefined;
+  extraValues: number[] | undefined | null;
 }): number {
   let { value } = options;
   const { step, min, max, extraValues } = options;
@@ -283,7 +283,7 @@ function calcValueByPos(options: {
   step: number | undefined;
   indent: number;
   values: number[];
-  extraValues: number[] | undefined;
+  extraValues: number[] | undefined | null;
 }): number {
   const {
     position,
@@ -388,7 +388,7 @@ function correctMax(options: { min: number; max: number }): number {
 function correctStep(options: {
   min: number;
   max: number;
-  step: number | undefined;
+  step: number | undefined | null;
 }): number {
   const { max, min, step } = options;
   let readyStep = parseFloat(String(step));
@@ -503,6 +503,18 @@ function correctClassName(
   return null;
 }
 
+function correctWrapClassName(
+  options?: Partial<{
+    wrapClassName: string | null;
+  }>
+): string | null {
+  const { wrapClassName } = options || {};
+  if (isString(wrapClassName) && trim(wrapClassName)) {
+    return wrapClassName;
+  }
+  return null;
+}
+
 function correctValues(
   options?: Partial<{
     values?: number[] | null;
@@ -512,6 +524,12 @@ function correctValues(
 ): number[] | null {
   const { values, max, min } = options || {};
   let readyValues: number[] | undefined = [];
+  if (isUndefined(max)) {
+    return null;
+  }
+  if (isUndefined(min)) {
+    return null;
+  }
   if (Array.isArray(values)) {
     readyValues = values.slice();
     values.forEach((temp, index) => {
@@ -522,17 +540,16 @@ function correctValues(
       }
     });
   }
-  const isCorrectObject = values && key in values;
-  if (isCorrectObject && typeof values === 'object') {
-    if (readyValue.indexOf(min) === -1) {
-      readyValue.push(min);
+  if (readyValues) {
+    if (readyValues.indexOf(min) === -1) {
+      readyValues.push(min);
     }
-    if (readyValue.indexOf(max) === -1) {
-      readyValue.push(max);
+    if (readyValues.indexOf(max) === -1) {
+      readyValues.push(max);
     }
-    values[key] = orderBy(readyValue, [], ['asc']);
+    readyValues = orderBy(readyValues, [], ['asc']);
   }
-  return values;
+  return readyValues;
 }
 
 function correctIndex(options: {
@@ -573,7 +590,12 @@ function correctWithDot(options?: Partial<{ withDot?: boolean }>): boolean {
   return Boolean(withDot);
 }
 
-function correctTrack(options?: Partial<{ entity: Track }>) {
+function correctIsAlways(options?: Partial<{ isAlways?: boolean }>): boolean {
+  const { isAlways } = options || {};
+  return Boolean(isAlways);
+}
+
+function correctTrack(options?: Partial<{ entity: Track }>): Track | undefined {
   const { entity } = options || {};
   if (isObject(entity) && isReallyObject(entity)) {
     Object.keys(entity).forEach((key) => {
@@ -603,7 +625,9 @@ function correctTrack(options?: Partial<{ entity: Track }>) {
   return entity;
 }
 
-function correctHandle(options?: Partial<{ entity: Handle }>) {
+function correctHandle(
+  options?: Partial<{ entity: Handle }>
+): Handle | undefined {
   const { entity } = options || {};
   if (isObject(entity) && isReallyObject(entity)) {
     Object.keys(entity).forEach((key) => {
@@ -630,7 +654,7 @@ function correctHandle(options?: Partial<{ entity: Handle }>) {
 
 function correctMark(
   options?: Partial<{ entity: Mark; min: number; max: number }>
-) {
+): Mark | undefined {
   const { entity, min, max } = options || {};
   if (isObject(entity) && isReallyObject(entity)) {
     Object.keys(entity).forEach((key) => {
@@ -663,7 +687,7 @@ function correctMark(
         }
         case 'values': {
           const value = entity[castKey];
-          entity[castKey] = correctValues({ values: value });
+          entity[castKey] = correctValues({ values: value, min, max });
           break;
         }
         default: {
@@ -675,38 +699,104 @@ function correctMark(
   return entity;
 }
 
-function correctEntity<T>(
-  options: Partial<{ entity: T; max: number; min: number }>
-): T {
-  const { entity } = options;
+function correctDot(options?: Partial<{ entity: Dot }>): Dot | undefined {
+  const { entity } = options || {};
   if (isObject(entity) && isReallyObject(entity)) {
     Object.keys(entity).forEach((key) => {
       const castKey = key as keyof typeof entity;
       switch (castKey) {
-        case 'classNames': {
+        case 'isOn': {
           const value = entity[castKey];
-          entity[castKey] = correctClassNames({ classNames: value });
+          entity[castKey] = correctIsOn({ isOn: value });
           break;
         }
-        case 'styles': {
-          correctStyles({ values: readyValues, key: readyKey, value });
+        case 'className': {
+          const value = entity[castKey];
+          entity[castKey] = correctClassName({ className: value });
+          break;
+        }
+        case 'wrapClassName': {
+          const value = entity[castKey];
+          entity[castKey] = correctWrapClassName({
+            wrapClassName: value,
+          });
           break;
         }
         case 'style': {
-          correctStyle({ values: readyValues, key: readyKey, value });
+          const value = entity[castKey];
+          entity[castKey] = correctStyle({ style: value });
           break;
         }
-        case 'className':
-        case 'wrapClassName': {
-          correctClassName({ values: readyValues, key: readyKey, value });
+        default: {
+          break;
+        }
+      }
+    });
+  }
+  return entity;
+}
+
+function correctTooltip(
+  options?: Partial<{ entity: Tooltip }>
+): Tooltip | undefined {
+  const { entity } = options || {};
+  if (isObject(entity) && isReallyObject(entity)) {
+    Object.keys(entity).forEach((key) => {
+      const castKey = key as keyof typeof entity;
+      switch (castKey) {
+        case 'isOn': {
+          const value = entity[castKey];
+          entity[castKey] = correctIsOn({ isOn: value });
+          break;
+        }
+        case 'className': {
+          const value = entity[castKey];
+          entity[castKey] = correctClassName({ className: value });
+          break;
+        }
+        case 'style': {
+          const value = entity[castKey];
+          entity[castKey] = correctStyle({ style: value });
           break;
         }
         case 'render': {
-          correctRender({ values: readyValues, key: readyKey, value, props });
+          const value = entity[castKey];
+          entity[castKey] = correctRender({ render: value });
           break;
         }
-        case 'values': {
-          correctValues({ values: readyValues, key: readyKey, value, props });
+        case 'isAlways': {
+          const value = entity[castKey];
+          entity[castKey] = correctIsAlways({ isAlways: value });
+          break;
+        }
+        default: {
+          break;
+        }
+      }
+    });
+  }
+  return entity;
+}
+
+function correctRail(options?: Partial<{ entity: Rail }>): Rail | undefined {
+  const { entity } = options || {};
+  if (isObject(entity) && isReallyObject(entity)) {
+    Object.keys(entity).forEach((key) => {
+      const castKey = key as keyof typeof entity;
+      switch (castKey) {
+        case 'isOn': {
+          const value = entity[castKey];
+          entity[castKey] = correctIsOn({ isOn: value });
+          break;
+        }
+        case 'className': {
+          const value = entity[castKey];
+          entity[castKey] = correctClassName({ className: value });
+          break;
+        }
+        case 'style': {
+          const value = entity[castKey];
+          entity[castKey] = correctStyle({ style: value });
           break;
         }
         default: {
@@ -791,15 +881,24 @@ function correctData(props: DefaultProps): DefaultProps {
         });
         break;
       }
-      case 'dot':
-      case 'tooltip':
-      case 'rail': {
-        const { min, max } = result;
+      case 'dot': {
         const entity = result[castKey];
-        result[castKey] = correctEntity<typeof entity>({
+        result[castKey] = correctDot({
           entity,
-          max,
-          min,
+        });
+        break;
+      }
+      case 'tooltip': {
+        const entity = result[castKey];
+        result[castKey] = correctTooltip({
+          entity,
+        });
+        break;
+      }
+      case 'rail': {
+        const entity = result[castKey];
+        result[castKey] = correctRail({
+          entity,
         });
         break;
       }
@@ -966,7 +1065,6 @@ export {
   getCorrectIndex,
   isDirectionToMin,
   correctData,
-  correctEntity,
   correctMin,
   correctMax,
   correctStep,
@@ -980,4 +1078,10 @@ export {
   correctValues,
   correctIndex,
   correctRender,
+  correctDot,
+  correctMark,
+  correctTooltip,
+  correctHandle,
+  correctRail,
+  correctTrack,
 };

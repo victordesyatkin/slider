@@ -207,7 +207,7 @@ describe('slider', () => {
 
       view.setProps({
         ...defaultProps,
-        tooltip: { ...tooltip, always: true },
+        tooltip: { ...tooltip, isAlways: true },
         values: [20],
       });
       $mark = $(`.${defaultProps.prefixClassName}__tooltip_always`, $parent);
