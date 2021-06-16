@@ -307,7 +307,7 @@ const slider = $(<span style="color: #df5000;">'.my-selector'</span>).data(<span
             <td>Отметки шкалы, <br/>
             {<br/>
                 isOn?: boolean = false - вкл/выкл,<br/>
-                isDot?: boolean = false, вкл/выкл точек-меток для дополнительных значений отметок шкалы,<br/>
+                withDot?: boolean = false, вкл/выкл точек-меток для дополнительных значений отметок шкалы,<br/>
                 wrapClassName?: string = '' - имя класса для родительского класса отметок шкалы,<br/>
                 style?: {"backgound": "red"} - стиль для отметок шкалы,<br/>
                 className?: string = '' - имя класса для отметок шкалы,<br/>

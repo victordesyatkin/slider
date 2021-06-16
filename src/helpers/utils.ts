@@ -55,7 +55,7 @@ function calcOffset(options: {
   value: number;
   min: number;
   max: number;
-  precision: number;
+  precision?: number;
 }): number {
   const { value, min, max, precision = 0 } = options;
   const ratio = (value - min) / (max - min);
@@ -124,6 +124,10 @@ function getClosestPoint(options: {
   return points[diffs.indexOf(Math.min(...diffs))];
 }
 
+function checkExistStep(step: number | undefined): boolean {
+  return Boolean(step) && typeof step === 'number';
+}
+
 function ensureValuePrecision(options: {
   value: number;
   max: number;
@@ -133,10 +137,17 @@ function ensureValuePrecision(options: {
 }): number {
   const { step, min, max, value, extraValues } = options;
   let closestPoint = value;
-  if (step) {
-    const temp = getClosestPoint({ value, step, min, max, extraValues });
-    if (Number.isFinite(temp)) {
-      closestPoint = parseFloat(temp.toFixed(getPrecision(step)));
+  if (step && checkExistStep(step)) {
+    const temporaryClosestPoint = getClosestPoint({
+      value,
+      step,
+      min,
+      max,
+      extraValues,
+    });
+    if (Number.isFinite(temporaryClosestPoint)) {
+      const precision = getPrecision(step);
+      closestPoint = parseFloat(temporaryClosestPoint.toFixed(precision));
     }
   }
   return closestPoint;
@@ -155,7 +166,8 @@ function ensureValueCorrectNeighbors(options: {
   indent: number;
 }): number {
   const { index, min, max, values, indent } = options;
-  let { value } = options;
+  const { value } = options;
+  let temporary = value;
   let calculateMin = min;
   let calculateMax = max;
   if (checkNeighbors(values)) {
@@ -169,7 +181,7 @@ function ensureValueCorrectNeighbors(options: {
     }
     const isCorrect = prevValue || nextValue;
     if (isCorrect) {
-      value = ensureValueInRange({
+      temporary = ensureValueInRange({
         value,
         min: calculateMin,
         max: calculateMax,
@@ -178,7 +190,11 @@ function ensureValueCorrectNeighbors(options: {
     calculateMin = min;
     calculateMax = max;
   }
-  return ensureValueInRange({ value, min: calculateMin, max: calculateMax });
+  return ensureValueInRange({
+    value: temporary,
+    min: calculateMin,
+    max: calculateMax,
+  });
 }
 
 function calcValueWithEnsure(options: {
@@ -191,21 +207,27 @@ function calcValueWithEnsure(options: {
   step: number | undefined;
   extraValues: number[] | undefined | null;
 }): number {
-  let { value } = options;
+  const { value } = options;
   const { step, min, max, extraValues } = options;
-  value = ensureValuePrecision({ value, max, min, step, extraValues });
-  value = ensureValueCorrectNeighbors({ ...options, value });
-  return value;
+  const temporary = ensureValuePrecision({
+    value,
+    max,
+    min,
+    step,
+    extraValues,
+  });
+  return ensureValueCorrectNeighbors({ ...options, value: temporary });
 }
 
 function prepareValues(props: DefaultProps): DefaultProps {
-  let { values } = props;
+  const { values } = props;
+  let temporary = values;
   const { min, max, indent, step, mark } = props;
   const extraValues = mark?.values || [];
   if (!values.length) {
-    values = defaultProps.values;
+    temporary = defaultProps.values;
   }
-  values = orderBy(values).map((value, index) =>
+  temporary = orderBy(temporary).map((value, index) =>
     calcValueWithEnsure({
       values,
       value,
@@ -221,7 +243,7 @@ function prepareValues(props: DefaultProps): DefaultProps {
     ensureValueInRange({ value, min, max })
   );
   markValues = orderBy(markValues, [], ['asc']);
-  return { ...props, values, mark: { ...mark, values: markValues } };
+  return { ...props, values: temporary, mark: { ...mark, values: markValues } };
 }
 
 function getSliderStart(
@@ -301,12 +323,12 @@ function calcValueByPos(options: {
   } = options;
   const sign = isReverse ? -1 : +1;
   const offset = sign * (position - start);
-  let value = ensureValueInRange({
+  const temporary = ensureValueInRange({
     value: calcValue({ step, max, min, length, isVertical, offset }),
     min,
     max,
   });
-  value = calcValueWithEnsure({
+  return calcValueWithEnsure({
     min,
     max,
     values,
@@ -314,9 +336,8 @@ function calcValueByPos(options: {
     index,
     step,
     extraValues,
-    value,
+    value: temporary,
   });
-  return value;
 }
 
 function setFunctionGetBoundingClientRectHTMLElement(
@@ -365,7 +386,7 @@ function correctMin(options: { max: number; min: number }): number {
     isUndefined(readyMin) || Number.isNaN(readyMin) || readyMin >= max;
   if (isNeedCorrect) {
     readyMin = -1 * max;
-    if (!readyMin) {
+    if (isUndefined(readyMin) || Number.isNaN(readyMin)) {
       readyMin = defaultProps.min;
     }
   }
@@ -378,7 +399,9 @@ function correctMax(options: { min: number; max: number }): number {
   const isNeedCorrect = Number.isNaN(readyMax) || readyMax <= min;
   if (isNeedCorrect) {
     readyMax = 2 * Math.abs(min);
-    if (!readyMax) {
+    const withDefaultMax =
+      readyMax === min || isUndefined(readyMax) || Number.isNaN(readyMax);
+    if (withDefaultMax) {
       readyMax = defaultProps.max;
     }
   }
@@ -442,8 +465,8 @@ function correctClassNames(
   const readyClassNames: string[] | null = [];
   if (classNames && Array.isArray(classNames)) {
     classNames.forEach((className) => {
-      const isNeedCorrect = !(isString(className) && trim(className));
-      if (!isNeedCorrect && readyClassNames) {
+      const isCorrect = isString(className) && trim(className);
+      if (isCorrect && readyClassNames) {
         readyClassNames.push(className);
       }
     });
@@ -454,7 +477,7 @@ function correctClassNames(
   return null;
 }
 
-function isNeedCorrectStyle(style: unknown): boolean {
+function isNeedCorrectStyle(style: Style | null): boolean {
   return (
     !isReallyObject(style) ||
     (isReallyObject(style) && isObject(style) && !Object.keys(style).length)
@@ -462,10 +485,12 @@ function isNeedCorrectStyle(style: unknown): boolean {
 }
 
 function correctStyles(
-  options?: Partial<{ styles: Style[] | null }>
+  options?: Partial<{
+    styles: Style[] | null;
+  }>
 ): Style[] | null {
   const { styles } = options || {};
-  const readyStyles: Style[] | undefined | null = [];
+  const readyStyles: Style[] = [];
   if (styles && Array.isArray(styles)) {
     styles.forEach((style) => {
       if (!isNeedCorrectStyle(style)) {
@@ -480,7 +505,9 @@ function correctStyles(
 }
 
 function correctStyle(
-  options?: Partial<{ style: Style | null }>
+  options?: Partial<{
+    style: Style | null;
+  }>
 ): Style | null {
   const { style } = options || {};
   const isCorrect =
@@ -523,7 +550,7 @@ function correctValues(
   }>
 ): number[] | null {
   const { values, max, min } = options || {};
-  let readyValues: number[] | undefined = [];
+  let readyValues: number[] = [];
   if (isUndefined(max)) {
     return null;
   }
@@ -531,12 +558,17 @@ function correctValues(
     return null;
   }
   if (Array.isArray(values)) {
-    readyValues = values.slice();
     values.forEach((temp, index) => {
-      const isNeedCorrect =
-        temp > max || temp < min || Number.isNaN(parseFloat(String(temp)));
-      if (isNeedCorrect && Array.isArray(readyValues)) {
+      let isNeedCorrect = Number.isNaN(parseFloat(String(temp)));
+      if (!isNeedCorrect && typeof temp === 'number') {
+        isNeedCorrect = temp > max || temp < min;
+      } else {
+        isNeedCorrect = true;
+      }
+      if (isNeedCorrect) {
         readyValues[index] = min;
+      } else if (typeof temp === 'number') {
+        readyValues[index] = temp;
       }
     });
   }
@@ -552,16 +584,18 @@ function correctValues(
   return readyValues;
 }
 
-function correctIndex(options: {
-  index?: number;
-  values: number[];
-}): number | undefined {
-  const { values, index } = options;
+function correctIndex(
+  options?: Partial<{
+    index: number | null;
+    values: number[] | null;
+  }>
+): number | undefined {
+  const { values, index } = options || {};
   const readyIndex: number | undefined = parseInt(String(index), 10);
   const isNeedCorrect =
     Number.isNaN(readyIndex) ||
     readyIndex < 0 ||
-    readyIndex > values.length - 1;
+    readyIndex > (values || []).length - 1;
   if (isNeedCorrect) {
     return defaultProps.index;
   }
@@ -1064,6 +1098,8 @@ export {
   defaultProps,
   getCorrectIndex,
   isDirectionToMin,
+  isNeedCorrectStyle,
+  checkExistStep,
   correctData,
   correctMin,
   correctMax,
@@ -1071,7 +1107,6 @@ export {
   correctPrecision,
   correctIndent,
   correctClassNames,
-  isNeedCorrectStyle,
   correctStyles,
   correctStyle,
   correctClassName,
@@ -1084,4 +1119,8 @@ export {
   correctHandle,
   correctRail,
   correctTrack,
+  correctIsAlways,
+  correctIsOn,
+  correctWithDot,
+  correctWrapClassName,
 };

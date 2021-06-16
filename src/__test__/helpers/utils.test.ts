@@ -2,6 +2,7 @@ import $ from 'jquery';
 import merge from 'lodash.merge';
 
 import * as utils from '../../helpers/utils';
+import { Style } from '../../types';
 
 const className1 = 'class1';
 const className2 = 'class2';
@@ -19,82 +20,105 @@ describe('helpers', () => {
       );
     });
 
-    test('value, min, max, precision? = 0 -> calcOffset -> number', () => {
-      expect(utils.calcOffset(5, 0, 100)).toBe(5);
-      expect(utils.calcOffset(25, 0, 100)).toBe(25);
-      expect(utils.calcOffset(-5, 0, 100)).toBe(0);
-      expect(utils.calcOffset(-5, -100, 100)).toBe(48);
-      expect(utils.calcOffset(0, -100, 100)).toBe(50);
+    test('calcOffset -> number', () => {
+      expect(utils.calcOffset({ value: 5, min: 0, max: 100 })).toBe(5);
+      expect(utils.calcOffset({ value: 25, min: 0, max: 100 })).toBe(25);
+      expect(utils.calcOffset({ value: -5, min: 0, max: 100 })).toBe(0);
+      expect(utils.calcOffset({ value: -5, min: -100, max: 100 })).toBe(48);
+      expect(utils.calcOffset({ value: 0, min: -100, max: 100 })).toBe(50);
     });
-
-    test('isVertical, HTMLElement -> getHandleCenterPosition -> number', () => {
+    test('getHandleCenterPosition -> number', () => {
       utils.setFunctionGetBoundingClientRectHTMLElement();
       document.body.innerHTML = `<div class="${className1}" style="width:100px;height:100px;">hello world!</div>`;
       let el = $(`.${className1}`).get(0);
-      expect(utils.getHandleCenterPosition(false, el)).toBe(50);
+      expect(
+        utils.getHandleCenterPosition({ isVertical: false, handle: el })
+      ).toBe(50);
       document.body.innerHTML = '';
       document.body.innerHTML = `<div class="${className2}" style="width:50px;height:200px;">hello world!</div>`;
       el = $(`.${className2}`).get(0);
-      expect(utils.getHandleCenterPosition(true, el)).toBe(100);
+      expect(
+        utils.getHandleCenterPosition({ isVertical: true, handle: el })
+      ).toBe(100);
     });
-    test('val: number, { max, min }: { max: number; min: number } -> ensureValueInRange -> number', () => {
-      expect(utils.ensureValueInRange(4, { min: -70, max: 30 })).toBe(4);
-      expect(utils.ensureValueInRange(100, { min: -70, max: 30 })).toBe(30);
-      expect(utils.ensureValueInRange(-200, { min: -70, max: 30 })).toBe(-70);
-      expect(utils.ensureValueInRange(16, { min: 0, max: 4 })).toBe(4);
+    test('ensureValueInRange', () => {
+      expect(utils.ensureValueInRange({ value: 4, min: -70, max: 30 })).toBe(4);
+      expect(utils.ensureValueInRange({ value: 100, min: -70, max: 30 })).toBe(
+        30
+      );
+      expect(utils.ensureValueInRange({ value: -200, min: -70, max: 30 })).toBe(
+        -70
+      );
+      expect(utils.ensureValueInRange({ value: 16, min: 0, max: 4 })).toBe(4);
     });
-    test('(isVertical: boolean, e: MouseEvent): number -> getMousePosition -> number', () => {
-      let e = new MouseEvent('mousemove', {
+    test('getMousePosition -> number', () => {
+      let event = new MouseEvent('mousemove', {
         screenX: 4,
         screenY: 16,
         clientY: 22,
       });
-      expect(utils.getMousePosition(true, e)).toBe(22);
-      e = new MouseEvent('click', {
+      expect(utils.getMousePosition({ isVertical: true, event })).toBe(22);
+      event = new MouseEvent('click', {
         screenX: 4,
         screenY: 40,
         clientY: 22,
       });
-      expect(utils.getMousePosition(false, e)).toBe(0);
+      expect(utils.getMousePosition({ isVertical: false, event })).toBe(0);
     });
-    test('(step: number): number -> getPrecision -> number', () => {
+    test('getPrecision -> number', () => {
       expect(utils.getPrecision(1.2452)).toBe(4);
       expect(utils.getPrecision(5.25)).toBe(2);
       expect(utils.getPrecision(25)).toBe(0);
     });
-    test('v: number, props: tDefaultProps:number -> ensureValuePrecision -> number', () => {
-      expect(utils.ensureValuePrecision(14, defaultProps)).toBe(14);
+    test(' ensureValuePrecision -> number', () => {
       expect(
-        utils.ensureValuePrecision(14, merge({}, defaultProps, { step: 25 }))
+        utils.ensureValuePrecision({
+          value: 14,
+          min: defaultProps.min,
+          max: defaultProps.max,
+          step: defaultProps.step,
+          extraValues: defaultProps.mark?.values,
+        })
+      ).toBe(14);
+      expect(
+        utils.ensureValuePrecision({
+          value: 14,
+          min: defaultProps.min,
+          max: defaultProps.max,
+          step: 25,
+          extraValues: defaultProps.mark?.values,
+        })
       ).toBe(25);
       expect(
-        utils.ensureValuePrecision(
-          14,
-          merge({}, defaultProps, { step: 25, mark: { values: [16] } })
-        )
+        utils.ensureValuePrecision({
+          value: 14,
+          min: defaultProps.min,
+          max: defaultProps.max,
+          step: 25,
+          extraValues: [16],
+        })
       ).toBe(16);
     });
-    test('14, { step: undefined, min: 16, max: 100 }, props: tDefaultProps -> getClosestPoint -> 16', () => {
+    test('getClosestPoint -> 16', () => {
       expect(
-        utils.getClosestPoint(
-          14,
-          { step: undefined, min: 16, max: 100 },
-          defaultProps
-        )
-      ).toBe(14);
-    });
-    test('20, { step: 25, min: 16, max: 100 }, tDefaultProps -> getClosestPoint -> 16', () => {
-      expect(
-        utils.getClosestPoint(20, { step: 25, min: 16, max: 100 }, defaultProps)
+        utils.getClosestPoint({
+          value: 20,
+          step: 25,
+          min: 16,
+          max: 100,
+          extraValues: defaultProps.mark?.values,
+        })
       ).toBe(16);
     });
-    test('38, { step: 25, min: 0, max: 100 }, tDefaultProps -> getClosestPoint -> 30', () => {
+    test('getClosestPoint -> 30', () => {
       expect(
-        utils.getClosestPoint(
-          38,
-          { step: 25, min: 0, max: 100 },
-          merge({}, defaultProps, { mark: { values: [30] } })
-        )
+        utils.getClosestPoint({
+          value: 38,
+          step: 25,
+          min: 0,
+          max: 100,
+          extraValues: [30],
+        })
       ).toBe(30);
     });
     test('(props: tDefaultProps): tDefaultProps, props: tDefaultProps -> prepareValues -> tDefaultProps', () => {
@@ -119,15 +143,24 @@ describe('helpers', () => {
     });
     test('getSliderStart', () => {
       expect(utils.getSliderStart({})).toBe(0);
-      expect(utils.getSliderStart({ props: { ...defaultProps } })).toBe(0);
+      expect(
+        utils.getSliderStart({
+          isVertical: defaultProps.isVertical,
+          isReverse: defaultProps.isReverse,
+        })
+      ).toBe(0);
       document.body.innerHTML = `<div class="${className1}" style="width:100px;height:100px;">hello world!</div>`;
-      let $el = $(`.${className1}`);
+      let $element = $(`.${className1}`);
       utils.setFunctionGetBoundingClientRectHTMLElement({
         height: 100,
         width: 100,
       });
       expect(
-        utils.getSliderStart({ props: { ...defaultProps }, view: $el })
+        utils.getSliderStart({
+          isVertical: defaultProps.isVertical,
+          isReverse: defaultProps.isReverse,
+          view: $element,
+        })
       ).toBe(0);
       utils.setFunctionGetBoundingClientRectHTMLElement({
         marginTop: 10,
@@ -136,8 +169,9 @@ describe('helpers', () => {
       });
       expect(
         utils.getSliderStart({
-          props: { ...defaultProps, isVertical: true },
-          view: $el,
+          isVertical: true,
+          isReverse: defaultProps.isReverse,
+          view: $element,
         })
       ).toBe(10);
       utils.setFunctionGetBoundingClientRectHTMLElement({
@@ -147,8 +181,9 @@ describe('helpers', () => {
       });
       expect(
         utils.getSliderStart({
-          props: { ...defaultProps, isVertical: true, isReverse: true },
-          view: $el,
+          isVertical: true,
+          isReverse: true,
+          view: $element,
         })
       ).toBe(40);
     });
@@ -184,14 +219,20 @@ describe('helpers', () => {
         utils.calcValue({
           offset: 50,
           length: 200,
-          props: { ...defaultProps },
+          isVertical: defaultProps.isVertical,
+          min: defaultProps.min,
+          max: defaultProps.max,
+          step: defaultProps.step,
         })
       ).toBe(25);
       expect(
         utils.calcValue({
           offset: 50,
           length: 100,
-          props: { ...defaultProps, isVertical: true },
+          isVertical: defaultProps.isVertical,
+          min: defaultProps.min,
+          max: defaultProps.max,
+          step: defaultProps.step,
         })
       ).toBe(50);
     });
@@ -206,18 +247,32 @@ describe('helpers', () => {
         utils.calcValueByPos({
           position: 50,
           length: 200,
-          props: { ...defaultProps },
+          isVertical: defaultProps.isVertical,
+          min: defaultProps.min,
+          max: defaultProps.max,
+          step: defaultProps.step,
           index: 0,
           start: 0,
+          isReverse: defaultProps.isReverse,
+          indent: defaultProps.indent,
+          values: defaultProps.values,
+          extraValues: defaultProps.mark.values,
         })
       ).toBe(25);
       expect(
         utils.calcValueByPos({
           position: 50,
           length: 100,
-          props: { ...defaultProps, isVertical: true },
           index: 0,
           start: 0,
+          isVertical: defaultProps.isVertical,
+          min: defaultProps.min,
+          max: defaultProps.max,
+          step: defaultProps.step,
+          isReverse: defaultProps.isReverse,
+          indent: defaultProps.indent,
+          values: defaultProps.values,
+          extraValues: defaultProps.mark.values,
         })
       ).toBe(50);
     });
@@ -229,32 +284,48 @@ describe('helpers', () => {
       expect(
         utils.ensureValueCorrectNeighbors({
           value: 20,
-          props: defaultProps,
           index: 0,
+          min: defaultProps.min,
+          max: defaultProps.max,
+          values: defaultProps.values,
+          indent: defaultProps.indent,
         })
       ).toBe(20);
       expect(
         utils.ensureValueCorrectNeighbors({
           value: 40,
-          props: { ...defaultProps, values: [40, 60], indent: 10 },
           index: 1,
+          min: defaultProps.min,
+          max: defaultProps.max,
+          values: defaultProps.values,
+          indent: defaultProps.indent,
         })
-      ).toBe(50);
+      ).toBe(40);
     });
     test('calcValueWithEnsure', () => {
       expect(
         utils.calcValueWithEnsure({
           value: 20,
-          props: defaultProps,
           index: 0,
+          min: defaultProps.min,
+          max: defaultProps.max,
+          values: defaultProps.values,
+          indent: defaultProps.indent,
+          step: defaultProps.step,
+          extraValues: defaultProps.mark.values,
         })
       ).toBe(20);
-      const v = utils.calcValueWithEnsure({
+      const value = utils.calcValueWithEnsure({
         value: 80,
-        props: { ...defaultProps, values: [40, 60], indent: 10, max: 50 },
         index: 1,
+        min: defaultProps.min,
+        max: 50,
+        values: [40, 60],
+        indent: 10,
+        step: defaultProps.step,
+        extraValues: defaultProps.mark.values,
       });
-      expect(v).toBe(50);
+      expect(value).toBe(50);
     });
     test('prepareData', () => {
       expect(utils.prepareData()).toEqual(
@@ -295,7 +366,6 @@ describe('helpers', () => {
       const item = utils.getNearest({
         value: 65,
         values: [10, 30, 70, 100],
-        props: defaultProps,
       });
       expect(item).toStrictEqual({
         index: 2,
@@ -306,7 +376,6 @@ describe('helpers', () => {
       const item = utils.getNearest({
         value: 85,
         values: [10, 30, 70, 100],
-        props: defaultProps,
       });
       expect(item).toStrictEqual({
         index: 2,
@@ -318,8 +387,13 @@ describe('helpers', () => {
         coordinateX: 80,
         coordinateY: 10,
         start: 0,
-        props: { ...defaultProps, values: [0, 100] },
         length: 100,
+        isVertical: defaultProps.isVertical,
+        min: defaultProps.min,
+        max: defaultProps.max,
+        step: defaultProps.step,
+        values: [0, 100],
+        isReverse: defaultProps.isReverse,
       };
       const index = utils.getNearestIndex(options);
       expect(index).toEqual(1);
@@ -329,9 +403,14 @@ describe('helpers', () => {
         coordinateX: 80,
         coordinateY: 10,
         start: 0,
-        props: { ...defaultProps, values: [0, 100] },
         length: 100,
         index: undefined,
+        isVertical: defaultProps.isVertical,
+        min: defaultProps.min,
+        max: defaultProps.max,
+        step: defaultProps.step,
+        values: [0, 100],
+        isReverse: defaultProps.isReverse,
       };
       const { index: index0, isCorrect: isCorrect0 } = utils.getCorrectIndex(
         options
@@ -342,9 +421,14 @@ describe('helpers', () => {
         coordinateX: 80,
         coordinateY: 10,
         start: 0,
-        props: { ...defaultProps, values: [0, 100] },
         index: 1,
         length: 100,
+        isVertical: defaultProps.isVertical,
+        min: defaultProps.min,
+        max: defaultProps.max,
+        step: defaultProps.step,
+        values: [0, 100],
+        isReverse: defaultProps.isReverse,
       };
       const { index: index1, isCorrect: isCorrect1 } = utils.getCorrectIndex(
         options1
@@ -355,9 +439,14 @@ describe('helpers', () => {
         coordinateX: 80,
         coordinateY: 10,
         start: 0,
-        props: { ...defaultProps, values: [45, 40] },
         index: 1,
         length: 100,
+        isVertical: defaultProps.isVertical,
+        min: defaultProps.min,
+        max: defaultProps.max,
+        step: defaultProps.step,
+        values: [45, 40],
+        isReverse: defaultProps.isReverse,
       };
       const { index: index2, isCorrect: isCorrect2 } = utils.getCorrectIndex(
         options1
@@ -368,9 +457,14 @@ describe('helpers', () => {
         coordinateX: 35,
         coordinateY: 10,
         start: 0,
-        props: { ...defaultProps, values: [40, 40] },
         index: 1,
         length: 100,
+        isVertical: defaultProps.isVertical,
+        min: defaultProps.min,
+        max: defaultProps.max,
+        step: defaultProps.step,
+        values: [40, 40],
+        isReverse: defaultProps.isReverse,
       };
       const { index: index3, isCorrect: isCorrect3 } = utils.getCorrectIndex(
         options1
@@ -381,9 +475,14 @@ describe('helpers', () => {
         coordinateX: 35,
         coordinateY: 10,
         start: 0,
-        props: { ...defaultProps, values: [40, 40] },
         index: -1,
         length: 100,
+        isVertical: defaultProps.isVertical,
+        min: defaultProps.min,
+        max: defaultProps.max,
+        step: defaultProps.step,
+        values: [40, 40],
+        isReverse: defaultProps.isReverse,
       };
       const { index: index4, isCorrect: isCorrect4 } = utils.getCorrectIndex(
         options1
@@ -394,9 +493,14 @@ describe('helpers', () => {
         coordinateX: 80,
         coordinateY: 10,
         start: 0,
-        props: { ...defaultProps, values: [40, 45] },
         index: -1,
         length: 100,
+        isVertical: defaultProps.isVertical,
+        min: defaultProps.min,
+        max: defaultProps.max,
+        step: defaultProps.step,
+        values: [40, 45],
+        isReverse: defaultProps.isReverse,
       };
       const { index: index5, isCorrect: isCorrect5 } = utils.getCorrectIndex(
         options1
@@ -407,9 +511,14 @@ describe('helpers', () => {
         coordinateX: 80,
         coordinateY: 10,
         start: 0,
-        props: { ...defaultProps, values: [40, 45] },
         index: 0,
         length: 100,
+        isVertical: defaultProps.isVertical,
+        min: defaultProps.min,
+        max: defaultProps.max,
+        step: defaultProps.step,
+        values: [40, 45],
+        isReverse: defaultProps.isReverse,
       };
       const { index: index6, isCorrect: isCorrect6 } = utils.getCorrectIndex(
         options1
@@ -421,14 +530,12 @@ describe('helpers', () => {
       expect(
         utils.isDirectionToMin({
           value: 30,
-          props: { ...defaultProps },
           item: 60,
         })
       ).toEqual(true);
       expect(
         utils.isDirectionToMin({
           value: 80,
-          props: { ...defaultProps },
           item: 60,
         })
       ).toEqual(false);
@@ -524,437 +631,573 @@ describe('helpers', () => {
         })
       );
     });
-    test('correctSet', () => {
-      const mock = jest.fn((v: number) => `${v}`);
-      const props = {
-        handle: {
-          classNames: [{}, 4, [], false, true, 0, 'aaaa'],
-          styles: [{}, 4, [], false, true, 0, 'aaaa', { color: 'red' }],
-        },
-        rail: {
-          className: [],
-          styles: [{ color: 'red' }, 'aaaa', false, 0, true, 1, [], {}, 7],
-        },
-        dot: {
-          wrapClassName: [0, 4, false, true, 0, {}, 'aaaa-bbbb'],
-          style: false,
-          className: 'aaaa',
-        },
-        mark: {
-          wrapClassName: 'cccc',
-          style: { background: 'red' },
-          className: 'eeee',
-          render: mock,
-        },
+    test('checkIsCorrectStep', () => {
+      expect(utils.checkIsCorrectStep(0)).toBe(false);
+      expect(utils.checkIsCorrectStep(null)).toBe(false);
+      expect(utils.checkIsCorrectStep(undefined)).toBe(false);
+      expect(utils.checkIsCorrectStep(1)).toBe(true);
+    });
+    test('correctIsOn', () => {
+      expect(utils.correctIsOn()).toBe(false);
+      expect(utils.correctIsOn(null)).toBe(false);
+      expect(utils.correctIsOn({})).toBe(false);
+      expect(utils.correctIsOn({ isOn: false })).toBe(false);
+      expect(utils.correctIsOn({ isOn: true })).toBe(true);
+    });
+    test('correctWithDot', () => {
+      expect(utils.correctWithDot()).toBe(false);
+      expect(utils.correctWithDot(null)).toBe(false);
+      expect(utils.correctWithDot({})).toBe(false);
+      expect(utils.correctWithDot({ withDot: false })).toBe(false);
+      expect(utils.correctWithDot({ withDot: true })).toBe(true);
+    });
+    test('correctIsAlways', () => {
+      expect(utils.correctIsAlways()).toBe(false);
+      expect(utils.correctIsAlways(null)).toBe(false);
+      expect(utils.correctIsAlways({})).toBe(false);
+      expect(utils.correctIsAlways({ isAlways: false })).toBe(false);
+      expect(utils.correctIsAlways({ isAlways: true })).toBe(true);
+    });
+    test('correctRender', () => {
+      expect(utils.correctRender()).toBe(null);
+      expect(utils.correctRender(null)).toBe(null);
+      expect(utils.correctRender({})).toBe(null);
+      expect(utils.correctRender({ render: null })).toBe(null);
+      const render = () => undefined;
+      expect(utils.correctRender({ render })).toBe(render);
+    });
+    test('correctTrack', () => {
+      expect(utils.correctTrack()).toBe(undefined);
+      expect(utils.correctTrack({})).toBe(undefined);
+      const entity = {
+        isOn: null,
+        classNames: null,
+        styles: null,
       };
-      utils.correctSet({
-        key: 'handle',
-        props: defaultProps,
-        values: props.handle,
-      });
-      expect(props.handle).toEqual(
+      expect(utils.correctTrack({ entity })).toEqual(
+        expect.objectContaining({
+          isOn: false,
+          classNames: null,
+          styles: null,
+        })
+      );
+      const entity1 = {
+        classNames: null,
+        styles: null,
+      };
+      expect(utils.correctTrack({ entity: entity1 })).toEqual(
+        expect.objectContaining({
+          classNames: null,
+          styles: null,
+        })
+      );
+      const entity2 = {
+        isOn: false,
+        styles: null,
+      };
+      expect(utils.correctTrack({ entity: entity2 })).toEqual(
+        expect.objectContaining({
+          isOn: false,
+          styles: null,
+        })
+      );
+      const entity3 = {
+        isOn: true,
+        classNames: ['aaaa', 'bbbb'],
+      };
+      expect(utils.correctTrack({ entity: entity3 })).toEqual(
+        expect.objectContaining({
+          isOn: true,
+          classNames: ['aaaa', 'bbbb'],
+        })
+      );
+      const entity4 = {
+        isOn: true,
+        classNames: ['aaaa'],
+        styles: [{ color: 'red' }, null],
+      };
+      expect(utils.correctTrack({ entity: entity4 })).toEqual(
+        expect.objectContaining({
+          isOn: true,
+          classNames: ['aaaa'],
+          styles: [{ color: 'red' }],
+        })
+      );
+    });
+    test('correctHandle', () => {
+      expect(utils.correctHandle()).toBe(undefined);
+      expect(utils.correctHandle({})).toBe(undefined);
+      const entity = {
+        classNames: null,
+        styles: null,
+      };
+      expect(utils.correctHandle({ entity })).toEqual(
+        expect.objectContaining({
+          classNames: null,
+          styles: null,
+        })
+      );
+      const entity2 = {
+        styles: null,
+      };
+      expect(utils.correctHandle({ entity: entity2 })).toEqual(
+        expect.objectContaining({
+          styles: null,
+        })
+      );
+      const entity3 = {
+        classNames: ['aaaa', 'bbbb'],
+      };
+      expect(utils.correctHandle({ entity: entity3 })).toEqual(
+        expect.objectContaining({
+          classNames: ['aaaa', 'bbbb'],
+        })
+      );
+      const entity4 = {
+        classNames: ['aaaa'],
+        styles: [{ color: 'red' }, null],
+      };
+      expect(utils.correctHandle({ entity: entity4 })).toEqual(
         expect.objectContaining({
           classNames: ['aaaa'],
           styles: [{ color: 'red' }],
         })
       );
-      utils.correctSet({
-        key: 'rail',
-        props: defaultProps,
-        values: props.rail,
-      });
-      expect(props.rail).toEqual(
+    });
+    test('correctMark', () => {
+      expect(utils.correctMark()).toBe(undefined);
+      expect(utils.correctMark({})).toBe(undefined);
+      const entity = {
+        className: null,
+        style: null,
+        render: null,
+        values: null,
+        isOn: null,
+        withDot: null,
+      };
+      expect(utils.correctMark({ entity })).toEqual(
         expect.objectContaining({
           className: null,
-          styles: [{ color: 'red' }],
+          style: null,
+          render: null,
+          values: null,
+          isOn: false,
+          withDot: false,
         })
       );
-      utils.correctSet({
-        key: 'dot',
-        props: defaultProps,
-        values: props.dot,
-      });
-      expect(props.dot).toEqual(
+      const render = () => undefined;
+      const entity2 = {
+        className: 'aaaa',
+        style: {},
+        render,
+        values: [1, 17],
+        isOn: true,
+        withDot: false,
+      };
+      expect(utils.correctMark({ entity: entity2 })).toEqual(
+        expect.objectContaining({
+          className: 'aaaa',
+          style: null,
+          render,
+          values: null,
+          isOn: true,
+          withDot: false,
+        })
+      );
+      const entity3 = {
+        className: 'bbbb',
+        style: { color: 'red' },
+        render,
+        values: [1, 17],
+        isOn: true,
+        withDot: false,
+      };
+      expect(
+        utils.correctMark({
+          entity: entity3,
+          min: defaultProps.min,
+          max: defaultProps.max,
+        })
+      ).toEqual(
+        expect.objectContaining({
+          className: 'bbbb',
+          style: { color: 'red' },
+          render,
+          values: [0, 1, 17, 100],
+          isOn: true,
+          withDot: false,
+        })
+      );
+    });
+    test('correctDot', () => {
+      expect(utils.correctDot()).toBe(undefined);
+      expect(utils.correctDot({})).toBe(undefined);
+      const entity = {
+        wrapClassName: null,
+        className: null,
+        style: null,
+        isOn: null,
+      };
+      expect(utils.correctDot({ entity })).toEqual(
         expect.objectContaining({
           wrapClassName: null,
+          className: null,
           style: null,
-          className: 'aaaa',
+          isOn: false,
         })
       );
-      utils.correctSet({
-        key: 'mark',
-        props: defaultProps,
-        values: props.mark,
-      });
-      expect(props.mark).toEqual(
+      const entity2 = {
+        wrapClassName: '',
+        className: '',
+        style: { color: 'red' },
+        isOn: true,
+      };
+      expect(utils.correctDot({ entity: entity2 })).toEqual(
         expect.objectContaining({
-          wrapClassName: 'cccc',
-          style: { background: 'red' },
-          className: 'eeee',
-          render: mock,
+          wrapClassName: null,
+          className: null,
+          style: { color: 'red' },
+          isOn: true,
+        })
+      );
+      const entity3 = {
+        wrapClassName: 'aaaa',
+        className: 'bbbb',
+        style: { color: 'green' },
+        isOn: false,
+      };
+      expect(
+        utils.correctDot({
+          entity: entity3,
+        })
+      ).toEqual(
+        expect.objectContaining({
+          wrapClassName: 'aaaa',
+          className: 'bbbb',
+          style: { color: 'green' },
+          isOn: false,
+        })
+      );
+    });
+    test('correctTooltip', () => {
+      expect(utils.correctTooltip()).toBe(undefined);
+      expect(utils.correctTooltip({})).toBe(undefined);
+      const entity = {
+        className: null,
+        style: null,
+        render: null,
+        isOn: null,
+        isAlways: null,
+      };
+      expect(utils.correctTooltip({ entity })).toEqual(
+        expect.objectContaining({
+          className: null,
+          style: null,
+          render: null,
+          isOn: false,
+          isAlways: false,
+        })
+      );
+      const render = () => undefined;
+      const entity2 = {
+        className: 'aaaa',
+        style: null,
+        render,
+        isOn: true,
+        isAlways: false,
+      };
+      expect(utils.correctTooltip({ entity: entity2 })).toEqual(
+        expect.objectContaining({
+          className: 'aaaa',
+          style: null,
+          render,
+          isOn: true,
+          isAlways: false,
+        })
+      );
+      const entity3 = {
+        className: 'bbbb',
+        style: { color: 'red' },
+        render,
+        isOn: false,
+        isAlways: true,
+      };
+      expect(
+        utils.correctTooltip({
+          entity: entity3,
+        })
+      ).toEqual(
+        expect.objectContaining({
+          className: 'bbbb',
+          style: { color: 'red' },
+          render,
+          isOn: false,
+          isAlways: true,
+        })
+      );
+    });
+    test('correctRail', () => {
+      expect(utils.correctRail()).toBe(undefined);
+      expect(utils.correctRail({})).toBe(undefined);
+      const entity = {
+        className: null,
+        style: null,
+        isOn: null,
+      };
+      expect(utils.correctRail({ entity })).toEqual(
+        expect.objectContaining({
+          className: null,
+          style: null,
+          isOn: false,
+        })
+      );
+      const entity2 = {
+        className: 'aaaa',
+        style: null,
+        isOn: true,
+      };
+      expect(utils.correctRail({ entity: entity2 })).toEqual(
+        expect.objectContaining({
+          className: 'aaaa',
+          style: null,
+          isOn: true,
+        })
+      );
+      const entity3 = {
+        className: 'bbbb',
+        style: { color: 'red' },
+        isOn: false,
+      };
+      expect(
+        utils.correctRail({
+          entity: entity3,
+        })
+      ).toEqual(
+        expect.objectContaining({
+          className: 'bbbb',
+          style: { color: 'red' },
+          isOn: false,
         })
       );
     });
     test('correctMin', () => {
       let props = { ...defaultProps };
-      utils.correctMin({
-        key: 'min',
-        props,
-        values: 5,
-      });
-      expect(props.min).toEqual(0);
-      props = { ...defaultProps };
-      utils.correctMin({
-        key: 'min',
-        props,
-        values: 105,
-      });
-      expect(props.min).toEqual(-100);
+      expect(utils.correctMin({ min: 5, max: props.max })).toEqual(5);
+      expect(utils.correctMin({ min: 105, max: props.max })).toEqual(-100);
     });
     test('correctMax', () => {
-      let props = { ...defaultProps };
-      utils.correctMax({
-        key: 'max',
-        props: props,
-        values: 5,
-      });
-      expect(props.max).toEqual(100);
-      props = { ...defaultProps };
-      utils.correctMax({
-        key: 'max',
-        props: props,
-        values: -5,
-      });
-      expect(props.max).toEqual(100);
+      const props = { ...defaultProps };
+      expect(utils.correctMax({ min: props.min, max: props.max })).toEqual(100);
+      expect(utils.correctMax({ min: props.min, max: -7 })).toEqual(100);
     });
     test('correctStep', () => {
       let props = { ...defaultProps };
-      utils.correctStep({
-        key: 'step',
-        props: props,
-        values: 5,
-      });
-      expect(props.step).toEqual(0);
-      props = { ...defaultProps };
-      utils.correctStep({
-        key: 'step',
-        props: props,
-        values: -5,
-      });
-      expect(props.step).toEqual(0);
+      expect(
+        utils.correctStep({
+          step: 5,
+          min: props.min,
+          max: props.max,
+        })
+      ).toEqual(5);
+      expect(
+        utils.correctStep({
+          step: -5,
+          min: props.min,
+          max: props.max,
+        })
+      ).toEqual(0);
       props = { ...defaultProps, max: -10, min: -50, step: 5 };
-      utils.correctStep({
-        key: 'step',
-        props: props,
-        values: -5,
-      });
-      expect(props.step).toEqual(0);
+      expect(
+        utils.correctStep({
+          step: -5,
+          min: props.min,
+          max: props.max,
+        })
+      ).toEqual(0);
       props = { ...defaultProps, max: -10, min: -50, step: 6 };
-      utils.correctStep({
-        key: 'step',
-        props,
-        values: 10,
-      });
-      expect(props.step).toEqual(6);
+      expect(
+        utils.correctStep({
+          step: 10,
+          min: props.min,
+          max: props.max,
+        })
+      ).toEqual(10);
     });
     test('correctPrecision', () => {
-      let props = { ...defaultProps };
-      utils.correctPrecision({
-        key: 'precision',
-        props: props,
-        values: 4,
-      });
-      expect(props.precision).toEqual(0);
-      props = { ...defaultProps };
-      utils.correctPrecision({
-        key: 'precision',
-        props: props,
-        values: -5,
-      });
-      expect(props.precision).toEqual(0);
+      expect(utils.correctPrecision({ precision: 4 })).toEqual(4);
+      expect(utils.correctPrecision({ precision: -5 })).toEqual(0);
     });
     test('correctIndent', () => {
-      let props = { ...defaultProps };
-      utils.correctIndent({
-        key: 'indent',
-        props: props,
-        values: 4,
-      });
-      expect(props.precision).toEqual(0);
-      props = { ...defaultProps };
-      utils.correctIndent({
-        key: 'indent',
-        props: props,
-        values: -5,
-      });
-      expect(props.precision).toEqual(0);
+      const props = { ...defaultProps };
+      expect(
+        utils.correctIndent({
+          indent: 4,
+          values: props.values,
+          max: props.max,
+        })
+      ).toEqual(4);
+      expect(
+        utils.correctIndent({
+          indent: -5,
+          values: props.values,
+          max: props.max,
+        })
+      ).toEqual(0);
     });
     test('correctClassNames', () => {
-      const values = {
-        classNames: ['aaaa', false, true, [], 'bbbb', 4, 7, 0, {}],
-      };
-      utils.correctClassNames({
-        key: 'classNames',
-        value: values.classNames,
-        values,
-      });
-      expect(values.classNames).toEqual(
-        expect.arrayContaining(['aaaa', 'bbbb'])
-      );
-      const values1 = {
-        classNames: false,
-      };
-      utils.correctClassNames({
-        key: 'classNames',
-        value: values1.classNames,
-        values,
-      });
-      expect(values.classNames).toEqual(null);
+      let classNames: string[] | null = ['aaaa', 'bbbb'];
+      expect(
+        utils.correctClassNames({
+          classNames,
+        })
+      ).toEqual(expect.arrayContaining(['aaaa', 'bbbb']));
+      classNames = null;
+      expect(utils.correctClassNames({ classNames })).toEqual(null);
     });
     test('isNeedCorrectStyle', () => {
-      let isCorrect = utils.isNeedCorrectStyle({
-        color: 'green',
-      });
-      expect(isCorrect).toEqual(false);
-      isCorrect = utils.isNeedCorrectStyle([]);
-      expect(isCorrect).toEqual(true);
-      isCorrect = utils.isNeedCorrectStyle(4);
-      expect(isCorrect).toEqual(true);
-      isCorrect = utils.isNeedCorrectStyle(true);
-      expect(isCorrect).toEqual(true);
-      isCorrect = utils.isNeedCorrectStyle(false);
-      expect(isCorrect).toEqual(true);
-      isCorrect = utils.isNeedCorrectStyle({});
-      expect(isCorrect).toEqual(true);
-      isCorrect = utils.isNeedCorrectStyle('dddd');
-      expect(isCorrect).toEqual(true);
+      expect(
+        utils.isNeedCorrectStyle({
+          color: 'green',
+        })
+      ).toEqual(false);
+      expect(utils.isNeedCorrectStyle(null)).toEqual(true);
     });
 
     test('correctStyles', () => {
-      const values = {
-        styles: [
-          'aaaa',
-          false,
-          { 'font-size': '1rem' },
-          true,
-          [],
-          'bbbb',
-          4,
-          {},
-        ],
+      let styles: Partial<{
+        styles: Style[] | null;
+      }> = {
+        styles: [{ 'font-size': '1rem' }],
       };
-      utils.correctStyles({
-        key: 'styles',
-        value: values.styles,
-        values,
-      });
-      expect(values.styles).toEqual(
+      expect(utils.correctStyles(styles)).toEqual(
         expect.arrayContaining([{ 'font-size': '1rem' }])
       );
-      const values1 = {
-        styles: [],
+      styles = {
+        styles: null,
       };
-      utils.correctStyles({
-        key: 'styles',
-        value: values1.styles,
-        values: values1,
-      });
-      expect(values1.styles).toEqual(null);
-      const values2 = {
-        styles: '',
-      };
-      utils.correctStyles({
-        key: 'styles',
-        value: values2.styles,
-        values: values2,
-      });
-      expect(values2.styles).toEqual(null);
+      expect(utils.correctStyles(styles)).toEqual(null);
+      styles = {};
+      expect(utils.correctStyles(styles)).toEqual(null);
     });
     test('correctStyle', () => {
-      const values = {
+      let style: Partial<{
+        style?: Style | null;
+      }> = {
         style: { 'font-size': '1rem' },
       };
-      utils.correctStyle({
-        key: 'style',
-        value: values.style,
-        values,
-      });
-      expect(values.style).toEqual(
+      expect(utils.correctStyle(style)).toEqual(
         expect.objectContaining({ 'font-size': '1rem' })
       );
-      const values1 = {
-        style: {},
+      style = {
+        style: null,
       };
-      utils.correctStyle({
-        key: 'style',
-        value: values1.style,
-        values: values1,
-      });
-      expect(values1.style).toEqual(null);
-      const values2 = {
-        style: '',
-      };
-      utils.correctStyles({
-        key: 'style',
-        value: values2.style,
-        values: values2,
-      });
-      const values3 = {
-        style: 'aaaa',
-      };
-      utils.correctStyles({
-        key: 'styles',
-        value: values3.style,
-        values: values3,
-      });
-      expect(values3.style).toEqual('aaaa');
+      expect(utils.correctStyle(style)).toEqual(null);
+      style = {};
+      expect(utils.correctStyle(style)).toEqual(null);
     });
     test('correctClassName', () => {
-      const values = {
+      let className: Partial<{
+        className: string | null;
+      }> = {
         className: 'aaaa',
       };
-      utils.correctClassName({
-        key: 'className',
-        value: values.className,
-        values,
-      });
-      expect(values.className).toEqual('aaaa');
-      const values1 = {
+      expect(utils.correctClassName(className)).toEqual('aaaa');
+      className = {
         className: '',
       };
-      utils.correctClassName({
-        key: 'className',
-        value: values1.className,
-        values: values1,
-      });
-      expect(values1.className).toEqual(null);
-      const values2 = {
-        className: {},
+      expect(utils.correctClassName(className)).toEqual(null);
+      className = {};
+      expect(utils.correctClassName(className)).toEqual(null);
+    });
+    test('correctWrapClassName', () => {
+      let wrapClassName: Partial<{
+        wrapClassName: string | null;
+      }> = {
+        wrapClassName: 'aaaa',
       };
-      utils.correctClassName({
-        key: 'className',
-        value: values2.className,
-        values: values2,
-      });
-      expect(values2.className).toEqual(null);
+      expect(utils.correctWrapClassName(wrapClassName)).toEqual('aaaa');
+      wrapClassName = {
+        wrapClassName: '',
+      };
+      expect(utils.correctWrapClassName(wrapClassName)).toEqual(null);
+      wrapClassName = {};
+      expect(utils.correctWrapClassName(wrapClassName)).toEqual(null);
     });
     test('correctValues', () => {
-      const values = {
-        values: 'aaaa',
+      let values: Partial<{
+        values: number[];
+        min: number;
+        max: number;
+      }> = {
+        values: null,
       };
-      utils.correctValues({
-        key: 'values',
-        value: values.values,
-        values,
-        props: { ...defaultProps },
-      });
-      expect(values.values).toEqual([defaultProps.min, defaultProps.max]);
-      const values1 = {
-        values: ['aaaa'],
+      expect(utils.correctValues(values)).toEqual(null);
+      values = {
+        values: null,
+        min: defaultProps.min,
       };
-      utils.correctValues({
-        key: 'values',
-        value: values1.values,
-        values: values1,
-        props: { ...defaultProps },
-      });
-      expect(values1.values).toEqual(expect.arrayContaining([0]));
-      const values2 = {
+      expect(utils.correctValues(values)).toEqual(null);
+      values = {
+        values: null,
+        max: defaultProps.max,
+      };
+      expect(utils.correctValues(values)).toEqual(null);
+      values = {
+        values: null,
+        min: defaultProps.min,
+        max: defaultProps.max,
+      };
+      expect(utils.correctValues(values)).toEqual(
+        expect.arrayContaining([defaultProps.min, defaultProps.max])
+      );
+      values = {
         values: [-14],
+        min: defaultProps.min,
+        max: defaultProps.max,
       };
-      utils.correctValues({
-        key: 'values',
-        value: values2.values,
-        values: values2,
-        props: { ...defaultProps },
-      });
-      expect(values2.values).toEqual(expect.arrayContaining([0]));
-      const values3 = {
-        values: [-14],
+      expect(utils.correctValues(values)).toEqual(
+        expect.arrayContaining([0, 0, 100])
+      );
+      values = {
+        values: [7, 4],
+        min: defaultProps.min,
+        max: defaultProps.max,
       };
-      utils.correctValues({
-        key: 'values',
-        value: values3.values,
-        values: values3,
-        props: { ...defaultProps },
-      });
-      expect(values3.values).toEqual(expect.arrayContaining([0]));
-      const values4 = {
-        values: [-14],
-      };
-      utils.correctValues({
-        key: 'style',
-        value: values4.values,
-        values: values4,
-        props: { ...defaultProps },
-      });
-      expect(values4.values).toEqual(expect.arrayContaining([-14]));
-      const values5 = {
-        values: [7, false, 4],
-      };
-      utils.correctValues({
-        key: 'values',
-        value: values5.values,
-        values: values5,
-        props: { ...defaultProps },
-      });
-      expect(values5.values).toEqual(expect.arrayContaining([0, 4, 7]));
+      expect(utils.correctValues(values)).toEqual(
+        expect.arrayContaining([0, 4, 7, 100])
+      );
     });
     test('correctIndex', () => {
-      const options = {
-        key: 'index',
-        values: 'aaaa',
-        props: { ...defaultProps },
+      let options = {
+        values: defaultProps.values,
+        index: undefined,
       };
-      utils.correctIndex(options);
-      expect(options.props).toEqual(
-        expect.objectContaining({ ...defaultProps })
-      );
-      const options1 = {
-        key: 'index',
-        values: {},
-        props: { ...defaultProps },
+      expect(utils.correctIndex(options)).toEqual(undefined);
+      options = {
+        index: 7,
+        values: defaultProps.values,
       };
-      utils.correctIndex(options1);
-      expect(options1.props).toEqual(
-        expect.objectContaining({ ...defaultProps })
-      );
-      const options2 = {
-        key: 'index',
-        values: 7,
-        props: { ...defaultProps },
+      expect(utils.correctIndex(options)).toEqual(defaultProps.index);
+      options = {
+        index: -5,
+        values: defaultProps.values,
       };
-      utils.correctIndex(options2);
-      expect(options2.props).toEqual(
-        expect.objectContaining({ ...defaultProps })
-      );
-      const options3 = {
-        key: 'index',
-        values: -5,
-        props: { ...defaultProps },
+      expect(utils.correctIndex(options)).toEqual(defaultProps.index);
+      options = {
+        index: 1,
+        values: [20, 50],
       };
-      utils.correctIndex(options3);
-      expect(options3.props).toEqual(
-        expect.objectContaining({ ...defaultProps })
-      );
-      const options4 = {
-        key: 'index',
-        values: 1,
-        props: { ...defaultProps, index: 1 },
+      expect(utils.correctIndex(options)).toEqual(1);
+      options = {
+        index: 1,
+        values: [60],
       };
-      utils.correctIndex(options4);
-      expect(options4.props).toEqual(
-        expect.objectContaining({ ...defaultProps, index: undefined })
-      );
-      const options5 = {
-        key: 'index',
-        values: 0,
-        props: { ...defaultProps, index: 0 },
+      expect(utils.correctIndex(options)).toEqual(defaultProps.index);
+      options = {
+        index: 0,
+        values: [60],
       };
-      utils.correctIndex(options5);
-      expect(options5.props).toEqual(
-        expect.objectContaining({ ...defaultProps, index: 0 })
-      );
+      expect(utils.correctIndex(options)).toEqual(0);
     });
   });
 });

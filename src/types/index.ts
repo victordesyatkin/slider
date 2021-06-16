@@ -44,7 +44,7 @@ type Addition = {
   index: number;
   handles?: { [key: string]: Handler };
   value?: number;
-  active?: boolean;
+  isActive?: boolean;
 };
 
 type Handler = (index: number, event: JQuery.Event, value?: number) => void;

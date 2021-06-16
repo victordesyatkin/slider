@@ -103,9 +103,9 @@ export default class HandleView extends PubSub implements ISubView {
     const prefixClassName = this.props?.prefixClassName || '';
     const index = this.addition?.index;
     const className = this.props?.handle?.classNames?.[index] || '';
-    const active = this.addition?.active;
+    const isActive = this.addition?.isActive;
     return classnames(`${prefixClassName}__handle`, className, {
-      [`${prefixClassName}__handle_active`]: active,
+      [`${prefixClassName}__handle_active`]: isActive,
     });
   }
 

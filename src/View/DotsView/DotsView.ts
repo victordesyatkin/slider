@@ -136,8 +136,8 @@ export default class DotsView extends PubSub implements ISubView {
     if (this.props && this.view) {
       const { min, max, step, isReverse } = this.props;
       let values: number[] = [];
-      const isOn = this.props?.mark?.withDot;
-      if (isOn) {
+      const withDot = this.props?.mark?.withDot;
+      if (withDot) {
         const markValues = this.props?.mark?.values;
         if (Array.isArray(markValues)) {
           values = [...markValues];

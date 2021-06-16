@@ -27,21 +27,22 @@ function prepareJSON<T>(json?: unknown): undefined | null | T {
   return result;
 }
 
-function prepareFunction(string?: unknown): null | undefined | Render {
-  let result: null | undefined | Render;
-  if (!isString(string) || !trim(string)) {
+function prepareFunction(string?: unknown): null | undefined | Render | string {
+  let result: null | undefined | Render | string;
+  const isCorrect = isString(string) && trim(string) && Boolean(string);
+  if (typeof string !== 'string' || !isCorrect) {
     return null;
   }
   try {
     result = new Function('v', string) as Render;
     result(0);
   } catch (error) {
-    result = null;
+    result = string;
   }
   if (isFunction(result)) {
     return result;
   }
-  return null;
+  return result;
 }
 
 function prepareArray<T>(string?: unknown): T[] | null {
@@ -215,7 +216,7 @@ function extractFunctionBody(callback?: unknown): string | undefined | null {
     const entire = callback.toString();
     return entire.slice(entire.indexOf('{') + 1, entire.lastIndexOf('}'));
   }
-  return null;
+  return '';
 }
 
 function propsToValue(

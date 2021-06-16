@@ -220,7 +220,7 @@ class View extends PubSub implements IView {
     const readyViews = [...views];
     if (this.props) {
       let handles;
-      let active;
+      let isActive;
       const { index: readyIndex, isFocused } = this.props;
       if (action === 'mousedown') {
         handles = {
@@ -237,15 +237,15 @@ class View extends PubSub implements IView {
       }
       for (let index = 0; index < count; index += 1) {
         if (withActive && isFocused) {
-          active = index === readyIndex;
+          isActive = index === readyIndex;
         }
         if (readyViews[index]) {
           let addition = readyViews[index].getAddition();
-          addition = { ...addition, handles, active };
+          addition = { ...addition, handles, isActive };
           readyViews[index].setAddition(addition);
           readyViews[index].setProps(this.props);
         } else {
-          readyViews[index] = new SubView({ index, handles, active });
+          readyViews[index] = new SubView({ index, handles, isActive });
           readyViews[index].setProps(this.props);
         }
       }

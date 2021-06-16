@@ -82,18 +82,18 @@ class DotView extends PubSub implements ISubView {
     const className = this.props?.dot?.className || '';
     const { value } = this.addition;
     let values = this.props?.values;
-    let active = false;
+    let isActive = false;
     if (!isUndefined(values) && !isUndefined(value)) {
       if (values.length === 1) {
-        active = value <= values[0];
+        isActive = value <= values[0];
       } else if (values.length > 1) {
         values = orderBy(values);
         if (value >= values[0] && value <= values[values.length - 1]) {
-          active = true;
+          isActive = true;
         }
       }
       return classnames(`${prefixClassName}__dot`, className, {
-        [`${prefixClassName}__dot_active`]: active,
+        [`${prefixClassName}__dot_active`]: isActive,
       });
     }
     return '';

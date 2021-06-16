@@ -138,7 +138,7 @@ describe('slider', () => {
         ...defaultProps,
         dot,
         step: 50,
-        mark: { isOn: true, values: [20], dot: true },
+        mark: { isOn: true, values: [20], withDot: true },
       };
       view.setProps(props);
       $dot = $(`.${defaultProps.prefixClassName}__dot`, $parent);

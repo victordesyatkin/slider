@@ -67,7 +67,7 @@ describe('dots', () => {
         ...defaultProps,
         dot: { isOn: true },
         step: 10,
-        mark: { isOn: true, values: [14, 86], dot: true },
+        mark: { isOn: true, values: [14, 86], withDot: true },
       });
       $element = $(`.${defaultProps.prefixClassName}__dot`, $parent);
       expect($element.length).toBe(13);

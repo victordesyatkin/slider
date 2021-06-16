@@ -72,10 +72,11 @@ class Example extends Component<ExampleProps> {
     const prev = this.slider?.getProps();
     const next = this.panel?.getValues();
     if (checkedIsEqual({ prev, next })) {
-      return undefined;
+      this.values = prev;
+    } else {
+      this.slider?.setProps(next);
+      this.values = this.slider?.getProps();
     }
-    this.slider?.setProps(next);
-    this.values = this.slider?.getProps();
     this.panel?.setValues(this.values);
     return undefined;
   }
