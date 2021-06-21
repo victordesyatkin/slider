@@ -256,7 +256,7 @@ describe('helpers', () => {
           isReverse: defaultProps.isReverse,
           indent: defaultProps.indent,
           values: defaultProps.values,
-          extraValues: defaultProps.mark.values,
+          extraValues: defaultProps?.mark?.values,
         })
       ).toBe(25);
       expect(
@@ -272,7 +272,7 @@ describe('helpers', () => {
           isReverse: defaultProps.isReverse,
           indent: defaultProps.indent,
           values: defaultProps.values,
-          extraValues: defaultProps.mark.values,
+          extraValues: defaultProps?.mark?.values,
         })
       ).toBe(50);
     });
@@ -312,7 +312,7 @@ describe('helpers', () => {
           values: defaultProps.values,
           indent: defaultProps.indent,
           step: defaultProps.step,
-          extraValues: defaultProps.mark.values,
+          extraValues: defaultProps?.mark?.values,
         })
       ).toBe(20);
       const value = utils.calcValueWithEnsure({
@@ -323,7 +323,7 @@ describe('helpers', () => {
         values: [40, 60],
         indent: 10,
         step: defaultProps.step,
-        extraValues: defaultProps.mark.values,
+        extraValues: defaultProps?.mark?.values,
       });
       expect(value).toBe(50);
     });
@@ -333,6 +333,12 @@ describe('helpers', () => {
           ...defaultProps,
           mark: {
             ...defaultProps.mark,
+            isOn: false,
+            withDot: false,
+            className: null,
+            render: null,
+            style: null,
+            wrapClassName: null,
             values: [defaultProps.min, defaultProps.max],
           },
         })
@@ -627,34 +633,42 @@ describe('helpers', () => {
             wrapClassName: 'eeee',
             style: { 'background-color': 'yellow' },
             values: [-100, -50, 100],
+            render: null,
+            isOn: false,
+            withDot: false,
           },
         })
       );
     });
     test('correctIsOn', () => {
       expect(utils.correctIsOn()).toBe(false);
-      expect(utils.correctIsOn(null)).toBe(false);
       expect(utils.correctIsOn({})).toBe(false);
       expect(utils.correctIsOn({ isOn: false })).toBe(false);
       expect(utils.correctIsOn({ isOn: true })).toBe(true);
     });
     test('correctWithDot', () => {
       expect(utils.correctWithDot()).toBe(false);
-      expect(utils.correctWithDot(null)).toBe(false);
       expect(utils.correctWithDot({})).toBe(false);
       expect(utils.correctWithDot({ withDot: false })).toBe(false);
       expect(utils.correctWithDot({ withDot: true })).toBe(true);
     });
     test('correctIsAlways', () => {
       expect(utils.correctIsAlways()).toBe(false);
-      expect(utils.correctIsAlways(null)).toBe(false);
       expect(utils.correctIsAlways({})).toBe(false);
       expect(utils.correctIsAlways({ isAlways: false })).toBe(false);
       expect(utils.correctIsAlways({ isAlways: true })).toBe(true);
     });
+    test('checkIsCorrectStep', () => {
+      expect(utils.checkIsCorrectStep()).toBe(false);
+      expect(utils.checkIsCorrectStep('')).toBe(false);
+      expect(utils.checkIsCorrectStep(true)).toBe(false);
+      expect(utils.checkIsCorrectStep(null)).toBe(false);
+      expect(utils.checkIsCorrectStep(0)).toBe(false);
+      expect(utils.checkIsCorrectStep(1)).toBe(true);
+      expect(utils.checkIsCorrectStep(-7)).toBe(false);
+    });
     test('correctRender', () => {
       expect(utils.correctRender()).toBe(null);
-      expect(utils.correctRender(null)).toBe(null);
       expect(utils.correctRender({})).toBe(null);
       expect(utils.correctRender({ render: null })).toBe(null);
       const render = () => undefined;
@@ -759,8 +773,8 @@ describe('helpers', () => {
       );
     });
     test('correctMark', () => {
-      expect(utils.correctMark()).toBe(undefined);
-      expect(utils.correctMark({})).toBe(undefined);
+      expect(utils.correctMark()).toEqual(expect.objectContaining({}));
+      expect(utils.correctMark({})).toEqual(expect.objectContaining({}));
       const entity = {
         className: null,
         style: null,
@@ -769,7 +783,19 @@ describe('helpers', () => {
         isOn: null,
         withDot: null,
       };
-      expect(utils.correctMark({ entity })).toEqual(
+      expect(
+        utils.correctMark({
+          entity,
+          properties: [
+            'className',
+            'style',
+            'render',
+            'values',
+            'isOn',
+            'withDot',
+          ],
+        })
+      ).toEqual(
         expect.objectContaining({
           className: null,
           style: null,
@@ -788,7 +814,19 @@ describe('helpers', () => {
         isOn: true,
         withDot: false,
       };
-      expect(utils.correctMark({ entity: entity2 })).toEqual(
+      expect(
+        utils.correctMark({
+          entity: entity2,
+          properties: [
+            'className',
+            'style',
+            'render',
+            'values',
+            'isOn',
+            'withDot',
+          ],
+        })
+      ).toEqual(
         expect.objectContaining({
           className: 'aaaa',
           style: null,
@@ -811,6 +849,14 @@ describe('helpers', () => {
           entity: entity3,
           min: defaultProps.min,
           max: defaultProps.max,
+          properties: [
+            'className',
+            'style',
+            'render',
+            'values',
+            'isOn',
+            'withDot',
+          ],
         })
       ).toEqual(
         expect.objectContaining({

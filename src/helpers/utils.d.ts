@@ -30,11 +30,12 @@ declare function getClosestPoint(options: {
     max: number;
     extraValues?: number[] | null;
 }): number;
+declare function checkIsCorrectStep(step?: number | boolean | string | null): boolean;
 declare function ensureValuePrecision(options: {
     value: number;
     max: number;
     min: number;
-    step?: number;
+    step?: number | boolean | string | null;
     extraValues?: number[] | null;
 }): number;
 declare function checkNeighbors(value: number[]): boolean;
@@ -104,11 +105,11 @@ declare function correctMax(options: {
     min: number;
     max: number;
 }): number;
-declare function correctStep(options: {
-    min: number;
-    max: number;
-    step?: number;
-}): number;
+declare function correctStep(options?: Partial<{
+    min: number | string | boolean | null;
+    max: number | string | boolean | null;
+    step: number | string | boolean | null;
+}>): number;
 declare function correctPrecision(options: {
     precision: number;
 }): number;
@@ -146,13 +147,13 @@ declare function correctRender(options?: Partial<{
     render: Render | null;
 }>): Render | null;
 declare function correctIsOn(options?: Partial<{
-    isOn: boolean | null;
+    isOn: boolean | number | string | null;
 }>): boolean;
 declare function correctWithDot(options?: Partial<{
-    withDot: boolean | null;
+    withDot: boolean | number | string | null;
 }>): boolean;
 declare function correctIsAlways(options?: Partial<{
-    isAlways: boolean | null;
+    isAlways: boolean | number | string | null;
 }>): boolean;
 declare function correctTrack(options?: Partial<{
     entity: Track;
@@ -164,7 +165,8 @@ declare function correctMark(options?: Partial<{
     entity: Mark;
     min: number;
     max: number;
-}>): Mark | undefined;
+    properties: (keyof Mark)[];
+}>): Mark;
 declare function correctDot(options?: Partial<{
     entity: Dot;
 }>): Dot | undefined;
@@ -221,4 +223,4 @@ declare function getCorrectIndex(options: {
     isCorrect: boolean;
     index: number;
 };
-export { objectToString, uniqId, prepareData, setFunctionGetBoundingClientRectHTMLElement, calcValueWithEnsure, ensureValueCorrectNeighbors, checkNeighbors, calcValueByPos, calcValue, getSliderLength, getSliderStart, prepareValues, ensureValuePrecision, getClosestPoint, getPrecision, getMousePosition, ensureValueInRange, calcOffset, getHandleCenterPosition, getPosition, getNearestIndex, getNearest, defaultProps, getCorrectIndex, isDirectionToMin, isNeedCorrectStyle, correctData, correctMin, correctMax, correctStep, correctPrecision, correctIndent, correctClassNames, correctStyles, correctStyle, correctClassName, correctValues, correctIndex, correctRender, correctDot, correctMark, correctTooltip, correctHandle, correctRail, correctTrack, correctIsAlways, correctIsOn, correctWithDot, correctWrapClassName, };
+export { objectToString, uniqId, prepareData, setFunctionGetBoundingClientRectHTMLElement, calcValueWithEnsure, ensureValueCorrectNeighbors, checkNeighbors, calcValueByPos, calcValue, getSliderLength, getSliderStart, prepareValues, ensureValuePrecision, getClosestPoint, getPrecision, getMousePosition, ensureValueInRange, calcOffset, getHandleCenterPosition, getPosition, getNearestIndex, getNearest, defaultProps, getCorrectIndex, isDirectionToMin, isNeedCorrectStyle, correctData, correctMin, correctMax, correctStep, correctPrecision, correctIndent, correctClassNames, correctStyles, correctStyle, correctClassName, correctValues, correctIndex, correctRender, correctDot, correctMark, correctTooltip, correctHandle, correctRail, correctTrack, correctIsAlways, correctIsOn, correctWithDot, correctWrapClassName, checkIsCorrectStep, };

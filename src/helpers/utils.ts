@@ -37,6 +37,11 @@ const defaultProps: DefaultProps = {
   indent: 0,
 };
 
+function isNumber(value: unknown): boolean {
+  const temporaryValue = parseFloat(String(value));
+  return !Number.isNaN(temporaryValue);
+}
+
 function isReallyObject(value: unknown): boolean {
   return Object.prototype.toString.call(value) === '[object Object]';
 }
@@ -124,16 +129,22 @@ function getClosestPoint(options: {
   return points[diffs.indexOf(Math.min(...diffs))];
 }
 
+function checkIsCorrectStep(step?: number | boolean | string | null): boolean {
+  return (
+    typeof step === 'number' && isNumber(step) && step >= 0 && Boolean(step)
+  );
+}
+
 function ensureValuePrecision(options: {
   value: number;
   max: number;
   min: number;
-  step?: number;
+  step?: number | boolean | string | null;
   extraValues?: number[] | null;
 }): number {
   const { step, min, max, value, extraValues } = options;
   let closestPoint = value;
-  if (step) {
+  if (typeof step === 'number' && checkIsCorrectStep(step)) {
     const temporaryClosestPoint = getClosestPoint({
       value,
       step,
@@ -403,13 +414,21 @@ function correctMax(options: { min: number; max: number }): number {
   return readyMax;
 }
 
-function correctStep(options: {
-  min: number;
-  max: number;
-  step?: number;
-}): number {
-  const { max, min, step } = options;
+function correctStep(
+  options?: Partial<{
+    min: number | string | boolean | null;
+    max: number | string | boolean | null;
+    step: number | string | boolean | null;
+  }>
+): number {
+  const { max, min, step } = options || {};
   let readyStep = parseFloat(String(step));
+  if (typeof min !== 'number' || !isNumber(max)) {
+    return defaultProps.step;
+  }
+  if (typeof max !== 'number' || !isNumber(min)) {
+    return defaultProps.step;
+  }
   const isNeedCorrect =
     Number.isNaN(readyStep) ||
     readyStep >= Math.abs(max - min) ||
@@ -601,29 +620,47 @@ function correctRender(
   }>
 ): Render | null {
   const { render } = options || {};
-  if (isFunction(render)) {
-    return render;
+  try {
+    if (isFunction(render)) {
+      return render;
+    }
+  } catch (_) {
+    return null;
   }
   return null;
 }
 
-function correctIsOn(options?: Partial<{ isOn: boolean | null }>): boolean {
+function correctIsOn(
+  options?: Partial<{ isOn: boolean | number | string | null }>
+): boolean {
   const { isOn } = options || {};
-  return Boolean(isOn);
+  let correctedIsOn = isOn;
+  if (isString(correctedIsOn)) {
+    correctedIsOn = trim(correctedIsOn);
+  }
+  return Boolean(correctedIsOn);
 }
 
 function correctWithDot(
-  options?: Partial<{ withDot: boolean | null }>
+  options?: Partial<{ withDot: boolean | number | string | null }>
 ): boolean {
   const { withDot } = options || {};
-  return Boolean(withDot);
+  let correctedWithDot = withDot;
+  if (isString(correctedWithDot)) {
+    correctedWithDot = trim(correctedWithDot);
+  }
+  return Boolean(correctedWithDot);
 }
 
 function correctIsAlways(
-  options?: Partial<{ isAlways: boolean | null }>
+  options?: Partial<{ isAlways: boolean | number | string | null }>
 ): boolean {
   const { isAlways } = options || {};
-  return Boolean(isAlways);
+  let correctedIsAlways = isAlways;
+  if (isString(correctedIsAlways)) {
+    correctedIsAlways = trim(correctedIsAlways);
+  }
+  return Boolean(correctedIsAlways);
 }
 
 function correctTrack(options?: Partial<{ entity: Track }>): Track | undefined {
@@ -684,41 +721,54 @@ function correctHandle(
 }
 
 function correctMark(
-  options?: Partial<{ entity: Mark; min: number; max: number }>
-): Mark | undefined {
-  const { entity, min, max } = options || {};
-  if (entity) {
-    Object.keys(entity).forEach((key) => {
-      const castKey = key as keyof typeof entity;
-      switch (castKey) {
+  options?: Partial<{
+    entity: Mark;
+    min: number;
+    max: number;
+    properties: (keyof Mark)[];
+  }>
+): Mark {
+  const { entity, properties, min, max } = options || {};
+  let mark: Mark = {};
+  if (isObject(entity)) {
+    mark = $.extend(true, {}, entity);
+  }
+  if (properties) {
+    properties.forEach((property) => {
+      switch (property) {
         case 'isOn': {
-          const value = entity[castKey];
-          entity[castKey] = correctIsOn({ isOn: value });
-          break;
-        }
-        case 'className': {
-          const value = entity[castKey];
-          entity[castKey] = correctClassName({ className: value });
-          break;
-        }
-        case 'style': {
-          const value = entity[castKey];
-          entity[castKey] = correctStyle({ style: value });
+          const value = mark[property];
+          mark[property] = correctIsOn({ isOn: value });
           break;
         }
         case 'withDot': {
-          const value = entity[castKey];
-          entity[castKey] = correctWithDot({ withDot: value });
+          const value = mark[property];
+          mark[property] = correctWithDot({ withDot: value });
+          break;
+        }
+        case 'wrapClassName': {
+          const value = mark[property];
+          mark[property] = correctWrapClassName({ wrapClassName: value });
+          break;
+        }
+        case 'className': {
+          const value = mark[property];
+          mark[property] = correctClassName({ className: value });
+          break;
+        }
+        case 'style': {
+          const value = mark[property];
+          mark[property] = correctStyle({ style: value });
           break;
         }
         case 'render': {
-          const value = entity[castKey];
-          entity[castKey] = correctRender({ render: value });
+          const value = mark[property];
+          mark[property] = correctRender({ render: value });
           break;
         }
         case 'values': {
-          const value = entity[castKey];
-          entity[castKey] = correctValues({ values: value, min, max });
+          const value = mark[property];
+          mark[property] = correctValues({ values: value, min, max });
           break;
         }
         default: {
@@ -727,7 +777,7 @@ function correctMark(
       }
     });
   }
-  return entity;
+  return mark;
 }
 
 function correctDot(options?: Partial<{ entity: Dot }>): Dot | undefined {
@@ -909,6 +959,15 @@ function correctData(props: DefaultProps): DefaultProps {
           entity,
           max,
           min,
+          properties: [
+            'wrapClassName',
+            'className',
+            'style',
+            'render',
+            'values',
+            'withDot',
+            'isOn',
+          ],
         });
         break;
       }
@@ -1119,4 +1178,5 @@ export {
   correctIsOn,
   correctWithDot,
   correctWrapClassName,
+  checkIsCorrectStep,
 };

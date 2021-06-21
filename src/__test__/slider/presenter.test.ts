@@ -1,6 +1,7 @@
 import $ from 'jquery';
 
 import { defaultProps, uniqId } from '../../helpers/utils';
+import { Mark } from '../../types';
 import Presenter from '../../Presenter';
 
 describe('slider', () => {
@@ -113,9 +114,24 @@ describe('slider', () => {
       };
       presenter.setProps(props);
       const next = presenter.getProps();
-      expect({ ...props }).toStrictEqual({
+      const mark: Mark = {
+        className: null,
+        render: null,
+        style: null,
+        isOn: false,
+        withDot: false,
+        wrapClassName: null,
+        ...props.mark,
+      };
+      expect({
+        ...props,
+        mark,
+      }).toStrictEqual({
         ...next,
-        mark: { ...next.mark, values: [next.min, next.max] },
+        mark: {
+          ...next.mark,
+          values: [next.min, next.max],
+        },
       });
     });
 

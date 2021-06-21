@@ -6,6 +6,7 @@ import isObject from 'lodash.isobject';
 import isEqual from 'lodash.isequal';
 import omit from 'lodash.omit';
 
+import { isArray } from 'jquery';
 import { Render, Style, Props, KeyProps } from '../../src/types';
 
 function importAll(resolve: __WebpackModuleApi.RequireContext): void {
@@ -281,27 +282,26 @@ function checkedIsEqual(options?: {
   let readyPrev = prev as Props;
   let readyNext = next as Props;
   if (isObject(readyPrev) && isObject(readyNext)) {
-    readyPrev = excludeProps(readyPrev);
-    const { tooltip: tooltipPrev, mark: markPrev } = readyPrev;
-    const readyTooltipRenderPrev = tooltipPrev?.render;
-    const readyMarkRenderPrev = markPrev?.render;
-    readyNext = excludeProps(readyNext);
-    const { tooltip: tooltipNext, mark: markNext } = readyNext;
-    const readyTooltipRenderNext = tooltipNext?.render;
-    const readyMarkRenderNext = markNext?.render;
-    if (
-      JSON.stringify(readyTooltipRenderPrev) ===
-      JSON.stringify(readyTooltipRenderNext)
-    ) {
-      readyPrev.tooltip = omit(tooltipPrev, ['render']);
-      readyNext.tooltip = omit(tooltipNext, ['render']);
-    }
-    if (
-      JSON.stringify(readyMarkRenderPrev) ===
-      JSON.stringify(readyMarkRenderNext)
-    ) {
-      readyPrev.mark = omit(markPrev, ['render']);
-      readyNext.mark = omit(markNext, ['render']);
+    if (!Array.isArray(readyPrev) && !Array.isArray(readyPrev)) {
+      readyPrev = excludeProps(readyPrev);
+      const { tooltip: tooltipPrev, mark: markPrev } = readyPrev;
+      const readyTooltipRenderPrev = tooltipPrev?.render;
+      const readyMarkRenderPrev = markPrev?.render;
+      readyNext = excludeProps(readyNext);
+      const { tooltip: tooltipNext, mark: markNext } = readyNext;
+      const readyTooltipRenderNext = tooltipNext?.render;
+      const readyMarkRenderNext = markNext?.render;
+      if (
+        readyTooltipRenderPrev?.toString() ===
+        readyTooltipRenderNext?.toString()
+      ) {
+        readyPrev.tooltip = omit(tooltipPrev, ['render']);
+        readyNext.tooltip = omit(tooltipNext, ['render']);
+      }
+      if (readyMarkRenderPrev?.toString() === readyMarkRenderNext?.toString()) {
+        readyPrev.mark = omit(markPrev, ['render']);
+        readyNext.mark = omit(markNext, ['render']);
+      }
     }
   }
   return isEqual(readyPrev, readyNext);
