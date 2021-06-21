@@ -165,8 +165,7 @@ function ensureValueCorrectNeighbors(options: {
   values: number[];
   indent: number;
 }): number {
-  const { index, min, max, values, indent } = options;
-  const { value } = options;
+  const { index, min, max, values, indent, value } = options;
   let temporary = value;
   let calculateMin = min;
   let calculateMax = max;

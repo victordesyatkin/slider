@@ -13,6 +13,7 @@ declare class ValueItem extends Component<ValueItemProps> {
     private buttonRemove?;
     private handleButtonRemoveClick;
     private handleInputInput;
+    private handleInputFocusout;
     private setIndex;
 }
 export default ValueItem;

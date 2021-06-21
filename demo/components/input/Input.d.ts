@@ -8,6 +8,7 @@ declare class Input extends Component<InputProps> {
     setValue(value: unknown): void;
     getValue(): string | number | string[] | undefined;
     private handleInputInput;
+    handleInputFocusout(): void;
     private $input?;
 }
 export default Input;

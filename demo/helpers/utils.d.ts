@@ -2,7 +2,7 @@
 import { Render, Props, KeyProps } from '../../src/types';
 declare function importAll(resolve: __WebpackModuleApi.RequireContext): void;
 declare function prepareJSON<T>(json?: unknown): undefined | null | T;
-declare function prepareFunction(string?: unknown): null | undefined | Render;
+declare function prepareFunction(string?: unknown): null | undefined | Render | string;
 declare function prepareArray<T>(string?: unknown): T[] | null;
 declare function valueToProp(options?: {
     value?: unknown;

@@ -9,6 +9,7 @@ declare class Example extends Component<ExampleProps> {
     private slider?;
     private values?;
     private handleInputInput;
+    private handleInputFocusout;
     private setValues;
     private onAfterChange;
 }
