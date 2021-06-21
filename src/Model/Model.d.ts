@@ -17,7 +17,7 @@ declare class Model extends PubSub implements IModel {
         action?: string;
     }): void;
     onBeforeChange({ index }: {
-        index: number | undefined;
+        index?: number;
     }): void;
     onAfterChange(): void;
     setIndex({ index }: {

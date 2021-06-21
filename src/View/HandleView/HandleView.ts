@@ -83,13 +83,13 @@ export default class HandleView extends PubSub implements ISubView {
   }
 
   private prepareAttr(): {
-    class: string | undefined;
-    style: string | undefined;
+    class?: string;
+    style?: string;
     tabindex: number;
   } {
     const attr: {
-      class: string | undefined;
-      style: string | undefined;
+      class?: string;
+      style?: string;
       tabindex: number;
     } = {
       class: this.prepareClassName(),

@@ -71,10 +71,10 @@ class MarkView extends PubSub implements ISubView {
   }
 
   private prepareAttr(): {
-    class: string | undefined;
-    style: string | undefined;
+    class?: string;
+    style?: string;
   } {
-    const attr: { class: string | undefined; style: string | undefined } = {
+    const attr: { class?: string; style?: string } = {
       class: this.prepareClassName(),
       style: this.prepareStyle(),
     };

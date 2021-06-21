@@ -111,7 +111,7 @@ function getClosestPoint(options: {
   step: number;
   min: number;
   max: number;
-  extraValues: number[] | undefined | null;
+  extraValues?: number[] | null;
 }): number {
   const { step, extraValues, max, min, value } = options;
   let points: number[] = [...(extraValues || [])];
@@ -124,7 +124,7 @@ function getClosestPoint(options: {
   return points[diffs.indexOf(Math.min(...diffs))];
 }
 
-function checkIsCorrectStep(step: number | undefined): boolean {
+function checkIsCorrectStep(step?: number): boolean {
   return Boolean(step) && typeof step === 'number';
 }
 
@@ -132,8 +132,8 @@ function ensureValuePrecision(options: {
   value: number;
   max: number;
   min: number;
-  step: number | undefined;
-  extraValues: number[] | undefined | null;
+  step?: number;
+  extraValues?: number[] | null;
 }): number {
   const { step, min, max, value, extraValues } = options;
   let closestPoint = value;
@@ -203,8 +203,8 @@ function calcValueWithEnsure(options: {
   values: number[];
   indent: number;
   index: number;
-  step: number | undefined;
-  extraValues: number[] | undefined | null;
+  step?: number;
+  extraValues?: number[] | null;
 }): number {
   const { value } = options;
   const { step, min, max, extraValues } = options;
@@ -281,7 +281,7 @@ function calcValue(options: {
   isVertical: boolean;
   min: number;
   max: number;
-  step: number | undefined;
+  step?: number;
 }): number {
   const { offset, length, isVertical, min, max, step } = options;
   const ratio = Math.abs(Math.max(offset, 0) / length);
@@ -301,10 +301,10 @@ function calcValueByPos(options: {
   isReverse: boolean;
   min: number;
   max: number;
-  step: number | undefined;
+  step?: number;
   indent: number;
   values: number[];
-  extraValues: number[] | undefined | null;
+  extraValues?: number[] | null;
 }): number {
   const {
     position,
@@ -410,7 +410,7 @@ function correctMax(options: { min: number; max: number }): number {
 function correctStep(options: {
   min: number;
   max: number;
-  step: number | undefined | null;
+  step?: number;
 }): number {
   const { max, min, step } = options;
   let readyStep = parseFloat(String(step));
@@ -461,7 +461,7 @@ function correctClassNames(
   }>
 ): string[] | null {
   const { classNames } = options || {};
-  const readyClassNames: string[] | null = [];
+  const readyClassNames: string[] = [];
   if (classNames && Array.isArray(classNames)) {
     classNames.forEach((className) => {
       const isCorrect = isString(className) && trim(className);
@@ -476,7 +476,7 @@ function correctClassNames(
   return null;
 }
 
-function isNeedCorrectStyle(style: Style | null): boolean {
+function isNeedCorrectStyle(style?: Style | null): boolean {
   return (
     !isReallyObject(style) ||
     (isReallyObject(style) && isObject(style) && !Object.keys(style).length)
@@ -543,7 +543,7 @@ function correctWrapClassName(
 
 function correctValues(
   options?: Partial<{
-    values?: number[] | null;
+    values: number[] | null;
     min: number;
     max: number;
   }>
@@ -585,12 +585,12 @@ function correctValues(
 
 function correctIndex(
   options?: Partial<{
-    index: number | null;
-    values: number[] | null;
+    index: number;
+    values: number[];
   }>
 ): number | undefined {
   const { values, index } = options || {};
-  const readyIndex: number | undefined = parseInt(String(index), 10);
+  const readyIndex: number = parseInt(String(index), 10);
   const isNeedCorrect =
     Number.isNaN(readyIndex) ||
     readyIndex < 0 ||
@@ -1010,7 +1010,7 @@ function getNearestIndex(options: {
   isVertical: boolean;
   min: number;
   max: number;
-  step: number | undefined;
+  step?: number;
   values: number[];
   isReverse: boolean;
 }): number {
@@ -1047,7 +1047,7 @@ function getCorrectIndex(options: {
   isVertical: boolean;
   min: number;
   max: number;
-  step: number | undefined;
+  step?: number;
   values: number[];
   isReverse: boolean;
 }): { isCorrect: boolean; index: number } {

@@ -53,9 +53,7 @@ function prepareArray<T>(string?: unknown): T[] | null {
   return null;
 }
 
-function isResult(
-  result: string[] | Render | Style | undefined | null
-): boolean {
+function isResult(result?: string[] | Render | Style | null): boolean {
   if (result) {
     if (Array.isArray(result)) {
       return false;

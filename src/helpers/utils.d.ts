@@ -28,15 +28,15 @@ declare function getClosestPoint(options: {
     step: number;
     min: number;
     max: number;
-    extraValues: number[] | undefined | null;
+    extraValues?: number[] | null;
 }): number;
-declare function checkIsCorrectStep(step: number | undefined): boolean;
+declare function checkIsCorrectStep(step?: number): boolean;
 declare function ensureValuePrecision(options: {
     value: number;
     max: number;
     min: number;
-    step: number | undefined;
-    extraValues: number[] | undefined | null;
+    step?: number;
+    extraValues?: number[] | null;
 }): number;
 declare function checkNeighbors(value: number[]): boolean;
 declare function ensureValueCorrectNeighbors(options: {
@@ -54,8 +54,8 @@ declare function calcValueWithEnsure(options: {
     values: number[];
     indent: number;
     index: number;
-    step: number | undefined;
-    extraValues: number[] | undefined | null;
+    step?: number;
+    extraValues?: number[] | null;
 }): number;
 declare function prepareValues(props: DefaultProps): DefaultProps;
 declare function getSliderStart(options?: Partial<{
@@ -73,7 +73,7 @@ declare function calcValue(options: {
     isVertical: boolean;
     min: number;
     max: number;
-    step: number | undefined;
+    step?: number;
 }): number;
 declare function calcValueByPos(options: {
     position: number;
@@ -84,10 +84,10 @@ declare function calcValueByPos(options: {
     isReverse: boolean;
     min: number;
     max: number;
-    step: number | undefined;
+    step?: number;
     indent: number;
     values: number[];
-    extraValues: number[] | undefined | null;
+    extraValues?: number[] | null;
 }): number;
 declare function setFunctionGetBoundingClientRectHTMLElement(style?: Partial<{
     width: number;
@@ -108,7 +108,7 @@ declare function correctMax(options: {
 declare function correctStep(options: {
     min: number;
     max: number;
-    step: number | undefined | null;
+    step?: number;
 }): number;
 declare function correctPrecision(options: {
     precision: number;
@@ -121,7 +121,7 @@ declare function correctIndent(options: {
 declare function correctClassNames(options?: Partial<{
     classNames: string[] | null;
 }>): string[] | null;
-declare function isNeedCorrectStyle(style: Style | null): boolean;
+declare function isNeedCorrectStyle(style?: Style | null): boolean;
 declare function correctStyles(options?: Partial<{
     styles: Style[] | null;
 }>): Style[] | null;
@@ -135,13 +135,13 @@ declare function correctWrapClassName(options?: Partial<{
     wrapClassName: string | null;
 }>): string | null;
 declare function correctValues(options?: Partial<{
-    values?: number[] | null;
+    values: number[] | null;
     min: number;
     max: number;
 }>): number[] | null;
 declare function correctIndex(options?: Partial<{
-    index: number | null;
-    values: number[] | null;
+    index: number;
+    values: number[];
 }>): number | undefined;
 declare function correctRender(options?: Partial<{
     render: Render | null;
@@ -202,7 +202,7 @@ declare function getNearestIndex(options: {
     isVertical: boolean;
     min: number;
     max: number;
-    step: number | undefined;
+    step?: number;
     values: number[];
     isReverse: boolean;
 }): number;
@@ -215,7 +215,7 @@ declare function getCorrectIndex(options: {
     isVertical: boolean;
     min: number;
     max: number;
-    step: number | undefined;
+    step?: number;
     values: number[];
     isReverse: boolean;
 }): {

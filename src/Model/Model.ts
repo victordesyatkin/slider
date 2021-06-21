@@ -138,7 +138,7 @@ class Model extends PubSub implements IModel {
     }
   }
 
-  public onBeforeChange({ index }: { index: number | undefined }): void {
+  public onBeforeChange({ index }: { index?: number }): void {
     const { isDisabled } = this.props;
     if (isDisabled) {
       return;
