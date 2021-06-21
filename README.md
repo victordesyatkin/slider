@@ -292,7 +292,7 @@ const slider = $(<span style="color: #df5000;">'.my-selector'</span>).data(<span
             <td>dot</td>
             <td>object</td>
             <td>{}</td>
-            <td>Точки отметки отображаются при наличие значения step,<br/>
+            <td>Точки отметки отображаются при наличие значения step, точки отметки минимального и максимального значений добавлены по умолчанию,<br/>
             {<br/>
                 isOn?: boolean = false - вкл/выкл,<br/>
                 wrapClassName?: string = '' - имя класса для родительского класса точек отметок,<br/>
@@ -312,7 +312,7 @@ const slider = $(<span style="color: #df5000;">'.my-selector'</span>).data(<span
                 style?: {"backgound": "red"} - стиль для отметок шкалы,<br/>
                 className?: string = '' - имя класса для отметок шкалы,<br/>
                 render?: (value: number) => | string | JQuery<HTMLElement> | JQuery<HTMLElement>[] | HTMLElement | HTMLElement[] | undefined; - функция для изменения отображения отметок шкалы,<br/>
-                values?: number[min, ..., max] - дополнительные значения отметок шкалы отображаются внезависимости от значения step, отметки минимального и максимального значений добавлены по умолчанию,<br/>
+                values?: number[] | null - дополнительные значения отметок шкалы отображаются внезависимости от значения step, отметки минимального и максимального значений добавлены по умолчанию,<br/>
             }
             </td>
         </tr>

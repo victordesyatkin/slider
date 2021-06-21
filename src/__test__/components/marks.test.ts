@@ -39,8 +39,7 @@ describe('rail', () => {
       expect($element.length).toBe(1);
 
       $element = $(`.${defaultProps.prefixClassName}__mark`, $parent);
-      expect($element.length).toBe(0);
-
+      expect($element.length).toBe(2);
       view.setProps({ ...defaultProps, mark: { isOn: true }, step: 10 });
       $element = $(`.${defaultProps.prefixClassName}__mark`, $parent);
       expect($element.length).toBe(11);

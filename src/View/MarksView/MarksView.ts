@@ -134,10 +134,10 @@ export default class MarksView extends PubSub implements ISubView {
     const readyViews = [...views];
     if (this.props && this.view) {
       const { min, max, step, isReverse } = this.props;
-      let values: number[] = [];
+      let values: number[] = [min, max];
       const markValues = this.props?.mark?.values;
       if (Array.isArray(markValues)) {
-        values = [...markValues];
+        values = [...values, ...markValues];
       }
       if (step) {
         for (let index = min; index <= max; index += step) {

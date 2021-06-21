@@ -339,7 +339,7 @@ describe('helpers', () => {
             render: null,
             style: null,
             wrapClassName: null,
-            values: [defaultProps.min, defaultProps.max],
+            values: [],
           },
         })
       );
@@ -863,7 +863,7 @@ describe('helpers', () => {
           className: 'bbbb',
           style: { color: 'red' },
           render,
-          values: [0, 1, 17, 100],
+          values: [1, 17],
           isOn: true,
           withDot: false,
         })
@@ -1187,24 +1187,20 @@ describe('helpers', () => {
         min: defaultProps.min,
         max: defaultProps.max,
       };
-      expect(utils.correctValues(values)).toEqual(
-        expect.arrayContaining([defaultProps.min, defaultProps.max])
-      );
+      expect(utils.correctValues(values)).toEqual([]);
       values = {
         values: [-14],
         min: defaultProps.min,
         max: defaultProps.max,
       };
-      expect(utils.correctValues(values)).toEqual(
-        expect.arrayContaining([0, 0, 100])
-      );
+      expect(utils.correctValues(values)).toEqual(expect.arrayContaining([0]));
       values = {
         values: [7, 4],
         min: defaultProps.min,
         max: defaultProps.max,
       };
       expect(utils.correctValues(values)).toEqual(
-        expect.arrayContaining([0, 4, 7, 100])
+        expect.arrayContaining([4, 7])
       );
     });
     test('correctIndex', () => {

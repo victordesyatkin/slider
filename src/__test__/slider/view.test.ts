@@ -107,7 +107,7 @@ describe('slider', () => {
 
       view.setProps({ ...defaultProps, dot });
       $dot = $(`.${defaultProps.prefixClassName}__dot`, $parent);
-      expect($dot.length).toBe(0);
+      expect($dot.length).toBe(2);
 
       props = { ...defaultProps, dot, step: 10 };
       view.setProps(props);
@@ -158,7 +158,7 @@ describe('slider', () => {
       expect($mark.length).toBe(0);
       view.setProps({ ...defaultProps, mark });
       $mark = $(`.${defaultProps.prefixClassName}__mark`, $parent);
-      expect($mark.length).toBe(0);
+      expect($mark.length).toBe(2);
       view.setProps({
         ...defaultProps,
         mark,

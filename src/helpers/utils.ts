@@ -586,12 +586,6 @@ function correctValues(
       }
     });
   }
-  if (readyValues.indexOf(min) === -1) {
-    readyValues.push(min);
-  }
-  if (readyValues.indexOf(max) === -1) {
-    readyValues.push(max);
-  }
   readyValues = orderBy(readyValues, [], ['asc']);
   return readyValues;
 }
