@@ -631,12 +631,6 @@ describe('helpers', () => {
         })
       );
     });
-    test('checkIsCorrectStep', () => {
-      expect(utils.checkIsCorrectStep(0)).toBe(false);
-      expect(utils.checkIsCorrectStep(null)).toBe(false);
-      expect(utils.checkIsCorrectStep(undefined)).toBe(false);
-      expect(utils.checkIsCorrectStep(1)).toBe(true);
-    });
     test('correctIsOn', () => {
       expect(utils.correctIsOn()).toBe(false);
       expect(utils.correctIsOn(null)).toBe(false);

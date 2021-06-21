@@ -30,7 +30,6 @@ declare function getClosestPoint(options: {
     max: number;
     extraValues?: number[] | null;
 }): number;
-declare function checkIsCorrectStep(step?: number): boolean;
 declare function ensureValuePrecision(options: {
     value: number;
     max: number;
@@ -147,13 +146,13 @@ declare function correctRender(options?: Partial<{
     render: Render | null;
 }>): Render | null;
 declare function correctIsOn(options?: Partial<{
-    isOn?: boolean;
+    isOn: boolean | null;
 }>): boolean;
 declare function correctWithDot(options?: Partial<{
-    withDot?: boolean;
+    withDot: boolean | null;
 }>): boolean;
 declare function correctIsAlways(options?: Partial<{
-    isAlways?: boolean;
+    isAlways: boolean | null;
 }>): boolean;
 declare function correctTrack(options?: Partial<{
     entity: Track;
@@ -222,4 +221,4 @@ declare function getCorrectIndex(options: {
     isCorrect: boolean;
     index: number;
 };
-export { objectToString, uniqId, prepareData, setFunctionGetBoundingClientRectHTMLElement, calcValueWithEnsure, ensureValueCorrectNeighbors, checkNeighbors, calcValueByPos, calcValue, getSliderLength, getSliderStart, prepareValues, ensureValuePrecision, getClosestPoint, getPrecision, getMousePosition, ensureValueInRange, calcOffset, getHandleCenterPosition, getPosition, getNearestIndex, getNearest, defaultProps, getCorrectIndex, isDirectionToMin, isNeedCorrectStyle, checkIsCorrectStep, correctData, correctMin, correctMax, correctStep, correctPrecision, correctIndent, correctClassNames, correctStyles, correctStyle, correctClassName, correctValues, correctIndex, correctRender, correctDot, correctMark, correctTooltip, correctHandle, correctRail, correctTrack, correctIsAlways, correctIsOn, correctWithDot, correctWrapClassName, };
+export { objectToString, uniqId, prepareData, setFunctionGetBoundingClientRectHTMLElement, calcValueWithEnsure, ensureValueCorrectNeighbors, checkNeighbors, calcValueByPos, calcValue, getSliderLength, getSliderStart, prepareValues, ensureValuePrecision, getClosestPoint, getPrecision, getMousePosition, ensureValueInRange, calcOffset, getHandleCenterPosition, getPosition, getNearestIndex, getNearest, defaultProps, getCorrectIndex, isDirectionToMin, isNeedCorrectStyle, correctData, correctMin, correctMax, correctStep, correctPrecision, correctIndent, correctClassNames, correctStyles, correctStyle, correctClassName, correctValues, correctIndex, correctRender, correctDot, correctMark, correctTooltip, correctHandle, correctRail, correctTrack, correctIsAlways, correctIsOn, correctWithDot, correctWrapClassName, };

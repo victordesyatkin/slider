@@ -162,8 +162,7 @@ function prepareValues(
     return values;
   }
   if (property === 'values') {
-    const isCorrectValue =
-      value !== null && !isUndefined(value) && Array.isArray(value);
+    const isCorrectValue = Array.isArray(value);
     if (type === 'values' && isCorrectValue) {
       return {
         ...values,

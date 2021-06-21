@@ -124,10 +124,6 @@ function getClosestPoint(options: {
   return points[diffs.indexOf(Math.min(...diffs))];
 }
 
-function checkIsCorrectStep(step?: number): boolean {
-  return Boolean(step) && typeof step === 'number';
-}
-
 function ensureValuePrecision(options: {
   value: number;
   max: number;
@@ -137,7 +133,7 @@ function ensureValuePrecision(options: {
 }): number {
   const { step, min, max, value, extraValues } = options;
   let closestPoint = value;
-  if (step && checkIsCorrectStep(step)) {
+  if (step) {
     const temporaryClosestPoint = getClosestPoint({
       value,
       step,
@@ -462,7 +458,7 @@ function correctClassNames(
 ): string[] | null {
   const { classNames } = options || {};
   const readyClassNames: string[] = [];
-  if (classNames && Array.isArray(classNames)) {
+  if (Array.isArray(classNames)) {
     classNames.forEach((className) => {
       const isCorrect = isString(className) && trim(className);
       if (isCorrect && readyClassNames) {
@@ -490,7 +486,7 @@ function correctStyles(
 ): Style[] | null {
   const { styles } = options || {};
   const readyStyles: Style[] = [];
-  if (styles && Array.isArray(styles)) {
+  if (Array.isArray(styles)) {
     styles.forEach((style) => {
       if (!isNeedCorrectStyle(style)) {
         readyStyles.push(style);
@@ -556,7 +552,7 @@ function correctValues(
   if (isUndefined(min)) {
     return null;
   }
-  if (Array.isArray(values)) {
+  if (values) {
     values.forEach((temp, index) => {
       let isNeedCorrect = Number.isNaN(parseFloat(String(temp)));
       if (!isNeedCorrect && typeof temp === 'number') {
@@ -571,15 +567,13 @@ function correctValues(
       }
     });
   }
-  if (readyValues) {
-    if (readyValues.indexOf(min) === -1) {
-      readyValues.push(min);
-    }
-    if (readyValues.indexOf(max) === -1) {
-      readyValues.push(max);
-    }
-    readyValues = orderBy(readyValues, [], ['asc']);
+  if (readyValues.indexOf(min) === -1) {
+    readyValues.push(min);
   }
+  if (readyValues.indexOf(max) === -1) {
+    readyValues.push(max);
+  }
+  readyValues = orderBy(readyValues, [], ['asc']);
   return readyValues;
 }
 
@@ -613,24 +607,28 @@ function correctRender(
   return null;
 }
 
-function correctIsOn(options?: Partial<{ isOn?: boolean }>): boolean {
+function correctIsOn(options?: Partial<{ isOn: boolean | null }>): boolean {
   const { isOn } = options || {};
   return Boolean(isOn);
 }
 
-function correctWithDot(options?: Partial<{ withDot?: boolean }>): boolean {
+function correctWithDot(
+  options?: Partial<{ withDot: boolean | null }>
+): boolean {
   const { withDot } = options || {};
   return Boolean(withDot);
 }
 
-function correctIsAlways(options?: Partial<{ isAlways?: boolean }>): boolean {
+function correctIsAlways(
+  options?: Partial<{ isAlways: boolean | null }>
+): boolean {
   const { isAlways } = options || {};
   return Boolean(isAlways);
 }
 
 function correctTrack(options?: Partial<{ entity: Track }>): Track | undefined {
   const { entity } = options || {};
-  if (isObject(entity) && isReallyObject(entity)) {
+  if (entity) {
     Object.keys(entity).forEach((key) => {
       const castKey = key as keyof typeof entity;
       switch (castKey) {
@@ -662,7 +660,7 @@ function correctHandle(
   options?: Partial<{ entity: Handle }>
 ): Handle | undefined {
   const { entity } = options || {};
-  if (isObject(entity) && isReallyObject(entity)) {
+  if (entity) {
     Object.keys(entity).forEach((key) => {
       const castKey = key as keyof typeof entity;
       switch (castKey) {
@@ -689,7 +687,7 @@ function correctMark(
   options?: Partial<{ entity: Mark; min: number; max: number }>
 ): Mark | undefined {
   const { entity, min, max } = options || {};
-  if (isObject(entity) && isReallyObject(entity)) {
+  if (entity) {
     Object.keys(entity).forEach((key) => {
       const castKey = key as keyof typeof entity;
       switch (castKey) {
@@ -734,7 +732,7 @@ function correctMark(
 
 function correctDot(options?: Partial<{ entity: Dot }>): Dot | undefined {
   const { entity } = options || {};
-  if (isObject(entity) && isReallyObject(entity)) {
+  if (entity) {
     Object.keys(entity).forEach((key) => {
       const castKey = key as keyof typeof entity;
       switch (castKey) {
@@ -773,7 +771,7 @@ function correctTooltip(
   options?: Partial<{ entity: Tooltip }>
 ): Tooltip | undefined {
   const { entity } = options || {};
-  if (isObject(entity) && isReallyObject(entity)) {
+  if (entity) {
     Object.keys(entity).forEach((key) => {
       const castKey = key as keyof typeof entity;
       switch (castKey) {
@@ -813,7 +811,7 @@ function correctTooltip(
 
 function correctRail(options?: Partial<{ entity: Rail }>): Rail | undefined {
   const { entity } = options || {};
-  if (isObject(entity) && isReallyObject(entity)) {
+  if (entity) {
     Object.keys(entity).forEach((key) => {
       const castKey = key as keyof typeof entity;
       switch (castKey) {
@@ -1098,7 +1096,6 @@ export {
   getCorrectIndex,
   isDirectionToMin,
   isNeedCorrectStyle,
-  checkIsCorrectStep,
   correctData,
   correctMin,
   correctMax,
