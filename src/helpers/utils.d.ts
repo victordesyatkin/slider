@@ -30,7 +30,7 @@ declare function getClosestPoint(options: {
     max: number;
     extraValues?: number[] | null;
 }): number;
-declare function checkIsCorrectStep(step?: number | boolean | string | null): boolean;
+declare function checkIsCorrectStep(step?: number | boolean | string | null): step is number;
 declare function ensureValuePrecision(options: {
     value: number;
     max: number;

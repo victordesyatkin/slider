@@ -37,7 +37,7 @@ const defaultProps: DefaultProps = {
   indent: 0,
 };
 
-function isNumber(value: unknown): boolean {
+function isNumber(value: unknown): value is number {
   const temporaryValue = parseFloat(String(value));
   return !Number.isNaN(temporaryValue);
 }
@@ -129,10 +129,10 @@ function getClosestPoint(options: {
   return points[diffs.indexOf(Math.min(...diffs))];
 }
 
-function checkIsCorrectStep(step?: number | boolean | string | null): boolean {
-  return (
-    typeof step === 'number' && isNumber(step) && step >= 0 && Boolean(step)
-  );
+function checkIsCorrectStep(
+  step?: number | boolean | string | null
+): step is number {
+  return isNumber(step) && step >= 0 && Boolean(step);
 }
 
 function ensureValuePrecision(options: {
@@ -144,7 +144,7 @@ function ensureValuePrecision(options: {
 }): number {
   const { step, min, max, value, extraValues } = options;
   let closestPoint = value;
-  if (typeof step === 'number' && checkIsCorrectStep(step)) {
+  if (checkIsCorrectStep(step)) {
     const temporaryClosestPoint = getClosestPoint({
       value,
       step,
@@ -423,10 +423,10 @@ function correctStep(
 ): number {
   const { max, min, step } = options || {};
   let readyStep = parseFloat(String(step));
-  if (typeof min !== 'number' || !isNumber(max)) {
+  if (!isNumber(max)) {
     return defaultProps.step;
   }
-  if (typeof max !== 'number' || !isNumber(min)) {
+  if (!isNumber(min)) {
     return defaultProps.step;
   }
   const isNeedCorrect =
@@ -574,14 +574,14 @@ function correctValues(
   if (values) {
     values.forEach((temp, index) => {
       let isNeedCorrect = Number.isNaN(parseFloat(String(temp)));
-      if (!isNeedCorrect && typeof temp === 'number') {
+      if (!isNeedCorrect && isNumber(temp)) {
         isNeedCorrect = temp > max || temp < min;
       } else {
         isNeedCorrect = true;
       }
       if (isNeedCorrect) {
         readyValues[index] = min;
-      } else if (typeof temp === 'number') {
+      } else if (isNumber(temp)) {
         readyValues[index] = temp;
       }
     });
