@@ -132,7 +132,7 @@ function getClosestPoint(options: {
 function checkIsCorrectStep(
   step?: number | boolean | string | null
 ): step is number {
-  return isNumber(step) && step >= 0 && Boolean(step);
+  return isNumber(step) && step > 0;
 }
 
 function ensureValuePrecision(options: {
